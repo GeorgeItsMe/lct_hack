@@ -1,0 +1,562 @@
+{
+  "scope": "Descriptive audit of already-used historical evaluations; not independent validation or post-hoc subgroup success. Full solution must still cover every object and incident kind.",
+  "catalog_limits": "Object-kind labels already existed as original model inputs. Sensor counts describe the supplied static catalog, not historical install dates or causal event attribution to sensor types.",
+  "summary": [
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "object_kind": "controlHouse",
+      "true_alerts": 118,
+      "alerts": 225,
+      "eligible_episodes": 923,
+      "precision": 0.5244444444444445,
+      "recall": 0.12784398699891658,
+      "f1": 0.20557491289198607,
+      "primary_score": 0.14204887444324063,
+      "both_90": false
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "object_kind": "guardObject",
+      "true_alerts": 5294,
+      "alerts": 7357,
+      "eligible_episodes": 6652,
+      "precision": 0.7195867880929727,
+      "recall": 0.7958508719182201,
+      "f1": 0.7557998429580983,
+      "primary_score": 0.7995408756588586,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "object_kind": "controlHouse",
+      "true_alerts": 43,
+      "alerts": 84,
+      "eligible_episodes": 318,
+      "precision": 0.5119047619047619,
+      "recall": 0.13522012578616352,
+      "f1": 0.21393034825870647,
+      "primary_score": 0.15024458420684836,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "object_kind": "guardObject",
+      "true_alerts": 1850,
+      "alerts": 2619,
+      "eligible_episodes": 2349,
+      "precision": 0.7063764795723558,
+      "recall": 0.787569178373776,
+      "f1": 0.7447665056360708,
+      "primary_score": 0.7848627550803954,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "object_kind": "controlHouse",
+      "true_alerts": 1,
+      "alerts": 29,
+      "eligible_episodes": 25,
+      "precision": 0.034482758620689655,
+      "recall": 0.04,
+      "f1": 0.037037037037037035,
+      "primary_score": 0.038314176245210725,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "object_kind": "guardObject",
+      "true_alerts": 10,
+      "alerts": 45,
+      "eligible_episodes": 21,
+      "precision": 0.2222222222222222,
+      "recall": 0.47619047619047616,
+      "f1": 0.30303030303030304,
+      "primary_score": 0.24691358024691357,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "object_kind": "controlHouse",
+      "true_alerts": 0,
+      "alerts": 2,
+      "eligible_episodes": 18,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "primary_score": 0.0,
+      "both_90": false
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "object_kind": "guardObject",
+      "true_alerts": 131,
+      "alerts": 290,
+      "eligible_episodes": 270,
+      "precision": 0.4517241379310345,
+      "recall": 0.48518518518518516,
+      "f1": 0.46785714285714286,
+      "primary_score": 0.5019157088122606,
+      "both_90": false
+    }
+  ],
+  "periods": [
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "screen_1",
+      "object_kind": "controlHouse",
+      "true_alerts": 34,
+      "alerts": 63,
+      "eligible_episodes": 226,
+      "precision": 0.5396825396825397,
+      "recall": 0.1504424778761062,
+      "f1": 0.23529411764705882,
+      "objects": 49
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "screen_1",
+      "object_kind": "guardObject",
+      "true_alerts": 937,
+      "alerts": 1286,
+      "eligible_episodes": 1256,
+      "precision": 0.7286158631415242,
+      "recall": 0.7460191082802548,
+      "f1": 0.7372147915027537,
+      "objects": 29
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "screen_2",
+      "object_kind": "controlHouse",
+      "true_alerts": 10,
+      "alerts": 22,
+      "eligible_episodes": 92,
+      "precision": 0.45454545454545453,
+      "recall": 0.10869565217391304,
+      "f1": 0.17543859649122806,
+      "objects": 49
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "screen_2",
+      "object_kind": "guardObject",
+      "true_alerts": 879,
+      "alerts": 1261,
+      "eligible_episodes": 1093,
+      "precision": 0.697065820777161,
+      "recall": 0.8042086001829826,
+      "f1": 0.7468139337298216,
+      "objects": 29
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "confirmation",
+      "object_kind": "controlHouse",
+      "true_alerts": 15,
+      "alerts": 28,
+      "eligible_episodes": 148,
+      "precision": 0.5357142857142857,
+      "recall": 0.10135135135135136,
+      "f1": 0.17045454545454544,
+      "objects": 49
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "confirmation",
+      "object_kind": "guardObject",
+      "true_alerts": 796,
+      "alerts": 1049,
+      "eligible_episodes": 1086,
+      "precision": 0.7588179218303146,
+      "recall": 0.7329650092081031,
+      "f1": 0.7456674473067916,
+      "objects": 29
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "stress_1",
+      "object_kind": "controlHouse",
+      "true_alerts": 42,
+      "alerts": 80,
+      "eligible_episodes": 306,
+      "precision": 0.525,
+      "recall": 0.13725490196078433,
+      "f1": 0.21761658031088082,
+      "objects": 49
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "stress_1",
+      "object_kind": "guardObject",
+      "true_alerts": 1468,
+      "alerts": 2036,
+      "eligible_episodes": 1661,
+      "precision": 0.7210216110019646,
+      "recall": 0.8838049367850692,
+      "f1": 0.7941574249391399,
+      "objects": 29
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "stress_2",
+      "object_kind": "controlHouse",
+      "true_alerts": 17,
+      "alerts": 32,
+      "eligible_episodes": 151,
+      "precision": 0.53125,
+      "recall": 0.11258278145695365,
+      "f1": 0.18579234972677597,
+      "objects": 49
+    },
+    {
+      "family": "v20_access",
+      "kind": "access",
+      "fold": "stress_2",
+      "object_kind": "guardObject",
+      "true_alerts": 1214,
+      "alerts": 1725,
+      "eligible_episodes": 1556,
+      "precision": 0.703768115942029,
+      "recall": 0.7802056555269923,
+      "f1": 0.7400182871075891,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "fold": "screen_1",
+      "object_kind": "controlHouse",
+      "true_alerts": 33,
+      "alerts": 62,
+      "eligible_episodes": 226,
+      "precision": 0.532258064516129,
+      "recall": 0.14601769911504425,
+      "f1": 0.22916666666666666,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "fold": "screen_1",
+      "object_kind": "guardObject",
+      "true_alerts": 971,
+      "alerts": 1358,
+      "eligible_episodes": 1256,
+      "precision": 0.7150220913107511,
+      "recall": 0.7730891719745223,
+      "f1": 0.7429227237949503,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "fold": "screen_2",
+      "object_kind": "controlHouse",
+      "true_alerts": 10,
+      "alerts": 22,
+      "eligible_episodes": 92,
+      "precision": 0.45454545454545453,
+      "recall": 0.10869565217391304,
+      "f1": 0.17543859649122806,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "access",
+      "fold": "screen_2",
+      "object_kind": "guardObject",
+      "true_alerts": 879,
+      "alerts": 1261,
+      "eligible_episodes": 1093,
+      "precision": 0.697065820777161,
+      "recall": 0.8042086001829826,
+      "f1": 0.7468139337298216,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "fold": "screen_1",
+      "object_kind": "controlHouse",
+      "true_alerts": 0,
+      "alerts": 0,
+      "eligible_episodes": 10,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "fold": "screen_1",
+      "object_kind": "guardObject",
+      "true_alerts": 34,
+      "alerts": 87,
+      "eligible_episodes": 91,
+      "precision": 0.39080459770114945,
+      "recall": 0.37362637362637363,
+      "f1": 0.38202247191011235,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "fold": "screen_2",
+      "object_kind": "controlHouse",
+      "true_alerts": 0,
+      "alerts": 2,
+      "eligible_episodes": 8,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fire",
+      "fold": "screen_2",
+      "object_kind": "guardObject",
+      "true_alerts": 97,
+      "alerts": 203,
+      "eligible_episodes": 179,
+      "precision": 0.47783251231527096,
+      "recall": 0.5418994413407822,
+      "f1": 0.5078534031413613,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "fold": "screen_1",
+      "object_kind": "controlHouse",
+      "true_alerts": 0,
+      "alerts": 0,
+      "eligible_episodes": 12,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "fold": "screen_1",
+      "object_kind": "guardObject",
+      "true_alerts": 0,
+      "alerts": 0,
+      "eligible_episodes": 6,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "objects": 29
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "fold": "screen_2",
+      "object_kind": "controlHouse",
+      "true_alerts": 1,
+      "alerts": 29,
+      "eligible_episodes": 13,
+      "precision": 0.034482758620689655,
+      "recall": 0.07692307692307693,
+      "f1": 0.047619047619047616,
+      "objects": 49
+    },
+    {
+      "family": "v24_count_control",
+      "kind": "fault",
+      "fold": "screen_2",
+      "object_kind": "guardObject",
+      "true_alerts": 10,
+      "alerts": 45,
+      "eligible_episodes": 15,
+      "precision": 0.2222222222222222,
+      "recall": 0.6666666666666666,
+      "f1": 0.3333333333333333,
+      "objects": 29
+    }
+  ],
+  "catalog_sensor_counts": [
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Газовый датчик",
+      "channels": 529
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Датчик движения",
+      "channels": 80
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Датчик дыма",
+      "channels": 110
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Датчик температуры",
+      "channels": 43
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "ИБП",
+      "channels": 80
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "КД Дверь",
+      "channels": 244
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Переключатель",
+      "channels": 801
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Ручной извещатель",
+      "channels": 27
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Состояние УИР-Р",
+      "channels": 42
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Состояние вентилятора",
+      "channels": 354
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Состояние насоса",
+      "channels": 180
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Состояние охраны",
+      "channels": 25
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Состояние фазы",
+      "channels": 957
+    },
+    {
+      "object_kind": "controlHouse",
+      "sensor_type": "Стекло",
+      "channels": 29
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "9-секционный люк",
+      "channels": 9
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Датчик движения",
+      "channels": 724
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Датчик дыма",
+      "channels": 4227
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Датчик затопления",
+      "channels": 25
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Датчик температуры",
+      "channels": 557
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "КД АВ",
+      "channels": 397
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "КД Дверь",
+      "channels": 673
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "КД Люк",
+      "channels": 55
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Ручной извещатель",
+      "channels": 103
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Состояние УИР-Р",
+      "channels": 720
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Состояние охраны",
+      "channels": 22
+    },
+    {
+      "object_kind": "guardObject",
+      "sensor_type": "Тепловой датчик",
+      "channels": 472
+    }
+  ],
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/channels.parquet": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "/Users/main/vs_projects/lct_hack/data/processed/objects.parquet": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce",
+    "artifacts/research-v20/access/confirmation/quarter_candidate-test.parquet": "83b195cc95651800ad92bd9fd16172f06dc20e129a18e5fd48d23d57efdaa7a9",
+    "artifacts/research-v20/access/confirmation/result.json": "a806b2ce73bb73828cda9611f7981372f028bbfbee04234199ecdca77908d646",
+    "artifacts/research-v20/access/screen_1/quarter_candidate-test.parquet": "ac18af41402cd5eef1b9b282de515af1c1180654209a82dd29d4c6578532421c",
+    "artifacts/research-v20/access/screen_1/result.json": "4afd284c5ea9e6e2fd026bde15958b8f1bb52440efc1e34cedf886cbf3f8dc0b",
+    "artifacts/research-v20/access/screen_2/quarter_candidate-test.parquet": "33fc14118aa20b0298ef1afe02885ad8b8978e7556084d50bb5a5b0968512000",
+    "artifacts/research-v20/access/screen_2/result.json": "5dde5c76801a2eb76b77aa97fd52eda94cb945736a88af7e3f9d52878714d854",
+    "artifacts/research-v20/access/stress_1/quarter_candidate-test.parquet": "c560b7f736cb8f6a04ee10b0146c376c49bd7cb65857b4b4fd9602b63be16f4e",
+    "artifacts/research-v20/access/stress_1/result.json": "931861ade750134b085232e3cec4506a7ae6f8cda0031cc2f3ab72bd56dc0bff",
+    "artifacts/research-v20/access/stress_2/quarter_candidate-test.parquet": "f97219afe69a2c04b523ae0e899e15d9d5aac2e54f1da5e54ddbda3a5a764c04",
+    "artifacts/research-v20/access/stress_2/result.json": "c842954155bfc549424d79cd6f68d1adcc18496f779d05a7e4f837a8b63c260e",
+    "artifacts/research-v24/access/screen_1/count_probability_control-test.parquet": "8743f296c9dcb6f06429d388015f061a8230ac83ecb3431733d814b6a99f9051",
+    "artifacts/research-v24/access/screen_1/result.json": "6de855db5ca992a9ca402ea258b672bef2dd9a9bf78627fa3871acaa2f739211",
+    "artifacts/research-v24/access/screen_2/count_probability_control-test.parquet": "0c84cc46500e3259eecc20286e7a633a4e67f8078a37a9558f63de307ab1fb38",
+    "artifacts/research-v24/access/screen_2/result.json": "04b99b756e5a37cab785b3bbf450d8494170a21e145f95cd4743f83449fbb7eb",
+    "artifacts/research-v24/fault/screen_1/count_probability_control-test.parquet": "68b31d639d8340a42eb4f38d1b3345d602a13d221ada4664199bfc15886a2b04",
+    "artifacts/research-v24/fault/screen_1/result.json": "7eb2167251d6cdc34e9d66320a23b89d1efa7d85f1665e8155a3b041189af8cb",
+    "artifacts/research-v24/fault/screen_2/count_probability_control-test.parquet": "f4bc91dad9bfa80efe7da178b3111cf4ffc8a8296dac80610d8ebe51159da6bb",
+    "artifacts/research-v24/fault/screen_2/result.json": "e7f581f2b93852345c05f12e33acc0504e2bf058110083aa51f8ec73cfd90ad1",
+    "artifacts/research-v24/fire/screen_1/count_probability_control-test.parquet": "7fd2996c892c3e348e1bc38767cef10e2c5b59e88da067e76ff39ef0a739dc5f",
+    "artifacts/research-v24/fire/screen_1/result.json": "71bef274fc5cfded79ab24403c7949adcc5dacc8c1b38e7c22fbf1d1840532c9",
+    "artifacts/research-v24/fire/screen_2/count_probability_control-test.parquet": "acbcc5d23d96f1d921da67b1b344707601de67f0c224408d2136922ec023f187",
+    "artifacts/research-v24/fire/screen_2/result.json": "b4ea5154c5dbc0c3505ae87030344c5a71d27600eee721d66c116d8b82201792"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_object_kind_errors.py": "10458c4fb2f48693c361cd461ec8ed50309c7746212fc57e0a221e8c1db66cff",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74"
+  }
+}

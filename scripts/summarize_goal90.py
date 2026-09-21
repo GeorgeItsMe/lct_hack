@@ -5,6 +5,8 @@ from importlib.metadata import version as package_version
 from pathlib import Path
 from platform import python_version
 
+import pandas as pd
+
 from moscollector.goal90_research import read
 from moscollector.model_registry import active_version, load_bundle
 from moscollector.prepare import sha256, write_json
@@ -35,6 +37,7 @@ studies = {
     "v23": Path("artifacts/research-v23"),
     "v24": Path("artifacts/research-v24"),
     "v25": Path("artifacts/research-v25"),
+    "v26": Path("artifacts/research-v26"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -108,6 +111,38 @@ for meta_path in studies["v25"].glob("*/*/conditional/fit.json"):
     elif meta["mode"] != "constant" or meta["constant_extra"] < 0:
         raise ValueError(f"Invalid conditional model: {meta_path}")
     conditional_models[str(meta_path)] = meta
+object_kind_models = {}
+for meta_path in studies["v26"].glob("*/*/groups/*/fit.json"):
+    meta = read(meta_path)
+    weights = Path(meta["weights_file"])
+    if sha256(weights) != meta["model_sha256"]:
+        raise ValueError(f"Changed object-kind weights: {weights}")
+    if meta["mode"] == "specialist":
+        new_weights[str(weights)] = meta["model_sha256"]
+    elif meta["mode"] != "global_fallback":
+        raise ValueError(f"Unknown object-kind model mode: {meta_path}")
+    object_kind_models[str(meta_path)] = meta
+object_kind_audit = read(Path("artifacts/object_kind_error_audit.json"))
+for category in ("source_hashes", "code_hashes"):
+    for source, digest in object_kind_audit[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed object-kind audit: {source}")
+kind_policy_path = studies["v26"] / "access/screen_2/specialist_candidate-test.parquet"
+kind_result_path = studies["v26"] / "access/screen_2/result.json"
+kind_predictions = pd.read_parquet(kind_policy_path)
+kind_house = kind_predictions.loc[kind_predictions.object_kind.eq("controlHouse")]
+kind_policy = read(kind_result_path)["arms"]["specialist_candidate"]["policy"]
+kind_policy_diagnostic = {
+    "scope": "Descriptive used-test prediction audit, not a newly selected threshold.",
+    "rows": len(kind_house),
+    "warnings": int(kind_house.alert.sum()),
+    "max_expected_count": float(kind_house.expected_count.max()),
+    "max_effective_capacity": float(kind_house.expected_count.max() * kind_policy["capacity"]),
+    "minimum_capacity_before_any_pending_warning": kind_policy["margin"],
+    "source_hashes": {str(p): sha256(p) for p in (kind_policy_path, kind_result_path)},
+}
+assert kind_policy_diagnostic["warnings"] == 0
+assert kind_policy_diagnostic["max_effective_capacity"] < kind_policy["margin"]
 capacity = read(Path("artifacts/hourly_capacity_audit.json"))
 for category in ("inputs", "code_hashes"):
     for source, digest in capacity[category].items():
@@ -183,6 +218,16 @@ report = {
         for p in sorted(studies["v25"].glob("*/screen_*/result.json"))
     },
     "conditional_count_models_verified": conditional_models,
+    "object_kind_error_audit": object_kind_audit,
+    "object_kind_experts_v26": read(studies["v26"] / "report.json"),
+    "object_kind_screen_periods": {
+        str(p.relative_to(studies["v26"])): read(p)
+        for p in sorted(studies["v26"].glob("*/screen_*/result.json"))
+    },
+    "object_kind_models_verified": object_kind_models,
+    "object_kind_policy_diagnostic": kind_policy_diagnostic,
+    "object_kind_decision": "V26 trains12 separate count models for the two original catalog object kinds, with a matched group-calibration control. All global controls exactly reproduce v24. On screen access P.685/R.726/F1.705 adds only1 true alert versus calibration alone, with precision below global control. Fire P.405/R.410 loses both metrics. Fault P.212/R.152 finds7/46 rather than11, losing recall/F1. All fail screening; no extra-month evaluation or activation. Subgroup diagnostic gains are not full-scope success.",
+    "next_policy_hypothesis": "V26 access screen_2 specialist maximum expected count in controlHouse is.76576489988272, below its shared capacity1/margin1 policy, hence zero warnings there. Separately evaluate catalog-group policies with pooled objective and full event denominator, fitting only the preceding policy period. This is an untested next hypothesis, not a selected replacement or90/90 claim.",
     "latest_probability_studies_decision": "V24 separate binary gate fails all screening gates: access loses precision, fire primary gain4.94% is below predeclared>5%, fault fails its historical count anchor. V25 adds six conditional extra-count models: access P.696/R.736/F1.715 but only1.01% primary gain over binary control and precision below count control; fire loses precision; fault P.084/R.174. All fail screening, so no additional-month evaluation or activation. Expanded-grid control improvements are not attributed to the binary model. Best fully checked access candidate remains v20, not90/90.",
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
