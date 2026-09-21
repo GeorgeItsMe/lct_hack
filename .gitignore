@@ -25,3 +25,8 @@ deploy/certs/*
 output/runtime/
 output/*.tar.gz
 output/build/
+*.egg-info/
+*.tsbuildinfo
+artifacts/import-job-id.txt
+artifacts/import-5min-job-id.txt
+output/contour-source.zip

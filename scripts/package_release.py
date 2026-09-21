@@ -56,7 +56,10 @@ for directory in ("src", "tests", "scripts", "docs", "examples", "deploy", "web/
     files.extend(
         p
         for p in (ROOT / directory).rglob("*")
-        if p.is_file() and "__pycache__" not in p.parts and "deploy/certs/" not in str(p.relative_to(ROOT))
+        if p.is_file()
+        and "__pycache__" not in p.parts
+        and "deploy/certs/" not in str(p.relative_to(ROOT))
+        and not any(part.endswith(".egg-info") for part in p.parts)
     )
 for name in (
     "README.md",
