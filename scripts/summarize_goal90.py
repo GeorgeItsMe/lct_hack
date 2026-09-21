@@ -38,6 +38,7 @@ studies = {
     "v24": Path("artifacts/research-v24"),
     "v25": Path("artifacts/research-v25"),
     "v26": Path("artifacts/research-v26"),
+    "v27": Path("artifacts/research-v27"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -112,7 +113,9 @@ for meta_path in studies["v25"].glob("*/*/conditional/fit.json"):
         raise ValueError(f"Invalid conditional model: {meta_path}")
     conditional_models[str(meta_path)] = meta
 object_kind_models = {}
-for meta_path in studies["v26"].glob("*/*/groups/*/fit.json"):
+object_kind_metadata = list(studies["v26"].glob("*/*/groups/*/fit.json"))
+object_kind_metadata.extend((studies["v27"] / "controls").glob("*/*/groups/*/fit.json"))
+for meta_path in object_kind_metadata:
     meta = read(meta_path)
     weights = Path(meta["weights_file"])
     if sha256(weights) != meta["model_sha256"]:
@@ -225,9 +228,14 @@ report = {
         for p in sorted(studies["v26"].glob("*/screen_*/result.json"))
     },
     "object_kind_models_verified": object_kind_models,
+    "group_policy_v27": read(studies["v27"] / "report.json"),
+    "group_policy_screen_periods": {
+        str(p.relative_to(studies["v27"])): read(p)
+        for p in sorted(studies["v27"].glob("*/screen_*/result.json"))
+    },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
     "object_kind_decision": "V26 trains12 separate count models for the two original catalog object kinds, with a matched group-calibration control. All global controls exactly reproduce v24. On screen access P.685/R.726/F1.705 adds only1 true alert versus calibration alone, with precision below global control. Fire P.405/R.410 loses both metrics. Fault P.212/R.152 finds7/46 rather than11, losing recall/F1. All fail screening; no extra-month evaluation or activation. Subgroup diagnostic gains are not full-scope success.",
-    "next_policy_hypothesis": "V26 access screen_2 specialist maximum expected count in controlHouse is.76576489988272, below its shared capacity1/margin1 policy, hence zero warnings there. Separately evaluate catalog-group policies with pooled objective and full event denominator, fitting only the preceding policy period. This is an untested next hypothesis, not a selected replacement or90/90 claim.",
+    "tested_group_policy_hypothesis": "V26 access screen_2 specialist maximum expected count in controlHouse is.76576489988272, below its shared capacity1/margin1 policy. V27 tested separate catalog-group policies on both frozen global and specialist forecasts, using only preceding policy periods and full event denominators. Access/fire fail screening. Fault global weights pass screening but fail May and stress confirmation: five months53/165/217 P.321/R.244/F1.277 versus matched shared58/223/217 P.260/R.267/F1.264.53 fewer false warnings cost5 true warnings; no activation or90/90 claim. Six additional expert models were fitted only to complete declared matched controls.",
     "latest_probability_studies_decision": "V24 separate binary gate fails all screening gates: access loses precision, fire primary gain4.94% is below predeclared>5%, fault fails its historical count anchor. V25 adds six conditional extra-count models: access P.696/R.736/F1.715 but only1.01% primary gain over binary control and precision below count control; fire loses precision; fault P.084/R.174. All fail screening, so no additional-month evaluation or activation. Expanded-grid control improvements are not attributed to the binary model. Best fully checked access candidate remains v20, not90/90.",
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
