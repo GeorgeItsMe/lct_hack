@@ -189,7 +189,17 @@ def ready():
 
         connection.execute(text("SELECT 1"))
     service = analytics()
-    return {"status": "ready", "model_version": service.version, "objects": len(service.objects)}
+    from moscollector.model_registry import active_version, load_bundle
+
+    operational_version = active_version()
+    if operational_version != "legacy":
+        load_bundle(operational_version)
+    return {
+        "status": "ready",
+        "model_version": service.version,
+        "operational_model_version": operational_version,
+        "objects": len(service.objects),
+    }
 
 
 class LoginInput(BaseModel):
@@ -299,7 +309,9 @@ def replay(user=Depends(current_user)):
 @app.get("/api/evaluation")
 def evaluation(user=Depends(current_user)):
     service = analytics()
-    return {**service.report, "uncertainty": getattr(service, "uncertainty", None)}
+    research_path = ARTIFACTS / "research_report.json"
+    research = json.loads(research_path.read_text()) if research_path.exists() else None
+    return {**service.report, "uncertainty": getattr(service, "uncertainty", None), "research": research}
 
 
 @app.get("/api/evaluation/matches/{kind}")
@@ -655,4 +667,6 @@ if web_dist.exists():
     def frontend(path: str):
         if path.startswith("api/"):
             raise HTTPException(404, "API endpoint not found")
+        if path == "favicon.svg":
+            return FileResponse(web_dist / "favicon.svg", media_type="image/svg+xml")
         return FileResponse(web_dist / "index.html")

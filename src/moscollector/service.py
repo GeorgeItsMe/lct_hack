@@ -207,14 +207,20 @@ class AnalyticsService:
             "description": "Схема иерархии объектов из справочника. Географические координаты не предоставлены.",
         }
 
-    def explain_features(self, features, kind):
+    def explain_features(self, features, kind, model_version="legacy"):
         if len(features) != 1:
             raise KeyError("Снимок признаков прогноза не найден")
-        meta = self.meta[kind]
-        x = model_input(features, meta["features"])
-        shap = self.models[kind].get_feature_importance(Pool(x, cat_features=CATEGORICAL), type="ShapValues")[
-            0
-        ]
+        from moscollector.model_registry import load_bundle
+
+        head = load_bundle(model_version).get(kind) if model_version != "legacy" else None
+        if head is not None:
+            meta, shap = head.meta, head.shap(features)[0]
+        else:
+            meta = self.meta[kind]
+            x = model_input(features, meta["features"])
+            shap = self.models[kind].get_feature_importance(
+                Pool(x, cat_features=CATEGORICAL), type="ShapValues"
+            )[0]
         contributions = []
         for name, contribution in zip(meta["features"], shap[:-1], strict=True):
             value = features[name].iloc[0]

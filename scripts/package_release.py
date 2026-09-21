@@ -37,6 +37,9 @@ pred.to_parquet(RUNTIME / "artifacts/predictions/all.parquet", index=False, comp
 for file in (ROOT / "artifacts/models").glob("*"):
     if file.suffix in (".cbm", ".json"):
         copy(file.relative_to(ROOT))
+for file in (ROOT / "artifacts/operational").rglob("*"):
+    if file.is_file() and file.suffix in (".cbm", ".json"):
+        copy(file.relative_to(ROOT))
 for file in (ROOT / "artifacts/predictions").glob("test-matches-*.json"):
     copy(file.relative_to(ROOT))
 for file in (ROOT / "artifacts").glob("*.json"):
@@ -52,7 +55,7 @@ with tarfile.open(OUT / "contour-runtime.tar.gz", "w:gz", compresslevel=2) as ar
         if file.is_file():
             archive.add(file, arcname=str(file.relative_to(RUNTIME)))
 files = []
-for directory in ("src", "tests", "scripts", "docs", "examples", "deploy", "web/src"):
+for directory in ("src", "tests", "scripts", "docs", "examples", "deploy", "web/src", "web/public"):
     files.extend(
         p
         for p in (ROOT / directory).rglob("*")

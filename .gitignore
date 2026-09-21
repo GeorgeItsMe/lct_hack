@@ -14,8 +14,10 @@ data/processed/
 data/runtime/
 artifacts/cache/
 artifacts/models/
+artifacts/operational/
 artifacts/predictions/
 artifacts/experiments/
+artifacts/research-*/
 artifacts/*.duckdb*
 *.log
 web/dist/

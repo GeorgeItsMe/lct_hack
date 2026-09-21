@@ -14,6 +14,7 @@ from catboost import CatBoostClassifier
 
 from moscollector import features, prepare
 from moscollector.domain import KIND_LABELS, RECOMMENDATIONS
+from moscollector.model_registry import load_bundle
 from moscollector.paths import ARTIFACTS, PROCESSED
 from moscollector.service import clean
 from moscollector.train import calibrated, model_input
@@ -24,6 +25,8 @@ def run(directory: Path, as_of: str):
     cutoff = pd.Timestamp(as_of)
     status_file = directory / "status.json"
     state = json.loads(status_file.read_text()) if status_file.exists() else {}
+    version = state.get("model_version", "legacy")
+    heads = load_bundle(version) if version != "legacy" else {}
     aligned = cutoff.floor("h")
     offset = cutoff - aligned
     year = cutoff.year
@@ -81,13 +84,17 @@ def run(directory: Path, as_of: str):
     names = pd.read_parquet(processed / "objects.parquet").set_index("object_id").object_name.to_dict()
     forecasts = []
     for kind in ("fault", "fire", "flood", "access"):
-        meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
-        model = CatBoostClassifier()
-        model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
-        probabilities = calibrated(
-            model.predict(model_input(frame, meta["features"]), prediction_type="RawFormulaVal"),
-            meta["calibration"],
-        )
+        if kind in heads:
+            meta = heads[kind].meta
+            probabilities = heads[kind].probability(frame)
+        else:
+            meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+            model = CatBoostClassifier()
+            model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
+            probabilities = calibrated(
+                model.predict(model_input(frame, meta["features"]), prediction_type="RawFormulaVal"),
+                meta["calibration"],
+            )
         for obj, p in zip(frame.object_id, probabilities, strict=True):
             forecasts.append(
                 {
@@ -104,6 +111,7 @@ def run(directory: Path, as_of: str):
     forecasts.sort(key=lambda r: (not r["above_threshold"], -r["probability"] / r["threshold"]))
     result = {
         "as_of": cutoff.isoformat(),
+        "model_version": version,
         "timezone": "Europe/Moscow",
         "horizon_hours": 24,
         "label_type": "proxy_sensor_episode",

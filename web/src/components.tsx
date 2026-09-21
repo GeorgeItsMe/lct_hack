@@ -48,7 +48,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
       {!compact && (
         <div>
           <strong>
-            контур<span>®</span>
+            контур<span className="brand-edition">/ 01</span>
           </strong>
           <small>МОСКОЛЛЕКТОР</small>
         </div>
@@ -276,7 +276,7 @@ export function NetworkMap({
               height="22"
               patternUnits="userSpaceOnUse"
             >
-              <circle cx="1" cy="1" r=".7" fill="#c4d3ce" />
+              <circle cx="1" cy="1" r=".7" fill="#cfcfcf" />
             </pattern>
             <filter id="node-shadow">
               <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity=".08" />
@@ -292,7 +292,7 @@ export function NetworkMap({
                 </text>
                 <path
                   d={`M${r.x + 6},${r.y + 25} H${r.x + 232}`}
-                  stroke="#cbd9d3"
+                  stroke="#d6d6d6"
                   strokeWidth="5"
                   strokeLinecap="round"
                 />
@@ -324,7 +324,7 @@ export function NetworkMap({
                       {i >= 6 && (
                         <path
                           d={`M${x},${r.y + 25} V${y}`}
-                          stroke="#cbd9d3"
+                          stroke="#d6d6d6"
                           strokeWidth="2"
                         />
                       )}
@@ -333,8 +333,8 @@ export function NetworkMap({
                           cx={x}
                           cy={y}
                           r="14"
-                          fill="#fff0e5"
-                          stroke="#edb382"
+                          fill="#f5f5f5"
+                          stroke="#171717"
                           strokeDasharray="2 2"
                         />
                       )}
@@ -344,13 +344,13 @@ export function NetworkMap({
                         r={high ? 7 : 5}
                         fill={
                           high
-                            ? "#d36b35"
+                            ? "#171717"
                             : n.risk === "unknown"
-                              ? "#acb9b4"
-                              : "#477c69"
+                              ? "#b6b6b6"
+                              : "#fff"
                         }
-                        stroke="white"
-                        strokeWidth="2"
+                        stroke={high ? "#fff" : "#737373"}
+                        strokeWidth={high ? 2 : 1.5}
                         filter="url(#node-shadow)"
                       />
                       <text
@@ -572,17 +572,17 @@ export function ForecastDrawer({
                           >
                             <stop
                               offset="0%"
-                              stopColor="#316d5a"
+                              stopColor="#171717"
                               stopOpacity={0.2}
                             />
                             <stop
                               offset="100%"
-                              stopColor="#316d5a"
+                              stopColor="#171717"
                               stopOpacity={0}
                             />
                           </linearGradient>
                         </defs>
-                        <CartesianGrid vertical={false} stroke="#e7ece8" />
+                        <CartesianGrid vertical={false} stroke="#ebebeb" />
                         <XAxis
                           dataKey="as_of"
                           tickFormatter={(v) => clock(v)}
@@ -604,14 +604,14 @@ export function ForecastDrawer({
                         />
                         <ReferenceLine
                           y={forecast.threshold}
-                          stroke="#cd8554"
+                          stroke="#737373"
                           strokeDasharray="4 4"
                         />
                         <Area
                           type="stepAfter"
                           dataKey="probability"
                           name="Вероятность"
-                          stroke="#316d5a"
+                          stroke="#171717"
                           strokeWidth={2}
                           fill="url(#risk-fill)"
                         />

@@ -1,0 +1,67 @@
+{
+  "url": "http://127.0.0.1:8001",
+  "model_version": "op-da1831964fa4",
+  "old_job_id": "010093d45d3249bd8d4853ef8dec9ad2",
+  "new_job_id": "1d27c86794884792842290d047b24c3d",
+  "changed_kinds": [
+    "fire"
+  ],
+  "changed_probability_rows": 78,
+  "unchanged_probability_rows": 234,
+  "old_result_and_explanation_unchanged": true,
+  "versioned_retry_idempotent": true,
+  "stream_events_unchanged": 1389,
+  "source_events_cutoff_verified": true,
+  "forecast_count": 312,
+  "worker_seconds": 26.05,
+  "new_explanation": [
+    {
+      "feature": "smoke_channels",
+      "label": "Дымовые каналы",
+      "value": 875,
+      "contribution": 2.7376463874382404
+    },
+    {
+      "feature": "channel_count",
+      "label": "Каналы в справочнике",
+      "value": 994,
+      "contribution": 0.7348492252485581
+    },
+    {
+      "feature": "smoke_reports_recency_h",
+      "label": "Давность сообщений, ч: Пожарные сигналы",
+      "value": 72.0,
+      "contribution": 0.4507059961906119
+    },
+    {
+      "feature": "past_fire_recency_h",
+      "label": "Часов с подтверждения эпизода: пожарный сигнал",
+      "value": 71.32611083984375,
+      "contribution": 0.3391721840035115
+    },
+    {
+      "feature": "past_fire_episodes_720h",
+      "label": "Прошлые эпизоды (пожарный сигнал) за 720 ч",
+      "value": 50.0,
+      "contribution": 0.2482013294780184
+    },
+    {
+      "feature": "object_id",
+      "label": "Исторический профиль объекта",
+      "value": 5677,
+      "contribution": 0.11962331548019876
+    },
+    {
+      "feature": "day_of_week",
+      "label": "День недели",
+      "value": 0,
+      "contribution": 0.05084126969465159
+    },
+    {
+      "feature": "fault_reports_recency_h",
+      "label": "Давность сообщений, ч: Сообщения о неисправности",
+      "value": 310.0,
+      "contribution": -0.04923933716420767
+    }
+  ]
+}

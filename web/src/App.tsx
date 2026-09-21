@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   ArrowDownToLine,
@@ -234,6 +234,37 @@ export default function App() {
     [toast, setToast] = useState(""),
     [profileOpen, setProfileOpen] = useState(false);
   const closeDrawer = useCallback(() => setSelected(null), []);
+  const searchInput = useRef<HTMLInputElement>(null);
+  const [focusSearch, setFocusSearch] = useState(false);
+  const openSearch = useCallback(() => {
+    setPage("journal");
+    setSelected(null);
+    setPlaying(false);
+    setKind("all");
+    setOnlyWarnings(false);
+    setFocusSearch(true);
+  }, []);
+  useEffect(() => {
+    if (focusSearch && page === "journal" && overview) {
+      searchInput.current?.focus();
+      searchInput.current?.select();
+      setFocusSearch(false);
+    }
+  }, [focusSearch, page, overview]);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (
+        user &&
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLowerCase() === "k"
+      ) {
+        event.preventDefault();
+        openSearch();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [user, openSearch]);
   const [streamAlert, setStreamAlert] = useState<{
     asOf: string | null;
     message: string;
@@ -387,13 +418,22 @@ export default function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <Brand />
+        <button
+          className="workspace-search"
+          onClick={openSearch}
+          aria-label="Найти объект"
+        >
+          <Search size={16} />
+          <span>Найти объект</span>
+          <kbd>⌘ K</kbd>
+        </button>
         <div className="workspace-switch">
           <span className="workspace-icon">
             <Map size={17} />
           </span>
           <div>
-            <strong>Эксплуатационный район</strong>
-            <small>Объединённая диспетчерская</small>
+            <strong>Диспетчерская ОДС</strong>
+            <small>Инженерные коллекторы</small>
           </div>
         </div>
         <span className="nav-label">РАБОЧЕЕ ПРОСТРАНСТВО</span>
@@ -401,6 +441,9 @@ export default function App() {
           {nav.slice(0, 4).map((n) => (
             <button
               key={n.id}
+              aria-label={n.label}
+              title={n.label}
+              aria-current={page === n.id ? "page" : undefined}
               className={page === n.id ? "active" : ""}
               onClick={() => setPage(n.id)}
             >
@@ -415,6 +458,9 @@ export default function App() {
           {nav.slice(4).map((n) => (
             <button
               key={n.id}
+              aria-label={n.label}
+              title={n.label}
+              aria-current={page === n.id ? "page" : undefined}
               className={page === n.id ? "active" : ""}
               onClick={() => setPage(n.id)}
             >
@@ -438,12 +484,16 @@ export default function App() {
           </div>
           <button
             className={page === "settings" ? "active" : ""}
+            aria-label="Параметры"
+            title="Параметры"
             onClick={() => setPage("settings")}
           >
             <Settings2 size={18} />
             <span>Параметры</span>
           </button>
           <button
+            aria-label="Методика работы"
+            title="Методика работы"
             onClick={() => {
               setPage("evaluation");
               setToast(
@@ -523,8 +573,9 @@ export default function App() {
               <Bell size={18} />
               <span>
                 Поступивший поток
-                {streamAlert.asOf ? ` · ${date(streamAlert.asOf, true)}` : ""} ·{" "}
-                {streamAlert.message}
+                {streamAlert.asOf
+                  ? ` · ${date(streamAlert.asOf, true)}`
+                  : ""} · {streamAlert.message}
               </span>
               <button className="text-link" onClick={() => setPage("quality")}>
                 Открыть проверку
@@ -533,11 +584,25 @@ export default function App() {
           )}
           <div className="page-heading">
             <div>
-              <span className="eyebrow">ОПЕРАТИВНЫЙ КОНТУР</span>
+              <span className="eyebrow">
+                {String(nav.findIndex((n) => n.id === page) + 1 || 7).padStart(
+                  2,
+                  "0",
+                )}{" "}
+                / РАБОЧЕЕ ПРОСТРАНСТВО
+              </span>
               <h1>{title[0]}</h1>
               <p>{title[1]}</p>
             </div>
             <div className="heading-actions">
+              {page === "overview" && warnings.length > 0 && (
+                <button
+                  className="primary-button review-next"
+                  onClick={() => setSelected(warnings[0])}
+                >
+                  Начать проверку <ArrowRight size={16} />
+                </button>
+              )}
               <button
                 className="secondary-button"
                 onClick={() => setRefresh((r) => r + 1)}
@@ -621,7 +686,7 @@ export default function App() {
           ) : (
             <>
               {page === "overview" && overview && (
-                <>
+                <div className="dashboard-content">
                   <div className="metrics-grid">
                     <div className="metric-card">
                       <div className="metric-top">
@@ -662,9 +727,9 @@ export default function App() {
                             <Area
                               type="monotone"
                               dataKey="events"
-                              stroke="#55846d"
+                              stroke="#787878"
                               strokeWidth={1.5}
-                              fill="#eaf2ec"
+                              fill="#f0f0f0"
                             />
                           </AreaChart>
                         </ResponsiveContainer>
@@ -688,38 +753,42 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  <div className="overview-middle">
-                    <section className="panel map-panel">
-                      <div className="panel-heading">
-                        <div>
-                          <h2>Инфраструктура района</h2>
-                          <span>
-                            {topology?.nodes.filter((n) => n.level === 2)
-                              .length || 0}{" "}
-                            эксплуатационных узлов
+                  <section className="panel overview-queue">
+                    <div className="panel-heading">
+                      <div>
+                        <h2>
+                          Очередь проверки{" "}
+                          <span className="count-badge">
+                            {
+                              overview.forecasts.filter(
+                                (f) => f.above_threshold,
+                              ).length
+                            }
                           </span>
-                        </div>
-                        <button
-                          className="text-link"
-                          onClick={() => setPage("map")}
-                        >
-                          Открыть схему
-                          <ArrowRight size={15} />
-                        </button>
+                        </h2>
+                        <span>
+                          Приоритетные предупреждения и ближайшие к порогу риски
+                        </span>
                       </div>
-                      {topology && (
-                        <NetworkMap
-                          topology={topology}
-                          forecasts={overview.forecasts}
-                          onSelect={setSelected}
-                        />
-                      )}
-                    </section>
+                      <button
+                        className="text-link"
+                        onClick={() => setPage("journal")}
+                      >
+                        Весь журнал
+                        <ArrowRight size={15} />
+                      </button>
+                    </div>
+                    <ForecastTable
+                      forecasts={overview.forecasts.slice(0, 6)}
+                      onSelect={setSelected}
+                    />
+                  </section>
+                  <div className="overview-middle">
                     <section className="panel priority-panel">
                       <div className="panel-heading">
                         <div>
-                          <h2>В фокусе диспетчера</h2>
-                          <span>Сценарии для проверки</span>
+                          <h2>По направлениям</h2>
+                          <span>Предупреждения на 24 часа</span>
                         </div>
                         <SlidersHorizontal size={17} />
                       </div>
@@ -773,38 +842,34 @@ export default function App() {
                         </button>
                       </div>
                     </section>
-                  </div>
-                  <section className="panel">
-                    <div className="panel-heading">
-                      <div>
-                        <h2>
-                          Приоритетные прогнозы{" "}
-                          <span className="count-badge">
-                            {
-                              overview.forecasts.filter(
-                                (f) => f.above_threshold,
-                              ).length
-                            }
+                    <section className="panel map-panel">
+                      <div className="panel-heading">
+                        <div>
+                          <h2>Инфраструктура района</h2>
+                          <span>
+                            {topology?.nodes.filter((n) => n.level === 2)
+                              .length || 0}{" "}
+                            эксплуатационных узлов
                           </span>
-                        </h2>
-                        <span>
-                          Сначала предупреждения, затем ближайшие к порогу риски
-                        </span>
+                        </div>
+                        <button
+                          className="text-link"
+                          onClick={() => setPage("map")}
+                        >
+                          Открыть схему
+                          <ArrowRight size={15} />
+                        </button>
                       </div>
-                      <button
-                        className="text-link"
-                        onClick={() => setPage("journal")}
-                      >
-                        Весь журнал
-                        <ArrowRight size={15} />
-                      </button>
-                    </div>
-                    <ForecastTable
-                      forecasts={overview.forecasts.slice(0, 6)}
-                      onSelect={setSelected}
-                    />
-                  </section>
-                </>
+                      {topology && (
+                        <NetworkMap
+                          topology={topology}
+                          forecasts={overview.forecasts}
+                          onSelect={setSelected}
+                        />
+                      )}
+                    </section>
+                  </div>
+                </div>
               )}
               {page === "map" && overview && topology && (
                 <section className="panel">
@@ -835,6 +900,7 @@ export default function App() {
                     <div className="search-field">
                       <Search size={17} />
                       <input
+                        ref={searchInput}
                         aria-label="Поиск объекта"
                         placeholder="Объект, номер или тип риска"
                         value={query}

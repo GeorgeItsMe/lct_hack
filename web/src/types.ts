@@ -130,6 +130,32 @@ export type RowMetrics = {
   calibration_curve: { predicted: number; observed: number; count: number }[];
 };
 export type Evaluation = {
+  research?: {
+    deployed_changed: boolean;
+    models: Partial<
+      Record<
+        Kind,
+        {
+          selected: string;
+          uncertainty?: {
+            by_parent: {
+              percentile_95: {
+                f1_difference: { low: number | null; high: number | null };
+              };
+            };
+          };
+          rows: {
+            period: string;
+            reference: number;
+            context: number | null;
+            regularized: number;
+            blend: number;
+            eligible_episodes: number;
+          }[];
+        }
+      >
+    >;
+  } | null;
   splits: Record<string, [string, string]>;
   horizon_hours: number;
   purge_hours: number;

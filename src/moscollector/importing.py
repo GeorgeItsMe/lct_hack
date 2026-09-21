@@ -162,8 +162,11 @@ class ImportManager:
 
     def submit_frame(self, frame, cutoff, counts, identity, extension, user_id, metadata=None):
         """Queue an immutable snapshot, also used by the accumulated stream."""
+        from moscollector.model_registry import active_version
+
         with self.lock:
-            previous = self.find(identity)
+            version = active_version()
+            previous = self.find(identity, model_version=version)
             if previous and previous["status"] != "failed":
                 return previous
             if not self.slots.acquire(blocking=False):
@@ -182,18 +185,20 @@ class ImportManager:
                 "format": extension,
                 **counts,
                 **(metadata or {}),
+                "model_version": version,
             }
             self._save(directory, state)
             self.pool.submit(self._run, directory, state)
             return state.copy()
 
-    def find(self, identity):
+    def find(self, identity, model_version=None):
         candidates = [json.loads(path.read_text()) for path in self.root.glob("*/status.json")]
         return next(
             (
                 s
                 for s in sorted(candidates, key=lambda s: s["created_at"], reverse=True)
                 if s["sha256"] == identity
+                and (model_version is None or s.get("model_version", "legacy") == model_version)
             ),
             None,
         )
@@ -293,7 +298,10 @@ class ImportManager:
                 "batch_id": job_id,
                 "id": f"batch:{job_id}:{object_id}:{kind}",
                 "as_of": state["as_of"],
-                "explanation": service.explain_features(frame, kind),
+                "model_version": state["result"].get("model_version", "legacy"),
+                "explanation": service.explain_features(
+                    frame, kind, state["result"].get("model_version", "legacy")
+                ),
                 "explanation_unit": "log_odds",
                 "source_events": source.to_dict("records"),
                 "recommendations": RECOMMENDATIONS[kind],

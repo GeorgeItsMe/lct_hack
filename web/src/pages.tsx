@@ -100,8 +100,9 @@ export function EvaluationPage() {
         <div>
           <strong>Будущее отделено от обучения</strong>
           <p>
-            Тест: июнь 2026. Разрывы выгрузки и окна без полного будущего
-            исключены. Одна тревога сопоставляется с одним эпизодом.
+            Тест исходной архивной версии: июнь 2026. Разрывы выгрузки и окна
+            без полного будущего исключены. Одна тревога сопоставляется с одним
+            эпизодом.
           </p>
         </div>
         <span className="soft-chip">Горизонт 24 часа</span>
@@ -118,6 +119,71 @@ export function EvaluationPage() {
           </button>
         ))}
       </div>
+      {data.research?.models[kind] && (
+        <details className="panel research-panel">
+          <summary>
+            Дополнительные эксперименты <span>3 временных периода</span>
+          </summary>
+          <div className="research-body">
+            <p>
+              Сравнение семейств моделей на прошлых периодах. Каждая модель
+              обучена только на более ранних данных. Указан событийный F1;
+              больше — лучше.
+            </p>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Период</th>
+                    <th>Исходный подход</th>
+                    <th>Контекст узла</th>
+                    <th>Простые деревья</th>
+                    <th>Ансамбль 50/50</th>
+                    <th>Эпизодов</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.research.models[kind]!.rows.map((row) => (
+                    <tr key={row.period}>
+                      <td>{row.period}</td>
+                      <td>{row.reference.toFixed(3)}</td>
+                      <td>
+                        {row.context === null ? "—" : row.context.toFixed(3)}
+                      </td>
+                      <td>{row.regularized.toFixed(3)}</td>
+                      <td>{row.blend.toFixed(3)}</td>
+                      <td>{num(row.eligible_episodes)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p>
+              {data.research.models[kind]!.selected === "reference"
+                ? "Новые варианты не прошли заранее заданные условия устойчивого улучшения. Исходная модель сохранена."
+                : data.research.deployed_changed
+                  ? "Новый вариант используется в новых пакетных расчётах. Он прошёл ретроспективное сравнение; для независимого подтверждения нужен новый период. Архивные прогнозы сохранены."
+                  : "Кандидат прошёл ретроспективное сравнение. Для независимого подтверждения нужен новый период."}
+            </p>
+            {data.research.models[kind]!.uncertainty && (
+              <p>
+                Приближённый 95% диапазон разницы F1 по эксплуатационным узлам:{" "}
+                {rangeText(
+                  data.research.models[kind]!.uncertainty!.by_parent
+                    .percentile_95.f1_difference,
+                )}
+                . Диапазон условен для уже выбранной модели и не учитывает сам
+                отбор вариантов.
+              </p>
+            )}
+            <small>
+              Эти даты уже рассматривались в исследовании. Это дополнительная
+              ретроспективная проверка; июньский тест исходной версии ниже не
+              пересчитывался. Прочерк — вариант не выводился на подтверждение.
+            </small>
+          </div>
+        </details>
+      )}
       {m.threshold > 1 && (
         <div className="evidence-note">
           <CircleAlert size={20} />
@@ -236,7 +302,7 @@ export function EvaluationPage() {
           <div className="large-chart">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={comparison} barGap={7}>
-                <CartesianGrid vertical={false} stroke="#e8ece8" />
+                <CartesianGrid vertical={false} stroke="#ebebeb" />
                 <XAxis
                   dataKey="name"
                   tick={{ fontSize: 10 }}
@@ -260,14 +326,14 @@ export function EvaluationPage() {
                 <Bar
                   dataKey="model"
                   name="Модель"
-                  fill="#37725d"
+                  fill="#171717"
                   radius={[4, 4, 0, 0]}
                   maxBarSize={42}
                 />
                 <Bar
                   dataKey="baseline"
                   name="Базовый прогноз"
-                  fill="#bac9bf"
+                  fill="#8a8a8a"
                   radius={[4, 4, 0, 0]}
                   maxBarSize={42}
                 />
@@ -290,7 +356,7 @@ export function EvaluationPage() {
                   ideal: r.predicted,
                 }))}
               >
-                <CartesianGrid stroke="#e8ece8" vertical={false} />
+                <CartesianGrid stroke="#ebebeb" vertical={false} />
                 <XAxis
                   dataKey="predicted"
                   type="number"
@@ -320,14 +386,14 @@ export function EvaluationPage() {
                 <Line
                   dataKey="observed"
                   name="Наблюдаемая частота"
-                  stroke="#37725d"
+                  stroke="#171717"
                   strokeWidth={2}
                   dot={{ r: 4 }}
                 />
                 <Line
                   dataKey="ideal"
                   name="Идеальная калибровка"
-                  stroke="#b5bcb6"
+                  stroke="#737373"
                   strokeDasharray="5 4"
                   dot={false}
                 />
@@ -483,7 +549,7 @@ export function QualityPage() {
         <div className="wide-chart">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data.daily_2026}>
-              <CartesianGrid stroke="#e8ece8" vertical={false} />
+              <CartesianGrid stroke="#ebebeb" vertical={false} />
               <XAxis
                 dataKey="day"
                 tickFormatter={(v) => date(v)}
@@ -506,8 +572,8 @@ export function QualityPage() {
               <Area
                 dataKey="rows"
                 name="Записей"
-                stroke="#4e7b65"
-                fill="#edf3ed"
+                stroke="#171717"
+                fill="#f1f1f1"
                 strokeWidth={1.5}
               />
             </AreaChart>

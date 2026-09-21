@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDownToLine, FileUp, RefreshCw } from "lucide-react";
-import { api, date, pct } from "./api";
+import { api, date, kindNames, num, pct } from "./api";
 import { ErrorNotice, Loading } from "./components";
 import type { Kind, User } from "./types";
 type BatchForecastDetail = {
@@ -35,6 +35,7 @@ type Batch = {
   error?: string;
   mode?: string;
   result?: {
+    model_version?: string;
     elapsed_seconds: number;
     history_rows: number;
     forecasts: {
@@ -76,7 +77,16 @@ export function ImportPanel({ user }: { user: User }) {
     [stream, setStream] = useState<StreamStatus | null>(null),
     [receipt, setReceipt] = useState("");
   const [detail, setDetail] = useState<BatchForecastDetail | null>(null);
-  useEffect(() => setDetail(null), [selected?.id]);
+  const [batchKind, setBatchKind] = useState<Kind | "all">("all");
+  const [visibleCount, setVisibleCount] = useState(12);
+  const filteredForecasts =
+    selected?.result?.forecasts.filter(
+      (f) => batchKind === "all" || f.kind === batchKind,
+    ) ?? [];
+  useEffect(() => {
+    setDetail(null);
+    setVisibleCount(12);
+  }, [selected?.id]);
   async function openForecast(objectId: number, kind: Kind) {
     try {
       setDetail(
@@ -200,37 +210,47 @@ export function ImportPanel({ user }: { user: User }) {
         </details>
         {error && <ErrorNotice message={error} />}
         {stream && (
-          <p className="micro-note">
-            В накопленном потоке: {stream.events.toLocaleString("ru-RU")}{" "}
-            записей
-            {stream.as_of
-              ? ` · момент ${date(stream.as_of, true)}`
-              : " · пакеты пока не поступали"}
-            .
-            {stream.latest_job && (
-              <>
-                {" "}
-                <button
-                  className="text-link"
-                  onClick={() =>
-                    api<Batch>(`/imports/${stream.latest_job!.id}`)
-                      .then(setSelected)
-                      .catch((e) => setError(e.message))
-                  }
-                >
-                  Последний расчёт потока
-                </button>
-              </>
-            )}
-          </p>
+          <div className="stream-summary">
+            <div>
+              <span>В накопленном потоке</span>
+              <strong>
+                {stream.events.toLocaleString("ru-RU")} <small>событий</small>
+              </strong>
+            </div>
+            <div>
+              <span>Последний момент · МСК</span>
+              <strong>
+                {stream.as_of
+                  ? date(stream.as_of, true)
+                  : "Пакеты не поступали"}
+              </strong>
+            </div>
+            <div>
+              <span>Прогноз потока</span>
+              <strong>
+                {statuses[stream.forecast_status] || stream.forecast_status}
+              </strong>
+              {stream.latest_job && (
+                <>
+                  {" "}
+                  <button
+                    className="text-link"
+                    onClick={() =>
+                      api<Batch>(`/imports/${stream.latest_job!.id}`)
+                        .then(setSelected)
+                        .catch((e) => setError(e.message))
+                    }
+                  >
+                    Последний расчёт потока
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         )}
         {receipt && <p role="status">{receipt}</p>}
         {stream && stream.forecast_status !== "waiting" && (
           <div role="status">
-            <p>
-              Текущий пакет:{" "}
-              {statuses[stream.forecast_status] || stream.forecast_status}.
-            </p>
             {stream.forecast_error && (
               <ErrorNotice message={stream.forecast_error} />
             )}
@@ -258,13 +278,18 @@ export function ImportPanel({ user }: { user: User }) {
           </label>
           <label>
             Пакет телеметрии
-            <input
-              type="file"
-              accept=".csv,.xlsx,.json,.xml"
-              required
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              disabled={user.role === "analyst"}
-            />
+            <span className="file-picker">
+              <FileUp size={16} />
+              <span title={file?.name}>{file?.name || "Выбрать файл"}</span>
+              <input
+                type="file"
+                aria-label="Пакет телеметрии"
+                accept=".csv,.xlsx,.json,.xml"
+                required
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                disabled={user.role === "analyst"}
+              />
+            </span>
           </label>
           <label>
             Момент прогноза · МСК
@@ -348,9 +373,38 @@ export function ImportPanel({ user }: { user: User }) {
                       .length
                   }{" "}
                   прогнозов выше порога · расчёт{" "}
-                  {selected.result.elapsed_seconds} с. Показаны первые 12.
-                  Полный результат доступен в JSON.
+                  {selected.result.elapsed_seconds} с.
                 </p>
+                <p className="batch-model-version">
+                  Версия расчёта:{" "}
+                  {selected.result.model_version &&
+                  selected.result.model_version !== "legacy"
+                    ? selected.result.model_version
+                    : "исходная архивная модель"}
+                  . Сохранённые прогнозы не меняются при обновлении модели.
+                </p>
+                <div className="batch-result-tools">
+                  <select
+                    aria-label="Тип прогноза в пакете"
+                    value={batchKind}
+                    onChange={(e) => {
+                      setBatchKind(e.target.value as Kind | "all");
+                      setVisibleCount(12);
+                      setDetail(null);
+                    }}
+                  >
+                    <option value="all">Все типы рисков</option>
+                    {(Object.keys(kindNames) as Kind[]).map((k) => (
+                      <option key={k} value={k}>
+                        {kindNames[k]}
+                      </option>
+                    ))}
+                  </select>
+                  <span>
+                    Показано {Math.min(visibleCount, filteredForecasts.length)}{" "}
+                    из {filteredForecasts.length}
+                  </span>
+                </div>
                 <div className="table-scroll">
                   <table>
                     <thead>
@@ -363,7 +417,7 @@ export function ImportPanel({ user }: { user: User }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {selected.result.forecasts.slice(0, 12).map((f) => (
+                      {filteredForecasts.slice(0, visibleCount).map((f) => (
                         <tr key={`${f.object_id}-${f.kind_label}`}>
                           <td>{f.object_name}</td>
                           <td>{f.kind_label}</td>
@@ -384,6 +438,14 @@ export function ImportPanel({ user }: { user: User }) {
                     </tbody>
                   </table>
                 </div>
+                {visibleCount < filteredForecasts.length && (
+                  <button
+                    className="secondary-button batch-load-more"
+                    onClick={() => setVisibleCount((count) => count + 12)}
+                  >
+                    Показать ещё
+                  </button>
+                )}
                 {detail && (
                   <BatchDecision key={detail.id} detail={detail} user={user} />
                 )}
@@ -409,6 +471,11 @@ function BatchDecision({
   detail: BatchForecastDetail;
   user: User;
 }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    sectionRef.current?.focus({ preventScroll: true });
+    sectionRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
+  }, []);
   const [options, setOptions] = useState<{
     actions: Record<string, string>;
     reasons: { id: string; label: string }[];
@@ -451,7 +518,12 @@ function BatchDecision({
     }
   }
   return (
-    <section className="batch-detail" aria-label="Проверка прогноза потока">
+    <section
+      ref={sectionRef}
+      tabIndex={-1}
+      className="batch-detail"
+      aria-label="Проверка прогноза потока"
+    >
       <h3>
         {detail.object_name} · {detail.kind_label} · {pct(detail.probability)}
       </h3>
@@ -472,7 +544,13 @@ function BatchDecision({
             {detail.explanation.map((f) => (
               <tr key={f.feature}>
                 <td>{f.label}</td>
-                <td>{f.value === null ? "Нет данных" : String(f.value)}</td>
+                <td>
+                  {f.value === null
+                    ? "Нет данных"
+                    : typeof f.value === "number"
+                      ? num(Math.round(f.value * 100) / 100)
+                      : f.value}
+                </td>
                 <td>
                   {f.contribution > 0 ? "+" : ""}
                   {f.contribution.toFixed(3)}
@@ -486,6 +564,12 @@ function BatchDecision({
         <summary>
           Исходные сообщения перед прогнозом ({detail.source_events.length})
         </summary>
+        {detail.source_events.length === 0 && (
+          <p>
+            В последние 24 часа перед прогнозом сообщений этого объекта нет.
+            Давность сигналов учтена в модели.
+          </p>
+        )}
         <div className="table-scroll">
           <table>
             <thead>
