@@ -1,0 +1,235 @@
+{
+  "scope": "Descriptive overlap of already-used Nov/Feb event outcomes. No weights or thresholds selected here.",
+  "interpretation": "Union counts distinct eligible episode identities independently matched by the frozen branches. This uses future outcomes, is not a causal ensemble's performance, does not remove its false warnings and is not an upper bound for new forecasts or policies.",
+  "periods": [
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "eligible_episodes": 1482,
+      "pairs": {
+        "mlp": {
+          "both": 932,
+          "control_only": 72,
+          "neural_only": 154,
+          "neither": 324,
+          "union": 1158
+        },
+        "gru": {
+          "both": 923,
+          "control_only": 81,
+          "neural_only": 186,
+          "neither": 292,
+          "union": 1190
+        }
+      },
+      "all_three_union": 1220
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "eligible_episodes": 1185,
+      "pairs": {
+        "mlp": {
+          "both": 812,
+          "control_only": 77,
+          "neural_only": 42,
+          "neither": 254,
+          "union": 931
+        },
+        "gru": {
+          "both": 842,
+          "control_only": 47,
+          "neural_only": 51,
+          "neither": 245,
+          "union": 940
+        }
+      },
+      "all_three_union": 955
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "eligible_episodes": 101,
+      "pairs": {
+        "mlp": {
+          "both": 30,
+          "control_only": 4,
+          "neural_only": 20,
+          "neither": 47,
+          "union": 54
+        },
+        "gru": {
+          "both": 29,
+          "control_only": 5,
+          "neural_only": 17,
+          "neither": 50,
+          "union": 51
+        }
+      },
+      "all_three_union": 55
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "eligible_episodes": 187,
+      "pairs": {
+        "mlp": {
+          "both": 80,
+          "control_only": 17,
+          "neural_only": 26,
+          "neither": 64,
+          "union": 123
+        },
+        "gru": {
+          "both": 73,
+          "control_only": 24,
+          "neural_only": 24,
+          "neither": 66,
+          "union": 121
+        }
+      },
+      "all_three_union": 125
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "eligible_episodes": 18,
+      "pairs": {
+        "mlp": {
+          "both": 0,
+          "control_only": 0,
+          "neural_only": 0,
+          "neither": 18,
+          "union": 0
+        },
+        "gru": {
+          "both": 0,
+          "control_only": 0,
+          "neural_only": 0,
+          "neither": 18,
+          "union": 0
+        }
+      },
+      "all_three_union": 0
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "eligible_episodes": 28,
+      "pairs": {
+        "mlp": {
+          "both": 4,
+          "control_only": 7,
+          "neural_only": 1,
+          "neither": 16,
+          "union": 12
+        },
+        "gru": {
+          "both": 5,
+          "control_only": 6,
+          "neural_only": 6,
+          "neither": 11,
+          "union": 17
+        }
+      },
+      "all_three_union": 18
+    }
+  ],
+  "totals": {
+    "access": {
+      "eligible_episodes": 2667,
+      "pairs": {
+        "mlp": {
+          "both": 1744,
+          "control_only": 149,
+          "neural_only": 196,
+          "neither": 578,
+          "union": 2089
+        },
+        "gru": {
+          "both": 1765,
+          "control_only": 128,
+          "neural_only": 237,
+          "neither": 537,
+          "union": 2130
+        }
+      },
+      "all_three_union": 2175,
+      "all_three_union_fraction": 0.8155230596175478
+    },
+    "fire": {
+      "eligible_episodes": 288,
+      "pairs": {
+        "mlp": {
+          "both": 110,
+          "control_only": 21,
+          "neural_only": 46,
+          "neither": 111,
+          "union": 177
+        },
+        "gru": {
+          "both": 102,
+          "control_only": 29,
+          "neural_only": 41,
+          "neither": 116,
+          "union": 172
+        }
+      },
+      "all_three_union": 180,
+      "all_three_union_fraction": 0.625
+    },
+    "fault": {
+      "eligible_episodes": 46,
+      "pairs": {
+        "mlp": {
+          "both": 4,
+          "control_only": 7,
+          "neural_only": 1,
+          "neither": 34,
+          "union": 12
+        },
+        "gru": {
+          "both": 5,
+          "control_only": 6,
+          "neural_only": 6,
+          "neither": 29,
+          "union": 17
+        }
+      },
+      "all_three_union": 18,
+      "all_three_union_fraction": 0.391304347826087
+    }
+  },
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/research-v28/access/screen_1/global_control-test.parquet": "4d1add163858e1f6558ce5ef88b1c527a933777998e80f9fe9de32ed628ce866",
+    "artifacts/research-v28/access/screen_1/gru-test.parquet": "3da6f70b2ea2318355522f007f17c74ff0126bc119b2cd27a8c0a942711aebcf",
+    "artifacts/research-v28/access/screen_1/mlp-test.parquet": "9d64033f98cd154f5834c8f58e4c6e6c25f8ffabacb148af6b023efd47c9d98b",
+    "artifacts/research-v28/access/screen_1/result.json": "8e2ddc228588c3f3e5882fbfc533d06e403ef77425c0b02235426d430bf30a19",
+    "artifacts/research-v28/access/screen_2/global_control-test.parquet": "a829f8637e980d0af9ed9384b846cdb9d306d4f2bb7bdaee0174b8a0e777147c",
+    "artifacts/research-v28/access/screen_2/gru-test.parquet": "c96c7bd5fe675d895538aa2db9d620dc26c63ab320265db7fb7cd0de43ef1d46",
+    "artifacts/research-v28/access/screen_2/mlp-test.parquet": "a97ef7d897c9795384287692a1c6c09e44a31b53aed39b55b0798e8729de6e6f",
+    "artifacts/research-v28/access/screen_2/result.json": "4fd54782a8287dcca6a25a321aa27e35a3a1e51721b60c747d7a6df744b05bc1",
+    "artifacts/research-v28/fault/screen_1/global_control-test.parquet": "81e8b6ac66b21fe52da6c3c6da791fdd448463283ae1e62fe16b66947f683671",
+    "artifacts/research-v28/fault/screen_1/gru-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+    "artifacts/research-v28/fault/screen_1/mlp-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+    "artifacts/research-v28/fault/screen_1/result.json": "4ff6bb2496e3d394459f9364c50e3a9759d7854e60797ec93de520f6e0edd329",
+    "artifacts/research-v28/fault/screen_2/global_control-test.parquet": "32fcf01f526c667d54803929fb7585d2844160fe9698393ac1b1ecaa895a1487",
+    "artifacts/research-v28/fault/screen_2/gru-test.parquet": "1952a6ab241e5c03b0cdbb58d5641a25319934aad7322a596aff6128b68f7a30",
+    "artifacts/research-v28/fault/screen_2/mlp-test.parquet": "37d33b6b1a1a88ff54794af6591e627f4fb0d512c6d9017fa5d6ed478144dc8f",
+    "artifacts/research-v28/fault/screen_2/result.json": "7e5e2a0b9c616cb17cd1bf193d7ab3737d98521e95f2cde2268f86aff1486de1",
+    "artifacts/research-v28/fire/screen_1/global_control-test.parquet": "97f8a7f696d32d66b6254603907d0ecb88f3aec579f8f7eccc527595e0f4eab8",
+    "artifacts/research-v28/fire/screen_1/gru-test.parquet": "5b3ed2acb96d0134823fe2a8dfb959c89db467609150aba51278e3cd48eeae0f",
+    "artifacts/research-v28/fire/screen_1/mlp-test.parquet": "8024e406a06f77f9c8f5e5ea7a4a50d67cce0edc46eb44b4477924cb9903b3b7",
+    "artifacts/research-v28/fire/screen_1/result.json": "f08c7b2dcd64edf04e94a278d347ab27726f9f55c9a854319e146cd10a93be56",
+    "artifacts/research-v28/fire/screen_2/global_control-test.parquet": "e682a2c292eaab8e3d1c1839562487f79f2e489457a17a4a3410b95284d568b8",
+    "artifacts/research-v28/fire/screen_2/gru-test.parquet": "6134d33451db48225c2836145d7c446b35c0ce45d001840e30035aac0ec67d12",
+    "artifacts/research-v28/fire/screen_2/mlp-test.parquet": "d70efbe2f449d5b32c5bf7907d85bc8580d451a6be622c0750a7abdbb918a448",
+    "artifacts/research-v28/fire/screen_2/result.json": "31da22f11597f34ee6b71a5a035b9f1ff137ebb49851932ddfdb61b225188bed",
+    "artifacts/research-v28/report.json": "add7ef1438c730727f1f5689f38dab0cf275a605343c93cae2423d2e577e93c8"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_neural_complementarity.py": "d35babddf8eabf9fc8e493adca1477124698120e3dfb1ab06524da501c7a66b4",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489"
+  }
+}

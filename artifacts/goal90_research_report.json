@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-09-21T21:55:55.687005+00:00",
+  "created_at": "2026-09-21T22:12:16.845790+00:00",
   "environment": {
     "python": "3.12.14",
     "catboost": "1.2.10",
@@ -2026,6 +2026,254 @@
         "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
         "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
         "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7"
+      }
+    },
+    "v29": {
+      "scope": "adaptive_retrospective_fixed_neural_pool_study_not_blind_validation",
+      "goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kinds": [
+        "access",
+        "fire",
+        "fault"
+      ],
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "stress_folds": {
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "blends": {
+        "tree_mlp": {
+          "global_control": 0.5,
+          "mlp": 0.5
+        },
+        "tree_gru": {
+          "global_control": 0.5,
+          "gru": 0.5
+        },
+        "three_way": {
+          "global_control": 0.3333333333333333,
+          "mlp": 0.3333333333333333,
+          "gru": 0.3333333333333333
+        }
+      },
+      "hypothesis": "V28 architectures miss different events. Access GRU finds237 screen episodes missed by CatBoost and misses128 found by CatBoost. Test complementary forecast information through fixed convex pools, not future-informed union/removal of warnings.",
+      "inputs": "Exact frozen v28 calibrated probabilities and mean counts, same whole-hour snapshots held on15min grid. Pool probability and count separately with identical fixed weights. No learned mixing weights, new calibration, warning union, changed episode definitions or changed warning horizon.",
+      "control": "Replay all three component policy/test metrics and alerts exactly. Each blend must beat CatBoost and historical anchor and every participating neural component. Same event identities and original hourly exposure; independent456-policy choice on preceding policy period for every blend.",
+      "screen": "Nov/Feb pooled primary min(P/.9,R/.9,1)>1.05*every relevant reference, with noF1 loss. Select highest primary,F1,R,P among passing fixed blends only, declared order breaks ties. No per-kind weights selected outside these three fixed variants.",
+      "confirmation": "Only passing kinds: selected blend stays fixed. May improves primary withF1>=95%every relevant reference. Pooled Dec/Mar primary>1.05*every relevant reference,noF1 loss; each monthF1>=90%every relevant reference. Additional MLP/GRU models use exactly frozen v28 training/codec/earlystop/device procedures in a separate v29 controls directory. Both networks fitted for complete component comparisons; no v28 outcome is rewritten.",
+      "limits": "Fixed mixtures can change warning timing, so descriptive union overlap is not an upper bound. Earlier months are adaptively reused, not independent future evidence. Flood remains unsupported and full-scope90/90 unmet unless actually proved. No automatic activation. No June labels or source mutation.",
+      "device": "mps",
+      "torch_version": "2.14.0",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-channel-novelty.parquet": "55103c76a806daba106c1f2f198b2ee734c41d18afceccab78d6d0d33b30eba7",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-dense-channel-novelty.parquet": "dc1a47c6268eda6f906f022eb8dd2e46239028412cb65156b11e1284ace73928",
+        "artifacts/neural_complementarity_audit.json": "ce492e7d93ac542cb80f02cae33046efcf46b063afb076c87297644d449e0755",
+        "artifacts/neural_compute_preflight.json": "f8448ac0f0ad8f8f0dca6bcbf1d4019165221ffa25c4adfe03110e82596ec3e4",
+        "artifacts/research-access-stress/stress_1/access-policy.parquet": "3116516f64f5977de2ea4836be32a92f66cb1d51e418c78d944f9494e1f827c9",
+        "artifacts/research-access-stress/stress_1/access-test.parquet": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1",
+        "artifacts/research-access-stress/stress_1/access.cbm": "71f2996070cf9c9e5a0389e6ae8b0097e0fa393e56110c4dbdfb22aaa7cc0a8c",
+        "artifacts/research-access-stress/stress_1/access.json": "1bfdbfeed4f29b350877f8d4b257d4a961e96bc5c15938afed5f2a463e504a8e",
+        "artifacts/research-access-stress/stress_2/access-policy.parquet": "9867ed8a1d49ac377c206618818c5daed93d00630917b7f1737a2e88365d5f97",
+        "artifacts/research-access-stress/stress_2/access-test.parquet": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667",
+        "artifacts/research-access-stress/stress_2/access.cbm": "ac613ca7b4b04820191830b908144dfba5fb015fdfc3bce553f922c56eeab129",
+        "artifacts/research-access-stress/stress_2/access.json": "985f8bb8d2e427e6c1cf71fa067c7c9f5cd5436ca7a8c552f848c65752fcf77f",
+        "artifacts/research-v10b/stress_1/reference/fire-policy.parquet": "44df6f450315e698e72b41e8f8a54a173bf1a98c60b07eb7354ac83075843656",
+        "artifacts/research-v10b/stress_1/reference/fire-test.parquet": "db2f2e45d81ddbc645511db52f6b2f0302ff03022eead96e88a8f878ea359b2f",
+        "artifacts/research-v10b/stress_1/reference/fire.cbm": "c2c69fad1e3df0f57823a0d74f6b7ec5c580d7fe61b39e8a7dc9a8bc6c2e2733",
+        "artifacts/research-v10b/stress_1/reference/fire.json": "8bb7abbed82710eb7ae3331207eee3e87f3e176c2b2a1e2fb35706493c59e97a",
+        "artifacts/research-v10b/stress_2/reference/fire-policy.parquet": "6efa75448b827f001fd040880f3dff7cf80e26f928238c2b49036e9f8e6683d6",
+        "artifacts/research-v10b/stress_2/reference/fire-test.parquet": "75451de418e2ba823b79bdf6824a5ebd870eeb0f4aa36f75f5d1f347d21ce2a6",
+        "artifacts/research-v10b/stress_2/reference/fire.cbm": "32cbffbbd354a67c349811c333641f5f5e30b8524cb7faf2de34428ff4569c1b",
+        "artifacts/research-v10b/stress_2/reference/fire.json": "d98398c70415344f688d758be0e3dabcd22c7353042fdcea77ef58b69e289b79",
+        "artifacts/research-v13-policy/fire-confirmation.json": "4a34a5ca1f3059f194b2c8130a35ac01b498ce911d047652154ddebe93707cd2",
+        "artifacts/research-v13-policy/fire-screen_1.json": "50982c2e4ce8802f4960d456ea7489850e55fb6c033398d5f8fbac7652e3865a",
+        "artifacts/research-v13-policy/fire-screen_2.json": "77e636e025871e6eba1d95e4e9eee63fddf95795bc0f1bd790da490b3fdfdaca",
+        "artifacts/research-v13-policy/fire-stress_1.json": "721404ca0be84ff765a41fea74965b87d84f10c9a77a003ef4618a0d191562fd",
+        "artifacts/research-v13-policy/fire-stress_2.json": "c13249020378c143f18a926a9e2540b807992c9a71446321f4f025f2ecfdfdb6",
+        "artifacts/research-v19/fault/confirmation/fit.json": "a39013108828593932ea1289e1615bf2cd520b4bd1c8125bd713398a4412a5e2",
+        "artifacts/research-v19/fault/confirmation/model.cbm": "6f25563d324f00b81b3e638f2e0884ed514d445b89b764027bca3cad205c347f",
+        "artifacts/research-v19/fault/confirmation/policy.parquet": "2d81797a14019e4c7b9dbfb717d33583a780d8ddabea1055e84faf9a82cbc741",
+        "artifacts/research-v19/fault/confirmation/result.json": "9b65927436d637cd671487beaad2204c923ae56c8bb2b81b9b6e864d853476d8",
+        "artifacts/research-v19/fault/confirmation/test.parquet": "c148020401151867f83b53e7f454bcfe4b161ceb7f783519a0d5e8eb0ddf3030",
+        "artifacts/research-v19/fault/screen_1/fit.json": "d6062df5a3b2e7d5f34839277d08dfb84f16718249898e2140440aaef1e62549",
+        "artifacts/research-v19/fault/screen_1/model.cbm": "39f4d1289423a9f1bea90ab7ff8ae9aadd935965f2cd9924d577eadd7b3b995e",
+        "artifacts/research-v19/fault/screen_1/policy.parquet": "ef223856d3fb5e788e243bb3b9488cd6af5a3b2b06dbc30f5e99ba7855f63808",
+        "artifacts/research-v19/fault/screen_1/result.json": "4cc3fdb96c5e1bd78e56ac5d6aa330c5b11b5541125c17d5988311c120d5c212",
+        "artifacts/research-v19/fault/screen_1/test.parquet": "c743758f93309b575add519b949eebc60622966809030348760f23dd06dc37b9",
+        "artifacts/research-v19/fault/screen_2/fit.json": "be9b229cf3f84e4e7250a0b6a25457a06ca73bbf996a9d830f144553090dbfe0",
+        "artifacts/research-v19/fault/screen_2/model.cbm": "a982f56cb98937c1017ec49b4fe423d742e3cd8e9c84fc6fc0318253dff6cb8c",
+        "artifacts/research-v19/fault/screen_2/policy.parquet": "3e5dfdeee3459b1dee2d4d3281881add928064b0a52c413a9749fa5b44259f8c",
+        "artifacts/research-v19/fault/screen_2/result.json": "1a48ba6ec2ff8aedbba6b9b51abc1f55637e34a6aa6ad8998066f37d1d10bfca",
+        "artifacts/research-v19/fault/screen_2/test.parquet": "86220c5ba125a844855a678e56bf26e2f84c5c9cf42f77d9a0a802e11775f83e",
+        "artifacts/research-v19/fault/stress_1/fit.json": "09dc5479ca21751fb25b22fa3a015f8568342fd76bed097be93eb2edae8fccf7",
+        "artifacts/research-v19/fault/stress_1/model.cbm": "7ca5a136e6a4f6ce827a289e2c94a65cdcc695ba63d754778ea65685643ea2fd",
+        "artifacts/research-v19/fault/stress_1/policy.parquet": "683650296646181d62f1807dcbe098219ca0014240f490fe40977e849137a6fc",
+        "artifacts/research-v19/fault/stress_1/result.json": "e120bdbcc59c91f45eb01543c91e68a40e5dd75a90902076400093ca529bcbbf",
+        "artifacts/research-v19/fault/stress_1/test.parquet": "5725abd0b13276b8b68cc1972cacc598a5e3dceffe8bb2f00c540016668bc5b0",
+        "artifacts/research-v19/fault/stress_2/fit.json": "49aeabe68524f196e947513749131c2f931b5a9fb48fce05fc041c3d42f218d2",
+        "artifacts/research-v19/fault/stress_2/model.cbm": "b2a084cc7bdb57fdf334691ffbd58da890e1418f9230df0bb0234c2c23fcb82c",
+        "artifacts/research-v19/fault/stress_2/policy.parquet": "d2e60321e2a9b68c11a440cbc2641578c090fbce75abd71dcbf77a56c7f5e63c",
+        "artifacts/research-v19/fault/stress_2/result.json": "662b6599a40e3f79d0724c8cd73a41ffa392f95fda4f149196e102670958a05e",
+        "artifacts/research-v19/fault/stress_2/test.parquet": "d34f89977f9e6b2dd8536954a13ba012586caf167d11eb938353fb148074eb16",
+        "artifacts/research-v20/access/confirmation/result.json": "a806b2ce73bb73828cda9611f7981372f028bbfbee04234199ecdca77908d646",
+        "artifacts/research-v20/access/screen_1/result.json": "4afd284c5ea9e6e2fd026bde15958b8f1bb52440efc1e34cedf886cbf3f8dc0b",
+        "artifacts/research-v20/access/screen_2/result.json": "5dde5c76801a2eb76b77aa97fd52eda94cb945736a88af7e3f9d52878714d854",
+        "artifacts/research-v20/access/stress_1/result.json": "931861ade750134b085232e3cec4506a7ae6f8cda0031cc2f3ab72bd56dc0bff",
+        "artifacts/research-v20/access/stress_2/result.json": "c842954155bfc549424d79cd6f68d1adcc18496f779d05a7e4f837a8b63c260e",
+        "artifacts/research-v26/access/screen_1/global_control-policy.parquet": "007a9c008cc2a617747f55ba6e055eff6250844f712c3b97e3ca4ffc60328310",
+        "artifacts/research-v26/access/screen_1/global_control-test.parquet": "9f4043303cc036ccafd117df3791d8264c99221746ce54747859f4e47e6d224a",
+        "artifacts/research-v26/access/screen_1/result.json": "4cc6a8b87e6b1f2007d8cca1d95251474a6302ad7d8a3f12164e528a925b815e",
+        "artifacts/research-v26/access/screen_2/global_control-policy.parquet": "b36c7f8d816316d02c9f03c56a615f1e62c429d4bc775696e6b1501ed97801da",
+        "artifacts/research-v26/access/screen_2/global_control-test.parquet": "2084aec884e3ae12acb39aedcabdeb7b41037d3c3d2e8c190a467da7ab71ed76",
+        "artifacts/research-v26/access/screen_2/result.json": "b5c197fd104ad45931af6ead8571c264f4217e75b25c31fc67af2ba27ef6b346",
+        "artifacts/research-v26/fault/screen_1/global_control-policy.parquet": "a85c7b241acfff2b699de4a53f801500a52780d9fc6fa2f2d151ae1be22aab78",
+        "artifacts/research-v26/fault/screen_1/global_control-test.parquet": "496ed0a1fe303349ea161a617383695bc9d2a94338ecf6679515f06f5cfbed0b",
+        "artifacts/research-v26/fault/screen_1/result.json": "2331f880539e267ba0924860f2196d2c7889bd13335174f8f4661db7cc1f8dcd",
+        "artifacts/research-v26/fault/screen_2/global_control-policy.parquet": "c89383174f897349f7caee15dbefddac581fdb7c6de1f0f05ee818f87dc85639",
+        "artifacts/research-v26/fault/screen_2/global_control-test.parquet": "961a6925b7846535a7531e124d1e1f4de96c534ec123c59e28de69430f823af3",
+        "artifacts/research-v26/fault/screen_2/result.json": "21e99b9bc9608eb09760524aa13c3e3169e0618db43c40e4b73e6f26a8e2a6d3",
+        "artifacts/research-v26/fire/screen_1/global_control-policy.parquet": "a860ed6b0f1422f34dadb1af3c13c04c83b2edae4677b08e627284a4597aac67",
+        "artifacts/research-v26/fire/screen_1/global_control-test.parquet": "19f6f6842a7d77e0fbe991509cf50b13c6a649ef9340eec7b26859093cd57265",
+        "artifacts/research-v26/fire/screen_1/result.json": "76b985e863888d10bee1542c77509e253186677c1a85618133fb31efbd20311c",
+        "artifacts/research-v26/fire/screen_2/global_control-policy.parquet": "7410cbd612fc318ebda17acddc3a6468f333fdb40ca129d083f0224e3661dc88",
+        "artifacts/research-v26/fire/screen_2/global_control-test.parquet": "2ae39ef7fd5630dee182237056a4a146fb68798d49b380d89b67b028f3d3b880",
+        "artifacts/research-v26/fire/screen_2/result.json": "ecf8de559418e6233c73bd4f2756a708d25cb360398b17d438942d456a67c20a",
+        "artifacts/research-v27/controls/fault/confirmation/global_control-policy.parquet": "911ad8feeeae02208f009007ce4871953b0dee2d6b39a0379e87916b1d93fb7e",
+        "artifacts/research-v27/controls/fault/confirmation/global_control-test.parquet": "2f1318747bb1a52a8022a2ed69d4d3259f075ce4a9f30a5db8b3c367d7b4db31",
+        "artifacts/research-v27/controls/fault/confirmation/result.json": "86b6bf2f84a9c537abdeae6e3fa9baf5abe1b6678cb7688516b7a4f3582f55a3",
+        "artifacts/research-v27/controls/fault/stress_1/global_control-policy.parquet": "de886a2e42a4171d7430ab03954565f70b3ca64c9f59b894ba0bd016d51d1007",
+        "artifacts/research-v27/controls/fault/stress_1/global_control-test.parquet": "873f6cbdc14fc0ed5791ad585496303605f46c1853b84e09fe22f29905f8b867",
+        "artifacts/research-v27/controls/fault/stress_1/result.json": "b31491e9c1c4ee2c62df00c6f41b4a67773eedf4c04b5906db4bc8477c1e6e29",
+        "artifacts/research-v27/controls/fault/stress_2/global_control-policy.parquet": "b80dcb61f0ded5508e9f88f204b1e28c32e28b799cfe890bdc91cf642659064b",
+        "artifacts/research-v27/controls/fault/stress_2/global_control-test.parquet": "5b54905e2fcb12ed6579316785b5c1a1fb52d0ffb260cfcc605bf1fa0084c9b9",
+        "artifacts/research-v27/controls/fault/stress_2/result.json": "e6dbe2384a6b43495a5623a6ee8bc2c9f6ae684ab01ee6d5b91528eae75f7a9c",
+        "artifacts/research-v27/report.json": "e8918520cff364147d4208cfa035202724711b256fc837d62c56a52d09993ac1",
+        "artifacts/research-v28/access/screen_1/codec.json": "fcf3e83ee1bd3c80f50705baf28899950df8ea0f18a45b7d151cdc66593c51a9",
+        "artifacts/research-v28/access/screen_1/global_control-policy.parquet": "fd48a623008d6d7e3100f7ccecf7fe4daff86fd9610d4f85bb8185b6c725669e",
+        "artifacts/research-v28/access/screen_1/global_control-test.parquet": "4d1add163858e1f6558ce5ef88b1c527a933777998e80f9fe9de32ed628ce866",
+        "artifacts/research-v28/access/screen_1/gru-policy.parquet": "ad43b27046527be2388f9853cd1f39bcbce43be4471607360ad638d65deebf4b",
+        "artifacts/research-v28/access/screen_1/gru-test.parquet": "3da6f70b2ea2318355522f007f17c74ff0126bc119b2cd27a8c0a942711aebcf",
+        "artifacts/research-v28/access/screen_1/mlp-policy.parquet": "caa205f1bb0882c59965f65da728bc2114af7db4041554d17930f78ed949a4d1",
+        "artifacts/research-v28/access/screen_1/mlp-test.parquet": "9d64033f98cd154f5834c8f58e4c6e6c25f8ffabacb148af6b023efd47c9d98b",
+        "artifacts/research-v28/access/screen_1/models/gru/fit.json": "686be28487304a100769a671e7f19c0a5c45d92674c23cf7b5ab94604fc8f8a6",
+        "artifacts/research-v28/access/screen_1/models/gru/model.pt": "6e7231c987b69422c18b50c50a62cff987dcb3b8f8539644c6b969d0a13c085a",
+        "artifacts/research-v28/access/screen_1/models/mlp/fit.json": "1ce6dcb2fd4cf089c09fcf139396b89564f13a00a1c5a68fb717472047352dce",
+        "artifacts/research-v28/access/screen_1/models/mlp/model.pt": "fbf32962ea26011b19b578ce019a90e4d6db63829aba2a7cdac6a5416a054ee1",
+        "artifacts/research-v28/access/screen_1/result.json": "8e2ddc228588c3f3e5882fbfc533d06e403ef77425c0b02235426d430bf30a19",
+        "artifacts/research-v28/access/screen_2/codec.json": "025cc9d2ece40e4012ad23e725e078558b7dccf677bfab468e08404dfcd58672",
+        "artifacts/research-v28/access/screen_2/global_control-policy.parquet": "55f36eb7480038331ad65cd7029be8f1476b5102532a4fa6501552fc926e45f5",
+        "artifacts/research-v28/access/screen_2/global_control-test.parquet": "a829f8637e980d0af9ed9384b846cdb9d306d4f2bb7bdaee0174b8a0e777147c",
+        "artifacts/research-v28/access/screen_2/gru-policy.parquet": "41c516fb49773d3b8ed8affdb25a931cf6ae00aeba7465406ca431401e98de05",
+        "artifacts/research-v28/access/screen_2/gru-test.parquet": "c96c7bd5fe675d895538aa2db9d620dc26c63ab320265db7fb7cd0de43ef1d46",
+        "artifacts/research-v28/access/screen_2/mlp-policy.parquet": "a988d30594a4d78a81b525c16b83d40b8eb3e9051575902f9a689753786f3621",
+        "artifacts/research-v28/access/screen_2/mlp-test.parquet": "a97ef7d897c9795384287692a1c6c09e44a31b53aed39b55b0798e8729de6e6f",
+        "artifacts/research-v28/access/screen_2/models/gru/fit.json": "4125e688e66bcd8c2d6b9ac1cb211b7a660d9114e55b25a77d2136c337656c26",
+        "artifacts/research-v28/access/screen_2/models/gru/model.pt": "86cb01cabde55c722a1b3f446c425829da95944f82c8654287b51b8aedfeb44d",
+        "artifacts/research-v28/access/screen_2/models/mlp/fit.json": "776b4afff85240cb50b15f7051d052f3ef9c8531e356bdaacf9ee640e57cd665",
+        "artifacts/research-v28/access/screen_2/models/mlp/model.pt": "811462966f573bad38f38ebee26fe6817d2f72b6d013da99661d5312f27142f2",
+        "artifacts/research-v28/access/screen_2/result.json": "4fd54782a8287dcca6a25a321aa27e35a3a1e51721b60c747d7a6df744b05bc1",
+        "artifacts/research-v28/fault/screen_1/codec.json": "f94a220a1933f13283fbbf150e108f115219856619dc62ce3090bcfecfade62a",
+        "artifacts/research-v28/fault/screen_1/global_control-policy.parquet": "cc94be240454482c99460a26e26c025b68b26298c0d98e1e35ccff691c6c0b7f",
+        "artifacts/research-v28/fault/screen_1/global_control-test.parquet": "81e8b6ac66b21fe52da6c3c6da791fdd448463283ae1e62fe16b66947f683671",
+        "artifacts/research-v28/fault/screen_1/gru-policy.parquet": "9ff22b7e7f5917f65b23e9a8f16fb44ef98ef508251bfa4937796656921fe11b",
+        "artifacts/research-v28/fault/screen_1/gru-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+        "artifacts/research-v28/fault/screen_1/mlp-policy.parquet": "9ff22b7e7f5917f65b23e9a8f16fb44ef98ef508251bfa4937796656921fe11b",
+        "artifacts/research-v28/fault/screen_1/mlp-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+        "artifacts/research-v28/fault/screen_1/models/gru/fit.json": "94c079ce1de3603cb036c32d0cc52e503192817b2764dac36beec2b7309eb249",
+        "artifacts/research-v28/fault/screen_1/models/gru/model.pt": "81047fd12ecae23830d945b276fd70501a3f7832bc3594bac160a4c8c35c0760",
+        "artifacts/research-v28/fault/screen_1/models/mlp/fit.json": "c85b451f6bce8d2e11d4dd4803a33b923433b85b7c880c9f0fdfba42d0420ee2",
+        "artifacts/research-v28/fault/screen_1/models/mlp/model.pt": "5a332350b749c8a60f58be74e5d0c1e6b49dbae5633a5561eb4fe8b8857cff85",
+        "artifacts/research-v28/fault/screen_1/result.json": "4ff6bb2496e3d394459f9364c50e3a9759d7854e60797ec93de520f6e0edd329",
+        "artifacts/research-v28/fault/screen_2/codec.json": "2285f08d4d42e8e6678c5bd83accd961a9480ab2da479b129ebdb014cd038467",
+        "artifacts/research-v28/fault/screen_2/global_control-policy.parquet": "32a3dd306449c06e5c94bfe46a269a320053cf93b2f1048a485eee81fda713e0",
+        "artifacts/research-v28/fault/screen_2/global_control-test.parquet": "32fcf01f526c667d54803929fb7585d2844160fe9698393ac1b1ecaa895a1487",
+        "artifacts/research-v28/fault/screen_2/gru-policy.parquet": "5c48c21c499db7995937e845d19ca1225eb774fb74a3ef189170ad02785ce627",
+        "artifacts/research-v28/fault/screen_2/gru-test.parquet": "1952a6ab241e5c03b0cdbb58d5641a25319934aad7322a596aff6128b68f7a30",
+        "artifacts/research-v28/fault/screen_2/mlp-policy.parquet": "008084fe380992778968ee778d54e82eb0c3d90bc31ab655b5c90922c9c3c17d",
+        "artifacts/research-v28/fault/screen_2/mlp-test.parquet": "37d33b6b1a1a88ff54794af6591e627f4fb0d512c6d9017fa5d6ed478144dc8f",
+        "artifacts/research-v28/fault/screen_2/models/gru/fit.json": "65de015bfaca74c523983ad65f63d24b9c24f3d1ac0b9640bb2edd01d2557c2f",
+        "artifacts/research-v28/fault/screen_2/models/gru/model.pt": "75d166d144e7127b5bf926f369eb70cc78e9a8dd254c656e37d8ba2ac233a7f0",
+        "artifacts/research-v28/fault/screen_2/models/mlp/fit.json": "1ddbb2af7416f9d823f5550ff458a311e9b3c571d75478727cc41a0de99f7f8a",
+        "artifacts/research-v28/fault/screen_2/models/mlp/model.pt": "b70019ea3d7e5f577242767f68dc64f0cc0c3519f98f5ab464a339813ececca2",
+        "artifacts/research-v28/fault/screen_2/result.json": "7e5e2a0b9c616cb17cd1bf193d7ab3737d98521e95f2cde2268f86aff1486de1",
+        "artifacts/research-v28/fire/screen_1/codec.json": "47ca22bcb751dbad2810324f3db0d9aaef364a812521a6bec0af592e55b56b09",
+        "artifacts/research-v28/fire/screen_1/global_control-policy.parquet": "7dbc0f34e1a422d4bb3087979adcf348f6a72063f2b121e76e25354d78fc4d17",
+        "artifacts/research-v28/fire/screen_1/global_control-test.parquet": "97f8a7f696d32d66b6254603907d0ecb88f3aec579f8f7eccc527595e0f4eab8",
+        "artifacts/research-v28/fire/screen_1/gru-policy.parquet": "a65955c089748879deb5bed58a0baf9f3a9b6fcf53b2e6a46d0518e951048e6b",
+        "artifacts/research-v28/fire/screen_1/gru-test.parquet": "5b3ed2acb96d0134823fe2a8dfb959c89db467609150aba51278e3cd48eeae0f",
+        "artifacts/research-v28/fire/screen_1/mlp-policy.parquet": "d062beb8c599b7cd09736f396da698e92463112d835dfda9f6dc348697e56a2a",
+        "artifacts/research-v28/fire/screen_1/mlp-test.parquet": "8024e406a06f77f9c8f5e5ea7a4a50d67cce0edc46eb44b4477924cb9903b3b7",
+        "artifacts/research-v28/fire/screen_1/models/gru/fit.json": "91a9a0984d3c89d8ad41bd6b6d7ab871b21d03f1bf7e97da7f6376ea4ec1301d",
+        "artifacts/research-v28/fire/screen_1/models/gru/model.pt": "836aadcb4ed4e06b4823124620f35c36d506a6dfa2eed8b69558e25fed7a8738",
+        "artifacts/research-v28/fire/screen_1/models/mlp/fit.json": "2face0774ca7074e2086ff8e9c166f43efff512f861adb941fa5b8210d5f30ac",
+        "artifacts/research-v28/fire/screen_1/models/mlp/model.pt": "ef55b7f100b79d47b6615e505d43f693c6fbc3fc556114e98d6b72d8c4108391",
+        "artifacts/research-v28/fire/screen_1/result.json": "f08c7b2dcd64edf04e94a278d347ab27726f9f55c9a854319e146cd10a93be56",
+        "artifacts/research-v28/fire/screen_2/codec.json": "d58ae66c1b9a0000d5f6f78e6beb00d460f3496d8e1a07408320d1de322f0bf3",
+        "artifacts/research-v28/fire/screen_2/global_control-policy.parquet": "3477f7af27bee3081025df8160e4b21c6ad1a7052d82a21339591f48173b9c82",
+        "artifacts/research-v28/fire/screen_2/global_control-test.parquet": "e682a2c292eaab8e3d1c1839562487f79f2e489457a17a4a3410b95284d568b8",
+        "artifacts/research-v28/fire/screen_2/gru-policy.parquet": "4754f199482174e011226a2eb25d5da60abaf774192a4c8a8350c887a7077a56",
+        "artifacts/research-v28/fire/screen_2/gru-test.parquet": "6134d33451db48225c2836145d7c446b35c0ce45d001840e30035aac0ec67d12",
+        "artifacts/research-v28/fire/screen_2/mlp-policy.parquet": "3ccc85dd0d339d7c047687271c14287465a8115fa1ce71beeca8dc057fae4877",
+        "artifacts/research-v28/fire/screen_2/mlp-test.parquet": "d70efbe2f449d5b32c5bf7907d85bc8580d451a6be622c0750a7abdbb918a448",
+        "artifacts/research-v28/fire/screen_2/models/gru/fit.json": "f4b7cc29d144d04771600137ad6fe00497bbb0163b85fd08b1e9b826e4d6b2ee",
+        "artifacts/research-v28/fire/screen_2/models/gru/model.pt": "b7b86232cf4e59adeac269953545370a241764639a9f7226949a44ab7a503c05",
+        "artifacts/research-v28/fire/screen_2/models/mlp/fit.json": "47d45fa149358133cb736eca14a51deafc37781cefffd221283eec779b8ebd82",
+        "artifacts/research-v28/fire/screen_2/models/mlp/model.pt": "b84cb376bee2e520ed8fd9ae90ba35ffe50f93ad6f3063251f0a7b8d1a9ebe23",
+        "artifacts/research-v28/fire/screen_2/result.json": "31da22f11597f34ee6b71a5a035b9f1ff137ebb49851932ddfdb61b225188bed",
+        "artifacts/research-v28/plan.json": "427fd191c3e189cae70641b9bf62685eb533e8d77dadf24278e0a37a412f3120",
+        "artifacts/research-v28/report.json": "add7ef1438c730727f1f5689f38dab0cf275a605343c93cae2423d2e577e93c8",
+        "artifacts/research-v9/confirmation/access-policy.parquet": "887ef9b927d663f152a63582774e6e8089334bc70cfeff69fe57641d8e125592",
+        "artifacts/research-v9/confirmation/access-test.parquet": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+        "artifacts/research-v9/confirmation/access.cbm": "8764a6f534338577c2fb0a082837a4e0c7987d902af7751f51b6b45e58818a5f",
+        "artifacts/research-v9/confirmation/access.json": "e05d2353a2809e810b7196f5ffa7f8a6738b398b8af7c053bd40b96f315c4ad9",
+        "artifacts/research-v9/confirmation/fire-policy.parquet": "6c2c7171a5f7ff938240aa539103391819682d5b02c309324b006c940bc4196f",
+        "artifacts/research-v9/confirmation/fire-test.parquet": "c6054f69d3bb652ce6a4dbed2be7353f8de4da398092148771755eba5e5cf11a",
+        "artifacts/research-v9/confirmation/fire.cbm": "fa8f094e0dfdc81d53f61119a91c23562f7476c742c93cb318d5c9ea8794079d",
+        "artifacts/research-v9/confirmation/fire.json": "ef115404a61e0872c1114bb00f366ac8822c1d965d6229af297a40c12d3c7d74",
+        "artifacts/research-v9/screen_1/access-policy.parquet": "a158166ff7cc8e49c3a13b4d36ea238a3417100a0ca54d3794228aa3d9f6858f",
+        "artifacts/research-v9/screen_1/access-test.parquet": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+        "artifacts/research-v9/screen_1/access.cbm": "9984fe0b5546e7272c9a39f628c83ebaf99d74cd0ec7a6df9e27f2427ebdca5a",
+        "artifacts/research-v9/screen_1/access.json": "710ed0d8609844e7942627a695e71d670daa00095ceaa177279017e1c6d5a175",
+        "artifacts/research-v9/screen_1/fire-policy.parquet": "c4bb80b19ef176577ddfe9da5e3ae552a37596e7fb825b5137ce5f96dbde1f5d",
+        "artifacts/research-v9/screen_1/fire-test.parquet": "eb9598c4d937ebaabc5cc35f4d7300129a58da8ae1281b9c3f2b0f1f2c1dbaca",
+        "artifacts/research-v9/screen_1/fire.cbm": "6480c24fca5588ac2673da7569b3b99cd03e43dfb1596217985e75746b86c98a",
+        "artifacts/research-v9/screen_1/fire.json": "1d3e7fad1278e97fb731622c090a664b7a6177ea8630a6b3ae38246feb8eacf7",
+        "artifacts/research-v9/screen_2/access-policy.parquet": "66ed8dda37f58663a324009faada9943e894ec43b3fc69878ec778461b06146d",
+        "artifacts/research-v9/screen_2/access-test.parquet": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+        "artifacts/research-v9/screen_2/access.cbm": "bfb8cce1a8697f99376b25ae178d84d344f1857f173b06ece1aebf2e173db6ad",
+        "artifacts/research-v9/screen_2/access.json": "96e09bab5d2283a2eaadea3edab32dd8dabaf9ecf4f6334b6737e2d5ae598e38",
+        "artifacts/research-v9/screen_2/fire-policy.parquet": "d218a81a89ae771af7be7bd7e1c99421ca424a7e665cb7b9fd76c4a4d6037499",
+        "artifacts/research-v9/screen_2/fire-test.parquet": "cf799c9da1ecfc24912ef3fef2848fc1bcc79c7cfce9035c53fac4ce94af6f82",
+        "artifacts/research-v9/screen_2/fire.cbm": "f7fa4916f4ac2e7a18f71cb95b7d812549b87eb1d1a80d69f7e94151a6fab17b",
+        "artifacts/research-v9/screen_2/fire.json": "d98a3bfa386255b4618e3be569956e8becdc968d1d4e0da3d806931904d131eb",
+        "requirements-neural.lock": "25dbc77c4a4564fb6d3b42a793a30cd65261b5f59417f7c50b2fa2576b577d29",
+        "requirements.lock": "bb8c639db5b19fdac162a56b4277b9aa41400c9002d62973e02eed60b6fa7f43"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/binary_gate_research.py": "0984222d1905c08e8648341848a5d73967ea8741da3400e95524c4da59f6bd96",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fresh_counts_research.py": "a7621bbf235b57f2cac7388f0974b5c84de1a311af1694dd55aa92f270ab9377",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/neural_blend_research.py": "b75ff7e958c4f7818286d91b0268a696d671ee699b86b25a3e1c9b71cf4b7af2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/neural_count_model.py": "5c2eac9c3b016520ea3770ba77e305d6c824e2f03961d28580d05eb918ce997b",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/neural_count_research.py": "d2d0732a4a0f994f92b64b20cb28463b6a1a771fce1b0e109ef1cbcb8fa98a72",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/neural_sequence_data.py": "2a5df8195ac8d90e493d4c1196c020c88f95ffb15830d1df7246e071b1c45361",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "scripts/audit_neural_complementarity.py": "d35babddf8eabf9fc8e493adca1477124698120e3dfb1ab06524da501c7a66b4"
       }
     }
   },
@@ -30436,6 +30684,3411 @@
       "status": "screen_failed"
     }
   },
+  "neural_complementarity_audit": {
+    "scope": "Descriptive overlap of already-used Nov/Feb event outcomes. No weights or thresholds selected here.",
+    "interpretation": "Union counts distinct eligible episode identities independently matched by the frozen branches. This uses future outcomes, is not a causal ensemble's performance, does not remove its false warnings and is not an upper bound for new forecasts or policies.",
+    "periods": [
+      {
+        "kind": "access",
+        "fold": "screen_1",
+        "eligible_episodes": 1482,
+        "pairs": {
+          "mlp": {
+            "both": 932,
+            "control_only": 72,
+            "neural_only": 154,
+            "neither": 324,
+            "union": 1158
+          },
+          "gru": {
+            "both": 923,
+            "control_only": 81,
+            "neural_only": 186,
+            "neither": 292,
+            "union": 1190
+          }
+        },
+        "all_three_union": 1220
+      },
+      {
+        "kind": "access",
+        "fold": "screen_2",
+        "eligible_episodes": 1185,
+        "pairs": {
+          "mlp": {
+            "both": 812,
+            "control_only": 77,
+            "neural_only": 42,
+            "neither": 254,
+            "union": 931
+          },
+          "gru": {
+            "both": 842,
+            "control_only": 47,
+            "neural_only": 51,
+            "neither": 245,
+            "union": 940
+          }
+        },
+        "all_three_union": 955
+      },
+      {
+        "kind": "fire",
+        "fold": "screen_1",
+        "eligible_episodes": 101,
+        "pairs": {
+          "mlp": {
+            "both": 30,
+            "control_only": 4,
+            "neural_only": 20,
+            "neither": 47,
+            "union": 54
+          },
+          "gru": {
+            "both": 29,
+            "control_only": 5,
+            "neural_only": 17,
+            "neither": 50,
+            "union": 51
+          }
+        },
+        "all_three_union": 55
+      },
+      {
+        "kind": "fire",
+        "fold": "screen_2",
+        "eligible_episodes": 187,
+        "pairs": {
+          "mlp": {
+            "both": 80,
+            "control_only": 17,
+            "neural_only": 26,
+            "neither": 64,
+            "union": 123
+          },
+          "gru": {
+            "both": 73,
+            "control_only": 24,
+            "neural_only": 24,
+            "neither": 66,
+            "union": 121
+          }
+        },
+        "all_three_union": 125
+      },
+      {
+        "kind": "fault",
+        "fold": "screen_1",
+        "eligible_episodes": 18,
+        "pairs": {
+          "mlp": {
+            "both": 0,
+            "control_only": 0,
+            "neural_only": 0,
+            "neither": 18,
+            "union": 0
+          },
+          "gru": {
+            "both": 0,
+            "control_only": 0,
+            "neural_only": 0,
+            "neither": 18,
+            "union": 0
+          }
+        },
+        "all_three_union": 0
+      },
+      {
+        "kind": "fault",
+        "fold": "screen_2",
+        "eligible_episodes": 28,
+        "pairs": {
+          "mlp": {
+            "both": 4,
+            "control_only": 7,
+            "neural_only": 1,
+            "neither": 16,
+            "union": 12
+          },
+          "gru": {
+            "both": 5,
+            "control_only": 6,
+            "neural_only": 6,
+            "neither": 11,
+            "union": 17
+          }
+        },
+        "all_three_union": 18
+      }
+    ],
+    "totals": {
+      "access": {
+        "eligible_episodes": 2667,
+        "pairs": {
+          "mlp": {
+            "both": 1744,
+            "control_only": 149,
+            "neural_only": 196,
+            "neither": 578,
+            "union": 2089
+          },
+          "gru": {
+            "both": 1765,
+            "control_only": 128,
+            "neural_only": 237,
+            "neither": 537,
+            "union": 2130
+          }
+        },
+        "all_three_union": 2175,
+        "all_three_union_fraction": 0.8155230596175478
+      },
+      "fire": {
+        "eligible_episodes": 288,
+        "pairs": {
+          "mlp": {
+            "both": 110,
+            "control_only": 21,
+            "neural_only": 46,
+            "neither": 111,
+            "union": 177
+          },
+          "gru": {
+            "both": 102,
+            "control_only": 29,
+            "neural_only": 41,
+            "neither": 116,
+            "union": 172
+          }
+        },
+        "all_three_union": 180,
+        "all_three_union_fraction": 0.625
+      },
+      "fault": {
+        "eligible_episodes": 46,
+        "pairs": {
+          "mlp": {
+            "both": 4,
+            "control_only": 7,
+            "neural_only": 1,
+            "neither": 34,
+            "union": 12
+          },
+          "gru": {
+            "both": 5,
+            "control_only": 6,
+            "neural_only": 6,
+            "neither": 29,
+            "union": 17
+          }
+        },
+        "all_three_union": 18,
+        "all_three_union_fraction": 0.391304347826087
+      }
+    },
+    "source_hashes": {
+      "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+      "artifacts/research-v28/access/screen_1/global_control-test.parquet": "4d1add163858e1f6558ce5ef88b1c527a933777998e80f9fe9de32ed628ce866",
+      "artifacts/research-v28/access/screen_1/gru-test.parquet": "3da6f70b2ea2318355522f007f17c74ff0126bc119b2cd27a8c0a942711aebcf",
+      "artifacts/research-v28/access/screen_1/mlp-test.parquet": "9d64033f98cd154f5834c8f58e4c6e6c25f8ffabacb148af6b023efd47c9d98b",
+      "artifacts/research-v28/access/screen_1/result.json": "8e2ddc228588c3f3e5882fbfc533d06e403ef77425c0b02235426d430bf30a19",
+      "artifacts/research-v28/access/screen_2/global_control-test.parquet": "a829f8637e980d0af9ed9384b846cdb9d306d4f2bb7bdaee0174b8a0e777147c",
+      "artifacts/research-v28/access/screen_2/gru-test.parquet": "c96c7bd5fe675d895538aa2db9d620dc26c63ab320265db7fb7cd0de43ef1d46",
+      "artifacts/research-v28/access/screen_2/mlp-test.parquet": "a97ef7d897c9795384287692a1c6c09e44a31b53aed39b55b0798e8729de6e6f",
+      "artifacts/research-v28/access/screen_2/result.json": "4fd54782a8287dcca6a25a321aa27e35a3a1e51721b60c747d7a6df744b05bc1",
+      "artifacts/research-v28/fault/screen_1/global_control-test.parquet": "81e8b6ac66b21fe52da6c3c6da791fdd448463283ae1e62fe16b66947f683671",
+      "artifacts/research-v28/fault/screen_1/gru-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+      "artifacts/research-v28/fault/screen_1/mlp-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+      "artifacts/research-v28/fault/screen_1/result.json": "4ff6bb2496e3d394459f9364c50e3a9759d7854e60797ec93de520f6e0edd329",
+      "artifacts/research-v28/fault/screen_2/global_control-test.parquet": "32fcf01f526c667d54803929fb7585d2844160fe9698393ac1b1ecaa895a1487",
+      "artifacts/research-v28/fault/screen_2/gru-test.parquet": "1952a6ab241e5c03b0cdbb58d5641a25319934aad7322a596aff6128b68f7a30",
+      "artifacts/research-v28/fault/screen_2/mlp-test.parquet": "37d33b6b1a1a88ff54794af6591e627f4fb0d512c6d9017fa5d6ed478144dc8f",
+      "artifacts/research-v28/fault/screen_2/result.json": "7e5e2a0b9c616cb17cd1bf193d7ab3737d98521e95f2cde2268f86aff1486de1",
+      "artifacts/research-v28/fire/screen_1/global_control-test.parquet": "97f8a7f696d32d66b6254603907d0ecb88f3aec579f8f7eccc527595e0f4eab8",
+      "artifacts/research-v28/fire/screen_1/gru-test.parquet": "5b3ed2acb96d0134823fe2a8dfb959c89db467609150aba51278e3cd48eeae0f",
+      "artifacts/research-v28/fire/screen_1/mlp-test.parquet": "8024e406a06f77f9c8f5e5ea7a4a50d67cce0edc46eb44b4477924cb9903b3b7",
+      "artifacts/research-v28/fire/screen_1/result.json": "f08c7b2dcd64edf04e94a278d347ab27726f9f55c9a854319e146cd10a93be56",
+      "artifacts/research-v28/fire/screen_2/global_control-test.parquet": "e682a2c292eaab8e3d1c1839562487f79f2e489457a17a4a3410b95284d568b8",
+      "artifacts/research-v28/fire/screen_2/gru-test.parquet": "6134d33451db48225c2836145d7c446b35c0ce45d001840e30035aac0ec67d12",
+      "artifacts/research-v28/fire/screen_2/mlp-test.parquet": "d70efbe2f449d5b32c5bf7907d85bc8580d451a6be622c0750a7abdbb918a448",
+      "artifacts/research-v28/fire/screen_2/result.json": "31da22f11597f34ee6b71a5a035b9f1ff137ebb49851932ddfdb61b225188bed",
+      "artifacts/research-v28/report.json": "add7ef1438c730727f1f5689f38dab0cf275a605343c93cae2423d2e577e93c8"
+    },
+    "code_hashes": {
+      "/Users/main/vs_projects/lct_hack/scripts/audit_neural_complementarity.py": "d35babddf8eabf9fc8e493adca1477124698120e3dfb1ab06524da501c7a66b4",
+      "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489"
+    }
+  },
+  "neural_blend_v29": {
+    "access": {
+      "selection": {
+        "variants": {
+          "tree_mlp": {
+            "scores": {
+              "true_alerts": 1943,
+              "alerts": 2751,
+              "eligible_episodes": 2667,
+              "precision": 0.7062886223191567,
+              "recall": 0.7285339332583427,
+              "f1": 0.7172388335179033,
+              "primary_score": 0.784765135910174,
+              "both_90": false
+            },
+            "passed_screen": false
+          },
+          "tree_gru": {
+            "scores": {
+              "true_alerts": 1984,
+              "alerts": 2847,
+              "eligible_episodes": 2667,
+              "precision": 0.6968739023533544,
+              "recall": 0.7439070116235471,
+              "f1": 0.7196227783822996,
+              "primary_score": 0.7743043359481716,
+              "both_90": false
+            },
+            "passed_screen": false
+          },
+          "three_way": {
+            "scores": {
+              "true_alerts": 1988,
+              "alerts": 2859,
+              "eligible_episodes": 2667,
+              "precision": 0.6953480237845401,
+              "recall": 0.7454068241469817,
+              "f1": 0.7195077813970322,
+              "primary_score": 0.7726089153161556,
+              "both_90": false
+            },
+            "passed_screen": false
+          }
+        },
+        "controls": {
+          "global_control": {
+            "true_alerts": 1893,
+            "alerts": 2703,
+            "eligible_episodes": 2667,
+            "precision": 0.7003329633740288,
+            "recall": 0.7097862767154106,
+            "f1": 0.7050279329608938,
+            "primary_score": 0.7781477370822543,
+            "both_90": false
+          },
+          "mlp": {
+            "true_alerts": 1940,
+            "alerts": 2790,
+            "eligible_episodes": 2667,
+            "precision": 0.6953405017921147,
+            "recall": 0.7274090738657668,
+            "f1": 0.7110133773135422,
+            "primary_score": 0.7726005575467941,
+            "both_90": false
+          },
+          "gru": {
+            "true_alerts": 2002,
+            "alerts": 2886,
+            "eligible_episodes": 2667,
+            "precision": 0.6936936936936937,
+            "recall": 0.7506561679790026,
+            "f1": 0.7210516837745363,
+            "primary_score": 0.7707707707707707,
+            "both_90": false
+          },
+          "reference": {
+            "true_alerts": 1860,
+            "alerts": 2632,
+            "eligible_episodes": 2667,
+            "precision": 0.7066869300911854,
+            "recall": 0.6974128233970753,
+            "f1": 0.7020192489148896,
+            "primary_score": 0.7749031371078614,
+            "both_90": false
+          }
+        },
+        "selected_variant": null,
+        "passed_screen": false
+      },
+      "research_eligible": false,
+      "status": "screen_failed"
+    },
+    "fire": {
+      "selection": {
+        "variants": {
+          "tree_mlp": {
+            "scores": {
+              "true_alerts": 156,
+              "alerts": 362,
+              "eligible_episodes": 288,
+              "precision": 0.430939226519337,
+              "recall": 0.5416666666666666,
+              "f1": 0.48,
+              "primary_score": 0.47882136279926335,
+              "both_90": false
+            },
+            "passed_screen": false
+          },
+          "tree_gru": {
+            "scores": {
+              "true_alerts": 149,
+              "alerts": 362,
+              "eligible_episodes": 288,
+              "precision": 0.4116022099447514,
+              "recall": 0.5173611111111112,
+              "f1": 0.4584615384615385,
+              "primary_score": 0.45733578882750153,
+              "both_90": false
+            },
+            "passed_screen": false
+          },
+          "three_way": {
+            "scores": {
+              "true_alerts": 153,
+              "alerts": 375,
+              "eligible_episodes": 288,
+              "precision": 0.408,
+              "recall": 0.53125,
+              "f1": 0.46153846153846156,
+              "primary_score": 0.4533333333333333,
+              "both_90": false
+            },
+            "passed_screen": false
+          }
+        },
+        "controls": {
+          "global_control": {
+            "true_alerts": 131,
+            "alerts": 292,
+            "eligible_episodes": 288,
+            "precision": 0.4486301369863014,
+            "recall": 0.4548611111111111,
+            "f1": 0.4517241379310345,
+            "primary_score": 0.4984779299847793,
+            "both_90": false
+          },
+          "mlp": {
+            "true_alerts": 156,
+            "alerts": 416,
+            "eligible_episodes": 288,
+            "precision": 0.375,
+            "recall": 0.5416666666666666,
+            "f1": 0.4431818181818182,
+            "primary_score": 0.41666666666666663,
+            "both_90": false
+          },
+          "gru": {
+            "true_alerts": 143,
+            "alerts": 376,
+            "eligible_episodes": 288,
+            "precision": 0.3803191489361702,
+            "recall": 0.4965277777777778,
+            "f1": 0.4307228915662651,
+            "primary_score": 0.4225768321513002,
+            "both_90": false
+          },
+          "reference": {
+            "true_alerts": 128,
+            "alerts": 296,
+            "eligible_episodes": 288,
+            "precision": 0.43243243243243246,
+            "recall": 0.4444444444444444,
+            "f1": 0.4383561643835616,
+            "primary_score": 0.4804804804804805,
+            "both_90": false
+          }
+        },
+        "selected_variant": null,
+        "passed_screen": false
+      },
+      "research_eligible": false,
+      "status": "screen_failed"
+    },
+    "fault": {
+      "selection": {
+        "variants": {
+          "tree_mlp": {
+            "scores": {
+              "true_alerts": 8,
+              "alerts": 34,
+              "eligible_episodes": 46,
+              "precision": 0.23529411764705882,
+              "recall": 0.17391304347826086,
+              "f1": 0.2,
+              "primary_score": 0.1932367149758454,
+              "both_90": false
+            },
+            "passed_screen": true
+          },
+          "tree_gru": {
+            "scores": {
+              "true_alerts": 15,
+              "alerts": 130,
+              "eligible_episodes": 46,
+              "precision": 0.11538461538461539,
+              "recall": 0.32608695652173914,
+              "f1": 0.17045454545454544,
+              "primary_score": 0.12820512820512822,
+              "both_90": false
+            },
+            "passed_screen": false
+          },
+          "three_way": {
+            "scores": {
+              "true_alerts": 8,
+              "alerts": 43,
+              "eligible_episodes": 46,
+              "precision": 0.18604651162790697,
+              "recall": 0.17391304347826086,
+              "f1": 0.1797752808988764,
+              "primary_score": 0.1932367149758454,
+              "both_90": false
+            },
+            "passed_screen": false
+          }
+        },
+        "controls": {
+          "global_control": {
+            "true_alerts": 11,
+            "alerts": 74,
+            "eligible_episodes": 46,
+            "precision": 0.14864864864864866,
+            "recall": 0.2391304347826087,
+            "f1": 0.18333333333333332,
+            "primary_score": 0.16516516516516516,
+            "both_90": false
+          },
+          "mlp": {
+            "true_alerts": 5,
+            "alerts": 23,
+            "eligible_episodes": 46,
+            "precision": 0.21739130434782608,
+            "recall": 0.10869565217391304,
+            "f1": 0.14492753623188406,
+            "primary_score": 0.12077294685990338,
+            "both_90": false
+          },
+          "gru": {
+            "true_alerts": 11,
+            "alerts": 226,
+            "eligible_episodes": 46,
+            "precision": 0.048672566371681415,
+            "recall": 0.2391304347826087,
+            "f1": 0.08088235294117647,
+            "primary_score": 0.05408062930186824,
+            "both_90": false
+          },
+          "reference": {
+            "true_alerts": 11,
+            "alerts": 70,
+            "eligible_episodes": 46,
+            "precision": 0.15714285714285714,
+            "recall": 0.2391304347826087,
+            "f1": 0.1896551724137931,
+            "primary_score": 0.1746031746031746,
+            "both_90": false
+          }
+        },
+        "selected_variant": "tree_mlp",
+        "passed_screen": true
+      },
+      "periods": [
+        {
+          "kind": "fault",
+          "fold": "screen_1",
+          "arms": {
+            "tree_mlp": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 216294
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 8,
+                "missed_episodes": 8,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "mlp": 0.5
+              }
+            },
+            "tree_gru": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 216294
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 8,
+                "missed_episodes": 8,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "gru": 0.5
+              }
+            },
+            "three_way": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 216294
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 8,
+                "missed_episodes": 8,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.3333333333333333,
+                "mlp": 0.3333333333333333,
+                "gru": 0.3333333333333333
+              }
+            }
+          },
+          "controls": {
+            "global_control": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "true_alerts": 0,
+              "false_alerts": 0,
+              "alerts": 0,
+              "eligible_episodes": 18,
+              "missed_episodes": 18,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": null,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 216294
+            },
+            "mlp": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "true_alerts": 0,
+              "false_alerts": 0,
+              "alerts": 0,
+              "eligible_episodes": 18,
+              "missed_episodes": 18,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": null,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 216294
+            },
+            "gru": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "true_alerts": 0,
+              "false_alerts": 0,
+              "alerts": 0,
+              "eligible_episodes": 18,
+              "missed_episodes": 18,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": null,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 216294
+            }
+          },
+          "reference": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          },
+          "same_episode_cohort": true,
+          "component_alert_and_score_parity": true,
+          "source_directory": "artifacts/research-v28/fault/screen_1",
+          "exposure_days": 2255.5
+        },
+        {
+          "kind": "fault",
+          "fold": "screen_2",
+          "arms": {
+            "tree_mlp": {
+              "scores": {
+                "precision": 0.23529411764705882,
+                "recall": 0.2857142857142857,
+                "f1": 0.25806451612903225,
+                "true_alerts": 8,
+                "false_alerts": 26,
+                "alerts": 34,
+                "eligible_episodes": 28,
+                "missed_episodes": 20,
+                "false_alerts_per_object_day": 0.01238390092879257,
+                "median_lead_hours": 18.613611111111112,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 201318
+              },
+              "policy": {
+                "capacity": 1,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.11538461538461539,
+                "recall": 0.25,
+                "f1": 0.15789473684210525,
+                "true_alerts": 3,
+                "false_alerts": 23,
+                "alerts": 26,
+                "eligible_episodes": 12,
+                "missed_episodes": 9,
+                "false_alerts_per_object_day": 0.01852597664115989,
+                "median_lead_hours": 0.8019444444444445,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "supported",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "mlp": 0.5
+              }
+            },
+            "tree_gru": {
+              "scores": {
+                "precision": 0.11538461538461539,
+                "recall": 0.5357142857142857,
+                "f1": 0.189873417721519,
+                "true_alerts": 15,
+                "false_alerts": 115,
+                "alerts": 130,
+                "eligible_episodes": 28,
+                "missed_episodes": 13,
+                "false_alerts_per_object_day": 0.05477494641581329,
+                "median_lead_hours": 19.06972222222222,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 201318
+              },
+              "policy": {
+                "capacity": 1.5,
+                "margin": 0.25,
+                "floor": 0.05,
+                "precision": 0.05405405405405406,
+                "recall": 0.3333333333333333,
+                "f1": 0.09302325581395349,
+                "true_alerts": 4,
+                "false_alerts": 70,
+                "alerts": 74,
+                "eligible_episodes": 12,
+                "missed_episodes": 8,
+                "false_alerts_per_object_day": 0.056383407168747485,
+                "median_lead_hours": 0.5884722222222223,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "supported",
+                "gate_disabled": false,
+                "gated_policy_rows": 110958
+              },
+              "weights": {
+                "global_control": 0.5,
+                "gru": 0.5
+              }
+            },
+            "three_way": {
+              "scores": {
+                "precision": 0.18604651162790697,
+                "recall": 0.2857142857142857,
+                "f1": 0.22535211267605634,
+                "true_alerts": 8,
+                "false_alerts": 35,
+                "alerts": 43,
+                "eligible_episodes": 28,
+                "missed_episodes": 20,
+                "false_alerts_per_object_day": 0.016670635865682307,
+                "median_lead_hours": 10.534861111111113,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 201318
+              },
+              "policy": {
+                "capacity": 1,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.08333333333333333,
+                "recall": 0.25,
+                "f1": 0.125,
+                "true_alerts": 3,
+                "false_alerts": 33,
+                "alerts": 36,
+                "eligible_episodes": 12,
+                "missed_episodes": 9,
+                "false_alerts_per_object_day": 0.026580749093838098,
+                "median_lead_hours": 0.8019444444444445,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 118950,
+                "status": "supported",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.3333333333333333,
+                "mlp": 0.3333333333333333,
+                "gru": 0.3333333333333333
+              }
+            }
+          },
+          "controls": {
+            "global_control": {
+              "precision": 0.14864864864864866,
+              "recall": 0.39285714285714285,
+              "f1": 0.21568627450980393,
+              "true_alerts": 11,
+              "false_alerts": 63,
+              "alerts": 74,
+              "eligible_episodes": 28,
+              "missed_episodes": 17,
+              "false_alerts_per_object_day": 0.03000714455822815,
+              "median_lead_hours": 19.622222222222224,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 201318
+            },
+            "mlp": {
+              "precision": 0.21739130434782608,
+              "recall": 0.17857142857142858,
+              "f1": 0.19607843137254902,
+              "true_alerts": 5,
+              "false_alerts": 18,
+              "alerts": 23,
+              "eligible_episodes": 28,
+              "missed_episodes": 23,
+              "false_alerts_per_object_day": 0.008573469873779471,
+              "median_lead_hours": 0.16666666666666666,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 201318
+            },
+            "gru": {
+              "precision": 0.048672566371681415,
+              "recall": 0.39285714285714285,
+              "f1": 0.08661417322834646,
+              "true_alerts": 11,
+              "false_alerts": 215,
+              "alerts": 226,
+              "eligible_episodes": 28,
+              "missed_episodes": 17,
+              "false_alerts_per_object_day": 0.10240533460347702,
+              "median_lead_hours": 6.828611111111111,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 201318
+            }
+          },
+          "reference": {
+            "precision": 0.15714285714285714,
+            "recall": 0.39285714285714285,
+            "f1": 0.22448979591836735,
+            "true_alerts": 11,
+            "false_alerts": 59,
+            "alerts": 70,
+            "eligible_episodes": 28,
+            "missed_episodes": 17,
+            "false_alerts_per_object_day": 0.0281019290307216,
+            "median_lead_hours": 17.06972222222222,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          },
+          "same_episode_cohort": true,
+          "component_alert_and_score_parity": true,
+          "source_directory": "artifacts/research-v28/fault/screen_2",
+          "exposure_days": 2099.5
+        },
+        {
+          "kind": "fault",
+          "fold": "confirmation",
+          "arms": {
+            "tree_mlp": {
+              "scores": {
+                "precision": 0.20588235294117646,
+                "recall": 0.2413793103448276,
+                "f1": 0.2222222222222222,
+                "true_alerts": 7,
+                "false_alerts": 27,
+                "alerts": 34,
+                "eligible_episodes": 29,
+                "missed_episodes": 22,
+                "false_alerts_per_object_day": 0.011570602099850011,
+                "median_lead_hours": 7.364444444444445,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 1,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.5961538461538461,
+                "recall": 0.5740740740740741,
+                "f1": 0.5849056603773585,
+                "true_alerts": 31,
+                "false_alerts": 21,
+                "alerts": 52,
+                "eligible_episodes": 54,
+                "missed_episodes": 23,
+                "false_alerts_per_object_day": 0.018048990116029222,
+                "median_lead_hours": 11.975555555555555,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "supported",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "mlp": 0.5
+              }
+            },
+            "tree_gru": {
+              "scores": {
+                "precision": 0.16666666666666666,
+                "recall": 0.034482758620689655,
+                "f1": 0.05714285714285714,
+                "true_alerts": 1,
+                "false_alerts": 5,
+                "alerts": 6,
+                "eligible_episodes": 29,
+                "missed_episodes": 28,
+                "false_alerts_per_object_day": 0.002142704092564817,
+                "median_lead_hours": 1.0775,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 2,
+                "margin": 0.5,
+                "floor": 0.2,
+                "precision": 0.5192307692307693,
+                "recall": 0.5,
+                "f1": 0.5094339622641509,
+                "true_alerts": 27,
+                "false_alerts": 25,
+                "alerts": 52,
+                "eligible_episodes": 54,
+                "missed_episodes": 27,
+                "false_alerts_per_object_day": 0.021486892995272882,
+                "median_lead_hours": 18.386666666666667,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "supported",
+                "gate_disabled": false,
+                "gated_policy_rows": 109417
+              },
+              "weights": {
+                "global_control": 0.5,
+                "gru": 0.5
+              }
+            },
+            "three_way": {
+              "scores": {
+                "precision": 0.16,
+                "recall": 0.13793103448275862,
+                "f1": 0.14814814814814814,
+                "true_alerts": 4,
+                "false_alerts": 21,
+                "alerts": 25,
+                "eligible_episodes": 29,
+                "missed_episodes": 25,
+                "false_alerts_per_object_day": 0.00899935718877223,
+                "median_lead_hours": 3.2219444444444445,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 1,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.5370370370370371,
+                "recall": 0.5370370370370371,
+                "f1": 0.5370370370370371,
+                "true_alerts": 29,
+                "false_alerts": 25,
+                "alerts": 54,
+                "eligible_episodes": 54,
+                "missed_episodes": 25,
+                "false_alerts_per_object_day": 0.021486892995272882,
+                "median_lead_hours": 3.473333333333333,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "supported",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.3333333333333333,
+                "mlp": 0.3333333333333333,
+                "gru": 0.3333333333333333
+              }
+            }
+          },
+          "controls": {
+            "global_control": {
+              "precision": 0.16666666666666666,
+              "recall": 0.10344827586206896,
+              "f1": 0.1276595744680851,
+              "true_alerts": 3,
+              "false_alerts": 15,
+              "alerts": 18,
+              "eligible_episodes": 29,
+              "missed_episodes": 26,
+              "false_alerts_per_object_day": 0.0064281122776944505,
+              "median_lead_hours": 4.366388888888889,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "mlp": {
+              "precision": 0.2,
+              "recall": 0.06896551724137931,
+              "f1": 0.10256410256410256,
+              "true_alerts": 2,
+              "false_alerts": 8,
+              "alerts": 10,
+              "eligible_episodes": 29,
+              "missed_episodes": 27,
+              "false_alerts_per_object_day": 0.0034283265481037067,
+              "median_lead_hours": 2.7219444444444445,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "gru": {
+              "precision": 0.09090909090909091,
+              "recall": 0.034482758620689655,
+              "f1": 0.05,
+              "true_alerts": 1,
+              "false_alerts": 10,
+              "alerts": 11,
+              "eligible_episodes": 29,
+              "missed_episodes": 28,
+              "false_alerts_per_object_day": 0.004285408185129634,
+              "median_lead_hours": 2.0775,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            }
+          },
+          "reference": {
+            "precision": 0.13636363636363635,
+            "recall": 0.10344827586206896,
+            "f1": 0.11764705882352941,
+            "true_alerts": 3,
+            "false_alerts": 19,
+            "alerts": 22,
+            "eligible_episodes": 29,
+            "missed_episodes": 26,
+            "false_alerts_per_object_day": 0.008142275551746304,
+            "median_lead_hours": 4.366388888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "same_episode_cohort": true,
+          "component_alert_and_score_parity": true,
+          "source_directory": "artifacts/research-v29/controls/fault/confirmation",
+          "exposure_days": 2333.5
+        },
+        {
+          "kind": "fault",
+          "fold": "stress_1",
+          "arms": {
+            "tree_mlp": {
+              "scores": {
+                "precision": 0.4857142857142857,
+                "recall": 0.16037735849056603,
+                "f1": 0.24113475177304963,
+                "true_alerts": 17,
+                "false_alerts": 18,
+                "alerts": 35,
+                "eligible_episodes": 106,
+                "missed_episodes": 89,
+                "false_alerts_per_object_day": 0.00771373473323334,
+                "median_lead_hours": 7.0,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 9,
+                "missed_episodes": 9,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "mlp": 0.5
+              }
+            },
+            "tree_gru": {
+              "scores": {
+                "precision": 0.41935483870967744,
+                "recall": 0.12264150943396226,
+                "f1": 0.1897810218978102,
+                "true_alerts": 13,
+                "false_alerts": 18,
+                "alerts": 31,
+                "eligible_episodes": 106,
+                "missed_episodes": 93,
+                "false_alerts_per_object_day": 0.00771373473323334,
+                "median_lead_hours": 5.133611111111111,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 9,
+                "missed_episodes": 9,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "gru": 0.5
+              }
+            },
+            "three_way": {
+              "scores": {
+                "precision": 0.4,
+                "recall": 0.05660377358490566,
+                "f1": 0.09917355371900827,
+                "true_alerts": 6,
+                "false_alerts": 9,
+                "alerts": 15,
+                "eligible_episodes": 106,
+                "missed_episodes": 100,
+                "false_alerts_per_object_day": 0.00385686736661667,
+                "median_lead_hours": 8.672083333333333,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 9,
+                "missed_episodes": 9,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 111462,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.3333333333333333,
+                "mlp": 0.3333333333333333,
+                "gru": 0.3333333333333333
+              }
+            }
+          },
+          "controls": {
+            "global_control": {
+              "precision": 0.33587786259541985,
+              "recall": 0.41509433962264153,
+              "f1": 0.37130801687763715,
+              "true_alerts": 44,
+              "false_alerts": 87,
+              "alerts": 131,
+              "eligible_episodes": 106,
+              "missed_episodes": 62,
+              "false_alerts_per_object_day": 0.03728305121062781,
+              "median_lead_hours": 2.9305555555555554,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "mlp": {
+              "precision": 0.9,
+              "recall": 0.08490566037735849,
+              "f1": 0.15517241379310345,
+              "true_alerts": 9,
+              "false_alerts": 1,
+              "alerts": 10,
+              "eligible_episodes": 106,
+              "missed_episodes": 97,
+              "false_alerts_per_object_day": 0.00042854081851296334,
+              "median_lead_hours": 6.488611111111111,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "gru": {
+              "precision": 0.3181818181818182,
+              "recall": 0.19811320754716982,
+              "f1": 0.2441860465116279,
+              "true_alerts": 21,
+              "false_alerts": 45,
+              "alerts": 66,
+              "eligible_episodes": 106,
+              "missed_episodes": 85,
+              "false_alerts_per_object_day": 0.01928433683308335,
+              "median_lead_hours": 6.465277777777778,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            }
+          },
+          "reference": {
+            "precision": 0.3543307086614173,
+            "recall": 0.42452830188679247,
+            "f1": 0.38626609442060084,
+            "true_alerts": 45,
+            "false_alerts": 82,
+            "alerts": 127,
+            "eligible_episodes": 106,
+            "missed_episodes": 61,
+            "false_alerts_per_object_day": 0.03514034711806299,
+            "median_lead_hours": 3.571388888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "same_episode_cohort": true,
+          "component_alert_and_score_parity": true,
+          "source_directory": "artifacts/research-v29/controls/fault/stress_1",
+          "exposure_days": 2333.5
+        },
+        {
+          "kind": "fault",
+          "fold": "stress_2",
+          "arms": {
+            "tree_mlp": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 2,
+                "alerts": 2,
+                "eligible_episodes": 36,
+                "missed_episodes": 36,
+                "false_alerts_per_object_day": 0.0008570816370259267,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 6,
+                "missed_episodes": 6,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 96486,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "mlp": 0.5
+              }
+            },
+            "tree_gru": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 36,
+                "missed_episodes": 36,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 6,
+                "missed_episodes": 6,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 96486,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.5,
+                "gru": 0.5
+              }
+            },
+            "three_way": {
+              "scores": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 36,
+                "missed_episodes": 36,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 223782
+              },
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 6,
+                "missed_episodes": 6,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 0.25,
+                "matching": "one_to_one",
+                "forecast_opportunities": 96486,
+                "status": "low_support",
+                "gate_disabled": true,
+                "gated_policy_rows": 0
+              },
+              "weights": {
+                "global_control": 0.3333333333333333,
+                "mlp": 0.3333333333333333,
+                "gru": 0.3333333333333333
+              }
+            }
+          },
+          "controls": {
+            "global_control": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "true_alerts": 0,
+              "false_alerts": 0,
+              "alerts": 0,
+              "eligible_episodes": 36,
+              "missed_episodes": 36,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": null,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "mlp": {
+              "precision": 0.13333333333333333,
+              "recall": 0.2777777777777778,
+              "f1": 0.18018018018018017,
+              "true_alerts": 10,
+              "false_alerts": 65,
+              "alerts": 75,
+              "eligible_episodes": 36,
+              "missed_episodes": 26,
+              "false_alerts_per_object_day": 0.027855153203342618,
+              "median_lead_hours": 5.957638888888889,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            },
+            "gru": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "true_alerts": 0,
+              "false_alerts": 0,
+              "alerts": 0,
+              "eligible_episodes": 36,
+              "missed_episodes": 36,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": null,
+              "cooldown_hours": 0.25,
+              "matching": "one_to_one",
+              "forecast_opportunities": 223782
+            }
+          },
+          "reference": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 36,
+            "missed_episodes": 36,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "same_episode_cohort": true,
+          "component_alert_and_score_parity": true,
+          "source_directory": "artifacts/research-v29/controls/fault/stress_2",
+          "exposure_days": 2333.5
+        }
+      ],
+      "five_period_pooled": {
+        "tree_mlp": {
+          "true_alerts": 32,
+          "alerts": 105,
+          "eligible_episodes": 217,
+          "precision": 0.3047619047619048,
+          "recall": 0.14746543778801843,
+          "f1": 0.19875776397515527,
+          "primary_score": 0.1638504864311316,
+          "both_90": false
+        },
+        "tree_gru": {
+          "true_alerts": 29,
+          "alerts": 167,
+          "eligible_episodes": 217,
+          "precision": 0.17365269461077845,
+          "recall": 0.1336405529953917,
+          "f1": 0.15104166666666666,
+          "primary_score": 0.148489503328213,
+          "both_90": false
+        },
+        "three_way": {
+          "true_alerts": 18,
+          "alerts": 83,
+          "eligible_episodes": 217,
+          "precision": 0.21686746987951808,
+          "recall": 0.08294930875576037,
+          "f1": 0.12,
+          "primary_score": 0.09216589861751152,
+          "both_90": false
+        },
+        "global_control": {
+          "true_alerts": 58,
+          "alerts": 223,
+          "eligible_episodes": 217,
+          "precision": 0.2600896860986547,
+          "recall": 0.2672811059907834,
+          "f1": 0.2636363636363636,
+          "primary_score": 0.28898854010961633,
+          "both_90": false
+        },
+        "mlp": {
+          "true_alerts": 26,
+          "alerts": 118,
+          "eligible_episodes": 217,
+          "precision": 0.22033898305084745,
+          "recall": 0.11981566820276497,
+          "f1": 0.15522388059701492,
+          "primary_score": 0.13312852022529442,
+          "both_90": false
+        },
+        "gru": {
+          "true_alerts": 33,
+          "alerts": 303,
+          "eligible_episodes": 217,
+          "precision": 0.10891089108910891,
+          "recall": 0.15207373271889402,
+          "f1": 0.12692307692307692,
+          "primary_score": 0.12101210121012101,
+          "both_90": false
+        },
+        "reference": {
+          "true_alerts": 59,
+          "alerts": 219,
+          "eligible_episodes": 217,
+          "precision": 0.2694063926940639,
+          "recall": 0.271889400921659,
+          "f1": 0.2706422018348624,
+          "primary_score": 0.2993404363267377,
+          "both_90": false
+        }
+      },
+      "passed_may": true,
+      "passed_stress": false,
+      "research_eligible": false,
+      "automatic_activation": false
+    }
+  },
+  "neural_blend_screen_periods": {
+    "access/screen_1/result.json": {
+      "kind": "access",
+      "fold": "screen_1",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.7123473541383989,
+            "recall": 0.708502024291498,
+            "f1": 0.7104194857916103,
+            "true_alerts": 1050,
+            "false_alerts": 424,
+            "alerts": 1474,
+            "eligible_episodes": 1482,
+            "missed_episodes": 432,
+            "false_alerts_per_object_day": 0.1879849257370871,
+            "median_lead_hours": 5.442361111111111,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0.4,
+            "precision": 0.7085201793721974,
+            "recall": 0.6929824561403509,
+            "f1": 0.7006651884700665,
+            "true_alerts": 632,
+            "false_alerts": 260,
+            "alerts": 892,
+            "eligible_episodes": 912,
+            "missed_episodes": 280,
+            "false_alerts_per_object_day": 0.2094240837696335,
+            "median_lead_hours": 11.336944444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 96874
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.687539531941809,
+            "recall": 0.733468286099865,
+            "f1": 0.7097616715638263,
+            "true_alerts": 1087,
+            "false_alerts": 494,
+            "alerts": 1581,
+            "eligible_episodes": 1482,
+            "missed_episodes": 395,
+            "false_alerts_per_object_day": 0.21902017291066284,
+            "median_lead_hours": 6.271111111111111,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0.3,
+            "precision": 0.6917211328976035,
+            "recall": 0.6962719298245614,
+            "f1": 0.6939890710382514,
+            "true_alerts": 635,
+            "false_alerts": 283,
+            "alerts": 918,
+            "eligible_episodes": 912,
+            "missed_episodes": 277,
+            "false_alerts_per_object_day": 0.22795006041079338,
+            "median_lead_hours": 11.256388888888889,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 91787
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.6847352024922119,
+            "recall": 0.7415654520917678,
+            "f1": 0.7120181405895691,
+            "true_alerts": 1099,
+            "false_alerts": 506,
+            "alerts": 1605,
+            "eligible_episodes": 1482,
+            "missed_episodes": 383,
+            "false_alerts_per_object_day": 0.2243405009975615,
+            "median_lead_hours": 5.783055555555555,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0.3,
+            "precision": 0.685501066098081,
+            "recall": 0.7050438596491229,
+            "f1": 0.6951351351351351,
+            "true_alerts": 643,
+            "false_alerts": 295,
+            "alerts": 938,
+            "eligible_episodes": 912,
+            "missed_episodes": 269,
+            "false_alerts_per_object_day": 0.23761578735400726,
+            "median_lead_hours": 10.895555555555555,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 91532
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.7070422535211267,
+          "recall": 0.6774628879892037,
+          "f1": 0.6919365954514128,
+          "true_alerts": 1004,
+          "false_alerts": 416,
+          "alerts": 1420,
+          "eligible_episodes": 1482,
+          "missed_episodes": 478,
+          "false_alerts_per_object_day": 0.1844380403458213,
+          "median_lead_hours": 9.5,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "mlp": {
+          "precision": 0.6952624839948783,
+          "recall": 0.7327935222672065,
+          "f1": 0.7135348226018396,
+          "true_alerts": 1086,
+          "false_alerts": 476,
+          "alerts": 1562,
+          "eligible_episodes": 1482,
+          "missed_episodes": 396,
+          "false_alerts_per_object_day": 0.2110396807803148,
+          "median_lead_hours": 5.263333333333334,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "gru": {
+          "precision": 0.6939924906132666,
+          "recall": 0.7483130904183536,
+          "f1": 0.7201298701298702,
+          "true_alerts": 1109,
+          "false_alerts": 489,
+          "alerts": 1598,
+          "eligible_episodes": 1482,
+          "missed_episodes": 373,
+          "false_alerts_per_object_day": 0.2168033695411217,
+          "median_lead_hours": 6.974722222222222,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        }
+      },
+      "reference": {
+        "precision": 0.7197924388435878,
+        "recall": 0.655195681511471,
+        "f1": 0.6859766866831508,
+        "true_alerts": 971,
+        "false_alerts": 378,
+        "alerts": 1349,
+        "eligible_episodes": 1482,
+        "missed_episodes": 511,
+        "false_alerts_per_object_day": 0.1675903347373088,
+        "median_lead_hours": 8.543611111111112,
+        "cooldown_hours": 0.25,
+        "matching": "one_to_one",
+        "forecast_opportunities": 216294
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/access/screen_1",
+      "exposure_days": 2255.5
+    },
+    "access/screen_2/result.json": {
+      "kind": "access",
+      "fold": "screen_2",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.6992952231793266,
+            "recall": 0.7535864978902953,
+            "f1": 0.7254264825345248,
+            "true_alerts": 893,
+            "false_alerts": 384,
+            "alerts": 1277,
+            "eligible_episodes": 1185,
+            "missed_episodes": 292,
+            "false_alerts_per_object_day": 0.18290069064062872,
+            "median_lead_hours": 10.437222222222223,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1,
+            "margin": 1,
+            "floor": 0,
+            "precision": 0.7147766323024055,
+            "recall": 0.7281213535589265,
+            "f1": 0.7213872832369942,
+            "true_alerts": 624,
+            "false_alerts": 249,
+            "alerts": 873,
+            "eligible_episodes": 857,
+            "missed_episodes": 233,
+            "false_alerts_per_object_day": 0.20056383407168749,
+            "median_lead_hours": 6.989444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.7085308056872038,
+            "recall": 0.7569620253164557,
+            "f1": 0.7319461444308446,
+            "true_alerts": 897,
+            "false_alerts": 369,
+            "alerts": 1266,
+            "eligible_episodes": 1185,
+            "missed_episodes": 288,
+            "false_alerts_per_object_day": 0.17575613241247917,
+            "median_lead_hours": 10.024444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1,
+            "margin": 1,
+            "floor": 0,
+            "precision": 0.710801393728223,
+            "recall": 0.7141190198366394,
+            "f1": 0.7124563445867288,
+            "true_alerts": 612,
+            "false_alerts": 249,
+            "alerts": 861,
+            "eligible_episodes": 857,
+            "missed_episodes": 245,
+            "false_alerts_per_object_day": 0.20056383407168749,
+            "median_lead_hours": 6.861527777777777,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.7089314194577353,
+            "recall": 0.750210970464135,
+            "f1": 0.7289872898728987,
+            "true_alerts": 889,
+            "false_alerts": 365,
+            "alerts": 1254,
+            "eligible_episodes": 1185,
+            "missed_episodes": 296,
+            "false_alerts_per_object_day": 0.17385091688497262,
+            "median_lead_hours": 10.36111111111111,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1,
+            "margin": 1,
+            "floor": 0,
+            "precision": 0.7076222980659841,
+            "recall": 0.7257876312718786,
+            "f1": 0.716589861751152,
+            "true_alerts": 622,
+            "false_alerts": 257,
+            "alerts": 879,
+            "eligible_episodes": 857,
+            "missed_episodes": 235,
+            "false_alerts_per_object_day": 0.20700765203383004,
+            "median_lead_hours": 7.268472222222222,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.6929072486360094,
+          "recall": 0.750210970464135,
+          "f1": 0.720421393841167,
+          "true_alerts": 889,
+          "false_alerts": 394,
+          "alerts": 1283,
+          "eligible_episodes": 1185,
+          "missed_episodes": 296,
+          "false_alerts_per_object_day": 0.1876637294593951,
+          "median_lead_hours": 11.363611111111112,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "mlp": {
+          "precision": 0.6954397394136808,
+          "recall": 0.7206751054852321,
+          "f1": 0.7078325735598839,
+          "true_alerts": 854,
+          "false_alerts": 374,
+          "alerts": 1228,
+          "eligible_episodes": 1185,
+          "missed_episodes": 331,
+          "false_alerts_per_object_day": 0.17813765182186234,
+          "median_lead_hours": 10.204166666666666,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "gru": {
+          "precision": 0.6933229813664596,
+          "recall": 0.7535864978902953,
+          "f1": 0.7221997573797008,
+          "true_alerts": 893,
+          "false_alerts": 395,
+          "alerts": 1288,
+          "eligible_episodes": 1185,
+          "missed_episodes": 292,
+          "false_alerts_per_object_day": 0.18814003334127175,
+          "median_lead_hours": 12.575,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        }
+      },
+      "reference": {
+        "precision": 0.6929072486360094,
+        "recall": 0.750210970464135,
+        "f1": 0.720421393841167,
+        "true_alerts": 889,
+        "false_alerts": 394,
+        "alerts": 1283,
+        "eligible_episodes": 1185,
+        "missed_episodes": 296,
+        "false_alerts_per_object_day": 0.1876637294593951,
+        "median_lead_hours": 11.363611111111112,
+        "cooldown_hours": 0.25,
+        "matching": "one_to_one",
+        "forecast_opportunities": 201318
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/access/screen_2",
+      "exposure_days": 2099.5
+    },
+    "fault/screen_1/result.json": {
+      "kind": "fault",
+      "fold": "screen_1",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 8,
+            "missed_episodes": 8,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "low_support",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 8,
+            "missed_episodes": 8,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "low_support",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 0.5,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 8,
+            "missed_episodes": 8,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "low_support",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 0,
+          "alerts": 0,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0,
+          "median_lead_hours": null,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "mlp": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 0,
+          "alerts": 0,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0,
+          "median_lead_hours": null,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "gru": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 0,
+          "alerts": 0,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0,
+          "median_lead_hours": null,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        }
+      },
+      "reference": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_alerts": 0,
+        "false_alerts": 0,
+        "alerts": 0,
+        "eligible_episodes": 18,
+        "missed_episodes": 18,
+        "false_alerts_per_object_day": 0.0,
+        "median_lead_hours": null,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 54132
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/fault/screen_1",
+      "exposure_days": 2255.5
+    },
+    "fault/screen_2/result.json": {
+      "kind": "fault",
+      "fold": "screen_2",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.23529411764705882,
+            "recall": 0.2857142857142857,
+            "f1": 0.25806451612903225,
+            "true_alerts": 8,
+            "false_alerts": 26,
+            "alerts": 34,
+            "eligible_episodes": 28,
+            "missed_episodes": 20,
+            "false_alerts_per_object_day": 0.01238390092879257,
+            "median_lead_hours": 18.613611111111112,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.11538461538461539,
+            "recall": 0.25,
+            "f1": 0.15789473684210525,
+            "true_alerts": 3,
+            "false_alerts": 23,
+            "alerts": 26,
+            "eligible_episodes": 12,
+            "missed_episodes": 9,
+            "false_alerts_per_object_day": 0.01852597664115989,
+            "median_lead_hours": 0.8019444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.11538461538461539,
+            "recall": 0.5357142857142857,
+            "f1": 0.189873417721519,
+            "true_alerts": 15,
+            "false_alerts": 115,
+            "alerts": 130,
+            "eligible_episodes": 28,
+            "missed_episodes": 13,
+            "false_alerts_per_object_day": 0.05477494641581329,
+            "median_lead_hours": 19.06972222222222,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1.5,
+            "margin": 0.25,
+            "floor": 0.05,
+            "precision": 0.05405405405405406,
+            "recall": 0.3333333333333333,
+            "f1": 0.09302325581395349,
+            "true_alerts": 4,
+            "false_alerts": 70,
+            "alerts": 74,
+            "eligible_episodes": 12,
+            "missed_episodes": 8,
+            "false_alerts_per_object_day": 0.056383407168747485,
+            "median_lead_hours": 0.5884722222222223,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 110958
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.18604651162790697,
+            "recall": 0.2857142857142857,
+            "f1": 0.22535211267605634,
+            "true_alerts": 8,
+            "false_alerts": 35,
+            "alerts": 43,
+            "eligible_episodes": 28,
+            "missed_episodes": 20,
+            "false_alerts_per_object_day": 0.016670635865682307,
+            "median_lead_hours": 10.534861111111113,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 1,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.08333333333333333,
+            "recall": 0.25,
+            "f1": 0.125,
+            "true_alerts": 3,
+            "false_alerts": 33,
+            "alerts": 36,
+            "eligible_episodes": 12,
+            "missed_episodes": 9,
+            "false_alerts_per_object_day": 0.026580749093838098,
+            "median_lead_hours": 0.8019444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.14864864864864866,
+          "recall": 0.39285714285714285,
+          "f1": 0.21568627450980393,
+          "true_alerts": 11,
+          "false_alerts": 63,
+          "alerts": 74,
+          "eligible_episodes": 28,
+          "missed_episodes": 17,
+          "false_alerts_per_object_day": 0.03000714455822815,
+          "median_lead_hours": 19.622222222222224,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "mlp": {
+          "precision": 0.21739130434782608,
+          "recall": 0.17857142857142858,
+          "f1": 0.19607843137254902,
+          "true_alerts": 5,
+          "false_alerts": 18,
+          "alerts": 23,
+          "eligible_episodes": 28,
+          "missed_episodes": 23,
+          "false_alerts_per_object_day": 0.008573469873779471,
+          "median_lead_hours": 0.16666666666666666,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "gru": {
+          "precision": 0.048672566371681415,
+          "recall": 0.39285714285714285,
+          "f1": 0.08661417322834646,
+          "true_alerts": 11,
+          "false_alerts": 215,
+          "alerts": 226,
+          "eligible_episodes": 28,
+          "missed_episodes": 17,
+          "false_alerts_per_object_day": 0.10240533460347702,
+          "median_lead_hours": 6.828611111111111,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        }
+      },
+      "reference": {
+        "precision": 0.15714285714285714,
+        "recall": 0.39285714285714285,
+        "f1": 0.22448979591836735,
+        "true_alerts": 11,
+        "false_alerts": 59,
+        "alerts": 70,
+        "eligible_episodes": 28,
+        "missed_episodes": 17,
+        "false_alerts_per_object_day": 0.0281019290307216,
+        "median_lead_hours": 17.06972222222222,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 50388
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/fault/screen_2",
+      "exposure_days": 2099.5
+    },
+    "fire/screen_1/result.json": {
+      "kind": "fire",
+      "fold": "screen_1",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.3617021276595745,
+            "recall": 0.504950495049505,
+            "f1": 0.4214876033057851,
+            "true_alerts": 51,
+            "false_alerts": 90,
+            "alerts": 141,
+            "eligible_episodes": 101,
+            "missed_episodes": 50,
+            "false_alerts_per_object_day": 0.03990246065174019,
+            "median_lead_hours": 4.2844444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.5,
+            "floor": 0.2,
+            "precision": 0.29850746268656714,
+            "recall": 0.30303030303030304,
+            "f1": 0.3007518796992481,
+            "true_alerts": 20,
+            "false_alerts": 47,
+            "alerts": 67,
+            "eligible_episodes": 66,
+            "missed_episodes": 46,
+            "false_alerts_per_object_day": 0.037857430527587596,
+            "median_lead_hours": 0.1638888888888889,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 117269
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.34074074074074073,
+            "recall": 0.45544554455445546,
+            "f1": 0.3898305084745763,
+            "true_alerts": 46,
+            "false_alerts": 89,
+            "alerts": 135,
+            "eligible_episodes": 101,
+            "missed_episodes": 55,
+            "false_alerts_per_object_day": 0.039459099977831966,
+            "median_lead_hours": 3.2361111111111107,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.25,
+            "floor": 0.2,
+            "precision": 0.2916666666666667,
+            "recall": 0.3181818181818182,
+            "f1": 0.30434782608695654,
+            "true_alerts": 21,
+            "false_alerts": 51,
+            "alerts": 72,
+            "eligible_episodes": 66,
+            "missed_episodes": 45,
+            "false_alerts_per_object_day": 0.04107933950865888,
+            "median_lead_hours": 0.1638888888888889,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 117482
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.3597122302158273,
+            "recall": 0.49504950495049505,
+            "f1": 0.4166666666666667,
+            "true_alerts": 50,
+            "false_alerts": 89,
+            "alerts": 139,
+            "eligible_episodes": 101,
+            "missed_episodes": 51,
+            "false_alerts_per_object_day": 0.039459099977831966,
+            "median_lead_hours": 4.468888888888889,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 216294
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.5,
+            "floor": 0.2,
+            "precision": 0.2835820895522388,
+            "recall": 0.2878787878787879,
+            "f1": 0.2857142857142857,
+            "true_alerts": 19,
+            "false_alerts": 48,
+            "alerts": 67,
+            "eligible_episodes": 66,
+            "missed_episodes": 47,
+            "false_alerts_per_object_day": 0.038662907772855415,
+            "median_lead_hours": 0.14166666666666666,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": false,
+            "gated_policy_rows": 117525
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.39080459770114945,
+          "recall": 0.33663366336633666,
+          "f1": 0.3617021276595745,
+          "true_alerts": 34,
+          "false_alerts": 53,
+          "alerts": 87,
+          "eligible_episodes": 101,
+          "missed_episodes": 67,
+          "false_alerts_per_object_day": 0.02349811571713589,
+          "median_lead_hours": 2.2444444444444445,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "mlp": {
+          "precision": 0.31645569620253167,
+          "recall": 0.49504950495049505,
+          "f1": 0.3861003861003861,
+          "true_alerts": 50,
+          "false_alerts": 108,
+          "alerts": 158,
+          "eligible_episodes": 101,
+          "missed_episodes": 51,
+          "false_alerts_per_object_day": 0.04788295278208823,
+          "median_lead_hours": 7.306944444444444,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        },
+        "gru": {
+          "precision": 0.26136363636363635,
+          "recall": 0.45544554455445546,
+          "f1": 0.33212996389891697,
+          "true_alerts": 46,
+          "false_alerts": 130,
+          "alerts": 176,
+          "eligible_episodes": 101,
+          "missed_episodes": 55,
+          "false_alerts_per_object_day": 0.05763688760806916,
+          "median_lead_hours": 7.741666666666667,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 216294
+        }
+      },
+      "reference": {
+        "precision": 0.3763440860215054,
+        "recall": 0.3465346534653465,
+        "f1": 0.36082474226804123,
+        "true_alerts": 35,
+        "false_alerts": 58,
+        "alerts": 93,
+        "eligible_episodes": 101,
+        "missed_episodes": 66,
+        "false_alerts_per_object_day": 0.025714919086677012,
+        "median_lead_hours": 1.093888888888889,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 54132
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/fire/screen_1",
+      "exposure_days": 2255.5
+    },
+    "fire/screen_2/result.json": {
+      "kind": "fire",
+      "fold": "screen_2",
+      "arms": {
+        "tree_mlp": {
+          "scores": {
+            "precision": 0.4751131221719457,
+            "recall": 0.5614973262032086,
+            "f1": 0.5147058823529411,
+            "true_alerts": 105,
+            "false_alerts": 116,
+            "alerts": 221,
+            "eligible_episodes": 187,
+            "missed_episodes": 82,
+            "false_alerts_per_object_day": 0.05525125029768992,
+            "median_lead_hours": 2.6055555555555556,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.43609022556390975,
+            "recall": 0.3815789473684211,
+            "f1": 0.4070175438596491,
+            "true_alerts": 58,
+            "false_alerts": 75,
+            "alerts": 133,
+            "eligible_episodes": 152,
+            "missed_episodes": 94,
+            "false_alerts_per_object_day": 0.060410793395086586,
+            "median_lead_hours": 0.606111111111111,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "mlp": 0.5
+          }
+        },
+        "tree_gru": {
+          "scores": {
+            "precision": 0.45374449339207046,
+            "recall": 0.5508021390374331,
+            "f1": 0.4975845410628019,
+            "true_alerts": 103,
+            "false_alerts": 124,
+            "alerts": 227,
+            "eligible_episodes": 187,
+            "missed_episodes": 84,
+            "false_alerts_per_object_day": 0.059061681352703024,
+            "median_lead_hours": 2.611111111111111,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.41605839416058393,
+            "recall": 0.375,
+            "f1": 0.3944636678200692,
+            "true_alerts": 57,
+            "false_alerts": 80,
+            "alerts": 137,
+            "eligible_episodes": 152,
+            "missed_episodes": 95,
+            "false_alerts_per_object_day": 0.0644381796214257,
+            "median_lead_hours": 0.6344444444444445,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.5,
+            "gru": 0.5
+          }
+        },
+        "three_way": {
+          "scores": {
+            "precision": 0.4364406779661017,
+            "recall": 0.5508021390374331,
+            "f1": 0.48699763593380613,
+            "true_alerts": 103,
+            "false_alerts": 133,
+            "alerts": 236,
+            "eligible_episodes": 187,
+            "missed_episodes": 84,
+            "false_alerts_per_object_day": 0.06334841628959276,
+            "median_lead_hours": 2.758888888888889,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 201318
+          },
+          "policy": {
+            "capacity": 2,
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.4142857142857143,
+            "recall": 0.3815789473684211,
+            "f1": 0.3972602739726027,
+            "true_alerts": 58,
+            "false_alerts": 82,
+            "alerts": 140,
+            "eligible_episodes": 152,
+            "missed_episodes": 94,
+            "false_alerts_per_object_day": 0.06604913411196134,
+            "median_lead_hours": 0.5491666666666666,
+            "cooldown_hours": 0.25,
+            "matching": "one_to_one",
+            "forecast_opportunities": 118950,
+            "status": "supported",
+            "gate_disabled": true,
+            "gated_policy_rows": 0
+          },
+          "weights": {
+            "global_control": 0.3333333333333333,
+            "mlp": 0.3333333333333333,
+            "gru": 0.3333333333333333
+          }
+        }
+      },
+      "controls": {
+        "global_control": {
+          "precision": 0.47317073170731705,
+          "recall": 0.5187165775401069,
+          "f1": 0.49489795918367346,
+          "true_alerts": 97,
+          "false_alerts": 108,
+          "alerts": 205,
+          "eligible_episodes": 187,
+          "missed_episodes": 90,
+          "false_alerts_per_object_day": 0.05144081924267683,
+          "median_lead_hours": 2.0433333333333334,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "mlp": {
+          "precision": 0.4108527131782946,
+          "recall": 0.5668449197860963,
+          "f1": 0.4764044943820225,
+          "true_alerts": 106,
+          "false_alerts": 152,
+          "alerts": 258,
+          "eligible_episodes": 187,
+          "missed_episodes": 81,
+          "false_alerts_per_object_day": 0.07239819004524888,
+          "median_lead_hours": 3.268472222222222,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        },
+        "gru": {
+          "precision": 0.485,
+          "recall": 0.5187165775401069,
+          "f1": 0.5012919896640827,
+          "true_alerts": 97,
+          "false_alerts": 103,
+          "alerts": 200,
+          "eligible_episodes": 187,
+          "missed_episodes": 90,
+          "false_alerts_per_object_day": 0.04905929983329364,
+          "median_lead_hours": 2.611111111111111,
+          "cooldown_hours": 0.25,
+          "matching": "one_to_one",
+          "forecast_opportunities": 201318
+        }
+      },
+      "reference": {
+        "precision": 0.458128078817734,
+        "recall": 0.49732620320855614,
+        "f1": 0.47692307692307695,
+        "true_alerts": 93,
+        "false_alerts": 110,
+        "alerts": 203,
+        "eligible_episodes": 187,
+        "missed_episodes": 94,
+        "false_alerts_per_object_day": 0.052393427006430106,
+        "median_lead_hours": 2.2725,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 50388
+      },
+      "same_episode_cohort": true,
+      "component_alert_and_score_parity": true,
+      "source_directory": "artifacts/research-v28/fire/screen_2",
+      "exposure_days": 2099.5
+    }
+  },
+  "neural_blend_control_models_verified": {
+    "artifacts/research-v29/controls/fault/confirmation/models/gru/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "gru",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": true,
+          "initial_log_mean": -4.609074193324558
+        },
+        "sizes": {
+          "train": {
+            "rows": 254592,
+            "positive_rows": 1410,
+            "eligible_episodes": 317
+          },
+          "validation": {
+            "rows": 18720,
+            "positive_rows": 237,
+            "eligible_episodes": 36
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "d2d11a40d350ab5a4b7040577279b5ee21975bc54b7bca52af5bbbca6f535e1a"
+      },
+      "variant": "gru",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": true,
+        "initial_log_mean": -4.609074193324558
+      },
+      "sizes": {
+        "train": {
+          "rows": 254592,
+          "positive_rows": 1410,
+          "eligible_episodes": 317
+        },
+        "validation": {
+          "rows": 18720,
+          "positive_rows": 237,
+          "eligible_episodes": 36
+        }
+      },
+      "best_epoch": 1,
+      "best_validation_loss": 0.07435383415041534,
+      "completed_epochs": 5,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.08086986935666862
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.0391069313524363,
+          "validation_loss": 0.07435383415041534,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 12.385180916000536
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.03173511574684435,
+          "validation_loss": 0.09529960342709039,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 24.329941957999836
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.028522644709381793,
+          "validation_loss": 0.09871901500504875,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 36.14709954100181
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.025879643445430898,
+          "validation_loss": 0.09848819731623638,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 48.01449279100052
+        },
+        {
+          "epoch": 5,
+          "training_loss": 0.023272486416226867,
+          "validation_loss": 0.10976221153958171,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 60.34591941600229
+        }
+      ],
+      "parameter_count": 39331,
+      "model_sha256": "6351cefce5154890e943c648358d7060899cdddad1c4c29a5289ab2c2b494c8d",
+      "weights_file": "artifacts/research-v29/controls/fault/confirmation/models/gru/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    },
+    "artifacts/research-v29/controls/fault/confirmation/models/mlp/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "mlp",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": false,
+          "initial_log_mean": -4.609074193324558
+        },
+        "sizes": {
+          "train": {
+            "rows": 254592,
+            "positive_rows": 1410,
+            "eligible_episodes": 317
+          },
+          "validation": {
+            "rows": 18720,
+            "positive_rows": 237,
+            "eligible_episodes": 36
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "d2d11a40d350ab5a4b7040577279b5ee21975bc54b7bca52af5bbbca6f535e1a"
+      },
+      "variant": "mlp",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": false,
+        "initial_log_mean": -4.609074193324558
+      },
+      "sizes": {
+        "train": {
+          "rows": 254592,
+          "positive_rows": 1410,
+          "eligible_episodes": 317
+        },
+        "validation": {
+          "rows": 18720,
+          "positive_rows": 237,
+          "eligible_episodes": 36
+        }
+      },
+      "best_epoch": 1,
+      "best_validation_loss": 0.07294374293590683,
+      "completed_epochs": 5,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.08086986935666862
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.03962251903346888,
+          "validation_loss": 0.07294374293590683,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 1.8952749999989464
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.033551776859405476,
+          "validation_loss": 0.0807700365855672,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 3.65414304099977
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.031192834807448406,
+          "validation_loss": 0.08476667504870213,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 5.374125457998161
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.028611919076157132,
+          "validation_loss": 0.08661527870276531,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 7.143397832998744
+        },
+        {
+          "epoch": 5,
+          "training_loss": 0.025866801843474174,
+          "validation_loss": 0.09741025533287129,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 8.92145920799885
+        }
+      ],
+      "parameter_count": 22883,
+      "model_sha256": "50ad5e4cb54c4e878091c221e312ec6ebb46c0072a49e16ca75d3afd3c73ffcc",
+      "weights_file": "artifacts/research-v29/controls/fault/confirmation/models/mlp/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    },
+    "artifacts/research-v29/controls/fault/stress_1/models/gru/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "gru",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": true,
+          "initial_log_mean": -5.447301468909919
+        },
+        "sizes": {
+          "train": {
+            "rows": 255344,
+            "positive_rows": 819,
+            "eligible_episodes": 138
+          },
+          "validation": {
+            "rows": 18720,
+            "positive_rows": 127,
+            "eligible_episodes": 27
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "7c277a5b24566c293bcd78e174489df5aaf09bfda735797ec7530294bdb5f675"
+      },
+      "variant": "gru",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": true,
+        "initial_log_mean": -5.447301468909919
+      },
+      "sizes": {
+        "train": {
+          "rows": 255344,
+          "positive_rows": 819,
+          "eligible_episodes": 138
+        },
+        "validation": {
+          "rows": 18720,
+          "positive_rows": 127,
+          "eligible_episodes": 27
+        }
+      },
+      "best_epoch": 2,
+      "best_validation_loss": 0.050540333051881554,
+      "completed_epochs": 6,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.06192360216451835
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.02416479168210296,
+          "validation_loss": 0.05319972910039279,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 12.143845916998544
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.02008619275824327,
+          "validation_loss": 0.050540333051881554,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 23.790796707999107
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.017977633728089658,
+          "validation_loss": 0.057346575689005884,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 35.35060770799828
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.01563642453314745,
+          "validation_loss": 0.061861419984921506,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 46.96101454199743
+        },
+        {
+          "epoch": 5,
+          "training_loss": 0.013714878458476722,
+          "validation_loss": 0.07666094482393793,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 59.16779962500004
+        },
+        {
+          "epoch": 6,
+          "training_loss": 0.011222673151256343,
+          "validation_loss": 0.09709281615072282,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 70.78409783299867
+        }
+      ],
+      "parameter_count": 39331,
+      "model_sha256": "7da93c4e8f0b49fb0e9286939677987252b69a7bfe2601f1b89d07ad4fff53f7",
+      "weights_file": "artifacts/research-v29/controls/fault/stress_1/models/gru/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    },
+    "artifacts/research-v29/controls/fault/stress_1/models/mlp/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "mlp",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": false,
+          "initial_log_mean": -5.447301468909919
+        },
+        "sizes": {
+          "train": {
+            "rows": 255344,
+            "positive_rows": 819,
+            "eligible_episodes": 138
+          },
+          "validation": {
+            "rows": 18720,
+            "positive_rows": 127,
+            "eligible_episodes": 27
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "7c277a5b24566c293bcd78e174489df5aaf09bfda735797ec7530294bdb5f675"
+      },
+      "variant": "mlp",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": false,
+        "initial_log_mean": -5.447301468909919
+      },
+      "sizes": {
+        "train": {
+          "rows": 255344,
+          "positive_rows": 819,
+          "eligible_episodes": 138
+        },
+        "validation": {
+          "rows": 18720,
+          "positive_rows": 127,
+          "eligible_episodes": 27
+        }
+      },
+      "best_epoch": 2,
+      "best_validation_loss": 0.049784093957077155,
+      "completed_epochs": 6,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.06192360216451835
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.02416987675407277,
+          "validation_loss": 0.052469137552083184,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 1.5115028750005877
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.02078635105877803,
+          "validation_loss": 0.049784093957077155,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 3.0129495000001043
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.019392575648001047,
+          "validation_loss": 0.059093784676124896,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 4.495775332998164
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.01791841006830257,
+          "validation_loss": 0.058966807121583684,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 6.002370124999288
+        },
+        {
+          "epoch": 5,
+          "training_loss": 0.01673649061590039,
+          "validation_loss": 0.06754107248230332,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 7.517995582998992
+        },
+        {
+          "epoch": 6,
+          "training_loss": 0.015155424222548126,
+          "validation_loss": 0.07037951627695702,
+          "best_epoch": 2,
+          "elapsed_this_process_seconds": 9.014335625000967
+        }
+      ],
+      "parameter_count": 22883,
+      "model_sha256": "e0dbdde75e64bba106da62ebfa7db212e92ade9be5367fe92adb72db131f0a89",
+      "weights_file": "artifacts/research-v29/controls/fault/stress_1/models/mlp/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    },
+    "artifacts/research-v29/controls/fault/stress_2/models/gru/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "gru",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": true,
+          "initial_log_mean": -4.772917233844404
+        },
+        "sizes": {
+          "train": {
+            "rows": 258288,
+            "positive_rows": 1228,
+            "eligible_episodes": 273
+          },
+          "validation": {
+            "rows": 14352,
+            "positive_rows": 123,
+            "eligible_episodes": 23
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "836dfe8452a1b9255cc415120f6945651ecfe981e65010041f39ef498b416796"
+      },
+      "variant": "gru",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": true,
+        "initial_log_mean": -4.772917233844404
+      },
+      "sizes": {
+        "train": {
+          "rows": 258288,
+          "positive_rows": 1228,
+          "eligible_episodes": 273
+        },
+        "validation": {
+          "rows": 14352,
+          "positive_rows": 123,
+          "eligible_episodes": 23
+        }
+      },
+      "best_epoch": 0,
+      "best_validation_loss": 0.06964692370640946,
+      "completed_epochs": 4,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.06964692370640946
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.03469634790666725,
+          "validation_loss": 0.0713624426450004,
+          "best_epoch": 0,
+          "elapsed_this_process_seconds": 12.347707332999562
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.029579851077480113,
+          "validation_loss": 0.07657388293600353,
+          "best_epoch": 0,
+          "elapsed_this_process_seconds": 24.137740624999424
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.02466401030983745,
+          "validation_loss": 0.08076731060277223,
+          "best_epoch": 0,
+          "elapsed_this_process_seconds": 35.84399337499781
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.021716538152078163,
+          "validation_loss": 0.08847804399934571,
+          "best_epoch": 0,
+          "elapsed_this_process_seconds": 47.579542125000444
+        }
+      ],
+      "parameter_count": 39331,
+      "model_sha256": "0844b0181fa480b75288bf5351a35ca68748442007024e5967ced8c035581f20",
+      "weights_file": "artifacts/research-v29/controls/fault/stress_2/models/gru/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    },
+    "artifacts/research-v29/controls/fault/stress_2/models/mlp/fit.json": {
+      "signature": {
+        "plan_sha256": "980b46186ed29acbe574f7bbc3891a390b39861bc3e9f30cf402a1ce6acfa321",
+        "variant": "mlp",
+        "config": {
+          "numeric_dim": 282,
+          "category_sizes": [
+            79,
+            17,
+            3
+          ],
+          "use_history": false,
+          "initial_log_mean": -4.772917233844404
+        },
+        "sizes": {
+          "train": {
+            "rows": 258288,
+            "positive_rows": 1228,
+            "eligible_episodes": 273
+          },
+          "validation": {
+            "rows": 14352,
+            "positive_rows": 123,
+            "eligible_episodes": 23
+          }
+        },
+        "device": "mps",
+        "torch": "2.14.0",
+        "codec_sha256": "836dfe8452a1b9255cc415120f6945651ecfe981e65010041f39ef498b416796"
+      },
+      "variant": "mlp",
+      "config": {
+        "numeric_dim": 282,
+        "category_sizes": [
+          79,
+          17,
+          3
+        ],
+        "use_history": false,
+        "initial_log_mean": -4.772917233844404
+      },
+      "sizes": {
+        "train": {
+          "rows": 258288,
+          "positive_rows": 1228,
+          "eligible_episodes": 273
+        },
+        "validation": {
+          "rows": 14352,
+          "positive_rows": 123,
+          "eligible_episodes": 23
+        }
+      },
+      "best_epoch": 1,
+      "best_validation_loss": 0.06732095072897208,
+      "completed_epochs": 5,
+      "history": [
+        {
+          "epoch": 0,
+          "validation_loss": 0.06964692370640946
+        },
+        {
+          "epoch": 1,
+          "training_loss": 0.03523396494308153,
+          "validation_loss": 0.06732095072897208,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 1.5429582919969107
+        },
+        {
+          "epoch": 2,
+          "training_loss": 0.03128829911694587,
+          "validation_loss": 0.07324223263289946,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 3.048605874999339
+        },
+        {
+          "epoch": 3,
+          "training_loss": 0.026921428088075686,
+          "validation_loss": 0.08107296190342674,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 4.590804041999945
+        },
+        {
+          "epoch": 4,
+          "training_loss": 0.025890053451529248,
+          "validation_loss": 0.08317821239953221,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 6.1574487919970124
+        },
+        {
+          "epoch": 5,
+          "training_loss": 0.023061706938317057,
+          "validation_loss": 0.09338942238090946,
+          "best_epoch": 1,
+          "elapsed_this_process_seconds": 7.728787332998763
+        }
+      ],
+      "parameter_count": 22883,
+      "model_sha256": "7fa879fc435f7b3613cd8c4afccd0a00c5649ffaab2573db06d778fe1adae30a",
+      "weights_file": "artifacts/research-v29/controls/fault/stress_2/models/mlp/model.pt",
+      "device": "mps",
+      "torch": "2.14.0"
+    }
+  },
+  "neural_blend_decision": "V29 fixes three convex probability/count pools before evaluation; no fitted mixing weights. Access/fire fail screening. Fault CatBoost/MLP passes screen8/34/46 and May7/34/29, but fails stress: December17/35/106 versus44/131/106 control, March0/2/36 versus0/0/36. Five months32/105/217 P.305/R.147/F1.199 versus58/223/217 P.260/R.267/F1.264;92 fewer false warnings cost26 true warnings. No activation, variant substitution or90/90 claim. Six additional neural models were trained only for declared extra-month component comparisons, preserving the v28 report.",
   "neural_count_screen_periods": {
     "access/screen_1/result.json": {
       "kind": "access",
@@ -34086,8 +37739,8 @@
   },
   "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
   "neural_verification": {
-    "base_suite": "124 passed, 1 skipped (optional PyTorch module)",
-    "neural_suite": "130 passed, including interrupted MLP and GRU checkpoint resume on CPU and MPS",
+    "base_suite": "126 passed, 1 skipped (optional PyTorch module)",
+    "neural_suite": "132 passed, including blend alignment/domain checks and interrupted MLP and GRU checkpoint resume on CPU and MPS",
     "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements."
   },
   "object_kind_policy_diagnostic": {
