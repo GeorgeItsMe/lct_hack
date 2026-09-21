@@ -22,6 +22,8 @@ from moscollector.train import calibrated, model_input
 def run(directory: Path, as_of: str):
     started = time.monotonic()
     cutoff = pd.Timestamp(as_of)
+    status_file = directory / "status.json"
+    state = json.loads(status_file.read_text()) if status_file.exists() else {}
     aligned = cutoff.floor("h")
     offset = cutoff - aligned
     year = cutoff.year
@@ -105,14 +107,20 @@ def run(directory: Path, as_of: str):
         "timezone": "Europe/Moscow",
         "horizon_hours": 24,
         "label_type": "proxy_sensor_episode",
-        "mode": "import_preview",
+        "mode": state.get("mode", "import_preview"),
+        "stream_revision": state.get("stream_revision"),
         "history_rows": rows,
         "history_start": str(begin),
         "last_observation": str(end),
         "source_cutoff": "strictly_before_as_of",
         "elapsed_seconds": round(time.monotonic() - started, 2),
         "forecasts": forecasts,
-        "notice": "Независимый расчёт по пакету и архиву. Исходный архив, тестовые метрики и журнал решений не изменены.",
+        "notice": (
+            "Расчёт по неизменяемому снимку накопленного потока и архиву."
+            if state.get("mode") == "accumulated_stream"
+            else "Независимый расчёт по пакету и архиву."
+        )
+        + " Исходный архив и тестовые метрики не изменены.",
     }
     prepare.write_json(directory / "result.json", clean(result))
     # Keep only the final feature snapshot and provenance, not duplicate historical telemetry.

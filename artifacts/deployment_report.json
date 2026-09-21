@@ -11,5 +11,19 @@
   "tls_live_test": "not_performed_no_certificate",
   "restored_decisions": 1,
   "restored_audit_records": 6,
-  "original_database_preserved": true
+  "original_database_preserved": true,
+  "stream_restore": {
+    "database": "contour_restore_stream_20260921",
+    "events": 1389,
+    "receipts": 2,
+    "decisions": 3,
+    "original_preserved": true
+  },
+  "runtime_restore": {
+    "volume": "contour_restore_runtime_20260921",
+    "paired_backup": "contour-20260921T061502Z",
+    "checksums": "passed",
+    "decision_snapshot_explanations": "passed",
+    "original_volume_preserved": true
+  }
 }

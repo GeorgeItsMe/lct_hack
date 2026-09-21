@@ -98,3 +98,56 @@ def test_admin_thresholds_validate_and_persist(client):
     assert c.get("/api/settings").json()["thresholds"]["fault"] == 0.15
     assert c.post("/api/auth/logout").status_code == 200
     assert c.get("/api/settings").status_code == 401
+
+
+def test_stream_requires_authorized_writer_and_exposes_durable_receipt(client, monkeypatch):
+    from moscollector import api
+
+    c, _, _ = client
+    mock = SimpleNamespace(
+        ingest=lambda content, extension, as_of, user_id: {
+            "receipt": {"id": 1, "inserted_rows": 1},
+            "job": {"id": "a" * 32},
+        },
+        status=lambda: {"events": 1},
+    )
+    monkeypatch.setattr(api, "stream", lambda: mock)
+    endpoint = "/api/stream/events?as_of=2026-06-15T12:00&format=json"
+    assert c.post(endpoint, content="[]").status_code == 401
+    login(c, "analyst")
+    assert c.post(endpoint, content="[]").status_code == 403
+    assert c.get("/api/stream").json()["events"] == 1
+    login(c, "dispatcher")
+    result = c.post(endpoint, content="[]")
+    assert result.status_code == 202 and result.json()["receipt"]["id"] == 1
+
+
+def test_batch_decision_is_bound_to_exact_forecast_snapshot(client, monkeypatch):
+    from moscollector import api
+
+    c, _, _ = client
+    job_id = "a" * 32
+    mock = SimpleNamespace(
+        get=lambda _: {
+            "status": "complete",
+            "as_of": "2026-06-15T12:05:00",
+            "result": {"forecasts": [{"object_id": 1, "kind": "fault"}]},
+        }
+    )
+    monkeypatch.setattr(api, "imports", lambda: mock)
+    login(c, "dispatcher")
+    body = {
+        "prediction_id": f"batch:{job_id}:1:fault",
+        "batch_id": job_id,
+        "object_id": 1,
+        "kind": "fault",
+        "as_of": "2026-06-15T12:05:00",
+        "action": "monitor",
+        "reason": "insufficient_evidence",
+        "comment": "Проверка снимка",
+    }
+    assert c.post("/api/decisions", json=body).status_code == 200
+    assert c.post("/api/decisions", json={**body, "object_id": 2}).status_code == 422
+    assert c.post("/api/decisions", json={**body, "as_of": "2026-06-15T12:00:00"}).status_code == 422
+    assert c.post("/api/decisions", json={**body, "prediction_id": "forged"}).status_code == 422
+    assert c.get("/api/decisions").json()[0]["prediction_id"] == body["prediction_id"]

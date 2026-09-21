@@ -2828,7 +2828,8 @@ tbody tr:last-child td {
   flex: 1;
   min-width: 210px;
 }
-.import-form input {
+.import-form input,
+.import-form select {
   padding: 10px;
   border: 1px solid #d3dbd2;
   border-radius: 6px;
@@ -2838,6 +2839,34 @@ tbody tr:last-child td {
 }
 .import-form button {
   min-height: 43px;
+}
+.batch-detail {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #b6cbb8;
+  border-radius: 10px;
+  background: #f8faf5;
+}
+.stream-notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: #f5f0df;
+  border: 1px solid #e6d8ae;
+  border-radius: 9px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.stream-notification > span {
+  flex: 1;
+}
+.batch-detail h3 {
+  margin-top: 0;
+}
+.batch-detail li {
+  margin: 8px 0;
 }
 .import-jobs > button {
   display: flex;

@@ -200,13 +200,9 @@ class AnalyticsService:
             "description": "Схема иерархии объектов из справочника. Географические координаты не предоставлены.",
         }
 
-    def detail(self, obj: int, kind: str, as_of=None, overrides=None):
-        t = self.resolve_time(as_of)
-        forecasts = self.forecast_rows(t, overrides)
-        row = next((x for x in forecasts if x["object_id"] == obj and x["kind"] == kind), None)
-        if row is None:
-            raise KeyError("Прогноз не найден")
-        features = self.features[self.features.object_id.eq(obj) & self.features.as_of.eq(t)]
+    def explain_features(self, features, kind):
+        if len(features) != 1:
+            raise KeyError("Снимок признаков прогноза не найден")
         meta = self.meta[kind]
         x = model_input(features, meta["features"])
         shap = self.models[kind].get_feature_importance(Pool(x, cat_features=CATEGORICAL), type="ShapValues")[
@@ -224,6 +220,17 @@ class AnalyticsService:
                 }
             )
         contributions.sort(key=lambda v: abs(v["contribution"]), reverse=True)
+        return contributions[:8]
+
+    def detail(self, obj: int, kind: str, as_of=None, overrides=None):
+        t = self.resolve_time(as_of)
+        forecasts = self.forecast_rows(t, overrides)
+        row = next((x for x in forecasts if x["object_id"] == obj and x["kind"] == kind), None)
+        if row is None:
+            raise KeyError("Прогноз не найден")
+        features = self.features[self.features.object_id.eq(obj) & self.features.as_of.eq(t)]
+        contributions = self.explain_features(features, kind)
+        meta = self.meta[kind]
         past = self.predictions[
             self.predictions.object_id.eq(obj)
             & self.predictions.kind.eq(kind)

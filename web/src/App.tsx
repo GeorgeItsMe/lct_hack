@@ -234,6 +234,51 @@ export default function App() {
     [toast, setToast] = useState(""),
     [profileOpen, setProfileOpen] = useState(false);
   const closeDrawer = useCallback(() => setSelected(null), []);
+  const [streamAlert, setStreamAlert] = useState<{
+    id: string;
+    asOf: string;
+    count: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!user) {
+      setStreamAlert(null);
+      return;
+    }
+    let active = true,
+      knownJob = "";
+    async function pollStream() {
+      try {
+        const state = await api<{
+          latest_job: { id: string; status: string; as_of: string } | null;
+        }>("/stream");
+        if (
+          state.latest_job?.status !== "complete" ||
+          state.latest_job.id === knownJob
+        )
+          return;
+        const result = await api<{
+          result: { forecasts: { above_threshold: boolean }[] };
+        }>(`/imports/${state.latest_job.id}`);
+        if (active) {
+          knownJob = state.latest_job.id;
+          setStreamAlert({
+            id: knownJob,
+            asOf: state.latest_job.as_of,
+            count: result.result.forecasts.filter((f) => f.above_threshold)
+              .length,
+          });
+        }
+      } catch {
+        /* The Data page displays request errors with an explicit retry. */
+      }
+    }
+    pollStream();
+    const timer = setInterval(pollStream, 15000);
+    return () => {
+      active = false;
+      clearInterval(timer);
+    };
+  }, [user]);
   useEffect(() => {
     api<User>("/auth/me")
       .then(setUser)
@@ -464,6 +509,18 @@ export default function App() {
           </div>
         </header>
         <main>
+          {streamAlert && (
+            <div className="stream-notification" role="status">
+              <Bell size={18} />
+              <span>
+                Расчёт поступившего потока · {date(streamAlert.asOf, true)} ·
+                выше порога: {streamAlert.count}
+              </span>
+              <button className="text-link" onClick={() => setPage("quality")}>
+                Открыть проверку
+              </button>
+            </div>
+          )}
           <div className="page-heading">
             <div>
               <span className="eyebrow">ОПЕРАТИВНЫЙ КОНТУР</span>

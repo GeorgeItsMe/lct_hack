@@ -158,11 +158,14 @@ class ImportManager:
     def submit(self, content, extension, as_of, user_id):
         frame, cutoff, counts = normalize_events(read_events(content, extension), self.channels, as_of)
         identity = hashlib.sha256(content + cutoff.isoformat().encode()).hexdigest()
+        return self.submit_frame(frame, cutoff, counts, identity, extension, user_id)
+
+    def submit_frame(self, frame, cutoff, counts, identity, extension, user_id, metadata=None):
+        """Queue an immutable snapshot, also used by the accumulated stream."""
         with self.lock:
-            for path in self.root.glob("*/status.json"):
-                previous = json.loads(path.read_text())
-                if previous["sha256"] == identity and previous["status"] != "failed":
-                    return previous
+            previous = self.find(identity)
+            if previous and previous["status"] != "failed":
+                return previous
             if not self.slots.acquire(blocking=False):
                 raise ValueError("Очередь из четырёх пакетов заполнена. Дождитесь завершения расчёта")
             job_id = uuid.uuid4().hex
@@ -178,10 +181,22 @@ class ImportManager:
                 "user_id": user_id,
                 "format": extension,
                 **counts,
+                **(metadata or {}),
             }
             self._save(directory, state)
             self.pool.submit(self._run, directory, state)
             return state.copy()
+
+    def find(self, identity):
+        candidates = [json.loads(path.read_text()) for path in self.root.glob("*/status.json")]
+        return next(
+            (
+                s
+                for s in sorted(candidates, key=lambda s: s["created_at"], reverse=True)
+                if s["sha256"] == identity
+            ),
+            None,
+        )
 
     def _run(self, directory, state):
         try:
@@ -227,3 +242,56 @@ class ImportManager:
             key=lambda x: x["created_at"],
             reverse=True,
         )[:100]
+
+    def detail(self, job_id, object_id, kind, service):
+        from moscollector.domain import RECOMMENDATIONS
+        from moscollector.service import clean
+
+        state = self.get(job_id)
+        if state["status"] != "complete":
+            raise ValueError("Расчёт ещё не завершён")
+        forecast = next(
+            (r for r in state["result"]["forecasts"] if r["object_id"] == object_id and r["kind"] == kind),
+            None,
+        )
+        if forecast is None:
+            raise KeyError("Прогноз в пакете не найден")
+        directory = self.root / job_id
+        frame = pd.read_parquet(
+            directory / "feature_snapshot.parquet", filters=[("object_id", "=", object_id)]
+        )
+        import duckdb
+
+        cutoff = pd.Timestamp(state["as_of"])
+        con = duckdb.connect()
+        con.execute("SET threads=2")
+        try:
+            con.read_parquet(str(directory / "input.parquet")).create_view("incoming")
+            con.read_parquet(str(PROCESSED / "channels.parquet")).create_view("channels")
+            archive = PROCESSED / f"events-{cutoff.year}.parquet"
+            if archive.exists():
+                con.read_parquet(str(archive)).create_view("archive")
+                con.execute(
+                    "CREATE VIEW combined AS SELECT channel_id,ts,value,alarm FROM archive UNION ALL SELECT channel_id,ts,value,alarm FROM incoming"
+                )
+            else:
+                con.execute("CREATE VIEW combined AS SELECT channel_id,ts,value,alarm FROM incoming")
+            source = con.execute(
+                "SELECT DISTINCT e.channel_id,e.ts,e.value,e.alarm,c.sensor_type FROM combined e JOIN channels c USING(channel_id) "
+                "WHERE c.object_id=? AND e.ts<? AND e.ts>=? ORDER BY e.alarm DESC,e.ts DESC LIMIT 40",
+                [object_id, cutoff.to_pydatetime(), (cutoff - pd.Timedelta(hours=24)).to_pydatetime()],
+            ).df()
+        finally:
+            con.close()
+        return clean(
+            {
+                **forecast,
+                "batch_id": job_id,
+                "id": f"batch:{job_id}:{object_id}:{kind}",
+                "as_of": state["as_of"],
+                "explanation": service.explain_features(frame, kind),
+                "explanation_unit": "log_odds",
+                "source_events": source.to_dict("records"),
+                "recommendations": RECOMMENDATIONS[kind],
+            }
+        )

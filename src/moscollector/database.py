@@ -8,7 +8,7 @@ import os
 import secrets
 from datetime import UTC, datetime
 
-from sqlalchemy import Boolean, DateTime, Integer, String, Text, create_engine, event
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from moscollector.paths import DATA
@@ -69,6 +69,32 @@ class Setting(Base):
     __tablename__ = "settings"
     key: Mapped[str] = mapped_column(String(80), primary_key=True)
     value: Mapped[str] = mapped_column(Text)
+
+
+class StreamEvent(Base):
+    """Application-owned copy; source systems are never modified."""
+
+    __tablename__ = "stream_events"
+    event_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    channel_id: Mapped[int] = mapped_column(Integer, index=True)
+    ts: Mapped[datetime] = mapped_column(DateTime, index=True)
+    value: Mapped[str] = mapped_column(Text)
+    numeric_value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    alarm: Mapped[bool] = mapped_column(Boolean)
+
+
+class StreamBatch(Base):
+    __tablename__ = "stream_batches"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sha256: Mapped[str] = mapped_column(String(64), unique=True)
+    as_of: Mapped[datetime] = mapped_column(DateTime)
+    input_rows: Mapped[int] = mapped_column(Integer)
+    inserted_rows: Mapped[int] = mapped_column(Integer)
+    duplicate_rows: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(Integer)
+    received_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
 
 
 def hash_password(password: str, salt: str | None = None):

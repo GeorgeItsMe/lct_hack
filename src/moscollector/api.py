@@ -40,6 +40,7 @@ engine, SessionFactory = make_database()
 analytics_lock = threading.Lock()
 _analytics = None
 _imports = None
+_stream = None
 login_attempts = defaultdict(deque)
 
 
@@ -80,6 +81,17 @@ def imports():
 
             _imports = ImportManager()
     return _imports
+
+
+def stream():
+    global _stream
+    importer = imports()
+    with analytics_lock:
+        if _stream is None:
+            from moscollector.streaming import StreamManager
+
+            _stream = StreamManager(SessionFactory, importer)
+    return _stream
 
 
 def current_user(request: Request):
@@ -312,6 +324,7 @@ class DecisionInput(BaseModel):
     action: Literal["dispatch", "monitor", "false_alarm", "maintenance"]
     reason: str = Field(max_length=80)
     comment: str = Field(default="", max_length=2000)
+    batch_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{32}$")
 
 
 @app.post("/api/decisions")
@@ -321,12 +334,25 @@ def decide(body: DecisionInput, user=Depends(can_edit)):
     if body.reason == "other" and not body.comment.strip():
         raise HTTPException(422, "Укажите причину в комментарии")
     service = analytics()
-    t = service.resolve_time(body.as_of)
-    expected = prediction_id(body.object_id, body.kind, t)
+    if body.batch_id:
+        state = imports().get(body.batch_id)
+        if state["status"] != "complete":
+            raise HTTPException(422, "Расчёт ещё не завершён")
+        if body.as_of != state["as_of"] or not any(
+            r["object_id"] == body.object_id and r["kind"] == body.kind for r in state["result"]["forecasts"]
+        ):
+            raise HTTPException(422, "Прогноз не соответствует снимку пакета")
+        import pandas as pd
+
+        t = pd.Timestamp(state["as_of"])
+        expected = f"batch:{body.batch_id}:{body.object_id}:{body.kind}"
+    else:
+        t = service.resolve_time(body.as_of)
+        expected = prediction_id(body.object_id, body.kind, t)
+        if not any(r["id"] == expected for r in service.forecast_rows(t)):
+            raise HTTPException(404, "Прогноз не найден")
     if expected != body.prediction_id:
         raise HTTPException(422, "Идентификатор прогноза не соответствует данным")
-    if not any(r["id"] == expected for r in service.forecast_rows(t)):
-        raise HTTPException(404, "Прогноз не найден")
     with SessionFactory() as db:
         row = db.scalar(select(Decision).where(Decision.prediction_id == expected))
         previous = {"action": row.action, "reason": row.reason, "comment": row.comment} if row else None
@@ -520,17 +546,11 @@ def topology_wkt(user=Depends(current_user)):
 async def submit_import(
     request: Request, as_of: str, format: Literal["csv", "xlsx", "json", "xml"], user=Depends(can_edit)
 ):
-    from moscollector.importing import MAX_BYTES
-
-    content = bytearray()
-    async for chunk in request.stream():
-        content.extend(chunk)
-        if len(content) > MAX_BYTES:
-            raise HTTPException(413, "Файл превышает 20 МБ")
     # CPU parsing and filesystem work run off the HTTP event loop.
     from starlette.concurrency import run_in_threadpool
 
-    state = await run_in_threadpool(imports().submit, bytes(content), format, as_of, user.id)
+    content = await telemetry_body(request)
+    state = await run_in_threadpool(imports().submit, content, format, as_of, user.id)
     audit(user.id, "telemetry_import", {k: v for k, v in state.items() if k != "result"})
     return state
 
@@ -543,6 +563,52 @@ def import_list(user=Depends(current_user)):
 @app.get("/api/imports/{job_id}")
 def import_result(job_id: str, user=Depends(current_user)):
     return imports().get(job_id)
+
+
+@app.get("/api/imports/{job_id}/forecast/{object_id}/{kind}")
+def import_forecast(
+    job_id: str,
+    object_id: int,
+    kind: Literal["fault", "fire", "flood", "access"],
+    user=Depends(current_user),
+):
+    return imports().detail(job_id, object_id, kind, analytics())
+
+
+async def telemetry_body(request):
+    from moscollector.importing import MAX_BYTES
+
+    content = bytearray()
+    async for chunk in request.stream():
+        content.extend(chunk)
+        if len(content) > MAX_BYTES:
+            raise HTTPException(413, "Файл превышает 20 МБ")
+    return bytes(content)
+
+
+@app.post("/api/stream/events", status_code=202)
+async def stream_events(
+    request: Request,
+    as_of: str,
+    format: Literal["csv", "xlsx", "json", "xml"] = "json",
+    user=Depends(can_edit),
+):
+    from starlette.concurrency import run_in_threadpool
+
+    content = await telemetry_body(request)
+    return await run_in_threadpool(stream().ingest, content, format, as_of, user.id)
+
+
+@app.post("/api/stream/forecast", status_code=202)
+def stream_forecast(as_of: str, user=Depends(can_edit)):
+    state = stream().forecast(as_of, user.id)
+    audit(user.id, "stream_forecast_requested", {"job_id": state["id"], "as_of": as_of})
+    return state
+
+
+@app.get("/api/stream")
+def stream_status(user=Depends(current_user)):
+    return stream().status()
 
 
 @app.get("/api/integrations")
@@ -560,6 +626,12 @@ def integrations(user=Depends(current_user)):
                 "label": "Импорт телеметрии",
                 "status": "available",
                 "access": "read_only",
+            },
+            {
+                "id": "stream_gateway",
+                "label": "Накопительный приём потока по API",
+                "status": "available",
+                "access": "read_only_source",
             },
             {
                 "id": "operational_monitoring",

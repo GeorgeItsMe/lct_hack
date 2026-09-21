@@ -45,6 +45,7 @@ services:
     volumes:
       - ./deploy/backup-loop.sh:/backup-loop.sh:ro
       - ./backups:/backups
+      - runtime_data:/runtime:ro
     entrypoint: ["bash", "/backup-loop.sh"]
     depends_on:
       db:

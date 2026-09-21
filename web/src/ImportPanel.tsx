@@ -2,7 +2,30 @@ import { useEffect, useState } from "react";
 import { ArrowDownToLine, FileUp, RefreshCw } from "lucide-react";
 import { api, date, pct } from "./api";
 import { ErrorNotice, Loading } from "./components";
-import type { User } from "./types";
+import type { Kind, User } from "./types";
+type BatchForecastDetail = {
+  id: string;
+  batch_id: string;
+  object_id: number;
+  object_name: string;
+  kind: Kind;
+  kind_label: string;
+  as_of: string;
+  probability: number;
+  explanation: {
+    feature: string;
+    label: string;
+    value: number | string | null;
+    contribution: number;
+  }[];
+  source_events: {
+    channel_id: number;
+    ts: string;
+    value: string;
+    alarm: boolean;
+  }[];
+  recommendations: string[];
+};
 type Batch = {
   id: string;
   status: string;
@@ -10,6 +33,7 @@ type Batch = {
   accepted_rows: number;
   exact_duplicates: number;
   error?: string;
+  mode?: string;
   result?: {
     elapsed_seconds: number;
     history_rows: number;
@@ -17,11 +41,19 @@ type Batch = {
       object_id: number;
       object_name: string;
       kind_label: string;
+      kind: Kind;
       probability: number;
       above_threshold: boolean;
       recommendation: string;
     }[];
   };
+};
+type StreamStatus = {
+  events: number;
+  as_of: string | null;
+  last_event: string | null;
+  latest_job: Batch | null;
+  receipts: { id: number; inserted_rows: number; duplicate_rows: number }[];
 };
 const statuses: Record<string, string> = {
   queued: "В очереди",
@@ -36,9 +68,32 @@ export function ImportPanel({ user }: { user: User }) {
     [selected, setSelected] = useState<Batch | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [mode, setMode] = useState("preview"),
+    [stream, setStream] = useState<StreamStatus | null>(null),
+    [receipt, setReceipt] = useState("");
+  const [detail, setDetail] = useState<BatchForecastDetail | null>(null);
+  useEffect(() => setDetail(null), [selected?.id]);
+  async function openForecast(objectId: number, kind: Kind) {
+    try {
+      setDetail(
+        await api<BatchForecastDetail>(
+          `/imports/${selected!.id}/forecast/${objectId}/${kind}`,
+        ),
+      );
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
   async function update() {
     try {
       setBatches(await api<Batch[]>("/imports"));
+      const currentStream = await api<StreamStatus>("/stream");
+      setStream(currentStream);
+      if (!selected && currentStream.latest_job?.status === "complete") {
+        setSelected(
+          await api<Batch>(`/imports/${currentStream.latest_job.id}`),
+        );
+      }
       if (selected) setSelected(await api<Batch>(`/imports/${selected.id}`));
     } catch (e) {
       setError((e as Error).message);
@@ -54,12 +109,13 @@ export function ImportPanel({ user }: { user: User }) {
     if (!file) return;
     setBusy(true);
     setError("");
+    setReceipt("");
     try {
       if (file.size > 20 * 1024 * 1024)
         throw Error("Размер файла превышает 20 МБ");
       const extension = file.name.split(".").pop()?.toLowerCase();
       const response = await fetch(
-        `/api/imports?format=${extension}&as_of=${encodeURIComponent(asOf)}`,
+        `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}&as_of=${encodeURIComponent(asOf)}`,
         {
           method: "POST",
           credentials: "same-origin",
@@ -74,7 +130,14 @@ export function ImportPanel({ user }: { user: User }) {
             ? result.detail
             : "Проверьте формат файла",
         );
-      setSelected(result);
+      if (mode === "stream") {
+        setSelected(result.job);
+        setReceipt(
+          `Пакет №${result.receipt.id}: добавлено ${result.receipt.inserted_rows}, повторов ${result.receipt.duplicate_rows}. Данные сохранены.`,
+        );
+        if (result.forecast_error) setError(result.forecast_error);
+        setStream(await api<StreamStatus>("/stream"));
+      } else setSelected(result);
       setBatches(await api<Batch[]>("/imports"));
     } catch (e) {
       setError((e as Error).message);
@@ -86,7 +149,7 @@ export function ImportPanel({ user }: { user: User }) {
     <section className="panel import-panel">
       <div className="panel-heading">
         <div>
-          <h2>Расчёт по новому пакету</h2>
+          <h2>Приём телеметрии и расчёт</h2>
           <span>CSV, XLSX, JSON или XML · до 20 МБ и 100 000 записей</span>
         </div>
         <FileUp size={21} />
@@ -94,8 +157,9 @@ export function ImportPanel({ user }: { user: User }) {
       <div className="import-content">
         <p>
           Добавьте показания к доступной предыстории и получите прогноз на 24
-          часа. Каждый расчёт создаёт отдельный снимок. Оперативная система
-          мониторинга пока не подключена.
+          часа. В режиме потока пакеты накапливаются в собственной БД, повторы
+          исключаются. Каждый расчёт создаёт отдельный снимок. Оперативная
+          система мониторинга пока не подключена.
         </p>
         <details>
           <summary>Формат и требования к данным</summary>
@@ -113,7 +177,40 @@ export function ImportPanel({ user }: { user: User }) {
           </a>
         </details>
         {error && <ErrorNotice message={error} />}
+        {stream && (
+          <p className="micro-note">
+            В накопленном потоке: {stream.events.toLocaleString("ru-RU")}{" "}
+            записей
+            {stream.as_of
+              ? ` · момент ${date(stream.as_of, true)}`
+              : " · пакеты пока не поступали"}
+            .
+            {stream.latest_job && (
+              <>
+                {" "}
+                <button
+                  className="text-link"
+                  onClick={() =>
+                    api<Batch>(`/imports/${stream.latest_job!.id}`)
+                      .then(setSelected)
+                      .catch((e) => setError(e.message))
+                  }
+                >
+                  Последний расчёт потока
+                </button>
+              </>
+            )}
+          </p>
+        )}
+        {receipt && <p role="status">{receipt}</p>}
         <form className="import-form" onSubmit={submit}>
+          <label>
+            Способ обработки
+            <select value={mode} onChange={(e) => setMode(e.target.value)}>
+              <option value="preview">Разовый расчёт</option>
+              <option value="stream">Добавить в накопленный поток</option>
+            </select>
+          </label>
           <label>
             Пакет телеметрии
             <input
@@ -167,7 +264,10 @@ export function ImportPanel({ user }: { user: User }) {
                 }
               >
                 <strong>{date(b.as_of, true)}</strong>
-                <span>{b.accepted_rows} записей</span>
+                <span>
+                  {b.mode === "accumulated_stream" ? "Поток · " : ""}
+                  {b.accepted_rows} записей
+                </span>
                 <span>{statuses[b.status] || b.status}</span>
               </button>
             ))}
@@ -182,7 +282,11 @@ export function ImportPanel({ user }: { user: User }) {
             {selected.result && (
               <>
                 <div className="section-label">
-                  <h3>Прогноз по пакету</h3>
+                  <h3>
+                    {selected.mode === "accumulated_stream"
+                      ? "Прогноз по накопленному потоку"
+                      : "Прогноз по пакету"}
+                  </h3>
                   <a
                     className="text-link"
                     href={`/api/imports/${selected.id}`}
@@ -210,6 +314,7 @@ export function ImportPanel({ user }: { user: User }) {
                         <th>Тип</th>
                         <th>Вероятность · 24 ч</th>
                         <th>Рекомендация</th>
+                        <th>Проверка</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -221,21 +326,207 @@ export function ImportPanel({ user }: { user: User }) {
                             <strong>{pct(f.probability)}</strong>
                           </td>
                           <td>{f.recommendation}</td>
+                          <td>
+                            <button
+                              className="text-link"
+                              onClick={() => openForecast(f.object_id, f.kind)}
+                            >
+                              Проверить прогноз
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+                {detail && (
+                  <BatchDecision key={detail.id} detail={detail} user={user} />
+                )}
                 <p className="micro-note">
                   Расчёт по новым данным использует зафиксированные модели и
                   пороги. Вероятности относятся к сигналам датчиков. Импорт не
-                  меняет отложенный тест и архивный журнал решений.
+                  меняет отложенный тест. Решение сохраняется с привязкой к
+                  снимку расчёта.
                 </p>
               </>
             )}
           </div>
         )}
       </div>
+    </section>
+  );
+}
+
+function BatchDecision({
+  detail,
+  user,
+}: {
+  detail: BatchForecastDetail;
+  user: User;
+}) {
+  const [options, setOptions] = useState<{
+    actions: Record<string, string>;
+    reasons: { id: string; label: string }[];
+  } | null>(null);
+  const [action, setAction] = useState("monitor"),
+    [reason, setReason] = useState("insufficient_evidence"),
+    [comment, setComment] = useState("");
+  const [saved, setSaved] = useState(false),
+    [error, setError] = useState(""),
+    [busy, setBusy] = useState(false);
+  useEffect(() => {
+    api<typeof options>("/reasons")
+      .then(setOptions)
+      .catch((e) => setError(e.message));
+  }, []);
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError("");
+    setSaved(false);
+    try {
+      await api("/decisions", {
+        method: "POST",
+        body: JSON.stringify({
+          prediction_id: detail.id,
+          batch_id: detail.batch_id,
+          object_id: detail.object_id,
+          kind: detail.kind,
+          as_of: detail.as_of,
+          action,
+          reason,
+          comment,
+        }),
+      });
+      setSaved(true);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <section className="batch-detail" aria-label="Проверка прогноза потока">
+      <h3>
+        {detail.object_name} · {detail.kind_label} · {pct(detail.probability)}
+      </h3>
+      <p>
+        Снимок на {date(detail.as_of, true)} · горизонт 24 часа. Факторы
+        показывают вклад в логарифм шансов, а не физическую причину инцидента.
+      </p>
+      <div className="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Фактор</th>
+              <th>Значение</th>
+              <th>Вклад</th>
+            </tr>
+          </thead>
+          <tbody>
+            {detail.explanation.map((f) => (
+              <tr key={f.feature}>
+                <td>{f.label}</td>
+                <td>{f.value === null ? "Нет данных" : String(f.value)}</td>
+                <td>
+                  {f.contribution > 0 ? "+" : ""}
+                  {f.contribution.toFixed(3)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>
+          Исходные сообщения перед прогнозом ({detail.source_events.length})
+        </summary>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Время · МСК</th>
+                <th>Канал</th>
+                <th>Значение</th>
+              </tr>
+            </thead>
+            <tbody>
+              {detail.source_events.map((e, i) => (
+                <tr key={i}>
+                  <td>{date(e.ts, true)}</td>
+                  <td>{e.channel_id}</td>
+                  <td>
+                    {e.value}
+                    {e.alarm ? " · тревога" : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+      <ul>
+        {detail.recommendations.map((r) => (
+          <li key={r}>{r}</li>
+        ))}
+      </ul>
+      {error && <ErrorNotice message={error} />}
+      {options && user.role !== "analyst" && (
+        <form className="import-form" onSubmit={save}>
+          <label>
+            Решение по новому прогнозу
+            <select
+              value={action}
+              onChange={(e) => {
+                setAction(e.target.value);
+                setSaved(false);
+              }}
+            >
+              {Object.entries(options.actions).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Основание решения
+            <select
+              value={reason}
+              onChange={(e) => {
+                setReason(e.target.value);
+                setSaved(false);
+              }}
+            >
+              {options.reasons.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Комментарий к проверке
+            <input
+              value={comment}
+              maxLength={2000}
+              required={reason === "other"}
+              onChange={(e) => {
+                setComment(e.target.value);
+                setSaved(false);
+              }}
+            />
+          </label>
+          <button className="primary-button" disabled={busy}>
+            {busy ? "Сохраняем…" : "Сохранить решение"}
+          </button>
+        </form>
+      )}
+      {saved && (
+        <p role="status">
+          Решение сохранено в журнале «Решения и ТО» и связано с этим снимком.
+        </p>
+      )}
     </section>
   );
 }

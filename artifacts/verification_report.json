@@ -1,5 +1,5 @@
 {
-  "tests_passed": 29,
+  "tests_passed": 38,
   "ruff": "passed",
   "web_build": "passed",
   "browser_checked": [
@@ -9,9 +9,13 @@
     "forecast_explanation",
     "decision_save",
     "evaluation",
-    "data_import_form"
+    "data_import_form",
+    "stream_status",
+    "stream_forecast_explanation",
+    "stream_decision_save"
   ],
   "browser_file_upload": "blocked_by_extension_file_url_permission",
   "production_external_ldap": "not_tested",
-  "presentation_template": "unavailable"
+  "presentation_template": "unavailable",
+  "stream_linux_e2e": "passed"
 }

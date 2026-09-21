@@ -1,0 +1,36 @@
+{
+  "base_url": "http://127.0.0.1:8001",
+  "source": "provided_archive_replay",
+  "batches": [
+    {
+      "as_of": "2026-06-15T12:00:00",
+      "input_rows": 737,
+      "stored_stream_rows": 737,
+      "job_id": "871113b492db46348468df012c61e7be",
+      "mode": "accumulated_stream",
+      "stream_revision": 1,
+      "forecast_count": 312,
+      "inference_seconds": 27.01,
+      "receipt_to_result_seconds": 29.83,
+      "retry_idempotent": true,
+      "causal_explanation_checked": true,
+      "dispatcher_decision_saved": true
+    },
+    {
+      "as_of": "2026-06-15T12:05:00",
+      "input_rows": 652,
+      "stored_stream_rows": 1389,
+      "job_id": "010093d45d3249bd8d4853ef8dec9ad2",
+      "mode": "accumulated_stream",
+      "stream_revision": 2,
+      "forecast_count": 312,
+      "inference_seconds": 26.89,
+      "receipt_to_result_seconds": 29.99,
+      "retry_idempotent": true,
+      "causal_explanation_checked": true,
+      "dispatcher_decision_saved": true
+    }
+  ],
+  "source_unchanged": true,
+  "scope": "Local replay; real customer source and network SLA not tested."
+}
