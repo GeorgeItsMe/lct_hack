@@ -69,6 +69,8 @@ for name in (
     "TASK_ANALYSIS.md",
     "pyproject.toml",
     "requirements.lock",
+    "requirements-neural.txt",
+    "requirements-neural.lock",
     "Dockerfile",
     "compose.yaml",
     ".dockerignore",

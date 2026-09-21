@@ -1,4 +1,5 @@
 .venv/
+.venv-neural/
 node_modules/
 __pycache__/
 *.py[cod]

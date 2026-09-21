@@ -39,6 +39,7 @@ studies = {
     "v25": Path("artifacts/research-v25"),
     "v26": Path("artifacts/research-v26"),
     "v27": Path("artifacts/research-v27"),
+    "v28": Path("artifacts/research-v28"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -125,6 +126,40 @@ for meta_path in object_kind_metadata:
     elif meta["mode"] != "global_fallback":
         raise ValueError(f"Unknown object-kind model mode: {meta_path}")
     object_kind_models[str(meta_path)] = meta
+neural_models = {}
+neural_plan_hash = sha256(studies["v28"] / "plan.json")
+neural_report = read(studies["v28"] / "report.json")
+if set(neural_report) != {"access", "fire", "fault"}:
+    raise ValueError("Neural final report is incomplete")
+expected_neural_fits = set()
+for kind, outcome in neural_report.items():
+    folds = ["screen_1", "screen_2"]
+    if outcome["selection"]["passed_screen"]:
+        if len(outcome["periods"]) != 5:
+            raise ValueError(f"Neural confirmation is incomplete: {kind}")
+        folds.extend(["confirmation", "stress_1", "stress_2"])
+    for fold in folds:
+        for variant in ("mlp", "gru"):
+            expected_neural_fits.add(str(studies["v28"] / kind / fold / "models" / variant / "fit.json"))
+for meta_path in sorted(studies["v28"].glob("*/*/models/*/fit.json")):
+    meta = read(meta_path)
+    signature = meta["signature"]
+    weights = meta_path.parent / "model.pt"
+    codec = meta_path.parents[2] / "codec.json"
+    result = read(meta_path.parents[2] / "result.json")
+    if sha256(weights) != meta["model_sha256"]:
+        raise ValueError(f"Changed neural weights: {weights}")
+    if signature["plan_sha256"] != neural_plan_hash:
+        raise ValueError(f"Neural model belongs to a different study: {meta_path}")
+    if sha256(codec) != signature["codec_sha256"] or signature["codec_sha256"] != result["codec_sha256"]:
+        raise ValueError(f"Changed neural preprocessing: {codec}")
+    if signature["device"] != plans["v28"]["device"] or signature["torch"] != plans["v28"]["torch_version"]:
+        raise ValueError(f"Changed neural backend: {meta_path}")
+    if result["fits"][meta["variant"]] != meta:
+        raise ValueError(f"Neural result/fit mismatch: {meta_path}")
+    neural_models[str(meta_path)] = meta
+if set(neural_models) != expected_neural_fits:
+    raise ValueError("Neural weights do not match the predeclared completed stages")
 object_kind_audit = read(Path("artifacts/object_kind_error_audit.json"))
 for category in ("source_hashes", "code_hashes"):
     for source, digest in object_kind_audit[category].items():
@@ -232,6 +267,19 @@ report = {
     "group_policy_screen_periods": {
         str(p.relative_to(studies["v27"])): read(p)
         for p in sorted(studies["v27"].glob("*/screen_*/result.json"))
+    },
+    "neural_count_v28": neural_report,
+    "neural_count_screen_periods": {
+        str(p.relative_to(studies["v28"])): read(p)
+        for p in sorted(studies["v28"].glob("*/screen_*/result.json"))
+    },
+    "neural_models_verified": neural_models,
+    "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
+    "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
+    "neural_verification": {
+        "base_suite": "124 passed, 1 skipped (optional PyTorch module)",
+        "neural_suite": "130 passed, including interrupted MLP and GRU checkpoint resume on CPU and MPS",
+        "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
     "object_kind_decision": "V26 trains12 separate count models for the two original catalog object kinds, with a matched group-calibration control. All global controls exactly reproduce v24. On screen access P.685/R.726/F1.705 adds only1 true alert versus calibration alone, with precision below global control. Fire P.405/R.410 loses both metrics. Fault P.212/R.152 finds7/46 rather than11, losing recall/F1. All fail screening; no extra-month evaluation or activation. Subgroup diagnostic gains are not full-scope success.",

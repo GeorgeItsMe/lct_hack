@@ -1,0 +1,14 @@
+{
+  "torch": "2.14.0",
+  "python": "3.12.14",
+  "machine": "arm64",
+  "macos": "26.5.1",
+  "mps_built": true,
+  "mps_available": true,
+  "cuda_available": false,
+  "benchmark": "Synthetic GRU32, batch512,16steps, AdamW;10warmup+50timed updates;no task outcomes",
+  "cpu_seconds_per_step": 0.0036913150000327734,
+  "mps_seconds_per_step": 0.0024807233200408517,
+  "selected_device": "mps",
+  "actual_network_mps_forward_backward_verified": true
+}
