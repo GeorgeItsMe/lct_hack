@@ -32,6 +32,7 @@ studies = {
     "v20": Path("artifacts/research-v20"),
     "v21": Path("artifacts/research-v21"),
     "v22": Path("artifacts/research-v22"),
+    "v23": Path("artifacts/research-v23"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -69,7 +70,15 @@ for manifest in [quarter_build, *quarter_manifests]:
         for source, digest in manifest[category].items():
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed raw quarter-count provenance: {source}")
-for name in ("v15", "v16", "v17", "v18", "v19"):
+phase_folder = Path("data/processed/phase-augmentation-v23")
+phase_build = read(phase_folder / "build.json")
+phase_manifests = [read(p) for p in sorted(phase_folder.glob("counts-*.json"))]
+for manifest in [phase_build, *phase_manifests]:
+    for category in ("inputs", "outputs"):
+        for source, digest in manifest[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed phase augmentation provenance: {source}")
+for name in ("v15", "v16", "v17", "v18", "v19", "v23"):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
         weights = meta_path.parent / "model.cbm"
@@ -86,6 +95,11 @@ for category in ("source_hashes", "code_hashes"):
     for source, digest in fine_uncertainty[category].items():
         if sha256(Path(source)) != digest:
             raise ValueError(f"Changed fine-cadence evidence: {source}")
+fine_errors = read(Path("artifacts/fine_cadence_error_audit.json"))
+for category in ("source_hashes", "code_hashes"):
+    for source, digest in fine_errors[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed fine-cadence error audit: {source}")
 version = active_version()
 load_bundle(version)
 if version != "op-d87946a7b7fd":
@@ -125,6 +139,15 @@ report = {
     "raw_quarter_feature_build": quarter_build,
     "raw_quarter_aggregation_manifests": quarter_manifests,
     "raw_quarter_count_provenance_verified": True,
+    "phase_training_v23": read(studies["v23"] / "report.json"),
+    "phase_training_screen_periods": {
+        str(p.relative_to(studies["v23"])): read(p)
+        for p in sorted(studies["v23"].glob("*/screen_*/result.json"))
+    },
+    "phase_augmentation_build": phase_build,
+    "phase_augmentation_raw_manifests": phase_manifests,
+    "phase_augmentation_provenance_verified": True,
+    "fine_cadence_error_audit": fine_errors,
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
     "additional_research_weights_verified": new_weights,
@@ -141,7 +164,7 @@ report = {
     "original_features_episodes_and_june_hashes_verified": original_hashes,
     "new_blind_test": False,
     "goal_achieved": False,
-    "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. V21 fresh counts and V22 quarter quantiles slightly improve access screening F1 but do not clear their >5% primary improvement gates; no extra-month evaluation or promotion. V21 fire/fault also fail screening. No experimental gate automatically activates weights.",
+    "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. V21 fresh counts and V22 quarter quantiles slightly improve access screening F1 but do not clear their >5% primary improvement gates; no extra-month evaluation or promotion. V21 fire/fault also fail screening. V23 phase-augmented training gives access P.716/R.735/F1.725 on screen but <5% primary gain over matched old weights; fire loses precision and fault finds only3/46 events. All v23 kinds fail screening. No experimental gate automatically activates weights.",
     "limitations": "No individual-head result can establish 90/90 for the entire solution. F1 gains involving lower precision are recorded explicitly. No candidate is promoted automatically.",
 }
 target = Path("artifacts/goal90_research_report.json")
