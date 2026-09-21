@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-09-21T19:33:12.718249+00:00",
+  "created_at": "2026-09-21T19:46:13.140727+00:00",
   "environment": {
     "python": "3.12.14",
     "catboost": "1.2.10",
@@ -734,6 +734,222 @@
         "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
         "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
         "/Users/main/vs_projects/lct_hack/src/moscollector/waiting_time_research.py": "170bc9d4731d501e04b3ab1ffaacecd8481b6c82b406a6a9cfd467e214c7ecde"
+      }
+    },
+    "v21": {
+      "scope": "adaptive_retrospective_feature_freshness_followup_not_blind_test",
+      "goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kinds": [
+        "access",
+        "fire",
+        "fault"
+      ],
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "stress_folds": {
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "reason": "V20 access improved with15min warnings but scores stayed hourly. Test whether counts from new raw observations within the hour improve predictions, with cadence held fixed.",
+      "weights": "Unchanged v9 count weights for access/fire; unchanged v19 channel-novelty count weights for fault, selected in the previous study. Both arms use identical tree weights. No tree training, additional feature columns or external data.",
+      "arms": "Both15min: held_control carries all last-whole-hour features; fresh_candidate refreshes44 raw report counts for1/6/24/168h and, where present, six derived6h-vs168h burst ratios. All other inputs stay at the same whole-hour values, including measurements, recurrence and channel-novelty features. This tests partial raw-feature freshness, not complete15min feature recomputation.",
+      "raw_definition": "Exactly original canonical per-channel timestamp aggregation, bool_or alarm, conflicting values unknown, original signal definitions. Count windows[t-window,t) at quarter boundaries. Raw buckets summed to hours and every valid original hourly count/burst feature must match exactly.",
+      "causality": "No observations at/after forecast time. Both arms use v20 whole-hour availability for confirmed episodes,24h pending expiry,one-to-one matching,unchanged24h target. Both separately calibrate probability and mean count on original calibration dates with25h purge; policy selected only in the original policy interval.",
+      "cohort": "Identical15min slots inside adjacent eligible hourly points, no gaps or final extension; exact original event identities. Offline eligibility is not an input/runtime signal. False-alert denominator is identical original hourly exposure.",
+      "policy": "Frozen v20 mean_retarget policy grid and joint90/90 objective; >=10alerts/episodes for supported status, false alerts<=.25/object-day during policy selection; same explicit empty fallback.",
+      "anchor": "Access: completed v20 quarter candidate (must reproduce as held control). Fire: original mean90 count policy, in addition to reproducing v20 quarter control on screen. Fault: completed v19 hourly count policy. These are historical count-family comparisons, not deployed fire/fault classifier comparisons.",
+      "selection": "Nov/Feb pooled fresh candidate must improve primary min(P/.9,R/.9,1) by>5% against BOTH held_control and anchor, with no pooled F1 loss. Only passing kinds continue; no substitution.",
+      "confirmation": "May improves primary withF1>=95% against both. Pooled Dec/Mar primary improves>5% withoutF1 loss and each month's F1>=90% each reference. Research gates do not establish90/90 or activate production.",
+      "june": "No June labels, policy selection or evaluation. Previously used historical months are adaptively reused; not independent confirmation.",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-dense-channel-novelty.parquet": "dc1a47c6268eda6f906f022eb8dd2e46239028412cb65156b11e1284ace73928",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v20/report.json": "61c2a137f79ae3f4957772766cd743d0e14c137fe2b48bb731b97d225c16832b",
+        "artifacts/research-v19/report.json": "584ca44452cbda111e885ac933e7a25a4ad38ade400d14645ecc5a8f9c40dfdb",
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/build.json": "3ae7594c7f133d0828757b8d1fc0aeb18d1ff1117275f64c5f2d6433aad0df74",
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2025.parquet": "60d5d81955a2e5a1deb9137dd7d08693e384214e0d8c3b136513005ff8841dac",
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2025.json": "14349d817accdcef093c841b7a692a827ea839a7cee31f19dfb256365a10a169",
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2026.parquet": "fd766476df268d7325a075bb1b4379d293ed69a0298c9aec3be99608564a1277",
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2026.json": "8fe4e6f3e1c92db1f50c249928872eec0e24957d59bd363788bfb135090fd853",
+        "artifacts/research-v9/screen_1/access.cbm": "9984fe0b5546e7272c9a39f628c83ebaf99d74cd0ec7a6df9e27f2427ebdca5a",
+        "artifacts/research-v9/screen_1/access.json": "710ed0d8609844e7942627a695e71d670daa00095ceaa177279017e1c6d5a175",
+        "artifacts/research-v9/screen_1/access-policy.parquet": "a158166ff7cc8e49c3a13b4d36ea238a3417100a0ca54d3794228aa3d9f6858f",
+        "artifacts/research-v9/screen_1/access-test.parquet": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+        "artifacts/research-v20/access/screen_1/result.json": "4afd284c5ea9e6e2fd026bde15958b8f1bb52440efc1e34cedf886cbf3f8dc0b",
+        "artifacts/research-v9/screen_2/access.cbm": "bfb8cce1a8697f99376b25ae178d84d344f1857f173b06ece1aebf2e173db6ad",
+        "artifacts/research-v9/screen_2/access.json": "96e09bab5d2283a2eaadea3edab32dd8dabaf9ecf4f6334b6737e2d5ae598e38",
+        "artifacts/research-v9/screen_2/access-policy.parquet": "66ed8dda37f58663a324009faada9943e894ec43b3fc69878ec778461b06146d",
+        "artifacts/research-v9/screen_2/access-test.parquet": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+        "artifacts/research-v20/access/screen_2/result.json": "5dde5c76801a2eb76b77aa97fd52eda94cb945736a88af7e3f9d52878714d854",
+        "artifacts/research-v9/confirmation/access.cbm": "8764a6f534338577c2fb0a082837a4e0c7987d902af7751f51b6b45e58818a5f",
+        "artifacts/research-v9/confirmation/access.json": "e05d2353a2809e810b7196f5ffa7f8a6738b398b8af7c053bd40b96f315c4ad9",
+        "artifacts/research-v9/confirmation/access-policy.parquet": "887ef9b927d663f152a63582774e6e8089334bc70cfeff69fe57641d8e125592",
+        "artifacts/research-v9/confirmation/access-test.parquet": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+        "artifacts/research-v20/access/confirmation/result.json": "a806b2ce73bb73828cda9611f7981372f028bbfbee04234199ecdca77908d646",
+        "artifacts/research-access-stress/stress_1/access.cbm": "71f2996070cf9c9e5a0389e6ae8b0097e0fa393e56110c4dbdfb22aaa7cc0a8c",
+        "artifacts/research-access-stress/stress_1/access.json": "1bfdbfeed4f29b350877f8d4b257d4a961e96bc5c15938afed5f2a463e504a8e",
+        "artifacts/research-access-stress/stress_1/access-policy.parquet": "3116516f64f5977de2ea4836be32a92f66cb1d51e418c78d944f9494e1f827c9",
+        "artifacts/research-access-stress/stress_1/access-test.parquet": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1",
+        "artifacts/research-v20/access/stress_1/result.json": "931861ade750134b085232e3cec4506a7ae6f8cda0031cc2f3ab72bd56dc0bff",
+        "artifacts/research-access-stress/stress_2/access.cbm": "ac613ca7b4b04820191830b908144dfba5fb015fdfc3bce553f922c56eeab129",
+        "artifacts/research-access-stress/stress_2/access.json": "985f8bb8d2e427e6c1cf71fa067c7c9f5cd5436ca7a8c552f848c65752fcf77f",
+        "artifacts/research-access-stress/stress_2/access-policy.parquet": "9867ed8a1d49ac377c206618818c5daed93d00630917b7f1737a2e88365d5f97",
+        "artifacts/research-access-stress/stress_2/access-test.parquet": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667",
+        "artifacts/research-v20/access/stress_2/result.json": "c842954155bfc549424d79cd6f68d1adcc18496f779d05a7e4f837a8b63c260e",
+        "artifacts/research-v9/screen_1/fire.cbm": "6480c24fca5588ac2673da7569b3b99cd03e43dfb1596217985e75746b86c98a",
+        "artifacts/research-v9/screen_1/fire.json": "1d3e7fad1278e97fb731622c090a664b7a6177ea8630a6b3ae38246feb8eacf7",
+        "artifacts/research-v9/screen_1/fire-policy.parquet": "c4bb80b19ef176577ddfe9da5e3ae552a37596e7fb825b5137ce5f96dbde1f5d",
+        "artifacts/research-v9/screen_1/fire-test.parquet": "eb9598c4d937ebaabc5cc35f4d7300129a58da8ae1281b9c3f2b0f1f2c1dbaca",
+        "artifacts/research-v13-policy/fire-screen_1.json": "50982c2e4ce8802f4960d456ea7489850e55fb6c033398d5f8fbac7652e3865a",
+        "artifacts/research-v9/screen_2/fire.cbm": "f7fa4916f4ac2e7a18f71cb95b7d812549b87eb1d1a80d69f7e94151a6fab17b",
+        "artifacts/research-v9/screen_2/fire.json": "d98a3bfa386255b4618e3be569956e8becdc968d1d4e0da3d806931904d131eb",
+        "artifacts/research-v9/screen_2/fire-policy.parquet": "d218a81a89ae771af7be7bd7e1c99421ca424a7e665cb7b9fd76c4a4d6037499",
+        "artifacts/research-v9/screen_2/fire-test.parquet": "cf799c9da1ecfc24912ef3fef2848fc1bcc79c7cfce9035c53fac4ce94af6f82",
+        "artifacts/research-v13-policy/fire-screen_2.json": "77e636e025871e6eba1d95e4e9eee63fddf95795bc0f1bd790da490b3fdfdaca",
+        "artifacts/research-v9/confirmation/fire.cbm": "fa8f094e0dfdc81d53f61119a91c23562f7476c742c93cb318d5c9ea8794079d",
+        "artifacts/research-v9/confirmation/fire.json": "ef115404a61e0872c1114bb00f366ac8822c1d965d6229af297a40c12d3c7d74",
+        "artifacts/research-v9/confirmation/fire-policy.parquet": "6c2c7171a5f7ff938240aa539103391819682d5b02c309324b006c940bc4196f",
+        "artifacts/research-v9/confirmation/fire-test.parquet": "c6054f69d3bb652ce6a4dbed2be7353f8de4da398092148771755eba5e5cf11a",
+        "artifacts/research-v13-policy/fire-confirmation.json": "4a34a5ca1f3059f194b2c8130a35ac01b498ce911d047652154ddebe93707cd2",
+        "artifacts/research-v10b/stress_1/reference/fire.cbm": "c2c69fad1e3df0f57823a0d74f6b7ec5c580d7fe61b39e8a7dc9a8bc6c2e2733",
+        "artifacts/research-v10b/stress_1/reference/fire.json": "8bb7abbed82710eb7ae3331207eee3e87f3e176c2b2a1e2fb35706493c59e97a",
+        "artifacts/research-v10b/stress_1/reference/fire-policy.parquet": "44df6f450315e698e72b41e8f8a54a173bf1a98c60b07eb7354ac83075843656",
+        "artifacts/research-v10b/stress_1/reference/fire-test.parquet": "db2f2e45d81ddbc645511db52f6b2f0302ff03022eead96e88a8f878ea359b2f",
+        "artifacts/research-v13-policy/fire-stress_1.json": "721404ca0be84ff765a41fea74965b87d84f10c9a77a003ef4618a0d191562fd",
+        "artifacts/research-v10b/stress_2/reference/fire.cbm": "32cbffbbd354a67c349811c333641f5f5e30b8524cb7faf2de34428ff4569c1b",
+        "artifacts/research-v10b/stress_2/reference/fire.json": "d98398c70415344f688d758be0e3dabcd22c7353042fdcea77ef58b69e289b79",
+        "artifacts/research-v10b/stress_2/reference/fire-policy.parquet": "6efa75448b827f001fd040880f3dff7cf80e26f928238c2b49036e9f8e6683d6",
+        "artifacts/research-v10b/stress_2/reference/fire-test.parquet": "75451de418e2ba823b79bdf6824a5ebd870eeb0f4aa36f75f5d1f347d21ce2a6",
+        "artifacts/research-v13-policy/fire-stress_2.json": "c13249020378c143f18a926a9e2540b807992c9a71446321f4f025f2ecfdfdb6",
+        "artifacts/research-v19/fault/screen_1/model.cbm": "39f4d1289423a9f1bea90ab7ff8ae9aadd935965f2cd9924d577eadd7b3b995e",
+        "artifacts/research-v19/fault/screen_1/fit.json": "d6062df5a3b2e7d5f34839277d08dfb84f16718249898e2140440aaef1e62549",
+        "artifacts/research-v19/fault/screen_1/policy.parquet": "ef223856d3fb5e788e243bb3b9488cd6af5a3b2b06dbc30f5e99ba7855f63808",
+        "artifacts/research-v19/fault/screen_1/test.parquet": "c743758f93309b575add519b949eebc60622966809030348760f23dd06dc37b9",
+        "artifacts/research-v19/fault/screen_1/result.json": "4cc3fdb96c5e1bd78e56ac5d6aa330c5b11b5541125c17d5988311c120d5c212",
+        "artifacts/research-v19/fault/screen_2/model.cbm": "a982f56cb98937c1017ec49b4fe423d742e3cd8e9c84fc6fc0318253dff6cb8c",
+        "artifacts/research-v19/fault/screen_2/fit.json": "be9b229cf3f84e4e7250a0b6a25457a06ca73bbf996a9d830f144553090dbfe0",
+        "artifacts/research-v19/fault/screen_2/policy.parquet": "3e5dfdeee3459b1dee2d4d3281881add928064b0a52c413a9749fa5b44259f8c",
+        "artifacts/research-v19/fault/screen_2/test.parquet": "86220c5ba125a844855a678e56bf26e2f84c5c9cf42f77d9a0a802e11775f83e",
+        "artifacts/research-v19/fault/screen_2/result.json": "1a48ba6ec2ff8aedbba6b9b51abc1f55637e34a6aa6ad8998066f37d1d10bfca",
+        "artifacts/research-v19/fault/confirmation/model.cbm": "6f25563d324f00b81b3e638f2e0884ed514d445b89b764027bca3cad205c347f",
+        "artifacts/research-v19/fault/confirmation/fit.json": "a39013108828593932ea1289e1615bf2cd520b4bd1c8125bd713398a4412a5e2",
+        "artifacts/research-v19/fault/confirmation/policy.parquet": "2d81797a14019e4c7b9dbfb717d33583a780d8ddabea1055e84faf9a82cbc741",
+        "artifacts/research-v19/fault/confirmation/test.parquet": "c148020401151867f83b53e7f454bcfe4b161ceb7f783519a0d5e8eb0ddf3030",
+        "artifacts/research-v19/fault/confirmation/result.json": "9b65927436d637cd671487beaad2204c923ae56c8bb2b81b9b6e864d853476d8",
+        "artifacts/research-v19/fault/stress_1/model.cbm": "7ca5a136e6a4f6ce827a289e2c94a65cdcc695ba63d754778ea65685643ea2fd",
+        "artifacts/research-v19/fault/stress_1/fit.json": "09dc5479ca21751fb25b22fa3a015f8568342fd76bed097be93eb2edae8fccf7",
+        "artifacts/research-v19/fault/stress_1/policy.parquet": "683650296646181d62f1807dcbe098219ca0014240f490fe40977e849137a6fc",
+        "artifacts/research-v19/fault/stress_1/test.parquet": "5725abd0b13276b8b68cc1972cacc598a5e3dceffe8bb2f00c540016668bc5b0",
+        "artifacts/research-v19/fault/stress_1/result.json": "e120bdbcc59c91f45eb01543c91e68a40e5dd75a90902076400093ca529bcbbf",
+        "artifacts/research-v19/fault/stress_2/model.cbm": "b2a084cc7bdb57fdf334691ffbd58da890e1418f9230df0bb0234c2c23fcb82c",
+        "artifacts/research-v19/fault/stress_2/fit.json": "49aeabe68524f196e947513749131c2f931b5a9fb48fce05fc041c3d42f218d2",
+        "artifacts/research-v19/fault/stress_2/policy.parquet": "d2e60321e2a9b68c11a440cbc2641578c090fbce75abd71dcbf77a56c7f5e63c",
+        "artifacts/research-v19/fault/stress_2/test.parquet": "d34f89977f9e6b2dd8536954a13ba012586caf167d11eb938353fb148074eb16",
+        "artifacts/research-v19/fault/stress_2/result.json": "662b6599a40e3f79d0724c8cd73a41ffa392f95fda4f149196e102670958a05e"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fresh_counts_research.py": "a7621bbf235b57f2cac7388f0974b5c84de1a311af1694dd55aa92f270ab9377",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/waiting_time_research.py": "170bc9d4731d501e04b3ab1ffaacecd8481b6c82b406a6a9cfd467e214c7ecde"
+      }
+    },
+    "v22": {
+      "scope": "adaptive_retrospective_quantile_cadence_followup_not_blind_test",
+      "goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kind": "access",
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "stress_folds": {
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "reason": "V20 improved access with15min warnings; v21 raw-count freshness gains did not pass screening. Independently test the previously trained v11 quantile model on the same v20 grid, without adopting rejected v21 fresh inputs.",
+      "weights": "Frozen v11 MultiQuantile weights alpha.1,.25,.5,.75,.9; same original66features held at whole-hour values. No training, new inputs, loss search or changed labels.",
+      "calibration": "Carry last whole-hour raw quantile outputs forward at most45min as lagged inputs. Refit each scalar residual quantile correction on original calibration dates with25h purge against episode counts in[NEW_time,NEW_time+24h). Nonnegative clipping and per-row sorting enforce noncrossing outputs. Calibration-period marginal coverage is diagnostic, not guaranteed conditional coverage.",
+      "probability_gate": "Exact frozen v20 quarter-candidate probabilities/calibration, common to both mean and quantile policies. No new probability model.",
+      "cadence": "Exact v20 quarter opportunities and event identities. Same whole-hour confirmation availability,24h pending expiry,one warning per15min,one-to-one matching,identical original hourly exposure for FP budget. Offline eligibility is not a runtime signal.",
+      "policy": "Original quantile grid: one alpha,.25/.5/1/2 margin, floor0/.5/.75/.9/.95. Policy period only; >=10alerts/episodes support, false alerts<=.25/object-day. Max primary min(P/.9,R/.9,1), thenF1,R,P. Explicit empty fallback.",
+      "reference": "Completed v20 quarter mean-count policy; original hourly v11 quantile is descriptive secondary comparison. Tree-model and warning-capacity changes are jointly tested against the stronger v20 family, not attributed solely to cadence.",
+      "screen": "Nov/Feb pooled primary must improve>5% against v20 with noF1 loss; only passing candidate continues.",
+      "confirmation": "May improves primary withF1>=95%reference; pooled Dec/Mar primary improves>5%, no pooledF1 loss, each month'sF1>=90%reference. Research gates do not imply90/90 or automatic activation.",
+      "june": "No June evaluation, selection or labels. Adaptively reused historical months do not provide new independent validation. Access success would not establish success for all incident types.",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-dense-round4.parquet": "7824730141ec08488354711e802ab6c35bd7053e192415e07f80e0076e3d4cfe",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v20/report.json": "61c2a137f79ae3f4957772766cd743d0e14c137fe2b48bb731b97d225c16832b",
+        "artifacts/research-v21/report.json": "281f8207e7421c2a5c2f36bd10520e3229db87a577cc3c45c47915b50eef4a58",
+        "artifacts/research-v11/screen_1/quantile/access.cbm": "7f4ce690efea6993111db1e8bf47ebfc29ebf445717449ed4e8571ef4b09afcc",
+        "artifacts/research-v11/screen_1/quantile/fit.json": "6500d9f6097211ee372f31945037e426bb8223f9a93a3771e44b2ca437963392",
+        "artifacts/research-v11/screen_1/quantile/result.json": "2e7c66fc6c77bd5e66b9bdb9c4d90192e537a98d19c77dc32595c18034047475",
+        "artifacts/research-v11/screen_1/quantile/access-policy.parquet": "9c11f80eae3edfcbb9618faf6d92a0c1f18aace1e299e15d15304f3d80123f2b",
+        "artifacts/research-v11/screen_1/quantile/access-test.parquet": "2768cd8bb185751e71084e01f62b70ee35051e4356b0307d9f67b48926fec5dd",
+        "artifacts/research-v20/access/screen_1/result.json": "4afd284c5ea9e6e2fd026bde15958b8f1bb52440efc1e34cedf886cbf3f8dc0b",
+        "artifacts/research-v20/access/screen_1/quarter_candidate-policy.parquet": "3bdb10e0e986015ce11bb0bb5236550390423adcc6ff9455a018d40737c56629",
+        "artifacts/research-v20/access/screen_1/quarter_candidate-test.parquet": "ac18af41402cd5eef1b9b282de515af1c1180654209a82dd29d4c6578532421c",
+        "artifacts/research-v11/screen_2/quantile/access.cbm": "5212d2fcbcdf2e10c59412adb6b99eb36ba24b75c65000040ec624febf4b354c",
+        "artifacts/research-v11/screen_2/quantile/fit.json": "556cf23c402da51f5908d86d7b22cf20f0f0b9fe6d0f17134caefe2e4f298eee",
+        "artifacts/research-v11/screen_2/quantile/result.json": "1b02af95b610a8f93c895934b4e3c8e8f07a1f95643a1d8ad1392124aac6af1d",
+        "artifacts/research-v11/screen_2/quantile/access-policy.parquet": "cc48d9d5b5e4ccaaf02367569a815d2d680d08ef653c8ebf4e4af8487be18ea4",
+        "artifacts/research-v11/screen_2/quantile/access-test.parquet": "ef40d8db54e0eb8afea2a05a3aabd29b7523f7ef41c63ff0db35a25d8f4f1da9",
+        "artifacts/research-v20/access/screen_2/result.json": "5dde5c76801a2eb76b77aa97fd52eda94cb945736a88af7e3f9d52878714d854",
+        "artifacts/research-v20/access/screen_2/quarter_candidate-policy.parquet": "23a69020243434a2ecac021dbd1e6a5335b3f57d8a307403387e6bd005e0a99b",
+        "artifacts/research-v20/access/screen_2/quarter_candidate-test.parquet": "33fc14118aa20b0298ef1afe02885ad8b8978e7556084d50bb5a5b0968512000",
+        "artifacts/research-v11/confirmation/quantile/access.cbm": "df6c0a76e2126892c48af845d49d09785390584a64ebc4db24335ae89d2a1f40",
+        "artifacts/research-v11/confirmation/quantile/fit.json": "8fbd8bfa03f396357c2aeb1c3f5255be0ea95d9b576ace9f3a78edd23071d49c",
+        "artifacts/research-v11/confirmation/quantile/result.json": "f8a4b3501d2836bc2ec49e323f98b5089affbc6a155abb6bdd2f6b6933dcda33",
+        "artifacts/research-v11/confirmation/quantile/access-policy.parquet": "9a2bb362aca3433e6114ae7d8d00ac2308406627d8934899674ab23714abf88a",
+        "artifacts/research-v11/confirmation/quantile/access-test.parquet": "5439a978918cb03c5c273398ae429da03a6e96a20d30d5b744f507feb307a1aa",
+        "artifacts/research-v20/access/confirmation/result.json": "a806b2ce73bb73828cda9611f7981372f028bbfbee04234199ecdca77908d646",
+        "artifacts/research-v20/access/confirmation/quarter_candidate-policy.parquet": "0954f1719f4d0747571fd0e4b726f26a16a0a5df52eecd23ced9d5aca0460b47",
+        "artifacts/research-v20/access/confirmation/quarter_candidate-test.parquet": "83b195cc95651800ad92bd9fd16172f06dc20e129a18e5fd48d23d57efdaa7a9",
+        "artifacts/research-v11/stress_1/quantile/access.cbm": "878ac27abd588228b0b4636fe5c095941cd36367520d6c39cf8d08f6d6fabbb1",
+        "artifacts/research-v11/stress_1/quantile/fit.json": "aa3917867fab4dba8780288553f9de39d4ba9f920dd2ba93bf9dca08dfe02f55",
+        "artifacts/research-v11/stress_1/quantile/result.json": "0b83c79d4525584ba6b50d5b47a7fbe8ad7c2a4b3b5948ce251dd239a85ba3a5",
+        "artifacts/research-v11/stress_1/quantile/access-policy.parquet": "019302330eeb3b4991a57343e569a560e4e413d15363efa02f4b20654486f63d",
+        "artifacts/research-v11/stress_1/quantile/access-test.parquet": "bc7b99fad3c6b209dafa8aababb9b509e5e4b6aa3046839521791a4cc5b95d60",
+        "artifacts/research-v20/access/stress_1/result.json": "931861ade750134b085232e3cec4506a7ae6f8cda0031cc2f3ab72bd56dc0bff",
+        "artifacts/research-v20/access/stress_1/quarter_candidate-policy.parquet": "8390a93259f6e666cf6541e9fd4da242bea08b39ca52c9f4b7df8e9f8e4697fb",
+        "artifacts/research-v20/access/stress_1/quarter_candidate-test.parquet": "c560b7f736cb8f6a04ee10b0146c376c49bd7cb65857b4b4fd9602b63be16f4e",
+        "artifacts/research-v11/stress_2/quantile/access.cbm": "be8db924423b8bd2556e904a2e12106fbc7687bd611495bfac75f2ffe20d38fb",
+        "artifacts/research-v11/stress_2/quantile/fit.json": "acf4367ac4cbbe46bb8bf10e7aa40c0273c02fc4f42abbd6e9761775755bf7f7",
+        "artifacts/research-v11/stress_2/quantile/result.json": "ae0f2459bb65789dc4aac85ab4e9f063252d4d63be241b5f287032d625a988a2",
+        "artifacts/research-v11/stress_2/quantile/access-policy.parquet": "41f7c23852167210aac3f949ad181bc8220f84b903ea2bdd096b96a8dddcabf9",
+        "artifacts/research-v11/stress_2/quantile/access-test.parquet": "67c4da4400e7225c08c27da059ed3f064ef19ba827a1c0c7a2dc7285566ee4d9",
+        "artifacts/research-v20/access/stress_2/result.json": "c842954155bfc549424d79cd6f68d1adcc18496f779d05a7e4f837a8b63c260e",
+        "artifacts/research-v20/access/stress_2/quarter_candidate-policy.parquet": "624d86d6f7362d22207e9b45e9868558db977a89871064c765e23e04920ab0dc",
+        "artifacts/research-v20/access/stress_2/quarter_candidate-test.parquet": "f97219afe69a2c04b523ae0e899e15d9d5aac2e54f1da5e54ddbda3a5a764c04"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/fine_quantile_research.py": "8c0922801147af9e38d195dc6ca3de67f23f643e985c16cd3a078bf5998ce743",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7"
       }
     }
   },
@@ -8475,6 +8691,256 @@
       "/Users/main/vs_projects/lct_hack/src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5"
     }
   },
+  "fresh_counts_v21": {
+    "access": {
+      "selection": {
+        "candidate": {
+          "true_alerts": 1932,
+          "alerts": 2716,
+          "eligible_episodes": 2667,
+          "precision": 0.711340206185567,
+          "recall": 0.7244094488188977,
+          "f1": 0.717815344603381,
+          "primary_score": 0.7903780068728522,
+          "both_90": false
+        },
+        "control": {
+          "true_alerts": 1860,
+          "alerts": 2632,
+          "eligible_episodes": 2667,
+          "precision": 0.7066869300911854,
+          "recall": 0.6974128233970753,
+          "f1": 0.7020192489148896,
+          "primary_score": 0.7749031371078614,
+          "both_90": false
+        },
+        "reference": {
+          "true_alerts": 1860,
+          "alerts": 2632,
+          "eligible_episodes": 2667,
+          "precision": 0.7066869300911854,
+          "recall": 0.6974128233970753,
+          "f1": 0.7020192489148896,
+          "primary_score": 0.7749031371078614,
+          "both_90": false
+        },
+        "passed_screen": false
+      },
+      "research_eligible": false,
+      "status": "screen_failed"
+    },
+    "fire": {
+      "selection": {
+        "candidate": {
+          "true_alerts": 141,
+          "alerts": 316,
+          "eligible_episodes": 288,
+          "precision": 0.4462025316455696,
+          "recall": 0.4895833333333333,
+          "f1": 0.46688741721854304,
+          "primary_score": 0.4957805907172996,
+          "both_90": false
+        },
+        "control": {
+          "true_alerts": 138,
+          "alerts": 309,
+          "eligible_episodes": 288,
+          "precision": 0.44660194174757284,
+          "recall": 0.4791666666666667,
+          "f1": 0.4623115577889447,
+          "primary_score": 0.4962243797195254,
+          "both_90": false
+        },
+        "reference": {
+          "true_alerts": 128,
+          "alerts": 296,
+          "eligible_episodes": 288,
+          "precision": 0.43243243243243246,
+          "recall": 0.4444444444444444,
+          "f1": 0.4383561643835616,
+          "primary_score": 0.4804804804804805,
+          "both_90": false
+        },
+        "passed_screen": false
+      },
+      "research_eligible": false,
+      "status": "screen_failed"
+    },
+    "fault": {
+      "selection": {
+        "candidate": {
+          "true_alerts": 13,
+          "alerts": 80,
+          "eligible_episodes": 46,
+          "precision": 0.1625,
+          "recall": 0.2826086956521739,
+          "f1": 0.20634920634920634,
+          "primary_score": 0.18055555555555555,
+          "both_90": false
+        },
+        "control": {
+          "true_alerts": 11,
+          "alerts": 74,
+          "eligible_episodes": 46,
+          "precision": 0.14864864864864866,
+          "recall": 0.2391304347826087,
+          "f1": 0.18333333333333332,
+          "primary_score": 0.16516516516516516,
+          "both_90": false
+        },
+        "reference": {
+          "true_alerts": 11,
+          "alerts": 70,
+          "eligible_episodes": 46,
+          "precision": 0.15714285714285714,
+          "recall": 0.2391304347826087,
+          "f1": 0.1896551724137931,
+          "primary_score": 0.1746031746031746,
+          "both_90": false
+        },
+        "passed_screen": false
+      },
+      "research_eligible": false,
+      "status": "screen_failed"
+    }
+  },
+  "fine_quantiles_v22": {
+    "selection": {
+      "candidate": {
+        "true_alerts": 1924,
+        "alerts": 2708,
+        "eligible_episodes": 2667,
+        "precision": 0.7104874446085672,
+        "recall": 0.7214098237720284,
+        "f1": 0.715906976744186,
+        "primary_score": 0.789430494009519,
+        "both_90": false
+      },
+      "reference": {
+        "true_alerts": 1860,
+        "alerts": 2632,
+        "eligible_episodes": 2667,
+        "precision": 0.7066869300911854,
+        "recall": 0.6974128233970753,
+        "f1": 0.7020192489148896,
+        "primary_score": 0.7749031371078614,
+        "both_90": false
+      },
+      "passed_screen": false
+    },
+    "research_eligible": false,
+    "status": "screen_failed"
+  },
+  "raw_quarter_feature_build": {
+    "inputs": {
+      "/Users/main/vs_projects/lct_hack/data/processed/features-dense-channel-novelty.parquet": "dc1a47c6268eda6f906f022eb8dd2e46239028412cb65156b11e1284ace73928",
+      "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+      "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2025.parquet": "60d5d81955a2e5a1deb9137dd7d08693e384214e0d8c3b136513005ff8841dac",
+      "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2026.parquet": "fd766476df268d7325a075bb1b4379d293ed69a0298c9aec3be99608564a1277",
+      "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2025.json": "14349d817accdcef093c841b7a692a827ea839a7cee31f19dfb256365a10a169",
+      "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2026.json": "8fe4e6f3e1c92db1f50c249928872eec0e24957d59bd363788bfb135090fd853"
+    },
+    "outputs": {},
+    "valid_hourly_feature_rows_exact": 438048,
+    "refreshed_columns": [
+      "events_1h",
+      "alarms_1h",
+      "fault_reports_1h",
+      "power_reports_1h",
+      "unknown_reports_1h",
+      "smoke_reports_1h",
+      "flood_reports_1h",
+      "access_reports_1h",
+      "pump_switches_1h",
+      "ambiguous_1h",
+      "technical_codes_1h",
+      "events_6h",
+      "alarms_6h",
+      "fault_reports_6h",
+      "power_reports_6h",
+      "unknown_reports_6h",
+      "smoke_reports_6h",
+      "flood_reports_6h",
+      "access_reports_6h",
+      "pump_switches_6h",
+      "ambiguous_6h",
+      "technical_codes_6h",
+      "events_24h",
+      "alarms_24h",
+      "fault_reports_24h",
+      "power_reports_24h",
+      "unknown_reports_24h",
+      "smoke_reports_24h",
+      "flood_reports_24h",
+      "access_reports_24h",
+      "pump_switches_24h",
+      "ambiguous_24h",
+      "technical_codes_24h",
+      "events_168h",
+      "alarms_168h",
+      "fault_reports_168h",
+      "power_reports_168h",
+      "unknown_reports_168h",
+      "smoke_reports_168h",
+      "flood_reports_168h",
+      "access_reports_168h",
+      "pump_switches_168h",
+      "ambiguous_168h",
+      "technical_codes_168h",
+      "fault_reports_burst",
+      "power_reports_burst",
+      "unknown_reports_burst",
+      "smoke_reports_burst",
+      "flood_reports_burst",
+      "access_reports_burst"
+    ],
+    "raw_periods": {
+      "2025": "2025-09-24",
+      "2026": "2026-01-01"
+    },
+    "before": "2026-06-01",
+    "whole_hour_feature_parity": true,
+    "new_training_weights": false
+  },
+  "raw_quarter_aggregation_manifests": [
+    {
+      "inputs": {
+        "/Users/main/vs_projects/lct_hack/data/processed/events-2025.parquet": "06ce46f38efebd20e7eed39f4556fe6b5ff808c57d08bda841b501cc1fb83215",
+        "/Users/main/vs_projects/lct_hack/data/processed/hourly-2025.parquet": "fa3953e27837c8b6be9aee276afbc17f6128552c211d73b9182de515156ef7fb",
+        "/Users/main/vs_projects/lct_hack/data/processed/channels.parquet": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+        "src/moscollector/features.py": "e60335a8be5d28248755996d6f5298ce45dde608c4f038f2eb3ed9fe6459c2bb"
+      },
+      "outputs": {
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2025.parquet": "60d5d81955a2e5a1deb9137dd7d08693e384214e0d8c3b136513005ff8841dac"
+      },
+      "start": "2025-09-24",
+      "before": "2026-06-01",
+      "rows": 167931,
+      "raw_canonical_reports": 14137793,
+      "original_hourly_rows_exact": 59204,
+      "signal_definitions": "Unchanged original report-count definitions; no episode labels used."
+    },
+    {
+      "inputs": {
+        "/Users/main/vs_projects/lct_hack/data/processed/events-2026.parquet": "55bbb2eb32b7d064a8b3fd1c07096490c99d5a0654fe32ff8a473f61e08aee7d",
+        "/Users/main/vs_projects/lct_hack/data/processed/hourly-2026.parquet": "2630dbe5cb921e63106c86f8064a8ef478244ae9637695e232f035891d69061b",
+        "/Users/main/vs_projects/lct_hack/data/processed/channels.parquet": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/quarter_count_features.py": "fbaa1007d6734a5c6cf8e2da45f6bef5a6e34caa3faa1829ea886ba444f65f19",
+        "src/moscollector/features.py": "e60335a8be5d28248755996d6f5298ce45dde608c4f038f2eb3ed9fe6459c2bb"
+      },
+      "outputs": {
+        "/Users/main/vs_projects/lct_hack/data/processed/quarter-counts-v21/counts-2026.parquet": "fd766476df268d7325a075bb1b4379d293ed69a0298c9aec3be99608564a1277"
+      },
+      "start": "2026-01-01",
+      "before": "2026-06-01",
+      "rows": 256425,
+      "raw_canonical_reports": 25032004,
+      "original_hourly_rows_exact": 91464,
+      "signal_definitions": "Unchanged original report-count definitions; no episode labels used."
+    }
+  ],
+  "raw_quarter_count_provenance_verified": true,
   "ordered_feature_build": {
     "before": "2026-06-01",
     "categorical": [
@@ -14720,6 +15186,6 @@
   },
   "new_blind_test": false,
   "goal_achieved": false,
-  "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. No experimental gate automatically activates weights.",
+  "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. V21 fresh counts and V22 quarter quantiles slightly improve access screening F1 but do not clear their >5% primary improvement gates; no extra-month evaluation or promotion. V21 fire/fault also fail screening. No experimental gate automatically activates weights.",
   "limitations": "No individual-head result can establish 90/90 for the entire solution. F1 gains involving lower precision are recorded explicitly. No candidate is promoted automatically."
 }

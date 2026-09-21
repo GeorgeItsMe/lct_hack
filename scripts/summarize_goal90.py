@@ -30,6 +30,8 @@ studies = {
     "v18": Path("artifacts/research-v18"),
     "v19": Path("artifacts/research-v19"),
     "v20": Path("artifacts/research-v20"),
+    "v21": Path("artifacts/research-v21"),
+    "v22": Path("artifacts/research-v22"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -59,6 +61,14 @@ for manifest in [novelty_build] + [read(p) for p in sorted(novelty_folder.glob("
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed channel-novelty provenance: {source}")
 new_weights = {}
+quarter_folder = Path("data/processed/quarter-counts-v21")
+quarter_build = read(quarter_folder / "build.json")
+quarter_manifests = [read(p) for p in sorted(quarter_folder.glob("counts-*.json"))]
+for manifest in [quarter_build, *quarter_manifests]:
+    for category in ("inputs", "outputs"):
+        for source, digest in manifest[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed raw quarter-count provenance: {source}")
 for name in ("v15", "v16", "v17", "v18", "v19"):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
@@ -110,6 +120,11 @@ report = {
     "hourly_capacity_diagnostic": capacity,
     "fine_cadence_v20": read(studies["v20"] / "report.json"),
     "fine_cadence_uncertainty": fine_uncertainty,
+    "fresh_counts_v21": read(studies["v21"] / "report.json"),
+    "fine_quantiles_v22": read(studies["v22"] / "report.json"),
+    "raw_quarter_feature_build": quarter_build,
+    "raw_quarter_aggregation_manifests": quarter_manifests,
+    "raw_quarter_count_provenance_verified": True,
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
     "additional_research_weights_verified": new_weights,
@@ -126,7 +141,7 @@ report = {
     "original_features_episodes_and_june_hashes_verified": original_hashes,
     "new_blind_test": False,
     "goal_achieved": False,
-    "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. No experimental gate automatically activates weights.",
+    "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. V21 fresh counts and V22 quarter quantiles slightly improve access screening F1 but do not clear their >5% primary improvement gates; no extra-month evaluation or promotion. V21 fire/fault also fail screening. No experimental gate automatically activates weights.",
     "limitations": "No individual-head result can establish 90/90 for the entire solution. F1 gains involving lower precision are recorded explicitly. No candidate is promoted automatically.",
 }
 target = Path("artifacts/goal90_research_report.json")
