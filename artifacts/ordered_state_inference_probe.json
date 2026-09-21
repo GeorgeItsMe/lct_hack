@@ -1,0 +1,12 @@
+{
+  "scope": "Warm CPU prediction on already-built features during concurrent training. Not end-to-end SLA or production integration. No metric selection.",
+  "kind": "access",
+  "fold": "screen_1",
+  "rows": 78,
+  "load_seconds": 0.04111783300322713,
+  "prediction_threads": 1,
+  "repeats": 20,
+  "median_seconds": 0.0009991255010390887,
+  "p95_seconds": 0.0014133826982288156,
+  "model_sha256": "f1a3b153f4e53df45a723a4d91b713110ae5e3b84c095b766c731011891dd779"
+}

@@ -1,0 +1,649 @@
+{
+  "scope": "Descriptive recurrence audit on already-used historical folds, not a new test or a predictability bound.",
+  "reference": "V9 count24 family after90/90 policy tuning: v12 uncorrected(access), v13(fire/fault). Not serving classifiers or original access policy.",
+  "history": "At the latest eligible forecast at/before each episode, only starts strictly earlier than forecast minus70min can count as known history. No observed prior means none in the supplied history, not necessarily none ever.",
+  "episode_source_sha256": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+  "summary": [
+    {
+      "kind": "access",
+      "regime": "1_to_7d",
+      "episodes": 1529,
+      "matched": 738,
+      "missed": 791,
+      "recall": 0.48266841072596467,
+      "episode_share_within_kind": 0.20184818481848185
+    },
+    {
+      "kind": "access",
+      "regime": "7_to_30d",
+      "episodes": 216,
+      "matched": 6,
+      "missed": 210,
+      "recall": 0.027777777777777776,
+      "episode_share_within_kind": 0.028514851485148516
+    },
+    {
+      "kind": "access",
+      "regime": "over_30d",
+      "episodes": 93,
+      "matched": 0,
+      "missed": 93,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.012277227722772278
+    },
+    {
+      "kind": "access",
+      "regime": "within_1d",
+      "episodes": 5737,
+      "matched": 4028,
+      "missed": 1709,
+      "recall": 0.7021091162628551,
+      "episode_share_within_kind": 0.7573597359735974
+    },
+    {
+      "kind": "fault",
+      "regime": "1_to_7d",
+      "episodes": 33,
+      "matched": 4,
+      "missed": 29,
+      "recall": 0.12121212121212122,
+      "episode_share_within_kind": 0.15207373271889402
+    },
+    {
+      "kind": "fault",
+      "regime": "7_to_30d",
+      "episodes": 26,
+      "matched": 0,
+      "missed": 26,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.11981566820276497
+    },
+    {
+      "kind": "fault",
+      "regime": "no_observed_prior_episode",
+      "episodes": 12,
+      "matched": 0,
+      "missed": 12,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.055299539170506916
+    },
+    {
+      "kind": "fault",
+      "regime": "over_30d",
+      "episodes": 54,
+      "matched": 0,
+      "missed": 54,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.2488479262672811
+    },
+    {
+      "kind": "fault",
+      "regime": "within_1d",
+      "episodes": 92,
+      "matched": 24,
+      "missed": 68,
+      "recall": 0.2608695652173913,
+      "episode_share_within_kind": 0.423963133640553
+    },
+    {
+      "kind": "fire",
+      "regime": "1_to_7d",
+      "episodes": 209,
+      "matched": 86,
+      "missed": 123,
+      "recall": 0.41148325358851673,
+      "episode_share_within_kind": 0.1497134670487106
+    },
+    {
+      "kind": "fire",
+      "regime": "7_to_30d",
+      "episodes": 143,
+      "matched": 28,
+      "missed": 115,
+      "recall": 0.1958041958041958,
+      "episode_share_within_kind": 0.10243553008595989
+    },
+    {
+      "kind": "fire",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 2,
+      "missed": 0,
+      "recall": 1.0,
+      "episode_share_within_kind": 0.0014326647564469914
+    },
+    {
+      "kind": "fire",
+      "regime": "over_30d",
+      "episodes": 133,
+      "matched": 11,
+      "missed": 122,
+      "recall": 0.08270676691729323,
+      "episode_share_within_kind": 0.09527220630372493
+    },
+    {
+      "kind": "fire",
+      "regime": "within_1d",
+      "episodes": 909,
+      "matched": 401,
+      "missed": 508,
+      "recall": 0.44114411441144114,
+      "episode_share_within_kind": 0.6511461318051576
+    }
+  ],
+  "per_period": [
+    {
+      "kind": "access",
+      "fold": "confirmation",
+      "regime": "1_to_7d",
+      "episodes": 284,
+      "matched": 143,
+      "missed": 141
+    },
+    {
+      "kind": "access",
+      "fold": "confirmation",
+      "regime": "7_to_30d",
+      "episodes": 44,
+      "matched": 3,
+      "missed": 41
+    },
+    {
+      "kind": "access",
+      "fold": "confirmation",
+      "regime": "over_30d",
+      "episodes": 18,
+      "matched": 0,
+      "missed": 18
+    },
+    {
+      "kind": "access",
+      "fold": "confirmation",
+      "regime": "within_1d",
+      "episodes": 888,
+      "matched": 658,
+      "missed": 230
+    },
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "regime": "1_to_7d",
+      "episodes": 306,
+      "matched": 165,
+      "missed": 141
+    },
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "regime": "7_to_30d",
+      "episodes": 43,
+      "matched": 1,
+      "missed": 42
+    },
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "regime": "over_30d",
+      "episodes": 20,
+      "matched": 0,
+      "missed": 20
+    },
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "regime": "within_1d",
+      "episodes": 1113,
+      "matched": 729,
+      "missed": 384
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "regime": "1_to_7d",
+      "episodes": 249,
+      "matched": 113,
+      "missed": 136
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "regime": "7_to_30d",
+      "episodes": 45,
+      "matched": 2,
+      "missed": 43
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "regime": "over_30d",
+      "episodes": 6,
+      "matched": 0,
+      "missed": 6
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "regime": "within_1d",
+      "episodes": 885,
+      "matched": 700,
+      "missed": 185
+    },
+    {
+      "kind": "access",
+      "fold": "stress_1",
+      "regime": "1_to_7d",
+      "episodes": 383,
+      "matched": 175,
+      "missed": 208
+    },
+    {
+      "kind": "access",
+      "fold": "stress_1",
+      "regime": "7_to_30d",
+      "episodes": 56,
+      "matched": 0,
+      "missed": 56
+    },
+    {
+      "kind": "access",
+      "fold": "stress_1",
+      "regime": "over_30d",
+      "episodes": 21,
+      "matched": 0,
+      "missed": 21
+    },
+    {
+      "kind": "access",
+      "fold": "stress_1",
+      "regime": "within_1d",
+      "episodes": 1507,
+      "matched": 956,
+      "missed": 551
+    },
+    {
+      "kind": "access",
+      "fold": "stress_2",
+      "regime": "1_to_7d",
+      "episodes": 307,
+      "matched": 142,
+      "missed": 165
+    },
+    {
+      "kind": "access",
+      "fold": "stress_2",
+      "regime": "7_to_30d",
+      "episodes": 28,
+      "matched": 0,
+      "missed": 28
+    },
+    {
+      "kind": "access",
+      "fold": "stress_2",
+      "regime": "over_30d",
+      "episodes": 28,
+      "matched": 0,
+      "missed": 28
+    },
+    {
+      "kind": "access",
+      "fold": "stress_2",
+      "regime": "within_1d",
+      "episodes": 1344,
+      "matched": 985,
+      "missed": 359
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "1_to_7d",
+      "episodes": 10,
+      "matched": 0,
+      "missed": 10
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "7_to_30d",
+      "episodes": 6,
+      "matched": 0,
+      "missed": 6
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "matched": 0,
+      "missed": 1
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "over_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "within_1d",
+      "episodes": 4,
+      "matched": 2,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "7_to_30d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "over_30d",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "7_to_30d",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "over_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "within_1d",
+      "episodes": 11,
+      "matched": 3,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "1_to_7d",
+      "episodes": 14,
+      "matched": 4,
+      "missed": 10
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "7_to_30d",
+      "episodes": 3,
+      "matched": 0,
+      "missed": 3
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "over_30d",
+      "episodes": 18,
+      "matched": 0,
+      "missed": 18
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "within_1d",
+      "episodes": 69,
+      "matched": 19,
+      "missed": 50
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "1_to_7d",
+      "episodes": 5,
+      "matched": 0,
+      "missed": 5
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "7_to_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "over_30d",
+      "episodes": 13,
+      "matched": 0,
+      "missed": 13
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "within_1d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fire",
+      "fold": "confirmation",
+      "regime": "1_to_7d",
+      "episodes": 86,
+      "matched": 51,
+      "missed": 35
+    },
+    {
+      "kind": "fire",
+      "fold": "confirmation",
+      "regime": "7_to_30d",
+      "episodes": 23,
+      "matched": 8,
+      "missed": 15
+    },
+    {
+      "kind": "fire",
+      "fold": "confirmation",
+      "regime": "over_30d",
+      "episodes": 34,
+      "matched": 4,
+      "missed": 30
+    },
+    {
+      "kind": "fire",
+      "fold": "confirmation",
+      "regime": "within_1d",
+      "episodes": 116,
+      "matched": 97,
+      "missed": 19
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "regime": "1_to_7d",
+      "episodes": 13,
+      "matched": 4,
+      "missed": 9
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "regime": "7_to_30d",
+      "episodes": 21,
+      "matched": 4,
+      "missed": 17
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "regime": "over_30d",
+      "episodes": 31,
+      "matched": 3,
+      "missed": 28
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "regime": "within_1d",
+      "episodes": 36,
+      "matched": 24,
+      "missed": 12
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "regime": "1_to_7d",
+      "episodes": 14,
+      "matched": 9,
+      "missed": 5
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "regime": "7_to_30d",
+      "episodes": 23,
+      "matched": 5,
+      "missed": 18
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "regime": "over_30d",
+      "episodes": 12,
+      "matched": 1,
+      "missed": 11
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "regime": "within_1d",
+      "episodes": 138,
+      "matched": 78,
+      "missed": 60
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "regime": "1_to_7d",
+      "episodes": 56,
+      "matched": 11,
+      "missed": 45
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "regime": "7_to_30d",
+      "episodes": 28,
+      "matched": 5,
+      "missed": 23
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 2,
+      "missed": 0
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "regime": "over_30d",
+      "episodes": 12,
+      "matched": 1,
+      "missed": 11
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "regime": "within_1d",
+      "episodes": 306,
+      "matched": 64,
+      "missed": 242
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_2",
+      "regime": "1_to_7d",
+      "episodes": 40,
+      "matched": 11,
+      "missed": 29
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_2",
+      "regime": "7_to_30d",
+      "episodes": 48,
+      "matched": 6,
+      "missed": 42
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_2",
+      "regime": "over_30d",
+      "episodes": 44,
+      "matched": 2,
+      "missed": 42
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_2",
+      "regime": "within_1d",
+      "episodes": 313,
+      "matched": 138,
+      "missed": 175
+    }
+  ],
+  "limits": "A quiet event history does not rule out raw-sensor precursors. Every episode remains in the denominator; no relabeling or exclusion."
+}

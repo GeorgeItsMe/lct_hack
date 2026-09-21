@@ -1,0 +1,31 @@
+{
+  "scope": "Input coverage only; no labels used or quality claims",
+  "rows": 970816,
+  "source_sha256": "e0627634f29790f87a7a804fcb3aa2519930473240df70422bfed124dfda3d5b",
+  "history": {
+    "own": {
+      "latest_observed_fraction": 0.9682174583031182,
+      "distinct_latest_channels": 6417,
+      "top_latest_transitions": {
+        "Не замкнут|alarm=false -> Норма|alarm=false": 157425,
+        "Питание от батарей|alarm=true -> Питание от сети|alarm=false": 108663,
+        "Обнаружено движение|alarm=false -> Движения нет|alarm=false": 107691,
+        "Неопределен|alarm=false -> Норма|alarm=false": 107049,
+        "Не замкнут|alarm=true -> Норма|alarm=false": 101003,
+        "Включен|alarm=false -> Выключен|alarm=false": 78691
+      }
+    },
+    "sibling": {
+      "latest_observed_fraction": 0.9891194623904015,
+      "distinct_latest_channels": 5719,
+      "top_latest_transitions": {
+        "Обнаружено движение|alarm=false -> Движения нет|alarm=false": 183250,
+        "__CONFLICT__|alarm=false -> __NUMERIC__|alarm=false": 178243,
+        "Включен|alarm=false -> Выключен|alarm=false": 170997,
+        "Не замкнут|alarm=false -> Норма|alarm=false": 124044,
+        "Неопределен|alarm=false -> Норма|alarm=false": 50109,
+        "__NUMERIC__|alarm=false -> __CONFLICT__|alarm=false": 44173
+      }
+    }
+  }
+}

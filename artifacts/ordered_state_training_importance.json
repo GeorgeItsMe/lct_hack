@@ -1,0 +1,94 @@
+{
+  "scope": "Training-only PredictionValuesChange; not causal attribution or independent predictive value",
+  "kind": "access",
+  "fold": "screen_1",
+  "model_sha256": "f1a3b153f4e53df45a723a4d91b713110ae5e3b84c095b766c731011891dd779",
+  "weight_mib": 134.91197204589844,
+  "groups": {
+    "own": 11.044814871422956,
+    "sibling": 2.1467445840977604,
+    "original": 86.80844054447941
+  },
+  "top20": [
+    [
+      "object_id",
+      25.81693063451005
+    ],
+    [
+      "channel_count",
+      9.400317291247223
+    ],
+    [
+      "access_reports_168h",
+      9.259555001654212
+    ],
+    [
+      "day_of_week",
+      7.906555236759171
+    ],
+    [
+      "temperature_max_age_h",
+      7.130108218450179
+    ],
+    [
+      "events_168h",
+      6.500540348643119
+    ],
+    [
+      "ambiguous_168h",
+      5.17356588370242
+    ],
+    [
+      "order_own_1_channel",
+      3.1991641689858428
+    ],
+    [
+      "order_own_3_channel",
+      3.1369586802064595
+    ],
+    [
+      "temperature_age_h",
+      3.1237407408232
+    ],
+    [
+      "hour",
+      2.9317240761218946
+    ],
+    [
+      "access_reports_24h",
+      1.9594794236408077
+    ],
+    [
+      "order_own_4_transition",
+      1.861419483869056
+    ],
+    [
+      "smoke_reports_168h",
+      1.2528116885602465
+    ],
+    [
+      "alarms_168h",
+      0.9613181416254397
+    ],
+    [
+      "order_own_4_channel",
+      0.8888754770276404
+    ],
+    [
+      "weekend",
+      0.85295574994163
+    ],
+    [
+      "fault_reports_168h",
+      0.7421203386722348
+    ],
+    [
+      "events_24h",
+      0.7407543677603828
+    ],
+    [
+      "order_sibling_2_transition",
+      0.5447317288570458
+    ]
+  ]
+}
