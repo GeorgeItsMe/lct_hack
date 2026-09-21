@@ -1,0 +1,13 @@
+{
+  "year": 2026,
+  "canonical_rows": 30090576,
+  "collapsed_rows": 604813,
+  "ambiguous_channel_seconds": 584855,
+  "channel_episodes": {
+    "access": 24063,
+    "fire": 14919,
+    "fault": 758,
+    "flood": 71
+  },
+  "seconds": 14.26
+}

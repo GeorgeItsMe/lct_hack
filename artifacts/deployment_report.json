@@ -1,0 +1,15 @@
+{
+  "linux_container_build": "passed",
+  "postgresql_version": 16,
+  "http_port": 8001,
+  "api_ready": "passed",
+  "forecast_rows": 312,
+  "decision_write": "passed",
+  "restore_target": "contour_restore_qa_20260921",
+  "restore_policy": "new database, original preserved",
+  "ldap_live_test": "not_performed_no_directory",
+  "tls_live_test": "not_performed_no_certificate",
+  "restored_decisions": 1,
+  "restored_audit_records": 6,
+  "original_database_preserved": true
+}

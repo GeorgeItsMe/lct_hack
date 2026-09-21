@@ -1,0 +1,7 @@
+pyproject.toml
+src/moscollector/__init__.py
+src/moscollector_contour.egg-info/PKG-INFO
+src/moscollector_contour.egg-info/SOURCES.txt
+src/moscollector_contour.egg-info/dependency_links.txt
+src/moscollector_contour.egg-info/requires.txt
+src/moscollector_contour.egg-info/top_level.txt

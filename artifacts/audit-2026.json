@@ -1,0 +1,1726 @@
+{
+  "year": 2026,
+  "source": "ext-journal-2026.csv",
+  "sha256": "3ecdc8fcc5b08c8238fa74fadb35e9b6439bce3f2f8fe8697da5e483aae55880",
+  "timezone": "Europe/Moscow (assumption; source has no offset)",
+  "quarantined": false,
+  "quarantine_reason": null,
+  "summary": {
+    "rows": 30695389,
+    "start": "2026-01-01 00:00:00",
+    "end": "2026-06-30 23:59:59",
+    "channels": 11447,
+    "alarms": 195422,
+    "invalid_rows": 0,
+    "numeric_rows": 24695254,
+    "technical_code_rows": 929,
+    "unmapped_rows": 122
+  },
+  "daily": [
+    {
+      "day": "2026-01-01",
+      "rows": 139284,
+      "alarms": 2302,
+      "channels": 865
+    },
+    {
+      "day": "2026-01-02",
+      "rows": 139351,
+      "alarms": 1245,
+      "channels": 764
+    },
+    {
+      "day": "2026-01-03",
+      "rows": 133401,
+      "alarms": 1239,
+      "channels": 462
+    },
+    {
+      "day": "2026-01-04",
+      "rows": 142923,
+      "alarms": 1575,
+      "channels": 1385
+    },
+    {
+      "day": "2026-01-05",
+      "rows": 141244,
+      "alarms": 1270,
+      "channels": 1289
+    },
+    {
+      "day": "2026-01-06",
+      "rows": 139052,
+      "alarms": 1492,
+      "channels": 892
+    },
+    {
+      "day": "2026-01-07",
+      "rows": 134585,
+      "alarms": 1287,
+      "channels": 1437
+    },
+    {
+      "day": "2026-01-08",
+      "rows": 137022,
+      "alarms": 1169,
+      "channels": 947
+    },
+    {
+      "day": "2026-01-09",
+      "rows": 140723,
+      "alarms": 1085,
+      "channels": 1613
+    },
+    {
+      "day": "2026-01-10",
+      "rows": 137347,
+      "alarms": 795,
+      "channels": 581
+    },
+    {
+      "day": "2026-01-11",
+      "rows": 128489,
+      "alarms": 141,
+      "channels": 1269
+    },
+    {
+      "day": "2026-01-12",
+      "rows": 141136,
+      "alarms": 397,
+      "channels": 1181
+    },
+    {
+      "day": "2026-01-13",
+      "rows": 145181,
+      "alarms": 847,
+      "channels": 1784
+    },
+    {
+      "day": "2026-01-14",
+      "rows": 146127,
+      "alarms": 1173,
+      "channels": 2212
+    },
+    {
+      "day": "2026-01-15",
+      "rows": 150090,
+      "alarms": 1570,
+      "channels": 2318
+    },
+    {
+      "day": "2026-01-16",
+      "rows": 145449,
+      "alarms": 1697,
+      "channels": 1391
+    },
+    {
+      "day": "2026-01-17",
+      "rows": 135662,
+      "alarms": 1029,
+      "channels": 2171
+    },
+    {
+      "day": "2026-01-18",
+      "rows": 136176,
+      "alarms": 1422,
+      "channels": 1961
+    },
+    {
+      "day": "2026-01-19",
+      "rows": 154014,
+      "alarms": 1367,
+      "channels": 2281
+    },
+    {
+      "day": "2026-01-20",
+      "rows": 152887,
+      "alarms": 1927,
+      "channels": 1873
+    },
+    {
+      "day": "2026-01-21",
+      "rows": 164384,
+      "alarms": 1183,
+      "channels": 3030
+    },
+    {
+      "day": "2026-01-22",
+      "rows": 156178,
+      "alarms": 302,
+      "channels": 2806
+    },
+    {
+      "day": "2026-01-23",
+      "rows": 142245,
+      "alarms": 494,
+      "channels": 2098
+    },
+    {
+      "day": "2026-01-24",
+      "rows": 134224,
+      "alarms": 231,
+      "channels": 1465
+    },
+    {
+      "day": "2026-01-25",
+      "rows": 130177,
+      "alarms": 208,
+      "channels": 741
+    },
+    {
+      "day": "2026-01-26",
+      "rows": 164674,
+      "alarms": 633,
+      "channels": 2862
+    },
+    {
+      "day": "2026-01-27",
+      "rows": 158020,
+      "alarms": 861,
+      "channels": 2603
+    },
+    {
+      "day": "2026-01-28",
+      "rows": 154445,
+      "alarms": 1257,
+      "channels": 3815
+    },
+    {
+      "day": "2026-01-29",
+      "rows": 147084,
+      "alarms": 502,
+      "channels": 1322
+    },
+    {
+      "day": "2026-01-30",
+      "rows": 151261,
+      "alarms": 1084,
+      "channels": 3323
+    },
+    {
+      "day": "2026-01-31",
+      "rows": 139234,
+      "alarms": 554,
+      "channels": 752
+    },
+    {
+      "day": "2026-02-01",
+      "rows": 138324,
+      "alarms": 392,
+      "channels": 3083
+    },
+    {
+      "day": "2026-02-02",
+      "rows": 166507,
+      "alarms": 600,
+      "channels": 2702
+    },
+    {
+      "day": "2026-02-03",
+      "rows": 186693,
+      "alarms": 1034,
+      "channels": 4245
+    },
+    {
+      "day": "2026-02-04",
+      "rows": 178756,
+      "alarms": 425,
+      "channels": 3299
+    },
+    {
+      "day": "2026-02-05",
+      "rows": 170616,
+      "alarms": 448,
+      "channels": 2168
+    },
+    {
+      "day": "2026-02-06",
+      "rows": 173261,
+      "alarms": 515,
+      "channels": 1979
+    },
+    {
+      "day": "2026-02-07",
+      "rows": 158441,
+      "alarms": 949,
+      "channels": 2439
+    },
+    {
+      "day": "2026-02-08",
+      "rows": 162979,
+      "alarms": 206,
+      "channels": 1781
+    },
+    {
+      "day": "2026-02-09",
+      "rows": 166484,
+      "alarms": 1034,
+      "channels": 2968
+    },
+    {
+      "day": "2026-02-10",
+      "rows": 170444,
+      "alarms": 866,
+      "channels": 3197
+    },
+    {
+      "day": "2026-02-11",
+      "rows": 168158,
+      "alarms": 601,
+      "channels": 3972
+    },
+    {
+      "day": "2026-02-12",
+      "rows": 168030,
+      "alarms": 926,
+      "channels": 2832
+    },
+    {
+      "day": "2026-02-13",
+      "rows": 157665,
+      "alarms": 812,
+      "channels": 1349
+    },
+    {
+      "day": "2026-02-14",
+      "rows": 139246,
+      "alarms": 2092,
+      "channels": 1736
+    },
+    {
+      "day": "2026-02-15",
+      "rows": 152506,
+      "alarms": 644,
+      "channels": 747
+    },
+    {
+      "day": "2026-02-16",
+      "rows": 182229,
+      "alarms": 977,
+      "channels": 2339
+    },
+    {
+      "day": "2026-02-17",
+      "rows": 174683,
+      "alarms": 1022,
+      "channels": 1243
+    },
+    {
+      "day": "2026-02-18",
+      "rows": 188074,
+      "alarms": 1080,
+      "channels": 3045
+    },
+    {
+      "day": "2026-02-19",
+      "rows": 181146,
+      "alarms": 871,
+      "channels": 1195
+    },
+    {
+      "day": "2026-02-20",
+      "rows": 174632,
+      "alarms": 647,
+      "channels": 1433
+    },
+    {
+      "day": "2026-02-21",
+      "rows": 156397,
+      "alarms": 543,
+      "channels": 459
+    },
+    {
+      "day": "2026-02-22",
+      "rows": 157593,
+      "alarms": 575,
+      "channels": 1315
+    },
+    {
+      "day": "2026-02-23",
+      "rows": 153037,
+      "alarms": 830,
+      "channels": 393
+    },
+    {
+      "day": "2026-02-24",
+      "rows": 183272,
+      "alarms": 1078,
+      "channels": 2246
+    },
+    {
+      "day": "2026-02-25",
+      "rows": 182152,
+      "alarms": 420,
+      "channels": 1092
+    },
+    {
+      "day": "2026-02-26",
+      "rows": 179391,
+      "alarms": 467,
+      "channels": 1950
+    },
+    {
+      "day": "2026-02-27",
+      "rows": 183263,
+      "alarms": 412,
+      "channels": 1286
+    },
+    {
+      "day": "2026-02-28",
+      "rows": 157875,
+      "alarms": 62,
+      "channels": 474
+    },
+    {
+      "day": "2026-03-01",
+      "rows": 148981,
+      "alarms": 78,
+      "channels": 472
+    },
+    {
+      "day": "2026-03-02",
+      "rows": 170383,
+      "alarms": 227,
+      "channels": 1359
+    },
+    {
+      "day": "2026-03-03",
+      "rows": 177470,
+      "alarms": 210,
+      "channels": 1636
+    },
+    {
+      "day": "2026-03-04",
+      "rows": 177624,
+      "alarms": 448,
+      "channels": 2095
+    },
+    {
+      "day": "2026-03-05",
+      "rows": 177748,
+      "alarms": 3406,
+      "channels": 2118
+    },
+    {
+      "day": "2026-03-06",
+      "rows": 178062,
+      "alarms": 779,
+      "channels": 1579
+    },
+    {
+      "day": "2026-03-07",
+      "rows": 157128,
+      "alarms": 11,
+      "channels": 448
+    },
+    {
+      "day": "2026-03-08",
+      "rows": 160106,
+      "alarms": 128,
+      "channels": 483
+    },
+    {
+      "day": "2026-03-09",
+      "rows": 150728,
+      "alarms": 272,
+      "channels": 1698
+    },
+    {
+      "day": "2026-03-10",
+      "rows": 182384,
+      "alarms": 2734,
+      "channels": 1501
+    },
+    {
+      "day": "2026-03-11",
+      "rows": 197296,
+      "alarms": 3697,
+      "channels": 2065
+    },
+    {
+      "day": "2026-03-12",
+      "rows": 182633,
+      "alarms": 2620,
+      "channels": 3070
+    },
+    {
+      "day": "2026-03-13",
+      "rows": 174572,
+      "alarms": 1576,
+      "channels": 1271
+    },
+    {
+      "day": "2026-03-14",
+      "rows": 148366,
+      "alarms": 101,
+      "channels": 491
+    },
+    {
+      "day": "2026-03-15",
+      "rows": 146482,
+      "alarms": 80,
+      "channels": 1087
+    },
+    {
+      "day": "2026-03-16",
+      "rows": 177361,
+      "alarms": 825,
+      "channels": 2329
+    },
+    {
+      "day": "2026-03-17",
+      "rows": 172538,
+      "alarms": 595,
+      "channels": 1772
+    },
+    {
+      "day": "2026-03-18",
+      "rows": 177346,
+      "alarms": 511,
+      "channels": 2330
+    },
+    {
+      "day": "2026-03-19",
+      "rows": 184317,
+      "alarms": 2612,
+      "channels": 1639
+    },
+    {
+      "day": "2026-03-20",
+      "rows": 188708,
+      "alarms": 698,
+      "channels": 2840
+    },
+    {
+      "day": "2026-03-21",
+      "rows": 162907,
+      "alarms": 166,
+      "channels": 628
+    },
+    {
+      "day": "2026-03-22",
+      "rows": 152851,
+      "alarms": 81,
+      "channels": 638
+    },
+    {
+      "day": "2026-03-23",
+      "rows": 178355,
+      "alarms": 971,
+      "channels": 2125
+    },
+    {
+      "day": "2026-03-24",
+      "rows": 183058,
+      "alarms": 886,
+      "channels": 1794
+    },
+    {
+      "day": "2026-03-25",
+      "rows": 186347,
+      "alarms": 324,
+      "channels": 2213
+    },
+    {
+      "day": "2026-03-26",
+      "rows": 177635,
+      "alarms": 698,
+      "channels": 1949
+    },
+    {
+      "day": "2026-03-27",
+      "rows": 185908,
+      "alarms": 653,
+      "channels": 2796
+    },
+    {
+      "day": "2026-03-28",
+      "rows": 171990,
+      "alarms": 244,
+      "channels": 678
+    },
+    {
+      "day": "2026-03-29",
+      "rows": 169982,
+      "alarms": 352,
+      "channels": 768
+    },
+    {
+      "day": "2026-03-30",
+      "rows": 182178,
+      "alarms": 407,
+      "channels": 1438
+    },
+    {
+      "day": "2026-03-31",
+      "rows": 194113,
+      "alarms": 259,
+      "channels": 3446
+    },
+    {
+      "day": "2026-04-01",
+      "rows": 192221,
+      "alarms": 1094,
+      "channels": 2365
+    },
+    {
+      "day": "2026-04-02",
+      "rows": 196255,
+      "alarms": 1017,
+      "channels": 2049
+    },
+    {
+      "day": "2026-04-03",
+      "rows": 175376,
+      "alarms": 592,
+      "channels": 2342
+    },
+    {
+      "day": "2026-04-04",
+      "rows": 165457,
+      "alarms": 227,
+      "channels": 812
+    },
+    {
+      "day": "2026-04-05",
+      "rows": 157580,
+      "alarms": 272,
+      "channels": 2006
+    },
+    {
+      "day": "2026-04-06",
+      "rows": 178909,
+      "alarms": 235,
+      "channels": 2760
+    },
+    {
+      "day": "2026-04-07",
+      "rows": 183688,
+      "alarms": 2744,
+      "channels": 3475
+    },
+    {
+      "day": "2026-04-08",
+      "rows": 178535,
+      "alarms": 1092,
+      "channels": 2143
+    },
+    {
+      "day": "2026-04-09",
+      "rows": 200778,
+      "alarms": 4640,
+      "channels": 2202
+    },
+    {
+      "day": "2026-04-10",
+      "rows": 179894,
+      "alarms": 767,
+      "channels": 1641
+    },
+    {
+      "day": "2026-04-11",
+      "rows": 147192,
+      "alarms": 69,
+      "channels": 632
+    },
+    {
+      "day": "2026-04-12",
+      "rows": 159332,
+      "alarms": 89,
+      "channels": 660
+    },
+    {
+      "day": "2026-04-13",
+      "rows": 206159,
+      "alarms": 1228,
+      "channels": 2223
+    },
+    {
+      "day": "2026-04-14",
+      "rows": 211778,
+      "alarms": 6056,
+      "channels": 2834
+    },
+    {
+      "day": "2026-04-15",
+      "rows": 202842,
+      "alarms": 175,
+      "channels": 1894
+    },
+    {
+      "day": "2026-04-16",
+      "rows": 195201,
+      "alarms": 198,
+      "channels": 3405
+    },
+    {
+      "day": "2026-04-17",
+      "rows": 210142,
+      "alarms": 4457,
+      "channels": 2325
+    },
+    {
+      "day": "2026-04-18",
+      "rows": 203304,
+      "alarms": 7888,
+      "channels": 977
+    },
+    {
+      "day": "2026-04-19",
+      "rows": 199644,
+      "alarms": 6291,
+      "channels": 844
+    },
+    {
+      "day": "2026-04-20",
+      "rows": 229864,
+      "alarms": 2513,
+      "channels": 2641
+    },
+    {
+      "day": "2026-04-21",
+      "rows": 227731,
+      "alarms": 1347,
+      "channels": 2884
+    },
+    {
+      "day": "2026-04-22",
+      "rows": 208775,
+      "alarms": 2611,
+      "channels": 3338
+    },
+    {
+      "day": "2026-04-23",
+      "rows": 182265,
+      "alarms": 527,
+      "channels": 2429
+    },
+    {
+      "day": "2026-04-24",
+      "rows": 173010,
+      "alarms": 961,
+      "channels": 2789
+    },
+    {
+      "day": "2026-04-25",
+      "rows": 144868,
+      "alarms": 180,
+      "channels": 877
+    },
+    {
+      "day": "2026-04-26",
+      "rows": 145482,
+      "alarms": 407,
+      "channels": 1091
+    },
+    {
+      "day": "2026-04-27",
+      "rows": 171006,
+      "alarms": 1240,
+      "channels": 2473
+    },
+    {
+      "day": "2026-04-28",
+      "rows": 164245,
+      "alarms": 798,
+      "channels": 2072
+    },
+    {
+      "day": "2026-04-29",
+      "rows": 167026,
+      "alarms": 431,
+      "channels": 2127
+    },
+    {
+      "day": "2026-04-30",
+      "rows": 169888,
+      "alarms": 192,
+      "channels": 1787
+    },
+    {
+      "day": "2026-05-01",
+      "rows": 143000,
+      "alarms": 457,
+      "channels": 679
+    },
+    {
+      "day": "2026-05-02",
+      "rows": 154679,
+      "alarms": 1186,
+      "channels": 1301
+    },
+    {
+      "day": "2026-05-03",
+      "rows": 158562,
+      "alarms": 128,
+      "channels": 1367
+    },
+    {
+      "day": "2026-05-04",
+      "rows": 169271,
+      "alarms": 142,
+      "channels": 1791
+    },
+    {
+      "day": "2026-05-05",
+      "rows": 169967,
+      "alarms": 649,
+      "channels": 2581
+    },
+    {
+      "day": "2026-05-06",
+      "rows": 190222,
+      "alarms": 797,
+      "channels": 2155
+    },
+    {
+      "day": "2026-05-07",
+      "rows": 190081,
+      "alarms": 781,
+      "channels": 2157
+    },
+    {
+      "day": "2026-05-08",
+      "rows": 182338,
+      "alarms": 660,
+      "channels": 1646
+    },
+    {
+      "day": "2026-05-09",
+      "rows": 158721,
+      "alarms": 419,
+      "channels": 689
+    },
+    {
+      "day": "2026-05-10",
+      "rows": 161046,
+      "alarms": 240,
+      "channels": 759
+    },
+    {
+      "day": "2026-05-11",
+      "rows": 160417,
+      "alarms": 165,
+      "channels": 1073
+    },
+    {
+      "day": "2026-05-12",
+      "rows": 176079,
+      "alarms": 264,
+      "channels": 1799
+    },
+    {
+      "day": "2026-05-13",
+      "rows": 172187,
+      "alarms": 471,
+      "channels": 1658
+    },
+    {
+      "day": "2026-05-14",
+      "rows": 175030,
+      "alarms": 354,
+      "channels": 1974
+    },
+    {
+      "day": "2026-05-15",
+      "rows": 178969,
+      "alarms": 319,
+      "channels": 1831
+    },
+    {
+      "day": "2026-05-16",
+      "rows": 157237,
+      "alarms": 256,
+      "channels": 887
+    },
+    {
+      "day": "2026-05-17",
+      "rows": 162618,
+      "alarms": 118,
+      "channels": 801
+    },
+    {
+      "day": "2026-05-18",
+      "rows": 186897,
+      "alarms": 544,
+      "channels": 1973
+    },
+    {
+      "day": "2026-05-19",
+      "rows": 188914,
+      "alarms": 468,
+      "channels": 2501
+    },
+    {
+      "day": "2026-05-20",
+      "rows": 206709,
+      "alarms": 269,
+      "channels": 2155
+    },
+    {
+      "day": "2026-05-21",
+      "rows": 195716,
+      "alarms": 941,
+      "channels": 1976
+    },
+    {
+      "day": "2026-05-22",
+      "rows": 199177,
+      "alarms": 582,
+      "channels": 2179
+    },
+    {
+      "day": "2026-05-23",
+      "rows": 177773,
+      "alarms": 1155,
+      "channels": 1107
+    },
+    {
+      "day": "2026-05-24",
+      "rows": 175924,
+      "alarms": 69,
+      "channels": 977
+    },
+    {
+      "day": "2026-05-25",
+      "rows": 201286,
+      "alarms": 757,
+      "channels": 1892
+    },
+    {
+      "day": "2026-05-26",
+      "rows": 197675,
+      "alarms": 1531,
+      "channels": 1880
+    },
+    {
+      "day": "2026-05-27",
+      "rows": 170839,
+      "alarms": 678,
+      "channels": 1870
+    },
+    {
+      "day": "2026-05-28",
+      "rows": 209131,
+      "alarms": 729,
+      "channels": 2252
+    },
+    {
+      "day": "2026-05-29",
+      "rows": 198851,
+      "alarms": 592,
+      "channels": 2680
+    },
+    {
+      "day": "2026-05-30",
+      "rows": 158197,
+      "alarms": 325,
+      "channels": 1349
+    },
+    {
+      "day": "2026-05-31",
+      "rows": 148554,
+      "alarms": 131,
+      "channels": 840
+    },
+    {
+      "day": "2026-06-02",
+      "rows": 187878,
+      "alarms": 2495,
+      "channels": 2689
+    },
+    {
+      "day": "2026-06-03",
+      "rows": 186777,
+      "alarms": 3885,
+      "channels": 2394
+    },
+    {
+      "day": "2026-06-04",
+      "rows": 187674,
+      "alarms": 4099,
+      "channels": 2500
+    },
+    {
+      "day": "2026-06-05",
+      "rows": 174560,
+      "alarms": 5702,
+      "channels": 1855
+    },
+    {
+      "day": "2026-06-06",
+      "rows": 153580,
+      "alarms": 5536,
+      "channels": 858
+    },
+    {
+      "day": "2026-06-07",
+      "rows": 146629,
+      "alarms": 5265,
+      "channels": 871
+    },
+    {
+      "day": "2026-06-08",
+      "rows": 168312,
+      "alarms": 3603,
+      "channels": 1720
+    },
+    {
+      "day": "2026-06-09",
+      "rows": 185556,
+      "alarms": 4591,
+      "channels": 2283
+    },
+    {
+      "day": "2026-06-10",
+      "rows": 182959,
+      "alarms": 2744,
+      "channels": 3144
+    },
+    {
+      "day": "2026-06-11",
+      "rows": 176898,
+      "alarms": 2194,
+      "channels": 1955
+    },
+    {
+      "day": "2026-06-12",
+      "rows": 158100,
+      "alarms": 231,
+      "channels": 1199
+    },
+    {
+      "day": "2026-06-13",
+      "rows": 161933,
+      "alarms": 431,
+      "channels": 1133
+    },
+    {
+      "day": "2026-06-14",
+      "rows": 152674,
+      "alarms": 63,
+      "channels": 795
+    },
+    {
+      "day": "2026-06-15",
+      "rows": 178434,
+      "alarms": 547,
+      "channels": 1874
+    },
+    {
+      "day": "2026-06-16",
+      "rows": 183821,
+      "alarms": 308,
+      "channels": 1621
+    },
+    {
+      "day": "2026-06-17",
+      "rows": 190393,
+      "alarms": 548,
+      "channels": 1958
+    },
+    {
+      "day": "2026-06-18",
+      "rows": 180874,
+      "alarms": 447,
+      "channels": 1281
+    },
+    {
+      "day": "2026-06-19",
+      "rows": 185856,
+      "alarms": 204,
+      "channels": 1646
+    },
+    {
+      "day": "2026-06-20",
+      "rows": 163022,
+      "alarms": 256,
+      "channels": 946
+    },
+    {
+      "day": "2026-06-21",
+      "rows": 162607,
+      "alarms": 153,
+      "channels": 847
+    },
+    {
+      "day": "2026-06-22",
+      "rows": 188007,
+      "alarms": 344,
+      "channels": 1977
+    },
+    {
+      "day": "2026-06-23",
+      "rows": 185874,
+      "alarms": 277,
+      "channels": 1990
+    },
+    {
+      "day": "2026-06-24",
+      "rows": 194349,
+      "alarms": 449,
+      "channels": 2794
+    },
+    {
+      "day": "2026-06-25",
+      "rows": 194116,
+      "alarms": 1046,
+      "channels": 1899
+    },
+    {
+      "day": "2026-06-26",
+      "rows": 188268,
+      "alarms": 286,
+      "channels": 1852
+    },
+    {
+      "day": "2026-06-27",
+      "rows": 166461,
+      "alarms": 91,
+      "channels": 711
+    },
+    {
+      "day": "2026-06-28",
+      "rows": 167149,
+      "alarms": 251,
+      "channels": 712
+    },
+    {
+      "day": "2026-06-29",
+      "rows": 191838,
+      "alarms": 1420,
+      "channels": 2666
+    },
+    {
+      "day": "2026-06-30",
+      "rows": 196796,
+      "alarms": 1926,
+      "channels": 2716
+    }
+  ],
+  "states": [
+    {
+      "value": "Движения нет",
+      "rows": 1701422,
+      "alarms": 0,
+      "channels": 878
+    },
+    {
+      "value": "Обнаружено движение",
+      "rows": 1701349,
+      "alarms": 9743,
+      "channels": 820
+    },
+    {
+      "value": "Норма",
+      "rows": 1006358,
+      "alarms": 0,
+      "channels": 11006
+    },
+    {
+      "value": "Неопределен",
+      "rows": 743064,
+      "alarms": 0,
+      "channels": 10633
+    },
+    {
+      "value": "Выключен",
+      "rows": 205520,
+      "alarms": 0,
+      "channels": 1286
+    },
+    {
+      "value": "Включен",
+      "rows": 184419,
+      "alarms": 0,
+      "channels": 1266
+    },
+    {
+      "value": "Не замкнут",
+      "rows": 144483,
+      "alarms": 18041,
+      "channels": 1671
+    },
+    {
+      "value": "Неисправен",
+      "rows": 113413,
+      "alarms": 113360,
+      "channels": 1599
+    },
+    {
+      "value": "Обесточен",
+      "rows": 69201,
+      "alarms": 21615,
+      "channels": 1304
+    },
+    {
+      "value": "Есть питание",
+      "rows": 47593,
+      "alarms": 0,
+      "channels": 891
+    },
+    {
+      "value": "Обнаружен дым",
+      "rows": 15934,
+      "alarms": 15934,
+      "channels": 4336
+    },
+    {
+      "value": "Дыма нет",
+      "rows": 15932,
+      "alarms": 0,
+      "channels": 4336
+    },
+    {
+      "value": "Отключено устройство",
+      "rows": 5376,
+      "alarms": 5155,
+      "channels": 2005
+    },
+    {
+      "value": "Снято с охраны",
+      "rows": 5302,
+      "alarms": 0,
+      "channels": 36
+    },
+    {
+      "value": "На охране",
+      "rows": 5302,
+      "alarms": 0,
+      "channels": 37
+    },
+    {
+      "value": "Затоплен",
+      "rows": 4227,
+      "alarms": 4227,
+      "channels": 128
+    },
+    {
+      "value": "Разговор",
+      "rows": 3869,
+      "alarms": 0,
+      "channels": 256
+    },
+    {
+      "value": "Вызов",
+      "rows": 3816,
+      "alarms": 0,
+      "channels": 315
+    },
+    {
+      "value": "01.01.1970 03:00:00",
+      "rows": 3476,
+      "alarms": 0,
+      "channels": 21
+    },
+    {
+      "value": "01.01.1970 03:00:01",
+      "rows": 3475,
+      "alarms": 0,
+      "channels": 21
+    },
+    {
+      "value": "Рычаг сдернут",
+      "rows": 2226,
+      "alarms": 2207,
+      "channels": 729
+    },
+    {
+      "value": "Рычаг норма",
+      "rows": 2225,
+      "alarms": 0,
+      "channels": 729
+    },
+    {
+      "value": "Питание от сети",
+      "rows": 1444,
+      "alarms": 0,
+      "channels": 73
+    },
+    {
+      "value": "Питание от батарей",
+      "rows": 1433,
+      "alarms": 1433,
+      "channels": 73
+    },
+    {
+      "value": "В норме от +3 до +40",
+      "rows": 1415,
+      "alarms": 0,
+      "channels": 349
+    },
+    {
+      "value": "Обнаружен газ",
+      "rows": 1342,
+      "alarms": 1330,
+      "channels": 215
+    },
+    {
+      "value": "Не определено",
+      "rows": 929,
+      "alarms": 929,
+      "channels": 227
+    },
+    {
+      "value": "Работают все насосы в АНС",
+      "rows": 476,
+      "alarms": 476,
+      "channels": 16
+    },
+    {
+      "value": "Температура ниже 3ºC",
+      "rows": 474,
+      "alarms": 474,
+      "channels": 143
+    },
+    {
+      "value": "Много неисправных устройств",
+      "rows": 471,
+      "alarms": 471,
+      "channels": 41
+    },
+    {
+      "value": "Устройства на объекте исправны",
+      "rows": 470,
+      "alarms": 0,
+      "channels": 41
+    },
+    {
+      "value": "Температура выше 40ºC",
+      "rows": 20,
+      "alarms": 20,
+      "channels": 15
+    },
+    {
+      "value": "Батарея неисправна",
+      "rows": 17,
+      "alarms": 0,
+      "channels": 5
+    },
+    {
+      "value": "Батарея разряжена",
+      "rows": 7,
+      "alarms": 7,
+      "channels": 3
+    },
+    {
+      "value": "26.01.2026 12:03:10",
+      "rows": 3,
+      "alarms": 0,
+      "channels": 2
+    },
+    {
+      "value": "05.05.2026 18:07:46",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 2
+    },
+    {
+      "value": "24.04.2026 08:01:08",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "29.04.2026 07:59:00",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "20.01.2026 07:42:43",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "10.03.2026 09:28:25",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.01.2026 10:32:05",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.01.2026 10:31:58",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "01.02.2026 11:18:14",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.01.2026 09:56:05",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "03.02.2026 08:32:28",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "03.02.2026 16:24:28",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "07.02.2026 07:49:50",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.01.2026 08:53:19",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.02.2026 10:58:21",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "20.01.2026 08:48:04",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.02.2026 01:45:31",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.02.2026 07:43:21",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.02.2026 15:27:25",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.02.2026 08:02:08",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "18.02.2026 07:54:19",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.02.2026 16:00:14",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "18.02.2026 10:28:31",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "18.02.2026 16:10:15",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "21.02.2026 22:26:30",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "24.02.2026 17:02:04",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "25.02.2026 07:14:11",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "27.02.2026 17:20:16",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "27.02.2026 19:23:27",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.01.2026 16:19:02",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.01.2026 18:35:28",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.01.2026 17:37:41",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.01.2026 17:37:47",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.03.2026 23:17:34",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.01.2026 08:22:21",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "18.02.2026 08:47:41",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "20.01.2026 08:48:00",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "20.01.2026 07:57:27",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "01.02.2026 15:35:52",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "31.01.2026 21:07:47",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.01.2026 08:45:33",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.02.2026 07:19:46",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "28.01.2026 18:35:55",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "02.01.2026 07:51:42",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "02.01.2026 12:17:29",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.01.2026 07:57:59",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    }
+  ],
+  "by_sensor_type": [
+    {
+      "sensor_type": "Газовый датчик",
+      "rows": 24709612,
+      "alarms": 1640,
+      "fault_rows": 266,
+      "channels": 511
+    },
+    {
+      "sensor_type": "Датчик движения",
+      "rows": 3404436,
+      "alarms": 9787,
+      "fault_rows": 50,
+      "channels": 804
+    },
+    {
+      "sensor_type": "Состояние УИР-Р",
+      "rows": 451039,
+      "alarms": 2591,
+      "fault_rows": 0,
+      "channels": 762
+    },
+    {
+      "sensor_type": "Состояние фазы",
+      "rows": 380732,
+      "alarms": 3692,
+      "fault_rows": 3023,
+      "channels": 948
+    },
+    {
+      "sensor_type": "Датчик дыма",
+      "rows": 354480,
+      "alarms": 77925,
+      "fault_rows": 59879,
+      "channels": 4337
+    },
+    {
+      "sensor_type": "Переключатель",
+      "rows": 316232,
+      "alarms": 454,
+      "fault_rows": 0,
+      "channels": 792
+    },
+    {
+      "sensor_type": "КД Дверь",
+      "rows": 307730,
+      "alarms": 2623,
+      "fault_rows": 8,
+      "channels": 917
+    },
+    {
+      "sensor_type": "Состояние насоса",
+      "rows": 282836,
+      "alarms": 31168,
+      "fault_rows": 13434,
+      "channels": 180
+    },
+    {
+      "sensor_type": "Состояние вентилятора",
+      "rows": 213106,
+      "alarms": 18659,
+      "fault_rows": 9240,
+      "channels": 354
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "rows": 130373,
+      "alarms": 19343,
+      "fault_rows": 17819,
+      "channels": 598
+    },
+    {
+      "sensor_type": "Тепловой датчик",
+      "rows": 45854,
+      "alarms": 401,
+      "fault_rows": 5,
+      "channels": 472
+    },
+    {
+      "sensor_type": "КД АВ",
+      "rows": 36675,
+      "alarms": 13944,
+      "fault_rows": 68,
+      "channels": 397
+    },
+    {
+      "sensor_type": "Ручной извещатель",
+      "rows": 25005,
+      "alarms": 10136,
+      "fault_rows": 9558,
+      "channels": 130
+    },
+    {
+      "sensor_type": "Состояние охраны",
+      "rows": 23097,
+      "alarms": 471,
+      "fault_rows": 0,
+      "channels": 45
+    },
+    {
+      "sensor_type": "ИБП",
+      "rows": 6659,
+      "alarms": 1492,
+      "fault_rows": 43,
+      "channels": 80
+    },
+    {
+      "sensor_type": "КД Люк",
+      "rows": 4229,
+      "alarms": 319,
+      "fault_rows": 13,
+      "channels": 55
+    },
+    {
+      "sensor_type": "Стекло",
+      "rows": 2096,
+      "alarms": 565,
+      "fault_rows": 0,
+      "channels": 29
+    },
+    {
+      "sensor_type": "Датчик затопления",
+      "rows": 838,
+      "alarms": 140,
+      "fault_rows": 0,
+      "channels": 25
+    },
+    {
+      "sensor_type": "9-секционный люк",
+      "rows": 238,
+      "alarms": 63,
+      "fault_rows": 5,
+      "channels": 9
+    },
+    {
+      "sensor_type": "Без справочника",
+      "rows": 122,
+      "alarms": 9,
+      "fault_rows": 2,
+      "channels": 2
+    }
+  ],
+  "preparation_seconds": 4.28
+}

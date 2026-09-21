@@ -1,0 +1,2829 @@
+{
+  "year": 2019,
+  "source": "ext-journal-2019.csv",
+  "sha256": "414d9ad835ed79eb33ec83c9e90dbcb769348bb6d0e0eb82743d02422ee56045",
+  "timezone": "Europe/Moscow (assumption; source has no offset)",
+  "quarantined": false,
+  "quarantine_reason": null,
+  "summary": {
+    "rows": 20993328,
+    "start": "2019-01-01 00:00:21",
+    "end": "2019-12-31 23:59:52",
+    "channels": 5622,
+    "alarms": 134199,
+    "invalid_rows": 0,
+    "numeric_rows": 9624289,
+    "technical_code_rows": 1218,
+    "unmapped_rows": 2481645
+  },
+  "daily": [
+    {
+      "day": "2019-01-01",
+      "rows": 19140,
+      "alarms": 17,
+      "channels": 483
+    },
+    {
+      "day": "2019-01-02",
+      "rows": 24109,
+      "alarms": 98,
+      "channels": 667
+    },
+    {
+      "day": "2019-01-03",
+      "rows": 27443,
+      "alarms": 111,
+      "channels": 840
+    },
+    {
+      "day": "2019-01-04",
+      "rows": 31734,
+      "alarms": 2837,
+      "channels": 435
+    },
+    {
+      "day": "2019-01-05",
+      "rows": 40685,
+      "alarms": 5140,
+      "channels": 2006
+    },
+    {
+      "day": "2019-01-06",
+      "rows": 28447,
+      "alarms": 1286,
+      "channels": 336
+    },
+    {
+      "day": "2019-01-07",
+      "rows": 25611,
+      "alarms": 288,
+      "channels": 351
+    },
+    {
+      "day": "2019-01-08",
+      "rows": 27521,
+      "alarms": 25,
+      "channels": 1736
+    },
+    {
+      "day": "2019-01-09",
+      "rows": 37912,
+      "alarms": 1014,
+      "channels": 1374
+    },
+    {
+      "day": "2019-01-10",
+      "rows": 36421,
+      "alarms": 1110,
+      "channels": 918
+    },
+    {
+      "day": "2019-01-11",
+      "rows": 34640,
+      "alarms": 907,
+      "channels": 1154
+    },
+    {
+      "day": "2019-01-12",
+      "rows": 22011,
+      "alarms": 21,
+      "channels": 320
+    },
+    {
+      "day": "2019-01-13",
+      "rows": 23354,
+      "alarms": 25,
+      "channels": 428
+    },
+    {
+      "day": "2019-01-14",
+      "rows": 43065,
+      "alarms": 88,
+      "channels": 2351
+    },
+    {
+      "day": "2019-01-15",
+      "rows": 37158,
+      "alarms": 316,
+      "channels": 1309
+    },
+    {
+      "day": "2019-01-16",
+      "rows": 43825,
+      "alarms": 239,
+      "channels": 1095
+    },
+    {
+      "day": "2019-01-17",
+      "rows": 47056,
+      "alarms": 107,
+      "channels": 1315
+    },
+    {
+      "day": "2019-01-18",
+      "rows": 39758,
+      "alarms": 146,
+      "channels": 674
+    },
+    {
+      "day": "2019-01-19",
+      "rows": 30376,
+      "alarms": 99,
+      "channels": 610
+    },
+    {
+      "day": "2019-01-20",
+      "rows": 31511,
+      "alarms": 11,
+      "channels": 384
+    },
+    {
+      "day": "2019-01-21",
+      "rows": 43474,
+      "alarms": 73,
+      "channels": 1040
+    },
+    {
+      "day": "2019-01-22",
+      "rows": 37999,
+      "alarms": 604,
+      "channels": 1095
+    },
+    {
+      "day": "2019-01-23",
+      "rows": 38553,
+      "alarms": 594,
+      "channels": 949
+    },
+    {
+      "day": "2019-01-24",
+      "rows": 44282,
+      "alarms": 193,
+      "channels": 2190
+    },
+    {
+      "day": "2019-01-25",
+      "rows": 39122,
+      "alarms": 92,
+      "channels": 1038
+    },
+    {
+      "day": "2019-01-26",
+      "rows": 23441,
+      "alarms": 43,
+      "channels": 375
+    },
+    {
+      "day": "2019-01-27",
+      "rows": 23071,
+      "alarms": 28,
+      "channels": 463
+    },
+    {
+      "day": "2019-01-28",
+      "rows": 40703,
+      "alarms": 219,
+      "channels": 1352
+    },
+    {
+      "day": "2019-01-29",
+      "rows": 38465,
+      "alarms": 146,
+      "channels": 920
+    },
+    {
+      "day": "2019-01-30",
+      "rows": 37112,
+      "alarms": 168,
+      "channels": 971
+    },
+    {
+      "day": "2019-01-31",
+      "rows": 41204,
+      "alarms": 155,
+      "channels": 1647
+    },
+    {
+      "day": "2019-02-01",
+      "rows": 45342,
+      "alarms": 813,
+      "channels": 822
+    },
+    {
+      "day": "2019-02-02",
+      "rows": 27232,
+      "alarms": 109,
+      "channels": 510
+    },
+    {
+      "day": "2019-02-03",
+      "rows": 28379,
+      "alarms": 41,
+      "channels": 1642
+    },
+    {
+      "day": "2019-02-04",
+      "rows": 41920,
+      "alarms": 1960,
+      "channels": 1231
+    },
+    {
+      "day": "2019-02-05",
+      "rows": 61974,
+      "alarms": 6060,
+      "channels": 1826
+    },
+    {
+      "day": "2019-02-06",
+      "rows": 40071,
+      "alarms": 340,
+      "channels": 2495
+    },
+    {
+      "day": "2019-02-07",
+      "rows": 43349,
+      "alarms": 214,
+      "channels": 2515
+    },
+    {
+      "day": "2019-02-08",
+      "rows": 48943,
+      "alarms": 755,
+      "channels": 1467
+    },
+    {
+      "day": "2019-02-09",
+      "rows": 35246,
+      "alarms": 45,
+      "channels": 1841
+    },
+    {
+      "day": "2019-02-10",
+      "rows": 26975,
+      "alarms": 84,
+      "channels": 348
+    },
+    {
+      "day": "2019-02-11",
+      "rows": 50705,
+      "alarms": 833,
+      "channels": 1467
+    },
+    {
+      "day": "2019-02-12",
+      "rows": 50007,
+      "alarms": 185,
+      "channels": 1409
+    },
+    {
+      "day": "2019-02-13",
+      "rows": 49465,
+      "alarms": 417,
+      "channels": 1915
+    },
+    {
+      "day": "2019-02-14",
+      "rows": 49237,
+      "alarms": 180,
+      "channels": 2799
+    },
+    {
+      "day": "2019-02-15",
+      "rows": 51692,
+      "alarms": 285,
+      "channels": 1072
+    },
+    {
+      "day": "2019-02-16",
+      "rows": 35718,
+      "alarms": 112,
+      "channels": 601
+    },
+    {
+      "day": "2019-02-17",
+      "rows": 30220,
+      "alarms": 85,
+      "channels": 379
+    },
+    {
+      "day": "2019-02-18",
+      "rows": 50007,
+      "alarms": 269,
+      "channels": 1651
+    },
+    {
+      "day": "2019-02-19",
+      "rows": 52258,
+      "alarms": 147,
+      "channels": 1162
+    },
+    {
+      "day": "2019-02-20",
+      "rows": 56600,
+      "alarms": 260,
+      "channels": 1044
+    },
+    {
+      "day": "2019-02-21",
+      "rows": 47337,
+      "alarms": 117,
+      "channels": 1097
+    },
+    {
+      "day": "2019-02-22",
+      "rows": 37383,
+      "alarms": 501,
+      "channels": 1026
+    },
+    {
+      "day": "2019-02-23",
+      "rows": 25699,
+      "alarms": 8,
+      "channels": 375
+    },
+    {
+      "day": "2019-02-24",
+      "rows": 23431,
+      "alarms": 2,
+      "channels": 369
+    },
+    {
+      "day": "2019-02-25",
+      "rows": 55691,
+      "alarms": 922,
+      "channels": 1492
+    },
+    {
+      "day": "2019-02-26",
+      "rows": 61888,
+      "alarms": 808,
+      "channels": 1649
+    },
+    {
+      "day": "2019-02-27",
+      "rows": 53354,
+      "alarms": 224,
+      "channels": 2642
+    },
+    {
+      "day": "2019-02-28",
+      "rows": 48429,
+      "alarms": 209,
+      "channels": 1227
+    },
+    {
+      "day": "2019-03-01",
+      "rows": 48123,
+      "alarms": 267,
+      "channels": 1141
+    },
+    {
+      "day": "2019-03-02",
+      "rows": 30812,
+      "alarms": 62,
+      "channels": 503
+    },
+    {
+      "day": "2019-03-03",
+      "rows": 23186,
+      "alarms": 57,
+      "channels": 365
+    },
+    {
+      "day": "2019-03-04",
+      "rows": 44764,
+      "alarms": 190,
+      "channels": 1212
+    },
+    {
+      "day": "2019-03-05",
+      "rows": 50361,
+      "alarms": 488,
+      "channels": 1095
+    },
+    {
+      "day": "2019-03-06",
+      "rows": 59719,
+      "alarms": 585,
+      "channels": 1366
+    },
+    {
+      "day": "2019-03-07",
+      "rows": 43639,
+      "alarms": 139,
+      "channels": 1076
+    },
+    {
+      "day": "2019-03-08",
+      "rows": 25811,
+      "alarms": 68,
+      "channels": 309
+    },
+    {
+      "day": "2019-03-09",
+      "rows": 34021,
+      "alarms": 110,
+      "channels": 1916
+    },
+    {
+      "day": "2019-03-10",
+      "rows": 34245,
+      "alarms": 78,
+      "channels": 612
+    },
+    {
+      "day": "2019-03-11",
+      "rows": 51807,
+      "alarms": 382,
+      "channels": 1152
+    },
+    {
+      "day": "2019-03-12",
+      "rows": 53993,
+      "alarms": 357,
+      "channels": 2695
+    },
+    {
+      "day": "2019-03-13",
+      "rows": 52055,
+      "alarms": 221,
+      "channels": 1108
+    },
+    {
+      "day": "2019-03-14",
+      "rows": 46261,
+      "alarms": 165,
+      "channels": 2631
+    },
+    {
+      "day": "2019-03-15",
+      "rows": 51843,
+      "alarms": 208,
+      "channels": 1276
+    },
+    {
+      "day": "2019-03-16",
+      "rows": 36558,
+      "alarms": 46,
+      "channels": 626
+    },
+    {
+      "day": "2019-03-17",
+      "rows": 31630,
+      "alarms": 75,
+      "channels": 500
+    },
+    {
+      "day": "2019-03-18",
+      "rows": 52353,
+      "alarms": 147,
+      "channels": 1465
+    },
+    {
+      "day": "2019-03-19",
+      "rows": 50206,
+      "alarms": 171,
+      "channels": 1056
+    },
+    {
+      "day": "2019-03-20",
+      "rows": 55836,
+      "alarms": 238,
+      "channels": 1299
+    },
+    {
+      "day": "2019-03-21",
+      "rows": 55390,
+      "alarms": 258,
+      "channels": 1360
+    },
+    {
+      "day": "2019-03-22",
+      "rows": 56899,
+      "alarms": 301,
+      "channels": 1307
+    },
+    {
+      "day": "2019-03-23",
+      "rows": 30742,
+      "alarms": 135,
+      "channels": 607
+    },
+    {
+      "day": "2019-03-24",
+      "rows": 28033,
+      "alarms": 220,
+      "channels": 464
+    },
+    {
+      "day": "2019-03-25",
+      "rows": 53825,
+      "alarms": 295,
+      "channels": 1319
+    },
+    {
+      "day": "2019-03-26",
+      "rows": 53469,
+      "alarms": 250,
+      "channels": 1081
+    },
+    {
+      "day": "2019-03-27",
+      "rows": 45704,
+      "alarms": 208,
+      "channels": 866
+    },
+    {
+      "day": "2019-03-28",
+      "rows": 55529,
+      "alarms": 186,
+      "channels": 1078
+    },
+    {
+      "day": "2019-03-29",
+      "rows": 52727,
+      "alarms": 274,
+      "channels": 2090
+    },
+    {
+      "day": "2019-03-30",
+      "rows": 31321,
+      "alarms": 185,
+      "channels": 475
+    },
+    {
+      "day": "2019-03-31",
+      "rows": 29576,
+      "alarms": 380,
+      "channels": 573
+    },
+    {
+      "day": "2019-04-01",
+      "rows": 57302,
+      "alarms": 726,
+      "channels": 1474
+    },
+    {
+      "day": "2019-04-02",
+      "rows": 60401,
+      "alarms": 445,
+      "channels": 1399
+    },
+    {
+      "day": "2019-04-03",
+      "rows": 66317,
+      "alarms": 288,
+      "channels": 1479
+    },
+    {
+      "day": "2019-04-04",
+      "rows": 59521,
+      "alarms": 230,
+      "channels": 1074
+    },
+    {
+      "day": "2019-04-05",
+      "rows": 49109,
+      "alarms": 218,
+      "channels": 1191
+    },
+    {
+      "day": "2019-04-06",
+      "rows": 31454,
+      "alarms": 163,
+      "channels": 548
+    },
+    {
+      "day": "2019-04-07",
+      "rows": 29903,
+      "alarms": 96,
+      "channels": 571
+    },
+    {
+      "day": "2019-04-08",
+      "rows": 61196,
+      "alarms": 219,
+      "channels": 1103
+    },
+    {
+      "day": "2019-04-09",
+      "rows": 65587,
+      "alarms": 263,
+      "channels": 1333
+    },
+    {
+      "day": "2019-04-10",
+      "rows": 58848,
+      "alarms": 240,
+      "channels": 1291
+    },
+    {
+      "day": "2019-04-11",
+      "rows": 62986,
+      "alarms": 234,
+      "channels": 2855
+    },
+    {
+      "day": "2019-04-12",
+      "rows": 60680,
+      "alarms": 172,
+      "channels": 1254
+    },
+    {
+      "day": "2019-04-13",
+      "rows": 36642,
+      "alarms": 87,
+      "channels": 656
+    },
+    {
+      "day": "2019-04-14",
+      "rows": 31978,
+      "alarms": 125,
+      "channels": 830
+    },
+    {
+      "day": "2019-04-15",
+      "rows": 67406,
+      "alarms": 338,
+      "channels": 3086
+    },
+    {
+      "day": "2019-04-16",
+      "rows": 63534,
+      "alarms": 250,
+      "channels": 1448
+    },
+    {
+      "day": "2019-04-17",
+      "rows": 69891,
+      "alarms": 277,
+      "channels": 2639
+    },
+    {
+      "day": "2019-04-18",
+      "rows": 65598,
+      "alarms": 308,
+      "channels": 1677
+    },
+    {
+      "day": "2019-04-19",
+      "rows": 68114,
+      "alarms": 224,
+      "channels": 1474
+    },
+    {
+      "day": "2019-04-20",
+      "rows": 43428,
+      "alarms": 106,
+      "channels": 646
+    },
+    {
+      "day": "2019-04-21",
+      "rows": 34101,
+      "alarms": 99,
+      "channels": 859
+    },
+    {
+      "day": "2019-04-22",
+      "rows": 74970,
+      "alarms": 297,
+      "channels": 2049
+    },
+    {
+      "day": "2019-04-23",
+      "rows": 68421,
+      "alarms": 197,
+      "channels": 1562
+    },
+    {
+      "day": "2019-04-24",
+      "rows": 56879,
+      "alarms": 253,
+      "channels": 2097
+    },
+    {
+      "day": "2019-04-25",
+      "rows": 55643,
+      "alarms": 348,
+      "channels": 1726
+    },
+    {
+      "day": "2019-04-26",
+      "rows": 64604,
+      "alarms": 406,
+      "channels": 1609
+    },
+    {
+      "day": "2019-04-27",
+      "rows": 43034,
+      "alarms": 95,
+      "channels": 981
+    },
+    {
+      "day": "2019-04-28",
+      "rows": 30890,
+      "alarms": 78,
+      "channels": 1186
+    },
+    {
+      "day": "2019-04-29",
+      "rows": 59155,
+      "alarms": 285,
+      "channels": 2163
+    },
+    {
+      "day": "2019-04-30",
+      "rows": 46865,
+      "alarms": 336,
+      "channels": 1745
+    },
+    {
+      "day": "2019-05-01",
+      "rows": 34611,
+      "alarms": 247,
+      "channels": 834
+    },
+    {
+      "day": "2019-05-02",
+      "rows": 38740,
+      "alarms": 222,
+      "channels": 1487
+    },
+    {
+      "day": "2019-05-03",
+      "rows": 35732,
+      "alarms": 167,
+      "channels": 1047
+    },
+    {
+      "day": "2019-05-04",
+      "rows": 34727,
+      "alarms": 177,
+      "channels": 1035
+    },
+    {
+      "day": "2019-05-05",
+      "rows": 38345,
+      "alarms": 189,
+      "channels": 1051
+    },
+    {
+      "day": "2019-05-06",
+      "rows": 55993,
+      "alarms": 368,
+      "channels": 1638
+    },
+    {
+      "day": "2019-05-07",
+      "rows": 55218,
+      "alarms": 477,
+      "channels": 1688
+    },
+    {
+      "day": "2019-05-08",
+      "rows": 53107,
+      "alarms": 196,
+      "channels": 1329
+    },
+    {
+      "day": "2019-05-09",
+      "rows": 41264,
+      "alarms": 377,
+      "channels": 921
+    },
+    {
+      "day": "2019-05-10",
+      "rows": 52141,
+      "alarms": 259,
+      "channels": 1726
+    },
+    {
+      "day": "2019-05-11",
+      "rows": 51827,
+      "alarms": 215,
+      "channels": 1599
+    },
+    {
+      "day": "2019-05-12",
+      "rows": 49100,
+      "alarms": 216,
+      "channels": 1093
+    },
+    {
+      "day": "2019-05-13",
+      "rows": 72524,
+      "alarms": 403,
+      "channels": 2099
+    },
+    {
+      "day": "2019-05-14",
+      "rows": 62647,
+      "alarms": 405,
+      "channels": 1915
+    },
+    {
+      "day": "2019-05-15",
+      "rows": 68143,
+      "alarms": 319,
+      "channels": 1642
+    },
+    {
+      "day": "2019-05-16",
+      "rows": 67325,
+      "alarms": 385,
+      "channels": 1659
+    },
+    {
+      "day": "2019-05-17",
+      "rows": 64883,
+      "alarms": 367,
+      "channels": 1753
+    },
+    {
+      "day": "2019-05-18",
+      "rows": 43272,
+      "alarms": 205,
+      "channels": 1081
+    },
+    {
+      "day": "2019-05-19",
+      "rows": 42949,
+      "alarms": 219,
+      "channels": 1115
+    },
+    {
+      "day": "2019-05-20",
+      "rows": 80827,
+      "alarms": 468,
+      "channels": 1790
+    },
+    {
+      "day": "2019-05-21",
+      "rows": 79058,
+      "alarms": 349,
+      "channels": 1822
+    },
+    {
+      "day": "2019-05-22",
+      "rows": 82043,
+      "alarms": 763,
+      "channels": 1969
+    },
+    {
+      "day": "2019-05-23",
+      "rows": 94901,
+      "alarms": 359,
+      "channels": 1957
+    },
+    {
+      "day": "2019-05-24",
+      "rows": 71613,
+      "alarms": 252,
+      "channels": 1822
+    },
+    {
+      "day": "2019-05-25",
+      "rows": 56863,
+      "alarms": 135,
+      "channels": 1108
+    },
+    {
+      "day": "2019-05-26",
+      "rows": 49028,
+      "alarms": 287,
+      "channels": 1138
+    },
+    {
+      "day": "2019-05-27",
+      "rows": 75056,
+      "alarms": 397,
+      "channels": 1825
+    },
+    {
+      "day": "2019-05-28",
+      "rows": 75094,
+      "alarms": 424,
+      "channels": 1741
+    },
+    {
+      "day": "2019-05-29",
+      "rows": 94487,
+      "alarms": 487,
+      "channels": 1909
+    },
+    {
+      "day": "2019-05-30",
+      "rows": 96614,
+      "alarms": 337,
+      "channels": 2400
+    },
+    {
+      "day": "2019-05-31",
+      "rows": 87978,
+      "alarms": 287,
+      "channels": 1970
+    },
+    {
+      "day": "2019-06-01",
+      "rows": 61486,
+      "alarms": 230,
+      "channels": 1343
+    },
+    {
+      "day": "2019-06-02",
+      "rows": 50044,
+      "alarms": 231,
+      "channels": 1233
+    },
+    {
+      "day": "2019-06-03",
+      "rows": 86309,
+      "alarms": 782,
+      "channels": 1554
+    },
+    {
+      "day": "2019-06-04",
+      "rows": 83394,
+      "alarms": 535,
+      "channels": 1638
+    },
+    {
+      "day": "2019-06-05",
+      "rows": 86373,
+      "alarms": 379,
+      "channels": 1609
+    },
+    {
+      "day": "2019-06-06",
+      "rows": 79070,
+      "alarms": 349,
+      "channels": 2121
+    },
+    {
+      "day": "2019-06-07",
+      "rows": 82746,
+      "alarms": 329,
+      "channels": 1784
+    },
+    {
+      "day": "2019-06-08",
+      "rows": 54817,
+      "alarms": 214,
+      "channels": 1200
+    },
+    {
+      "day": "2019-06-09",
+      "rows": 53726,
+      "alarms": 200,
+      "channels": 1368
+    },
+    {
+      "day": "2019-06-10",
+      "rows": 90324,
+      "alarms": 372,
+      "channels": 1816
+    },
+    {
+      "day": "2019-06-11",
+      "rows": 68288,
+      "alarms": 192,
+      "channels": 1251
+    },
+    {
+      "day": "2019-06-12",
+      "rows": 40165,
+      "alarms": 135,
+      "channels": 834
+    },
+    {
+      "day": "2019-06-13",
+      "rows": 79179,
+      "alarms": 626,
+      "channels": 1808
+    },
+    {
+      "day": "2019-06-14",
+      "rows": 65555,
+      "alarms": 360,
+      "channels": 1899
+    },
+    {
+      "day": "2019-06-15",
+      "rows": 52208,
+      "alarms": 140,
+      "channels": 1160
+    },
+    {
+      "day": "2019-06-16",
+      "rows": 51268,
+      "alarms": 129,
+      "channels": 1105
+    },
+    {
+      "day": "2019-06-17",
+      "rows": 65922,
+      "alarms": 287,
+      "channels": 1889
+    },
+    {
+      "day": "2019-06-18",
+      "rows": 80461,
+      "alarms": 304,
+      "channels": 1809
+    },
+    {
+      "day": "2019-06-19",
+      "rows": 72693,
+      "alarms": 650,
+      "channels": 1929
+    },
+    {
+      "day": "2019-06-20",
+      "rows": 85319,
+      "alarms": 1697,
+      "channels": 1838
+    },
+    {
+      "day": "2019-06-21",
+      "rows": 79585,
+      "alarms": 526,
+      "channels": 1650
+    },
+    {
+      "day": "2019-06-22",
+      "rows": 57142,
+      "alarms": 330,
+      "channels": 1092
+    },
+    {
+      "day": "2019-06-23",
+      "rows": 48648,
+      "alarms": 119,
+      "channels": 901
+    },
+    {
+      "day": "2019-06-24",
+      "rows": 91169,
+      "alarms": 1998,
+      "channels": 1845
+    },
+    {
+      "day": "2019-06-25",
+      "rows": 63528,
+      "alarms": 405,
+      "channels": 1671
+    },
+    {
+      "day": "2019-06-26",
+      "rows": 59301,
+      "alarms": 420,
+      "channels": 1728
+    },
+    {
+      "day": "2019-06-27",
+      "rows": 58696,
+      "alarms": 222,
+      "channels": 2142
+    },
+    {
+      "day": "2019-06-28",
+      "rows": 57105,
+      "alarms": 458,
+      "channels": 1638
+    },
+    {
+      "day": "2019-06-29",
+      "rows": 48271,
+      "alarms": 112,
+      "channels": 1063
+    },
+    {
+      "day": "2019-06-30",
+      "rows": 46584,
+      "alarms": 60,
+      "channels": 1089
+    },
+    {
+      "day": "2019-07-01",
+      "rows": 65099,
+      "alarms": 294,
+      "channels": 1934
+    },
+    {
+      "day": "2019-07-02",
+      "rows": 69778,
+      "alarms": 454,
+      "channels": 3392
+    },
+    {
+      "day": "2019-07-03",
+      "rows": 77481,
+      "alarms": 474,
+      "channels": 1663
+    },
+    {
+      "day": "2019-07-04",
+      "rows": 82659,
+      "alarms": 993,
+      "channels": 1765
+    },
+    {
+      "day": "2019-07-05",
+      "rows": 69157,
+      "alarms": 314,
+      "channels": 1682
+    },
+    {
+      "day": "2019-07-06",
+      "rows": 47268,
+      "alarms": 118,
+      "channels": 1163
+    },
+    {
+      "day": "2019-07-07",
+      "rows": 51952,
+      "alarms": 117,
+      "channels": 1380
+    },
+    {
+      "day": "2019-07-08",
+      "rows": 65580,
+      "alarms": 212,
+      "channels": 1723
+    },
+    {
+      "day": "2019-07-09",
+      "rows": 59667,
+      "alarms": 300,
+      "channels": 1567
+    },
+    {
+      "day": "2019-07-10",
+      "rows": 71946,
+      "alarms": 385,
+      "channels": 1704
+    },
+    {
+      "day": "2019-07-11",
+      "rows": 77096,
+      "alarms": 328,
+      "channels": 1898
+    },
+    {
+      "day": "2019-07-12",
+      "rows": 74024,
+      "alarms": 207,
+      "channels": 1518
+    },
+    {
+      "day": "2019-07-13",
+      "rows": 48338,
+      "alarms": 156,
+      "channels": 1167
+    },
+    {
+      "day": "2019-07-14",
+      "rows": 47178,
+      "alarms": 134,
+      "channels": 1032
+    },
+    {
+      "day": "2019-07-15",
+      "rows": 67156,
+      "alarms": 210,
+      "channels": 1604
+    },
+    {
+      "day": "2019-07-16",
+      "rows": 72309,
+      "alarms": 427,
+      "channels": 1392
+    },
+    {
+      "day": "2019-07-17",
+      "rows": 81638,
+      "alarms": 299,
+      "channels": 1537
+    },
+    {
+      "day": "2019-07-18",
+      "rows": 79948,
+      "alarms": 206,
+      "channels": 1609
+    },
+    {
+      "day": "2019-07-19",
+      "rows": 74692,
+      "alarms": 142,
+      "channels": 1535
+    },
+    {
+      "day": "2019-07-20",
+      "rows": 57972,
+      "alarms": 127,
+      "channels": 1039
+    },
+    {
+      "day": "2019-07-21",
+      "rows": 45849,
+      "alarms": 145,
+      "channels": 1105
+    },
+    {
+      "day": "2019-07-22",
+      "rows": 72776,
+      "alarms": 216,
+      "channels": 1489
+    },
+    {
+      "day": "2019-07-23",
+      "rows": 71259,
+      "alarms": 311,
+      "channels": 1495
+    },
+    {
+      "day": "2019-07-24",
+      "rows": 79089,
+      "alarms": 249,
+      "channels": 1739
+    },
+    {
+      "day": "2019-07-25",
+      "rows": 58627,
+      "alarms": 140,
+      "channels": 1470
+    },
+    {
+      "day": "2019-07-26",
+      "rows": 69248,
+      "alarms": 212,
+      "channels": 1593
+    },
+    {
+      "day": "2019-07-27",
+      "rows": 64253,
+      "alarms": 115,
+      "channels": 1569
+    },
+    {
+      "day": "2019-07-28",
+      "rows": 49034,
+      "alarms": 117,
+      "channels": 1062
+    },
+    {
+      "day": "2019-07-29",
+      "rows": 61751,
+      "alarms": 225,
+      "channels": 2242
+    },
+    {
+      "day": "2019-07-30",
+      "rows": 72736,
+      "alarms": 323,
+      "channels": 1841
+    },
+    {
+      "day": "2019-07-31",
+      "rows": 73326,
+      "alarms": 229,
+      "channels": 1784
+    },
+    {
+      "day": "2019-08-01",
+      "rows": 81657,
+      "alarms": 1199,
+      "channels": 1552
+    },
+    {
+      "day": "2019-08-02",
+      "rows": 69435,
+      "alarms": 366,
+      "channels": 2628
+    },
+    {
+      "day": "2019-08-03",
+      "rows": 43876,
+      "alarms": 170,
+      "channels": 1130
+    },
+    {
+      "day": "2019-08-04",
+      "rows": 47684,
+      "alarms": 68,
+      "channels": 1141
+    },
+    {
+      "day": "2019-08-05",
+      "rows": 79890,
+      "alarms": 876,
+      "channels": 2070
+    },
+    {
+      "day": "2019-08-06",
+      "rows": 73047,
+      "alarms": 221,
+      "channels": 2427
+    },
+    {
+      "day": "2019-08-07",
+      "rows": 62973,
+      "alarms": 189,
+      "channels": 1489
+    },
+    {
+      "day": "2019-08-08",
+      "rows": 63962,
+      "alarms": 234,
+      "channels": 1984
+    },
+    {
+      "day": "2019-08-09",
+      "rows": 68353,
+      "alarms": 438,
+      "channels": 2526
+    },
+    {
+      "day": "2019-08-10",
+      "rows": 43378,
+      "alarms": 82,
+      "channels": 1949
+    },
+    {
+      "day": "2019-08-11",
+      "rows": 37943,
+      "alarms": 36,
+      "channels": 1126
+    },
+    {
+      "day": "2019-08-12",
+      "rows": 73151,
+      "alarms": 141,
+      "channels": 2074
+    },
+    {
+      "day": "2019-08-13",
+      "rows": 68399,
+      "alarms": 173,
+      "channels": 2475
+    },
+    {
+      "day": "2019-08-14",
+      "rows": 87406,
+      "alarms": 1360,
+      "channels": 1991
+    },
+    {
+      "day": "2019-08-15",
+      "rows": 74440,
+      "alarms": 979,
+      "channels": 1980
+    },
+    {
+      "day": "2019-08-16",
+      "rows": 65069,
+      "alarms": 355,
+      "channels": 2163
+    },
+    {
+      "day": "2019-08-17",
+      "rows": 42545,
+      "alarms": 159,
+      "channels": 974
+    },
+    {
+      "day": "2019-08-18",
+      "rows": 45637,
+      "alarms": 173,
+      "channels": 1323
+    },
+    {
+      "day": "2019-08-19",
+      "rows": 82889,
+      "alarms": 285,
+      "channels": 1925
+    },
+    {
+      "day": "2019-08-20",
+      "rows": 95910,
+      "alarms": 1887,
+      "channels": 1583
+    },
+    {
+      "day": "2019-08-21",
+      "rows": 79107,
+      "alarms": 230,
+      "channels": 1707
+    },
+    {
+      "day": "2019-08-22",
+      "rows": 66178,
+      "alarms": 304,
+      "channels": 1737
+    },
+    {
+      "day": "2019-08-23",
+      "rows": 58515,
+      "alarms": 461,
+      "channels": 1438
+    },
+    {
+      "day": "2019-08-24",
+      "rows": 40001,
+      "alarms": 64,
+      "channels": 971
+    },
+    {
+      "day": "2019-08-25",
+      "rows": 53038,
+      "alarms": 155,
+      "channels": 1147
+    },
+    {
+      "day": "2019-08-26",
+      "rows": 69827,
+      "alarms": 328,
+      "channels": 1791
+    },
+    {
+      "day": "2019-08-27",
+      "rows": 52838,
+      "alarms": 162,
+      "channels": 1282
+    },
+    {
+      "day": "2019-08-28",
+      "rows": 42889,
+      "alarms": 214,
+      "channels": 1263
+    },
+    {
+      "day": "2019-08-29",
+      "rows": 42911,
+      "alarms": 272,
+      "channels": 1246
+    },
+    {
+      "day": "2019-08-30",
+      "rows": 64058,
+      "alarms": 253,
+      "channels": 1808
+    },
+    {
+      "day": "2019-08-31",
+      "rows": 46583,
+      "alarms": 94,
+      "channels": 958
+    },
+    {
+      "day": "2019-09-01",
+      "rows": 45399,
+      "alarms": 216,
+      "channels": 1021
+    },
+    {
+      "day": "2019-09-02",
+      "rows": 60840,
+      "alarms": 159,
+      "channels": 1389
+    },
+    {
+      "day": "2019-09-03",
+      "rows": 70817,
+      "alarms": 125,
+      "channels": 1329
+    },
+    {
+      "day": "2019-09-04",
+      "rows": 67093,
+      "alarms": 232,
+      "channels": 1650
+    },
+    {
+      "day": "2019-09-05",
+      "rows": 78131,
+      "alarms": 212,
+      "channels": 1645
+    },
+    {
+      "day": "2019-09-06",
+      "rows": 66708,
+      "alarms": 236,
+      "channels": 1667
+    },
+    {
+      "day": "2019-09-07",
+      "rows": 42815,
+      "alarms": 115,
+      "channels": 837
+    },
+    {
+      "day": "2019-09-08",
+      "rows": 42102,
+      "alarms": 49,
+      "channels": 845
+    },
+    {
+      "day": "2019-09-09",
+      "rows": 67667,
+      "alarms": 204,
+      "channels": 1956
+    },
+    {
+      "day": "2019-09-10",
+      "rows": 105653,
+      "alarms": 212,
+      "channels": 1585
+    },
+    {
+      "day": "2019-09-11",
+      "rows": 79124,
+      "alarms": 385,
+      "channels": 1703
+    },
+    {
+      "day": "2019-09-12",
+      "rows": 74042,
+      "alarms": 265,
+      "channels": 1526
+    },
+    {
+      "day": "2019-09-13",
+      "rows": 68943,
+      "alarms": 317,
+      "channels": 1461
+    },
+    {
+      "day": "2019-09-14",
+      "rows": 46684,
+      "alarms": 161,
+      "channels": 1048
+    },
+    {
+      "day": "2019-09-15",
+      "rows": 40751,
+      "alarms": 275,
+      "channels": 1101
+    },
+    {
+      "day": "2019-09-16",
+      "rows": 69713,
+      "alarms": 219,
+      "channels": 1839
+    },
+    {
+      "day": "2019-09-17",
+      "rows": 80632,
+      "alarms": 271,
+      "channels": 1702
+    },
+    {
+      "day": "2019-09-18",
+      "rows": 72587,
+      "alarms": 249,
+      "channels": 1863
+    },
+    {
+      "day": "2019-09-19",
+      "rows": 80483,
+      "alarms": 343,
+      "channels": 1980
+    },
+    {
+      "day": "2019-09-20",
+      "rows": 78376,
+      "alarms": 284,
+      "channels": 2729
+    },
+    {
+      "day": "2019-09-21",
+      "rows": 48448,
+      "alarms": 99,
+      "channels": 1103
+    },
+    {
+      "day": "2019-09-22",
+      "rows": 44809,
+      "alarms": 173,
+      "channels": 1165
+    },
+    {
+      "day": "2019-09-23",
+      "rows": 68932,
+      "alarms": 360,
+      "channels": 1978
+    },
+    {
+      "day": "2019-09-24",
+      "rows": 68253,
+      "alarms": 344,
+      "channels": 2061
+    },
+    {
+      "day": "2019-09-25",
+      "rows": 70865,
+      "alarms": 459,
+      "channels": 2964
+    },
+    {
+      "day": "2019-09-26",
+      "rows": 61213,
+      "alarms": 302,
+      "channels": 2946
+    },
+    {
+      "day": "2019-09-27",
+      "rows": 63566,
+      "alarms": 265,
+      "channels": 1731
+    },
+    {
+      "day": "2019-09-28",
+      "rows": 42497,
+      "alarms": 128,
+      "channels": 1072
+    },
+    {
+      "day": "2019-09-29",
+      "rows": 41176,
+      "alarms": 221,
+      "channels": 1246
+    },
+    {
+      "day": "2019-09-30",
+      "rows": 80573,
+      "alarms": 867,
+      "channels": 1969
+    },
+    {
+      "day": "2019-10-01",
+      "rows": 91364,
+      "alarms": 2241,
+      "channels": 2435
+    },
+    {
+      "day": "2019-10-02",
+      "rows": 90834,
+      "alarms": 2090,
+      "channels": 2077
+    },
+    {
+      "day": "2019-10-03",
+      "rows": 80302,
+      "alarms": 3261,
+      "channels": 1851
+    },
+    {
+      "day": "2019-10-04",
+      "rows": 75941,
+      "alarms": 513,
+      "channels": 3023
+    },
+    {
+      "day": "2019-10-05",
+      "rows": 48010,
+      "alarms": 113,
+      "channels": 1101
+    },
+    {
+      "day": "2019-10-06",
+      "rows": 38925,
+      "alarms": 83,
+      "channels": 1012
+    },
+    {
+      "day": "2019-10-07",
+      "rows": 75907,
+      "alarms": 461,
+      "channels": 1707
+    },
+    {
+      "day": "2019-10-08",
+      "rows": 75390,
+      "alarms": 279,
+      "channels": 1896
+    },
+    {
+      "day": "2019-10-09",
+      "rows": 70053,
+      "alarms": 369,
+      "channels": 1763
+    },
+    {
+      "day": "2019-10-10",
+      "rows": 59428,
+      "alarms": 344,
+      "channels": 1914
+    },
+    {
+      "day": "2019-10-11",
+      "rows": 71539,
+      "alarms": 368,
+      "channels": 1636
+    },
+    {
+      "day": "2019-10-12",
+      "rows": 44757,
+      "alarms": 114,
+      "channels": 1026
+    },
+    {
+      "day": "2019-10-13",
+      "rows": 43435,
+      "alarms": 145,
+      "channels": 1155
+    },
+    {
+      "day": "2019-10-14",
+      "rows": 81337,
+      "alarms": 379,
+      "channels": 1915
+    },
+    {
+      "day": "2019-10-15",
+      "rows": 123388,
+      "alarms": 464,
+      "channels": 2597
+    },
+    {
+      "day": "2019-10-16",
+      "rows": 48362,
+      "alarms": 217,
+      "channels": 1608
+    },
+    {
+      "day": "2019-10-17",
+      "rows": 118794,
+      "alarms": 503,
+      "channels": 2843
+    },
+    {
+      "day": "2019-10-18",
+      "rows": 90059,
+      "alarms": 482,
+      "channels": 2165
+    },
+    {
+      "day": "2019-10-19",
+      "rows": 51448,
+      "alarms": 116,
+      "channels": 1167
+    },
+    {
+      "day": "2019-10-20",
+      "rows": 47021,
+      "alarms": 87,
+      "channels": 1182
+    },
+    {
+      "day": "2019-10-21",
+      "rows": 85443,
+      "alarms": 387,
+      "channels": 1852
+    },
+    {
+      "day": "2019-10-22",
+      "rows": 75323,
+      "alarms": 325,
+      "channels": 1811
+    },
+    {
+      "day": "2019-10-23",
+      "rows": 81866,
+      "alarms": 344,
+      "channels": 1961
+    },
+    {
+      "day": "2019-10-24",
+      "rows": 76398,
+      "alarms": 454,
+      "channels": 1945
+    },
+    {
+      "day": "2019-10-25",
+      "rows": 65222,
+      "alarms": 386,
+      "channels": 1905
+    },
+    {
+      "day": "2019-10-26",
+      "rows": 44296,
+      "alarms": 106,
+      "channels": 1095
+    },
+    {
+      "day": "2019-10-27",
+      "rows": 39268,
+      "alarms": 100,
+      "channels": 1105
+    },
+    {
+      "day": "2019-10-28",
+      "rows": 69693,
+      "alarms": 265,
+      "channels": 2044
+    },
+    {
+      "day": "2019-10-29",
+      "rows": 72445,
+      "alarms": 333,
+      "channels": 3416
+    },
+    {
+      "day": "2019-10-30",
+      "rows": 69515,
+      "alarms": 239,
+      "channels": 1902
+    },
+    {
+      "day": "2019-10-31",
+      "rows": 68051,
+      "alarms": 282,
+      "channels": 1911
+    },
+    {
+      "day": "2019-11-01",
+      "rows": 60849,
+      "alarms": 311,
+      "channels": 1238
+    },
+    {
+      "day": "2019-11-02",
+      "rows": 34746,
+      "alarms": 85,
+      "channels": 653
+    },
+    {
+      "day": "2019-11-03",
+      "rows": 34450,
+      "alarms": 67,
+      "channels": 466
+    },
+    {
+      "day": "2019-11-04",
+      "rows": 31412,
+      "alarms": 26,
+      "channels": 498
+    },
+    {
+      "day": "2019-11-05",
+      "rows": 73751,
+      "alarms": 227,
+      "channels": 1567
+    },
+    {
+      "day": "2019-11-06",
+      "rows": 75892,
+      "alarms": 314,
+      "channels": 2563
+    },
+    {
+      "day": "2019-11-07",
+      "rows": 71456,
+      "alarms": 259,
+      "channels": 1622
+    },
+    {
+      "day": "2019-11-08",
+      "rows": 66411,
+      "alarms": 967,
+      "channels": 2220
+    },
+    {
+      "day": "2019-11-09",
+      "rows": 47959,
+      "alarms": 121,
+      "channels": 1190
+    },
+    {
+      "day": "2019-11-10",
+      "rows": 41122,
+      "alarms": 144,
+      "channels": 1260
+    },
+    {
+      "day": "2019-11-11",
+      "rows": 84549,
+      "alarms": 869,
+      "channels": 2176
+    },
+    {
+      "day": "2019-11-12",
+      "rows": 78798,
+      "alarms": 448,
+      "channels": 1813
+    },
+    {
+      "day": "2019-11-13",
+      "rows": 67770,
+      "alarms": 264,
+      "channels": 1664
+    },
+    {
+      "day": "2019-11-14",
+      "rows": 69995,
+      "alarms": 411,
+      "channels": 1538
+    },
+    {
+      "day": "2019-11-15",
+      "rows": 48490,
+      "alarms": 209,
+      "channels": 1245
+    },
+    {
+      "day": "2019-11-16",
+      "rows": 38205,
+      "alarms": 102,
+      "channels": 554
+    },
+    {
+      "day": "2019-11-17",
+      "rows": 37484,
+      "alarms": 110,
+      "channels": 430
+    },
+    {
+      "day": "2019-11-18",
+      "rows": 64863,
+      "alarms": 500,
+      "channels": 1462
+    },
+    {
+      "day": "2019-11-19",
+      "rows": 71397,
+      "alarms": 558,
+      "channels": 1463
+    },
+    {
+      "day": "2019-11-20",
+      "rows": 71481,
+      "alarms": 399,
+      "channels": 1635
+    },
+    {
+      "day": "2019-11-21",
+      "rows": 66034,
+      "alarms": 414,
+      "channels": 1833
+    },
+    {
+      "day": "2019-11-22",
+      "rows": 70439,
+      "alarms": 290,
+      "channels": 1777
+    },
+    {
+      "day": "2019-11-23",
+      "rows": 45451,
+      "alarms": 188,
+      "channels": 1130
+    },
+    {
+      "day": "2019-11-24",
+      "rows": 41898,
+      "alarms": 145,
+      "channels": 1125
+    },
+    {
+      "day": "2019-11-25",
+      "rows": 50724,
+      "alarms": 239,
+      "channels": 1228
+    },
+    {
+      "day": "2019-11-26",
+      "rows": 70560,
+      "alarms": 360,
+      "channels": 1239
+    },
+    {
+      "day": "2019-11-27",
+      "rows": 52814,
+      "alarms": 227,
+      "channels": 1185
+    },
+    {
+      "day": "2019-11-28",
+      "rows": 58378,
+      "alarms": 333,
+      "channels": 1910
+    },
+    {
+      "day": "2019-11-29",
+      "rows": 56600,
+      "alarms": 262,
+      "channels": 1358
+    },
+    {
+      "day": "2019-11-30",
+      "rows": 33373,
+      "alarms": 89,
+      "channels": 548
+    },
+    {
+      "day": "2019-12-01",
+      "rows": 29936,
+      "alarms": 90,
+      "channels": 461
+    },
+    {
+      "day": "2019-12-02",
+      "rows": 73132,
+      "alarms": 546,
+      "channels": 1822
+    },
+    {
+      "day": "2019-12-03",
+      "rows": 80120,
+      "alarms": 379,
+      "channels": 2027
+    },
+    {
+      "day": "2019-12-04",
+      "rows": 86294,
+      "alarms": 1131,
+      "channels": 1349
+    },
+    {
+      "day": "2019-12-05",
+      "rows": 74974,
+      "alarms": 992,
+      "channels": 1239
+    },
+    {
+      "day": "2019-12-06",
+      "rows": 69815,
+      "alarms": 270,
+      "channels": 1482
+    },
+    {
+      "day": "2019-12-07",
+      "rows": 53214,
+      "alarms": 119,
+      "channels": 1252
+    },
+    {
+      "day": "2019-12-08",
+      "rows": 48957,
+      "alarms": 113,
+      "channels": 1043
+    },
+    {
+      "day": "2019-12-09",
+      "rows": 74372,
+      "alarms": 249,
+      "channels": 2882
+    },
+    {
+      "day": "2019-12-10",
+      "rows": 75359,
+      "alarms": 275,
+      "channels": 1650
+    },
+    {
+      "day": "2019-12-11",
+      "rows": 82045,
+      "alarms": 921,
+      "channels": 2822
+    },
+    {
+      "day": "2019-12-12",
+      "rows": 77749,
+      "alarms": 407,
+      "channels": 1553
+    },
+    {
+      "day": "2019-12-13",
+      "rows": 69129,
+      "alarms": 320,
+      "channels": 1142
+    },
+    {
+      "day": "2019-12-14",
+      "rows": 45213,
+      "alarms": 154,
+      "channels": 829
+    },
+    {
+      "day": "2019-12-15",
+      "rows": 40971,
+      "alarms": 123,
+      "channels": 661
+    },
+    {
+      "day": "2019-12-16",
+      "rows": 75158,
+      "alarms": 182,
+      "channels": 1188
+    },
+    {
+      "day": "2019-12-17",
+      "rows": 79496,
+      "alarms": 241,
+      "channels": 1306
+    },
+    {
+      "day": "2019-12-18",
+      "rows": 74772,
+      "alarms": 198,
+      "channels": 1355
+    },
+    {
+      "day": "2019-12-19",
+      "rows": 79959,
+      "alarms": 1188,
+      "channels": 1540
+    },
+    {
+      "day": "2019-12-20",
+      "rows": 71839,
+      "alarms": 308,
+      "channels": 1198
+    },
+    {
+      "day": "2019-12-21",
+      "rows": 45094,
+      "alarms": 142,
+      "channels": 835
+    },
+    {
+      "day": "2019-12-22",
+      "rows": 41011,
+      "alarms": 128,
+      "channels": 927
+    },
+    {
+      "day": "2019-12-23",
+      "rows": 67937,
+      "alarms": 600,
+      "channels": 1388
+    },
+    {
+      "day": "2019-12-24",
+      "rows": 77362,
+      "alarms": 770,
+      "channels": 1635
+    },
+    {
+      "day": "2019-12-25",
+      "rows": 70132,
+      "alarms": 271,
+      "channels": 1600
+    },
+    {
+      "day": "2019-12-26",
+      "rows": 72777,
+      "alarms": 422,
+      "channels": 1582
+    },
+    {
+      "day": "2019-12-27",
+      "rows": 72573,
+      "alarms": 724,
+      "channels": 1883
+    },
+    {
+      "day": "2019-12-28",
+      "rows": 51997,
+      "alarms": 647,
+      "channels": 1402
+    },
+    {
+      "day": "2019-12-29",
+      "rows": 38086,
+      "alarms": 276,
+      "channels": 773
+    },
+    {
+      "day": "2019-12-30",
+      "rows": 44859,
+      "alarms": 234,
+      "channels": 1604
+    },
+    {
+      "day": "2019-12-31",
+      "rows": 38328,
+      "alarms": 54,
+      "channels": 650
+    }
+  ],
+  "states": [
+    {
+      "value": "Движения нет",
+      "rows": 4253207,
+      "alarms": 0,
+      "channels": 537
+    },
+    {
+      "value": "Обнаружено движение",
+      "rows": 4253204,
+      "alarms": 21224,
+      "channels": 536
+    },
+    {
+      "value": "Норма",
+      "rows": 780104,
+      "alarms": 0,
+      "channels": 5604
+    },
+    {
+      "value": "Не замкнут",
+      "rows": 413180,
+      "alarms": 43253,
+      "channels": 1010
+    },
+    {
+      "value": "Неопределен",
+      "rows": 330112,
+      "alarms": 0,
+      "channels": 5616
+    },
+    {
+      "value": "Обесточен",
+      "rows": 321582,
+      "alarms": 11450,
+      "channels": 852
+    },
+    {
+      "value": "Есть питание",
+      "rows": 310083,
+      "alarms": 0,
+      "channels": 614
+    },
+    {
+      "value": "Выключен",
+      "rows": 304025,
+      "alarms": 0,
+      "channels": 1942
+    },
+    {
+      "value": "Включен",
+      "rows": 281079,
+      "alarms": 0,
+      "channels": 947
+    },
+    {
+      "value": "Неисправен",
+      "rows": 23859,
+      "alarms": 20718,
+      "channels": 720
+    },
+    {
+      "value": "Затоплен",
+      "rows": 13017,
+      "alarms": 12982,
+      "channels": 96
+    },
+    {
+      "value": "Работают все насосы в АНС",
+      "rows": 12309,
+      "alarms": 12282,
+      "channels": 43
+    },
+    {
+      "value": "На охране",
+      "rows": 9758,
+      "alarms": 0,
+      "channels": 35
+    },
+    {
+      "value": "Снято с охраны",
+      "rows": 9757,
+      "alarms": 0,
+      "channels": 35
+    },
+    {
+      "value": "Разговор",
+      "rows": 7871,
+      "alarms": 0,
+      "channels": 365
+    },
+    {
+      "value": "Дыма нет",
+      "rows": 7610,
+      "alarms": 0,
+      "channels": 530
+    },
+    {
+      "value": "Обнаружен дым",
+      "rows": 7605,
+      "alarms": 2148,
+      "channels": 529
+    },
+    {
+      "value": "Обнаружен газ",
+      "rows": 5861,
+      "alarms": 5162,
+      "channels": 405
+    },
+    {
+      "value": "Вызов",
+      "rows": 4894,
+      "alarms": 0,
+      "channels": 300
+    },
+    {
+      "value": "Рычаг норма",
+      "rows": 4340,
+      "alarms": 0,
+      "channels": 391
+    },
+    {
+      "value": "Рычаг сдернут",
+      "rows": 4340,
+      "alarms": 741,
+      "channels": 391
+    },
+    {
+      "value": "В норме от +3 до +40",
+      "rows": 1649,
+      "alarms": 0,
+      "channels": 350
+    },
+    {
+      "value": "Питание от сети",
+      "rows": 1425,
+      "alarms": 0,
+      "channels": 36
+    },
+    {
+      "value": "Питание от батарей",
+      "rows": 1402,
+      "alarms": 1402,
+      "channels": 36
+    },
+    {
+      "value": "Не определено",
+      "rows": 1237,
+      "alarms": 1139,
+      "channels": 293
+    },
+    {
+      "value": "Много неисправных устройств",
+      "rows": 1020,
+      "alarms": 1020,
+      "channels": 35
+    },
+    {
+      "value": "Устройства на объекте исправны",
+      "rows": 1016,
+      "alarms": 0,
+      "channels": 35
+    },
+    {
+      "value": "Температура ниже 3ºC",
+      "rows": 376,
+      "alarms": 366,
+      "channels": 85
+    },
+    {
+      "value": "Температура выше 40ºC",
+      "rows": 190,
+      "alarms": 190,
+      "channels": 12
+    },
+    {
+      "value": "Отключено устройство",
+      "rows": 98,
+      "alarms": 71,
+      "channels": 79
+    },
+    {
+      "value": "Батарея неисправна",
+      "rows": 69,
+      "alarms": 0,
+      "channels": 5
+    },
+    {
+      "value": "Батарея разряжена",
+      "rows": 51,
+      "alarms": 51,
+      "channels": 6
+    },
+    {
+      "value": "22.09.2019 20:01:31",
+      "rows": 4,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "20.09.2019 17:29:40",
+      "rows": 3,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.09.2019 09:11:10",
+      "rows": 3,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "30.04.2019 08:39:02",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 2
+    },
+    {
+      "value": "23.10.2019 08:09:03",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 2
+    },
+    {
+      "value": "20.09.2019 21:14:51",
+      "rows": 2,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "14.03.2019 07:49:52",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "25.06.2019 08:02:54",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "04.04.2019 08:24:00",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "04.04.2019 07:53:30",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "01.05.2019 07:54:11",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "27.02.2019 16:24:22",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "08.05.2019 15:30:50",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.05.2019 07:57:25",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.05.2019 17:06:31",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "24.03.2019 19:42:47",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "10.05.2019 07:56:52",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "14.05.2019 16:31:46",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.05.2019 08:04:43",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.04.2019 07:57:14",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "16.05.2019 08:32:18",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "16.05.2019 08:32:24",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "16.05.2019 08:50:29",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "23.03.2019 02:24:28",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "24.05.2019 17:08:21",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "26.02.2019 09:17:52",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "29.05.2019 16:47:31",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "30.05.2019 08:07:22",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "30.05.2019 09:26:47",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "07.06.2019 14:33:21",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "07.06.2019 16:58:09",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "12.03.2019 17:34:45",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.03.2019 10:01:37",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "01.05.2019 20:00:56",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "30.04.2019 16:59:18",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "25.02.2019 20:00:32",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "11.03.2019 19:29:31",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "24.05.2019 16:55:10",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "15.05.2019 16:55:39",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "09.05.2019 17:23:11",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.03.2019 03:58:54",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "25.06.2019 08:07:33",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "25.03.2019 08:25:20",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "23.03.2019 07:49:50",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "14.03.2019 08:07:25",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "22.03.2019 15:33:00",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "30.04.2019 12:57:15",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    },
+    {
+      "value": "11.04.2019 20:00:06",
+      "rows": 1,
+      "alarms": 0,
+      "channels": 1
+    }
+  ],
+  "by_sensor_type": [
+    {
+      "sensor_type": "Газовый датчик",
+      "rows": 8809559,
+      "alarms": 1892,
+      "fault_rows": 123,
+      "channels": 368
+    },
+    {
+      "sensor_type": "Датчик движения",
+      "rows": 7219560,
+      "alarms": 19747,
+      "fault_rows": 84,
+      "channels": 455
+    },
+    {
+      "sensor_type": "Без справочника",
+      "rows": 2481645,
+      "alarms": 15214,
+      "fault_rows": 2699,
+      "channels": 1004
+    },
+    {
+      "sensor_type": "Состояние фазы",
+      "rows": 653796,
+      "alarms": 366,
+      "fault_rows": 363,
+      "channels": 551
+    },
+    {
+      "sensor_type": "КД Дверь",
+      "rows": 619878,
+      "alarms": 2571,
+      "fault_rows": 1,
+      "channels": 452
+    },
+    {
+      "sensor_type": "Переключатель",
+      "rows": 335966,
+      "alarms": 0,
+      "fault_rows": 0,
+      "channels": 504
+    },
+    {
+      "sensor_type": "Состояние вентилятора",
+      "rows": 189336,
+      "alarms": 7218,
+      "fault_rows": 3755,
+      "channels": 223
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "rows": 143538,
+      "alarms": 1339,
+      "fault_rows": 4,
+      "channels": 420
+    },
+    {
+      "sensor_type": "Состояние насоса",
+      "rows": 132779,
+      "alarms": 45908,
+      "fault_rows": 14257,
+      "channels": 114
+    },
+    {
+      "sensor_type": "Состояние УИР-Р",
+      "rows": 108177,
+      "alarms": 720,
+      "fault_rows": 1,
+      "channels": 367
+    },
+    {
+      "sensor_type": "КД АВ",
+      "rows": 105709,
+      "alarms": 32785,
+      "fault_rows": 2,
+      "channels": 220
+    },
+    {
+      "sensor_type": "Тепловой датчик",
+      "rows": 97820,
+      "alarms": 33,
+      "fault_rows": 0,
+      "channels": 408
+    },
+    {
+      "sensor_type": "Датчик дыма",
+      "rows": 51907,
+      "alarms": 2387,
+      "fault_rows": 2412,
+      "channels": 385
+    },
+    {
+      "sensor_type": "Состояние охраны",
+      "rows": 20595,
+      "alarms": 749,
+      "fault_rows": 0,
+      "channels": 32
+    },
+    {
+      "sensor_type": "ИБП",
+      "rows": 12733,
+      "alarms": 1517,
+      "fault_rows": 156,
+      "channels": 35
+    },
+    {
+      "sensor_type": "КД Люк",
+      "rows": 3481,
+      "alarms": 474,
+      "fault_rows": 0,
+      "channels": 38
+    },
+    {
+      "sensor_type": "Стекло",
+      "rows": 3096,
+      "alarms": 1137,
+      "fault_rows": 0,
+      "channels": 11
+    },
+    {
+      "sensor_type": "Ручной извещатель",
+      "rows": 2928,
+      "alarms": 54,
+      "fault_rows": 2,
+      "channels": 29
+    },
+    {
+      "sensor_type": "Датчик затопления",
+      "rows": 825,
+      "alarms": 88,
+      "fault_rows": 0,
+      "channels": 6
+    }
+  ],
+  "preparation_seconds": 3.25
+}

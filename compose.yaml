@@ -1,0 +1,68 @@
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: contour
+      POSTGRES_USER: contour
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-contour-local-only}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contour -d contour"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://contour:${POSTGRES_PASSWORD:-contour-local-only}@db:5432/contour
+      CONTOUR_DEMO: ${CONTOUR_DEMO:-true}
+      CONTOUR_ADMIN_PASSWORD: ${CONTOUR_ADMIN_PASSWORD:-}
+      CONTOUR_LDAP_URL: ${CONTOUR_LDAP_URL:-}
+      CONTOUR_LDAP_BIND_TEMPLATE: ${CONTOUR_LDAP_BIND_TEMPLATE:-}
+      CONTOUR_LDAP_CA_FILE: ${CONTOUR_LDAP_CA_FILE:-}
+      OMP_NUM_THREADS: 4
+    ports:
+      - "127.0.0.1:${CONTOUR_PORT:-8000}:8000"
+    volumes:
+      - ./data/processed:/app/data/processed:ro
+      - ./artifacts:/app/artifacts:ro
+      - runtime_data:/app/data/runtime
+      - ./deploy/certs:/certs:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 310s
+  backup:
+    image: postgres:16-bookworm
+    environment:
+      PGHOST: db
+      PGUSER: contour
+      PGDATABASE: contour
+      PGPASSWORD: ${POSTGRES_PASSWORD:-contour-local-only}
+    volumes:
+      - ./deploy/backup-loop.sh:/backup-loop.sh:ro
+      - ./backups:/backups
+    entrypoint: ["bash", "/backup-loop.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+  tls:
+    image: caddy:2-alpine
+    profiles: ["tls"]
+    ports:
+      - "127.0.0.1:8443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy/certs:/certs:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  runtime_data:

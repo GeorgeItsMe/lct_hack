@@ -1,0 +1,17 @@
+.git
+.venv
+web/node_modules
+web/dist
+data
+artifacts
+output
+*.zip
+*.pdf
+*.docx
+*.pptx
+.env
+.env.*
+!/.env.example
+**/__pycache__
+.pytest_cache
+.ruff_cache

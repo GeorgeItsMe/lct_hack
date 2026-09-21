@@ -1,0 +1,17 @@
+{
+  "tests_passed": 29,
+  "ruff": "passed",
+  "web_build": "passed",
+  "browser_checked": [
+    "login",
+    "overview",
+    "journal",
+    "forecast_explanation",
+    "decision_save",
+    "evaluation",
+    "data_import_form"
+  ],
+  "browser_file_upload": "blocked_by_extension_file_url_permission",
+  "production_external_ldap": "not_tested",
+  "presentation_template": "unavailable"
+}
