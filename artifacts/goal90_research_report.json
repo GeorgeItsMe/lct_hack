@@ -1,0 +1,3484 @@
+{
+  "created_at": "2026-09-21T17:38:44.077384+00:00",
+  "environment": {
+    "python": "3.12.14",
+    "catboost": "1.2.10",
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "pyarrow": "23.0.1",
+    "scikit-learn": "1.9.1"
+  },
+  "goal_interpretation": "Both event precision and recall>=90%; user clarification pending. Accuracy and precision-only are not success substitutes.",
+  "scope": "Completed adaptive retrospective research, not an independent final-weight test. Overall solution includes all incident types.",
+  "active_version": "op-d87946a7b7fd",
+  "serving_weights_changed": false,
+  "plans": {
+    "v11": {
+      "scope": "adaptive_retrospective_research_not_blind_test",
+      "primary_goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "interpretation": "Conservative interpretation while clarification is pending: BOTH event precision and recall >=.90. Neither accuracy nor precision alone substitutes. Access is the first research head, not proof for all incident types.",
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "stress_folds": {
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "families": {
+        "mean_retarget": "Unchanged v9 mean-count weights and probability. Policy margin .25,.5,1,2,3,5; capacity multiplier .5,1,1.5,2; probability floor0,.5,.75,.9,.95.",
+        "quantile": "CatBoost MultiQuantile alpha .1,.25,.5,.75,.9; original recent_reference features, depth6,l2=8,lr=.06,max600,seed42,CPU4,early stopping100 on MultiQuantile. A separate scalar residual quantile correction per output is fitted only on calibration rows. Nonnegative clipping and per-row sorting enforce noncrossing capacity. V9 probability supplies the same optional probability gate. Policy selects one quantile, margin .25,.5,1,2 and floor0,.5,.75,.9,.95."
+      },
+      "unchanged": "Same v9 train/validation/calibration/policy dates with25h purge; same grouped episode starts within[t,t+24h), hourly cohort and one-to-one matching;70min confirmation delay. No June reads, relabeling, event exclusion or automatic activation.",
+      "policy": "Select only on each preceding policy period, >=10 alerts and >=10 episodes for supported status, <=.25 false alerts/object-day. Maximize min(P/.9,R/.9,1), then F1, recall, precision. If support unavailable, report low_support; no claim of meeting target.",
+      "selection": "Choose the family with largest pooled primary score, then F1 on Nov/Feb. Require >5% relative primary score improvement against archived v9 and no F1 loss. Evaluate only that screen-selected family on May and Dec/Mar; no replacement after those results.",
+      "confirmation": "For eligibility require improvement in May primary score with F1>=95% reference, and >5% primary score gain on pooled Dec/Mar with no pooled F1 loss and each month F1>=90% reference. These are research gates, not achievement of90%.",
+      "success": "Report90/90 per month and pooled, >=10 alerts and episodes in every evaluated month. Retrospective success cannot establish future or independently tested final-weight performance. All incident types remain in scope of the overall solution.",
+      "diagnostics": "Policy-period frontiers and perfect-future schedules are labeled diagnostic, never presented as predictive performance. Secondary P90/R50 and F190 are descriptive only, not alternative success criteria.",
+      "sources": [
+        "https://catboost.ai/docs/en/concepts/loss-functions-regression"
+      ],
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-dense-round4.parquet": "7824730141ec08488354711e802ab6c35bd7053e192415e07f80e0076e3d4cfe",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v9/screen_1/access.json": "710ed0d8609844e7942627a695e71d670daa00095ceaa177279017e1c6d5a175",
+        "artifacts/research-v9/screen_1/access.cbm": "9984fe0b5546e7272c9a39f628c83ebaf99d74cd0ec7a6df9e27f2427ebdca5a",
+        "artifacts/research-v9/screen_1/access-policy.parquet": "a158166ff7cc8e49c3a13b4d36ea238a3417100a0ca54d3794228aa3d9f6858f",
+        "artifacts/research-v9/screen_1/access-test.parquet": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+        "artifacts/research-v9/screen_2/access.json": "96e09bab5d2283a2eaadea3edab32dd8dabaf9ecf4f6334b6737e2d5ae598e38",
+        "artifacts/research-v9/screen_2/access.cbm": "bfb8cce1a8697f99376b25ae178d84d344f1857f173b06ece1aebf2e173db6ad",
+        "artifacts/research-v9/screen_2/access-policy.parquet": "66ed8dda37f58663a324009faada9943e894ec43b3fc69878ec778461b06146d",
+        "artifacts/research-v9/screen_2/access-test.parquet": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+        "artifacts/research-v9/confirmation/access.json": "e05d2353a2809e810b7196f5ffa7f8a6738b398b8af7c053bd40b96f315c4ad9",
+        "artifacts/research-v9/confirmation/access.cbm": "8764a6f534338577c2fb0a082837a4e0c7987d902af7751f51b6b45e58818a5f",
+        "artifacts/research-v9/confirmation/access-policy.parquet": "887ef9b927d663f152a63582774e6e8089334bc70cfeff69fe57641d8e125592",
+        "artifacts/research-v9/confirmation/access-test.parquet": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+        "artifacts/research-access-stress/stress_1/access.json": "1bfdbfeed4f29b350877f8d4b257d4a961e96bc5c15938afed5f2a463e504a8e",
+        "artifacts/research-access-stress/stress_1/access.cbm": "71f2996070cf9c9e5a0389e6ae8b0097e0fa393e56110c4dbdfb22aaa7cc0a8c",
+        "artifacts/research-access-stress/stress_1/access-policy.parquet": "3116516f64f5977de2ea4836be32a92f66cb1d51e418c78d944f9494e1f827c9",
+        "artifacts/research-access-stress/stress_1/access-test.parquet": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1",
+        "artifacts/research-access-stress/stress_2/access.json": "985f8bb8d2e427e6c1cf71fa067c7c9f5cd5436ca7a8c552f848c65752fcf77f",
+        "artifacts/research-access-stress/stress_2/access.cbm": "ac613ca7b4b04820191830b908144dfba5fb015fdfc3bce553f922c56eeab129",
+        "artifacts/research-access-stress/stress_2/access-policy.parquet": "9867ed8a1d49ac377c206618818c5daed93d00630917b7f1737a2e88365d5f97",
+        "artifacts/research-access-stress/stress_2/access-test.parquet": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/precision_research.py": "25ada652f8b4a55df6c806df9b801958e2442532f0523dbab6d5f94c5a28dd3d",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065"
+      }
+    },
+    "v12": {
+      "scope": "adaptive_retrospective_object_calibration_not_blind_test",
+      "primary_goal": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kind": "access; not proof for all incident types",
+      "hypothesis": "Global mean-count calibration may undercount some objects and overcount others. Correct expected counts with a shrunk object-specific ratio from the separate preceding calibration period, preserving weights and the probability gate.",
+      "formula": "For each object sum observed and predicted24h counts over eligible3h calibration rows, multiply each sum by3/24 to reduce overlapping-window scale. Factor=(observed_sum+strength)/(predicted_sum+strength), clipped[.25,4]. Strengths5,20,80; unseen objects factor1. This is an empirical shrinkage rule, not an independence assumption or Bayesian coverage guarantee.",
+      "policy": "After corrections, same mean_retarget grid and90/90 criterion as v11, fitted exclusively on each preceding policy period. Calibration outcomes do not include policy/test periods;25h purge preserved.",
+      "selection": "Choose strength by pooled Nov/Feb primary score then F1. Require >5% relative primary-score improvement and no F1 loss against the v11 mean_retarget policy-only reference. Original v9 also reported. Only selected strength reaches May, Dec, Mar, with no replacement after results.",
+      "confirmation": "May must improve primary score and preserve>=95%F1 vs uncorrected v11. Dec/Mar pooled must improve primary score>5% and not loseF1; each extra month preserves>=90%F1. Research gates only, never automatic deployment.",
+      "unchanged": "No new weights, features, labels, forecast horizon, episode cohort, outcome confirmation delay or June reads. New comparisons remain retrospective.",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v9/screen_1/access.json": "710ed0d8609844e7942627a695e71d670daa00095ceaa177279017e1c6d5a175",
+        "artifacts/research-v9/screen_1/access.cbm": "9984fe0b5546e7272c9a39f628c83ebaf99d74cd0ec7a6df9e27f2427ebdca5a",
+        "artifacts/research-v9/screen_1/access-policy.parquet": "a158166ff7cc8e49c3a13b4d36ea238a3417100a0ca54d3794228aa3d9f6858f",
+        "artifacts/research-v9/screen_1/access-test.parquet": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+        "artifacts/research-v9/screen_2/access.json": "96e09bab5d2283a2eaadea3edab32dd8dabaf9ecf4f6334b6737e2d5ae598e38",
+        "artifacts/research-v9/screen_2/access.cbm": "bfb8cce1a8697f99376b25ae178d84d344f1857f173b06ece1aebf2e173db6ad",
+        "artifacts/research-v9/screen_2/access-policy.parquet": "66ed8dda37f58663a324009faada9943e894ec43b3fc69878ec778461b06146d",
+        "artifacts/research-v9/screen_2/access-test.parquet": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+        "artifacts/research-v9/confirmation/access.json": "e05d2353a2809e810b7196f5ffa7f8a6738b398b8af7c053bd40b96f315c4ad9",
+        "artifacts/research-v9/confirmation/access.cbm": "8764a6f534338577c2fb0a082837a4e0c7987d902af7751f51b6b45e58818a5f",
+        "artifacts/research-v9/confirmation/access-policy.parquet": "887ef9b927d663f152a63582774e6e8089334bc70cfeff69fe57641d8e125592",
+        "artifacts/research-v9/confirmation/access-test.parquet": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+        "artifacts/research-access-stress/stress_1/access.json": "1bfdbfeed4f29b350877f8d4b257d4a961e96bc5c15938afed5f2a463e504a8e",
+        "artifacts/research-access-stress/stress_1/access.cbm": "71f2996070cf9c9e5a0389e6ae8b0097e0fa393e56110c4dbdfb22aaa7cc0a8c",
+        "artifacts/research-access-stress/stress_1/access-policy.parquet": "3116516f64f5977de2ea4836be32a92f66cb1d51e418c78d944f9494e1f827c9",
+        "artifacts/research-access-stress/stress_1/access-test.parquet": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1",
+        "artifacts/research-access-stress/stress_2/access.json": "985f8bb8d2e427e6c1cf71fa067c7c9f5cd5436ca7a8c552f848c65752fcf77f",
+        "artifacts/research-access-stress/stress_2/access.cbm": "ac613ca7b4b04820191830b908144dfba5fb015fdfc3bce553f922c56eeab129",
+        "artifacts/research-access-stress/stress_2/access-policy.parquet": "9867ed8a1d49ac377c206618818c5daed93d00630917b7f1737a2e88365d5f97",
+        "artifacts/research-access-stress/stress_2/access-test.parquet": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/object_calibration_research.py": "7810e89d4fb93a10d38a2b27fdf42b627e194ef56dc3b014df510ac187a775a2",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/precision_research.py": "25ada652f8b4a55df6c806df9b801958e2442532f0523dbab6d5f94c5a28dd3d",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065"
+      }
+    },
+    "v13": {
+      "scope": "adaptive_retrospective_policy_diagnostic_not_blind_test",
+      "goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kinds": [
+        "fault",
+        "fire"
+      ],
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01",
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "rule": "Fixed v11 mean_retarget grid and90/90 criterion. Select solely on preceding policy period for every kind/month; evaluate all five months regardless of result. >=10 alerts and episodes for supported policy. No new model or family selection.",
+      "reference": "Archived v9 count family; NOT the deployed legacy fault classifier or fire ensemble. Results cannot establish gain against production.",
+      "unchanged": "24h labels, one-to-one event matching, hourly opportunities and70min confirmation delay; no June reads or automatic activation. Flood remains unsupported by too few episodes.",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v9/screen_1/fault.json": "14b36aefe4693dda0f1ee494560a967f29cc87bbc685088792b24e03834680c9",
+        "artifacts/research-v9/screen_1/fault-policy.parquet": "1392718c8a40e3441d8d8bf08bf64e36a841d5c31360cfea11909097f99426b8",
+        "artifacts/research-v9/screen_1/fault-test.parquet": "6b700896e8fa1f637d1fa4554fc39f7b93e21c048c4c9adad14ab3ff2158242e",
+        "artifacts/research-v9/screen_2/fault.json": "219e7cfa0329493f4e3e44cab954f9f9fb30503a58c46fb11c905bc9a641a1b1",
+        "artifacts/research-v9/screen_2/fault-policy.parquet": "66f5e7c4379e233c50c59b06ced9c6d58d977c9d0ec650777d126d635b44d492",
+        "artifacts/research-v9/screen_2/fault-test.parquet": "2ce391e67c37bb8820a015326a4b86c289ef4118b68abafa1c15046d5f91b411",
+        "artifacts/research-v10b/confirmation/reference/fault.json": "f3f25ce0e4cfca6bf669804833f595bc39b79e1420ae9bd6ffa231a148f0531f",
+        "artifacts/research-v10b/confirmation/reference/fault-policy.parquet": "4fb55f324483c56d063dd000972a11aa0ea989129f8862384b3991685cb93e87",
+        "artifacts/research-v10b/confirmation/reference/fault-test.parquet": "80192170c3b897ea267411dd481080c5660686ebc80e178cf2ddf8e7701b42ab",
+        "artifacts/research-v10b/stress_1/reference/fault.json": "1843ab62b677b02093c228e4f5e030be0d4674634af5e119576d63bceaff9b1c",
+        "artifacts/research-v10b/stress_1/reference/fault-policy.parquet": "ed7a0f572033a7bc66756e6698ccc4dfe38238569188436c38e57c29dfbdf418",
+        "artifacts/research-v10b/stress_1/reference/fault-test.parquet": "a3594b58866ba6ff2e300f00338589f2ab49b5e739005af5088b677b1bbc9497",
+        "artifacts/research-v10b/stress_2/reference/fault.json": "c5b36b5ac489576ca3ba8191d1a484414d4ddf937fc863b660dded4527047dc5",
+        "artifacts/research-v10b/stress_2/reference/fault-policy.parquet": "a587cb6ee88e4e7e7c605ae4b6354895144add80ebcc49bf9617f3b42e193244",
+        "artifacts/research-v10b/stress_2/reference/fault-test.parquet": "39e625e0ecdb4a181699bdbd32c6cd07c1b957008f347261bf44f501a1387b2e",
+        "artifacts/research-v9/screen_1/fire.json": "1d3e7fad1278e97fb731622c090a664b7a6177ea8630a6b3ae38246feb8eacf7",
+        "artifacts/research-v9/screen_1/fire-policy.parquet": "c4bb80b19ef176577ddfe9da5e3ae552a37596e7fb825b5137ce5f96dbde1f5d",
+        "artifacts/research-v9/screen_1/fire-test.parquet": "eb9598c4d937ebaabc5cc35f4d7300129a58da8ae1281b9c3f2b0f1f2c1dbaca",
+        "artifacts/research-v9/screen_2/fire.json": "d98a3bfa386255b4618e3be569956e8becdc968d1d4e0da3d806931904d131eb",
+        "artifacts/research-v9/screen_2/fire-policy.parquet": "d218a81a89ae771af7be7bd7e1c99421ca424a7e665cb7b9fd76c4a4d6037499",
+        "artifacts/research-v9/screen_2/fire-test.parquet": "cf799c9da1ecfc24912ef3fef2848fc1bcc79c7cfce9035c53fac4ce94af6f82",
+        "artifacts/research-v9/confirmation/fire.json": "ef115404a61e0872c1114bb00f366ac8822c1d965d6229af297a40c12d3c7d74",
+        "artifacts/research-v9/confirmation/fire-policy.parquet": "6c2c7171a5f7ff938240aa539103391819682d5b02c309324b006c940bc4196f",
+        "artifacts/research-v9/confirmation/fire-test.parquet": "c6054f69d3bb652ce6a4dbed2be7353f8de4da398092148771755eba5e5cf11a",
+        "artifacts/research-v10b/stress_1/reference/fire.json": "8bb7abbed82710eb7ae3331207eee3e87f3e176c2b2a1e2fb35706493c59e97a",
+        "artifacts/research-v10b/stress_1/reference/fire-policy.parquet": "44df6f450315e698e72b41e8f8a54a173bf1a98c60b07eb7354ac83075843656",
+        "artifacts/research-v10b/stress_1/reference/fire-test.parquet": "db2f2e45d81ddbc645511db52f6b2f0302ff03022eead96e88a8f878ea359b2f",
+        "artifacts/research-v10b/stress_2/reference/fire.json": "d98398c70415344f688d758be0e3dabcd22c7353042fdcea77ef58b69e289b79",
+        "artifacts/research-v10b/stress_2/reference/fire-policy.parquet": "6efa75448b827f001fd040880f3dff7cf80e26f928238c2b49036e9f8e6683d6",
+        "artifacts/research-v10b/stress_2/reference/fire-test.parquet": "75451de418e2ba823b79bdf6824a5ebd870eeb0f4aa36f75f5d1f347d21ce2a6"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/scripts/retarget_count_heads_90.py": "553079bd9329b9bf2d008d7df8b7260b516b13788e847cfa5f9b925e869a45e3",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489"
+      }
+    },
+    "v14": {
+      "scope": "adaptive_retrospective_context_count_research_not_blind_test",
+      "goals": {
+        "precision": 0.9,
+        "recall": 0.9
+      },
+      "kind": "access; not proof for other kinds",
+      "single_factor": "Extend v9 Poisson recent_reference66 with the28 original causal past-episode and report recency/burst features, to94 features. No new feature generation, richer sequence table, calendar input, tree hyperparameters or labels. No assumption that earlier binary-classifier experiments establish the answer for count regression.",
+      "fit": "Same v9 Poisson depth6,l2=8,lr=.04,max1000,seed42,CPU4,earlystop100. Same time splits and25h purge. Count calibration and binary calibration unchanged. fit_one also records legacy75/50 policy as a secondary result; primary evaluation separately uses the locked v11 mean_retarget90/90 policy grid.",
+      "reference": "Unchanged v9 counts with the same90/90 policy selection, archived as v12/uncorrected.json. Original operational-family policy also retained in earlier reports. This isolates added features from the change in policy objective.",
+      "screen": "Fixed candidate, no alternative configuration. Pooled Nov/Feb must improve primary score>5% and not loseF1. Only then evaluate May and Dec/Mar; no replacement candidate after their outcomes.",
+      "confirmation": "May improves primary score and preserves>=95%F1 vs same-policy reference; pooled Dec/Mar primary score improves>5%, F1 not lower, each monthF1>=90%reference. Research gates, no automatic activation.90/90 success reported separately.",
+      "unchanged": "Same episodes,24h horizon,hourly opportunities,70min outcome delay and one-to-one matching; no June reads.",
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-dense-round4.parquet": "7824730141ec08488354711e802ab6c35bd7053e192415e07f80e0076e3d4cfe",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v12/screen_1/uncorrected.json": "0f90e0f1bea5348a5e8eee088bde427c79b7775661051033673d275b888af646",
+        "artifacts/research-v12/screen_2/uncorrected.json": "c78fa1a2b6a1eefcae8a7ec6c97954d2644b8d315a5c15ef8d3d2bbb7139ff8e",
+        "artifacts/research-v12/confirmation/uncorrected.json": "7644585877936aa9846c5466781611adfcbe5148b9bdc7bb2491f23f53ac9222",
+        "artifacts/research-v12/stress_1/uncorrected.json": "5336e6c572b0c79aeeb49e3d414b8e308d14002480a8e87a471d0691cc7353af",
+        "artifacts/research-v12/stress_2/uncorrected.json": "02343d9d14bdf05392e9d2f04aa8cb2e4fa7a505f8523e377a666312104a4bbf"
+      },
+      "code_hashes": {
+        "/Users/main/vs_projects/lct_hack/src/moscollector/context_count_research.py": "220de1c97fb83b3b26c94f82c8493d9a4f831914a9dc80451d97740007177ae3",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/precision_research.py": "25ada652f8b4a55df6c806df9b801958e2442532f0523dbab6d5f94c5a28dd3d",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "/Users/main/vs_projects/lct_hack/src/moscollector/count_extension_research.py": "669ca710338e88c76a72b90dd4bc1f4dcd443141c75a94060b0301d6149db9e9"
+      }
+    }
+  },
+  "access_v11": {
+    "selection": {
+      "selected": "quantile",
+      "candidates": {
+        "mean_retarget": {
+          "true_alerts": 1710,
+          "alerts": 2519,
+          "eligible_episodes": 2667,
+          "precision": 0.6788408098451767,
+          "recall": 0.641169853768279,
+          "f1": 0.6594677979174701,
+          "primary_score": 0.7124109486314211,
+          "both_90": false
+        },
+        "quantile": {
+          "true_alerts": 1805,
+          "alerts": 2676,
+          "eligible_episodes": 2667,
+          "precision": 0.6745142002989537,
+          "recall": 0.67679040119985,
+          "f1": 0.6756503836795807,
+          "primary_score": 0.749460222554393,
+          "both_90": false
+        }
+      },
+      "reference": {
+        "true_alerts": 1485,
+        "alerts": 1942,
+        "eligible_episodes": 2667,
+        "precision": 0.7646755921730175,
+        "recall": 0.5568053993250843,
+        "f1": 0.6443914081145584,
+        "primary_score": 0.6186726659167604,
+        "both_90": false
+      },
+      "passed_screen": true
+    },
+    "periods": [
+      {
+        "kind": "access",
+        "fold": "screen_1",
+        "family": "quantile",
+        "policy": {
+          "capacity": "0.5",
+          "margin": 0.25,
+          "floor": 0,
+          "precision": 0.6644144144144144,
+          "recall": 0.6469298245614035,
+          "f1": 0.6555555555555556,
+          "true_alerts": 590,
+          "false_alerts": 298,
+          "alerts": 888,
+          "eligible_episodes": 912,
+          "missed_episodes": 322,
+          "false_alerts_per_object_day": 0.2400322190898107,
+          "median_lead_hours": 14.491666666666667,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 29796,
+          "status": "supported"
+        },
+        "diagnostic": {
+          "period": "preceding_policy_only",
+          "recall_at_precision_90": 0.29385964912280704,
+          "precision_at_recall_90": 0,
+          "max_f1": 0.6555555555555556,
+          "any_both_90": false,
+          "perfect_future_schedule_not_model": {
+            "precision": 1.0,
+            "recall": 0.9923245614035088,
+            "f1": 0.996147495872317,
+            "true_alerts": 905,
+            "false_alerts": 0,
+            "alerts": 905,
+            "eligible_episodes": 912,
+            "missed_episodes": 7,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": 22.439722222222223,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796
+          }
+        },
+        "scores": {
+          "precision": 0.6839590443686007,
+          "recall": 0.6761133603238867,
+          "f1": 0.680013573125212,
+          "true_alerts": 1002,
+          "false_alerts": 463,
+          "alerts": 1465,
+          "eligible_episodes": 1482,
+          "missed_episodes": 480,
+          "false_alerts_per_object_day": 0.20527599201950786,
+          "median_lead_hours": 10.318472222222223,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 54132
+        },
+        "reference": {
+          "precision": 0.7848484848484848,
+          "recall": 0.5242914979757085,
+          "f1": 0.6286407766990292,
+          "true_alerts": 777,
+          "false_alerts": 213,
+          "alerts": 990,
+          "eligible_episodes": 1482,
+          "missed_episodes": 705,
+          "false_alerts_per_object_day": 0.09443582354245178,
+          "median_lead_hours": 11.757222222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 54132
+        }
+      },
+      {
+        "kind": "access",
+        "fold": "screen_2",
+        "family": "quantile",
+        "policy": {
+          "capacity": "0.5",
+          "margin": 0.5,
+          "floor": 0,
+          "precision": 0.662007623888183,
+          "recall": 0.6079346557759626,
+          "f1": 0.6338199513381995,
+          "true_alerts": 521,
+          "false_alerts": 266,
+          "alerts": 787,
+          "eligible_episodes": 857,
+          "missed_episodes": 336,
+          "false_alerts_per_object_day": 0.21425694724124045,
+          "median_lead_hours": 9.713611111111112,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 29796,
+          "status": "supported"
+        },
+        "diagnostic": {
+          "period": "preceding_policy_only",
+          "recall_at_precision_90": 0.22637106184364061,
+          "precision_at_recall_90": 0,
+          "max_f1": 0.6338199513381995,
+          "any_both_90": false,
+          "perfect_future_schedule_not_model": {
+            "precision": 1.0,
+            "recall": 0.9894982497082847,
+            "f1": 0.9947214076246335,
+            "true_alerts": 848,
+            "false_alerts": 0,
+            "alerts": 848,
+            "eligible_episodes": 857,
+            "missed_episodes": 9,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": 21.97513888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796
+          }
+        },
+        "scores": {
+          "precision": 0.6630883567299752,
+          "recall": 0.6776371308016877,
+          "f1": 0.6702838063439065,
+          "true_alerts": 803,
+          "false_alerts": 408,
+          "alerts": 1211,
+          "eligible_episodes": 1185,
+          "missed_episodes": 382,
+          "false_alerts_per_object_day": 0.19433198380566802,
+          "median_lead_hours": 10.379722222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 50388
+        },
+        "reference": {
+          "precision": 0.7436974789915967,
+          "recall": 0.5974683544303797,
+          "f1": 0.6626111371080955,
+          "true_alerts": 708,
+          "false_alerts": 244,
+          "alerts": 952,
+          "eligible_episodes": 1185,
+          "missed_episodes": 477,
+          "false_alerts_per_object_day": 0.1162181471778995,
+          "median_lead_hours": 9.76388888888889,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 50388
+        }
+      },
+      {
+        "kind": "access",
+        "fold": "confirmation",
+        "family": "quantile",
+        "policy": {
+          "capacity": "0.5",
+          "margin": 0.5,
+          "floor": 0.5,
+          "precision": 0.6641901931649331,
+          "recall": 0.6772727272727272,
+          "f1": 0.6706676669167292,
+          "true_alerts": 447,
+          "false_alerts": 226,
+          "alerts": 673,
+          "eligible_episodes": 660,
+          "missed_episodes": 213,
+          "false_alerts_per_object_day": 0.19424151267726686,
+          "median_lead_hours": 10.921111111111111,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 27924,
+          "status": "supported"
+        },
+        "diagnostic": {
+          "period": "preceding_policy_only",
+          "recall_at_precision_90": 0.27424242424242423,
+          "precision_at_recall_90": 0,
+          "max_f1": 0.6800862688713156,
+          "any_both_90": false,
+          "perfect_future_schedule_not_model": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "true_alerts": 660,
+            "false_alerts": 0,
+            "alerts": 660,
+            "eligible_episodes": 660,
+            "missed_episodes": 0,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": 22.94361111111111,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924
+          }
+        },
+        "scores": {
+          "precision": 0.725402504472272,
+          "recall": 0.6572123176661264,
+          "f1": 0.689625850340136,
+          "true_alerts": 811,
+          "false_alerts": 307,
+          "alerts": 1118,
+          "eligible_episodes": 1234,
+          "missed_episodes": 423,
+          "false_alerts_per_object_day": 0.13156203128347976,
+          "median_lead_hours": 10.709722222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.8305785123966942,
+          "recall": 0.4886547811993517,
+          "f1": 0.6153061224489796,
+          "true_alerts": 603,
+          "false_alerts": 123,
+          "alerts": 726,
+          "eligible_episodes": 1234,
+          "missed_episodes": 631,
+          "false_alerts_per_object_day": 0.052710520677094495,
+          "median_lead_hours": 9.365277777777777,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      },
+      {
+        "kind": "access",
+        "fold": "stress_1",
+        "family": "quantile",
+        "policy": {
+          "capacity": "0.75",
+          "margin": 2,
+          "floor": 0,
+          "precision": 0.6947608200455581,
+          "recall": 0.6637649619151251,
+          "f1": 0.6789092932665554,
+          "true_alerts": 610,
+          "false_alerts": 268,
+          "alerts": 878,
+          "eligible_episodes": 919,
+          "missed_episodes": 309,
+          "false_alerts_per_object_day": 0.23033949290932532,
+          "median_lead_hours": 11.39875,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 27924,
+          "status": "supported"
+        },
+        "diagnostic": {
+          "period": "preceding_policy_only",
+          "recall_at_precision_90": 0.31120783460282914,
+          "precision_at_recall_90": 0,
+          "max_f1": 0.6789092932665554,
+          "any_both_90": false,
+          "perfect_future_schedule_not_model": {
+            "precision": 1.0,
+            "recall": 0.998911860718172,
+            "f1": 0.9994556341861731,
+            "true_alerts": 918,
+            "false_alerts": 0,
+            "alerts": 918,
+            "eligible_episodes": 919,
+            "missed_episodes": 1,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": 21.709722222222222,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924
+          }
+        },
+        "scores": {
+          "precision": 0.6138917262512769,
+          "recall": 0.6110828673106253,
+          "f1": 0.612484076433121,
+          "true_alerts": 1202,
+          "false_alerts": 756,
+          "alerts": 1958,
+          "eligible_episodes": 1967,
+          "missed_episodes": 765,
+          "false_alerts_per_object_day": 0.3239768587958003,
+          "median_lead_hours": 12.412777777777778,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.6954484605087015,
+          "recall": 0.5282155566853076,
+          "f1": 0.6004045073678128,
+          "true_alerts": 1039,
+          "false_alerts": 455,
+          "alerts": 1494,
+          "eligible_episodes": 1967,
+          "missed_episodes": 928,
+          "false_alerts_per_object_day": 0.19498607242339833,
+          "median_lead_hours": 10.502777777777778,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      },
+      {
+        "kind": "access",
+        "fold": "stress_2",
+        "family": "quantile",
+        "policy": {
+          "capacity": "0.75",
+          "margin": 2,
+          "floor": 0.5,
+          "precision": 0.6444833625218914,
+          "recall": 0.6490299823633157,
+          "f1": 0.6467486818980668,
+          "true_alerts": 368,
+          "false_alerts": 203,
+          "alerts": 571,
+          "eligible_episodes": 567,
+          "missed_episodes": 199,
+          "false_alerts_per_object_day": 0.20148883374689827,
+          "median_lead_hours": 9.821111111111112,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 24180,
+          "status": "supported"
+        },
+        "diagnostic": {
+          "period": "preceding_policy_only",
+          "recall_at_precision_90": 0.24338624338624337,
+          "precision_at_recall_90": 0,
+          "max_f1": 0.6545768566493955,
+          "any_both_90": false,
+          "perfect_future_schedule_not_model": {
+            "precision": 1.0,
+            "recall": 0.9929453262786596,
+            "f1": 0.9964601769911504,
+            "true_alerts": 563,
+            "false_alerts": 0,
+            "alerts": 563,
+            "eligible_episodes": 567,
+            "missed_episodes": 4,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": 22.13888888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 24180
+          }
+        },
+        "scores": {
+          "precision": 0.6727898966704937,
+          "recall": 0.6865846514352666,
+          "f1": 0.679617280371122,
+          "true_alerts": 1172,
+          "false_alerts": 570,
+          "alerts": 1742,
+          "eligible_episodes": 1707,
+          "missed_episodes": 535,
+          "false_alerts_per_object_day": 0.24426826655238912,
+          "median_lead_hours": 12.174722222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.7758064516129032,
+          "recall": 0.5635618043350908,
+          "f1": 0.652867322701052,
+          "true_alerts": 962,
+          "false_alerts": 278,
+          "alerts": 1240,
+          "eligible_episodes": 1707,
+          "missed_episodes": 745,
+          "false_alerts_per_object_day": 0.11913434754660382,
+          "median_lead_hours": 9.841111111111111,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      }
+    ],
+    "five_period_pooled": {
+      "true_alerts": 4990,
+      "alerts": 7494,
+      "eligible_episodes": 7575,
+      "precision": 0.6658660261542567,
+      "recall": 0.6587458745874587,
+      "f1": 0.662286813988984,
+      "primary_score": 0.7319398606527319,
+      "both_90": false
+    },
+    "five_period_reference": {
+      "true_alerts": 4089,
+      "alerts": 5402,
+      "eligible_episodes": 7575,
+      "precision": 0.7569418733802296,
+      "recall": 0.5398019801980198,
+      "f1": 0.6301918779378901,
+      "primary_score": 0.5997799779977998,
+      "both_90": false
+    },
+    "passed_may": true,
+    "passed_stress": true,
+    "research_eligible": true,
+    "automatic_activation": false,
+    "new_blind_test": false
+  },
+  "access_v12": {
+    "selection": {
+      "selected_strength": 5,
+      "candidates": {
+        "5": {
+          "true_alerts": 1809,
+          "alerts": 2650,
+          "eligible_episodes": 2667,
+          "precision": 0.6826415094339623,
+          "recall": 0.6782902137232846,
+          "f1": 0.6804589053977808,
+          "primary_score": 0.7536557930258717,
+          "both_90": false
+        },
+        "20": {
+          "true_alerts": 1794,
+          "alerts": 2679,
+          "eligible_episodes": 2667,
+          "precision": 0.6696528555431132,
+          "recall": 0.672665916760405,
+          "f1": 0.6711560044893379,
+          "primary_score": 0.7440587283812369,
+          "both_90": false
+        },
+        "80": {
+          "true_alerts": 1805,
+          "alerts": 2818,
+          "eligible_episodes": 2667,
+          "precision": 0.6405251951738822,
+          "recall": 0.67679040119985,
+          "f1": 0.658158614402917,
+          "primary_score": 0.7116946613043135,
+          "both_90": false
+        }
+      },
+      "reference": {
+        "true_alerts": 1710,
+        "alerts": 2519,
+        "eligible_episodes": 2667,
+        "precision": 0.6788408098451767,
+        "recall": 0.641169853768279,
+        "f1": 0.6594677979174701,
+        "primary_score": 0.7124109486314211,
+        "both_90": false
+      },
+      "passed_screen": true
+    },
+    "periods": [
+      {
+        "fold": "screen_1",
+        "strength": 5,
+        "policy": {
+          "capacity": "1",
+          "margin": 1,
+          "floor": 0.5,
+          "precision": 0.6662790697674419,
+          "recall": 0.6282894736842105,
+          "f1": 0.6467268623024831,
+          "true_alerts": 573,
+          "false_alerts": 287,
+          "alerts": 860,
+          "eligible_episodes": 912,
+          "missed_episodes": 339,
+          "false_alerts_per_object_day": 0.23117196939186468,
+          "median_lead_hours": 15.864722222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 29796,
+          "status": "supported"
+        },
+        "scores": {
+          "precision": 0.7120165745856354,
+          "recall": 0.6956815114709851,
+          "f1": 0.7037542662116041,
+          "true_alerts": 1031,
+          "false_alerts": 417,
+          "alerts": 1448,
+          "eligible_episodes": 1482,
+          "missed_episodes": 451,
+          "false_alerts_per_object_day": 0.18488140101972955,
+          "median_lead_hours": 12.885555555555555,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 54132
+        },
+        "reference": {
+          "precision": 0.7114467408585056,
+          "recall": 0.6039136302294197,
+          "f1": 0.6532846715328468,
+          "true_alerts": 895,
+          "false_alerts": 363,
+          "alerts": 1258,
+          "eligible_episodes": 1482,
+          "missed_episodes": 587,
+          "false_alerts_per_object_day": 0.16093992462868545,
+          "median_lead_hours": 8.943333333333333,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 54132
+        },
+        "original": {
+          "precision": 0.7848484848484848,
+          "recall": 0.5242914979757085,
+          "f1": 0.6286407766990292,
+          "true_alerts": 777,
+          "false_alerts": 213,
+          "alerts": 990,
+          "eligible_episodes": 1482,
+          "missed_episodes": 705,
+          "false_alerts_per_object_day": 0.09443582354245178,
+          "median_lead_hours": 11.757222222222222,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 54132
+        }
+      },
+      {
+        "fold": "screen_2",
+        "strength": 5,
+        "policy": {
+          "capacity": "1",
+          "margin": 1,
+          "floor": 0,
+          "precision": 0.6666666666666666,
+          "recall": 0.6231038506417736,
+          "f1": 0.6441495778045838,
+          "true_alerts": 534,
+          "false_alerts": 267,
+          "alerts": 801,
+          "eligible_episodes": 857,
+          "missed_episodes": 323,
+          "false_alerts_per_object_day": 0.21506242448650825,
+          "median_lead_hours": 12.460555555555555,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 29796,
+          "status": "supported"
+        },
+        "scores": {
+          "precision": 0.6472545757071547,
+          "recall": 0.6565400843881857,
+          "f1": 0.6518642647674906,
+          "true_alerts": 778,
+          "false_alerts": 424,
+          "alerts": 1202,
+          "eligible_episodes": 1185,
+          "missed_episodes": 407,
+          "false_alerts_per_object_day": 0.2019528459156942,
+          "median_lead_hours": 14.087361111111111,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 50388
+        },
+        "reference": {
+          "precision": 0.6463124504361618,
+          "recall": 0.6877637130801688,
+          "f1": 0.6663941128372853,
+          "true_alerts": 815,
+          "false_alerts": 446,
+          "alerts": 1261,
+          "eligible_episodes": 1185,
+          "missed_episodes": 370,
+          "false_alerts_per_object_day": 0.21243153131698023,
+          "median_lead_hours": 14.086666666666666,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 50388
+        },
+        "original": {
+          "precision": 0.7436974789915967,
+          "recall": 0.5974683544303797,
+          "f1": 0.6626111371080955,
+          "true_alerts": 708,
+          "false_alerts": 244,
+          "alerts": 952,
+          "eligible_episodes": 1185,
+          "missed_episodes": 477,
+          "false_alerts_per_object_day": 0.1162181471778995,
+          "median_lead_hours": 9.76388888888889,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 50388
+        }
+      },
+      {
+        "fold": "confirmation",
+        "strength": 5,
+        "policy": {
+          "capacity": "0.5",
+          "margin": 0.25,
+          "floor": 0.5,
+          "precision": 0.6987381703470031,
+          "recall": 0.6712121212121213,
+          "f1": 0.6846986089644513,
+          "true_alerts": 443,
+          "false_alerts": 191,
+          "alerts": 634,
+          "eligible_episodes": 660,
+          "missed_episodes": 217,
+          "false_alerts_per_object_day": 0.16415986248388484,
+          "median_lead_hours": 8.905833333333334,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 27924,
+          "status": "supported"
+        },
+        "scores": {
+          "precision": 0.7345924453280318,
+          "recall": 0.5988654781199352,
+          "f1": 0.6598214285714286,
+          "true_alerts": 739,
+          "false_alerts": 267,
+          "alerts": 1006,
+          "eligible_episodes": 1234,
+          "missed_episodes": 495,
+          "false_alerts_per_object_day": 0.11442039854296121,
+          "median_lead_hours": 6.364444444444445,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.730909090909091,
+          "recall": 0.6515397082658023,
+          "f1": 0.6889460154241646,
+          "true_alerts": 804,
+          "false_alerts": 296,
+          "alerts": 1100,
+          "eligible_episodes": 1234,
+          "missed_episodes": 430,
+          "false_alerts_per_object_day": 0.12684808227983715,
+          "median_lead_hours": 7.396111111111111,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "original": {
+          "precision": 0.8305785123966942,
+          "recall": 0.4886547811993517,
+          "f1": 0.6153061224489796,
+          "true_alerts": 603,
+          "false_alerts": 123,
+          "alerts": 726,
+          "eligible_episodes": 1234,
+          "missed_episodes": 631,
+          "false_alerts_per_object_day": 0.052710520677094495,
+          "median_lead_hours": 9.365277777777777,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      },
+      {
+        "fold": "stress_1",
+        "strength": 5,
+        "policy": {
+          "capacity": "1.5",
+          "margin": 2,
+          "floor": 0,
+          "precision": 0.7310344827586207,
+          "recall": 0.6920565832426551,
+          "f1": 0.7110117384013416,
+          "true_alerts": 636,
+          "false_alerts": 234,
+          "alerts": 870,
+          "eligible_episodes": 919,
+          "missed_episodes": 283,
+          "false_alerts_per_object_day": 0.2011173184357542,
+          "median_lead_hours": 14.643194444444443,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 27924,
+          "status": "supported"
+        },
+        "scores": {
+          "precision": 0.6318131256952169,
+          "recall": 0.5775292323335028,
+          "f1": 0.6034528552456839,
+          "true_alerts": 1136,
+          "false_alerts": 662,
+          "alerts": 1798,
+          "eligible_episodes": 1967,
+          "missed_episodes": 831,
+          "false_alerts_per_object_day": 0.28369402185558174,
+          "median_lead_hours": 14.015555555555554,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.5940126050420168,
+          "recall": 0.5749872902897813,
+          "f1": 0.5843451304572462,
+          "true_alerts": 1131,
+          "false_alerts": 773,
+          "alerts": 1904,
+          "eligible_episodes": 1967,
+          "missed_episodes": 836,
+          "false_alerts_per_object_day": 0.33126205271052067,
+          "median_lead_hours": 15.568888888888889,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "original": {
+          "precision": 0.6954484605087015,
+          "recall": 0.5282155566853076,
+          "f1": 0.6004045073678128,
+          "true_alerts": 1039,
+          "false_alerts": 455,
+          "alerts": 1494,
+          "eligible_episodes": 1967,
+          "missed_episodes": 928,
+          "false_alerts_per_object_day": 0.19498607242339833,
+          "median_lead_hours": 10.502777777777778,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      },
+      {
+        "fold": "stress_2",
+        "strength": 5,
+        "policy": {
+          "capacity": "1",
+          "margin": 1,
+          "floor": 0.5,
+          "precision": 0.6839285714285714,
+          "recall": 0.6754850088183422,
+          "f1": 0.6796805678793256,
+          "true_alerts": 383,
+          "false_alerts": 177,
+          "alerts": 560,
+          "eligible_episodes": 567,
+          "missed_episodes": 184,
+          "false_alerts_per_object_day": 0.17568238213399504,
+          "median_lead_hours": 11.447777777777778,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 24180,
+          "status": "supported"
+        },
+        "scores": {
+          "precision": 0.7300405953991881,
+          "recall": 0.6321031048623316,
+          "f1": 0.6775510204081633,
+          "true_alerts": 1079,
+          "false_alerts": 399,
+          "alerts": 1478,
+          "eligible_episodes": 1707,
+          "missed_episodes": 628,
+          "false_alerts_per_object_day": 0.17098778658667238,
+          "median_lead_hours": 12.540555555555555,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "reference": {
+          "precision": 0.7141951837769328,
+          "recall": 0.6602226127709432,
+          "f1": 0.6861491628614916,
+          "true_alerts": 1127,
+          "false_alerts": 451,
+          "alerts": 1578,
+          "eligible_episodes": 1707,
+          "missed_episodes": 580,
+          "false_alerts_per_object_day": 0.19327190914934647,
+          "median_lead_hours": 11.524166666666666,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        },
+        "original": {
+          "precision": 0.7758064516129032,
+          "recall": 0.5635618043350908,
+          "f1": 0.652867322701052,
+          "true_alerts": 962,
+          "false_alerts": 278,
+          "alerts": 1240,
+          "eligible_episodes": 1707,
+          "missed_episodes": 745,
+          "false_alerts_per_object_day": 0.11913434754660382,
+          "median_lead_hours": 9.841111111111111,
+          "cooldown_hours": 1,
+          "matching": "one_to_one",
+          "forecast_opportunities": 56004
+        }
+      }
+    ],
+    "five_period_pooled": {
+      "true_alerts": 4763,
+      "alerts": 6932,
+      "eligible_episodes": 7575,
+      "precision": 0.6871032890940566,
+      "recall": 0.6287788778877887,
+      "f1": 0.6566485145102364,
+      "primary_score": 0.6986431976530986,
+      "both_90": false
+    },
+    "five_period_reference": {
+      "true_alerts": 4772,
+      "alerts": 7101,
+      "eligible_episodes": 7575,
+      "precision": 0.672018025630193,
+      "recall": 0.6299669966996699,
+      "f1": 0.6503134369037885,
+      "primary_score": 0.6999633296662999,
+      "both_90": false
+    },
+    "passed_may": false,
+    "passed_stress": false,
+    "research_eligible": false,
+    "automatic_activation": false,
+    "new_blind_test": false
+  },
+  "access_v14": {
+    "selection": {
+      "candidate": {
+        "true_alerts": 1798,
+        "alerts": 2791,
+        "eligible_episodes": 2667,
+        "precision": 0.6442135435327839,
+        "recall": 0.6741657292838396,
+        "f1": 0.6588493953829242,
+        "primary_score": 0.7157928261475377,
+        "both_90": false
+      },
+      "reference": {
+        "true_alerts": 1710,
+        "alerts": 2519,
+        "eligible_episodes": 2667,
+        "precision": 0.6788408098451767,
+        "recall": 0.641169853768279,
+        "f1": 0.6594677979174701,
+        "primary_score": 0.7124109486314211,
+        "both_90": false
+      },
+      "passed_screen": false,
+      "added_features": [
+        "fault_reports_recency_h",
+        "fault_reports_burst",
+        "power_reports_recency_h",
+        "power_reports_burst",
+        "unknown_reports_recency_h",
+        "unknown_reports_burst",
+        "smoke_reports_recency_h",
+        "smoke_reports_burst",
+        "flood_reports_recency_h",
+        "flood_reports_burst",
+        "access_reports_recency_h",
+        "access_reports_burst",
+        "past_fault_episodes_24h",
+        "past_fault_episodes_168h",
+        "past_fault_episodes_720h",
+        "past_fault_recency_h",
+        "past_fire_episodes_24h",
+        "past_fire_episodes_168h",
+        "past_fire_episodes_720h",
+        "past_fire_recency_h",
+        "past_flood_episodes_24h",
+        "past_flood_episodes_168h",
+        "past_flood_episodes_720h",
+        "past_flood_recency_h",
+        "past_access_episodes_24h",
+        "past_access_episodes_168h",
+        "past_access_episodes_720h",
+        "past_access_recency_h"
+      ]
+    }
+  },
+  "other_count_heads_v13": {
+    "fault": {
+      "periods": [
+        {
+          "fold": "screen_1",
+          "policy": {
+            "capacity": "0.5",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 8,
+            "missed_episodes": 8,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796,
+            "status": "low_support"
+          },
+          "scores": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 1,
+            "alerts": 1,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0004433606739082243,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          },
+          "reference": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 2,
+            "alerts": 2,
+            "eligible_episodes": 18,
+            "missed_episodes": 18,
+            "false_alerts_per_object_day": 0.0008867213478164486,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 8,
+              "false_alerts": 0,
+              "alerts": 8,
+              "eligible_episodes": 8,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 22.95361111111111,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 29796
+            }
+          }
+        },
+        {
+          "fold": "screen_2",
+          "policy": {
+            "capacity": "1.5",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.14285714285714285,
+            "recall": 0.16666666666666666,
+            "f1": 0.15384615384615385,
+            "true_alerts": 2,
+            "false_alerts": 12,
+            "alerts": 14,
+            "eligible_episodes": 12,
+            "missed_episodes": 10,
+            "false_alerts_per_object_day": 0.009665726943213854,
+            "median_lead_hours": 0.32958333333333334,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.14285714285714285,
+            "recall": 0.10714285714285714,
+            "f1": 0.12244897959183673,
+            "true_alerts": 3,
+            "false_alerts": 18,
+            "alerts": 21,
+            "eligible_episodes": 28,
+            "missed_episodes": 25,
+            "false_alerts_per_object_day": 0.008573469873779471,
+            "median_lead_hours": 1.6983333333333333,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          },
+          "reference": {
+            "precision": 0.2727272727272727,
+            "recall": 0.10714285714285714,
+            "f1": 0.15384615384615385,
+            "true_alerts": 3,
+            "false_alerts": 8,
+            "alerts": 11,
+            "eligible_episodes": 28,
+            "missed_episodes": 25,
+            "false_alerts_per_object_day": 0.0038104310550130982,
+            "median_lead_hours": 0.6983333333333334,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.17647058823529413,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 12,
+              "false_alerts": 0,
+              "alerts": 12,
+              "eligible_episodes": 12,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 23.629444444444445,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 29796
+            }
+          }
+        },
+        {
+          "fold": "confirmation",
+          "policy": {
+            "capacity": "2",
+            "margin": 0.5,
+            "floor": 0,
+            "precision": 0.45454545454545453,
+            "recall": 0.46296296296296297,
+            "f1": 0.45871559633027525,
+            "true_alerts": 25,
+            "false_alerts": 30,
+            "alerts": 55,
+            "eligible_episodes": 54,
+            "missed_episodes": 29,
+            "false_alerts_per_object_day": 0.02578427159432746,
+            "median_lead_hours": 16.230833333333333,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.2,
+            "recall": 0.06896551724137931,
+            "f1": 0.10256410256410256,
+            "true_alerts": 2,
+            "false_alerts": 8,
+            "alerts": 10,
+            "eligible_episodes": 29,
+            "missed_episodes": 27,
+            "false_alerts_per_object_day": 0.0034283265481037067,
+            "median_lead_hours": 2.7219444444444445,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.25,
+            "recall": 0.034482758620689655,
+            "f1": 0.06060606060606061,
+            "true_alerts": 1,
+            "false_alerts": 3,
+            "alerts": 4,
+            "eligible_episodes": 29,
+            "missed_episodes": 28,
+            "false_alerts_per_object_day": 0.0012856224555388902,
+            "median_lead_hours": 1.0775,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.4642857142857143,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 54,
+              "false_alerts": 0,
+              "alerts": 54,
+              "eligible_episodes": 54,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 23.323194444444447,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 27924
+            }
+          }
+        },
+        {
+          "fold": "stress_1",
+          "policy": {
+            "capacity": "0.5",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 9,
+            "missed_episodes": 9,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924,
+            "status": "low_support"
+          },
+          "scores": {
+            "precision": 0.575,
+            "recall": 0.2169811320754717,
+            "f1": 0.3150684931506849,
+            "true_alerts": 23,
+            "false_alerts": 17,
+            "alerts": 40,
+            "eligible_episodes": 106,
+            "missed_episodes": 83,
+            "false_alerts_per_object_day": 0.007285193914720377,
+            "median_lead_hours": 2.571388888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.49122807017543857,
+            "recall": 0.2641509433962264,
+            "f1": 0.34355828220858897,
+            "true_alerts": 28,
+            "false_alerts": 29,
+            "alerts": 57,
+            "eligible_episodes": 106,
+            "missed_episodes": 78,
+            "false_alerts_per_object_day": 0.012427683736875937,
+            "median_lead_hours": 3.294027777777778,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 9,
+              "false_alerts": 0,
+              "alerts": 9,
+              "eligible_episodes": 9,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 23.502222222222223,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 27924
+            }
+          }
+        },
+        {
+          "fold": "stress_2",
+          "policy": {
+            "capacity": "0.5",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 6,
+            "missed_episodes": 6,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 24180,
+            "status": "low_support"
+          },
+          "scores": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 1,
+            "alerts": 1,
+            "eligible_episodes": 36,
+            "missed_episodes": 36,
+            "false_alerts_per_object_day": 0.00042854081851296334,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.2,
+            "recall": 0.027777777777777776,
+            "f1": 0.04878048780487805,
+            "true_alerts": 1,
+            "false_alerts": 4,
+            "alerts": 5,
+            "eligible_episodes": 36,
+            "missed_episodes": 35,
+            "false_alerts_per_object_day": 0.0017141632740518534,
+            "median_lead_hours": 21.024444444444445,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 6,
+              "false_alerts": 0,
+              "alerts": 6,
+              "eligible_episodes": 6,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 23.475833333333334,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 24180
+            }
+          }
+        }
+      ],
+      "pooled": {
+        "true_alerts": 28,
+        "alerts": 73,
+        "eligible_episodes": 217,
+        "precision": 0.3835616438356164,
+        "recall": 0.12903225806451613,
+        "f1": 0.19310344827586207,
+        "primary_score": 0.14336917562724014,
+        "both_90": false
+      },
+      "reference_pooled": {
+        "true_alerts": 33,
+        "alerts": 79,
+        "eligible_episodes": 217,
+        "precision": 0.4177215189873418,
+        "recall": 0.15207373271889402,
+        "f1": 0.22297297297297297,
+        "primary_score": 0.16897081413210446,
+        "both_90": false
+      }
+    },
+    "fire": {
+      "periods": [
+        {
+          "fold": "screen_1",
+          "policy": {
+            "capacity": "2",
+            "margin": 1,
+            "floor": 0,
+            "precision": 0.2641509433962264,
+            "recall": 0.21212121212121213,
+            "f1": 0.23529411764705882,
+            "true_alerts": 14,
+            "false_alerts": 39,
+            "alerts": 53,
+            "eligible_episodes": 66,
+            "missed_episodes": 52,
+            "false_alerts_per_object_day": 0.031413612565445025,
+            "median_lead_hours": 0.31180555555555556,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.3763440860215054,
+            "recall": 0.3465346534653465,
+            "f1": 0.36082474226804123,
+            "true_alerts": 35,
+            "false_alerts": 58,
+            "alerts": 93,
+            "eligible_episodes": 101,
+            "missed_episodes": 66,
+            "false_alerts_per_object_day": 0.025714919086677012,
+            "median_lead_hours": 1.093888888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          },
+          "reference": {
+            "precision": 0.49056603773584906,
+            "recall": 0.25742574257425743,
+            "f1": 0.33766233766233766,
+            "true_alerts": 26,
+            "false_alerts": 27,
+            "alerts": 53,
+            "eligible_episodes": 101,
+            "missed_episodes": 75,
+            "false_alerts_per_object_day": 0.011970738195522057,
+            "median_lead_hours": 1.1769444444444446,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.23529411764705882,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 66,
+              "false_alerts": 0,
+              "alerts": 66,
+              "eligible_episodes": 66,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 22.13486111111111,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 29796
+            }
+          }
+        },
+        {
+          "fold": "screen_2",
+          "policy": {
+            "capacity": "2",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.416,
+            "recall": 0.34210526315789475,
+            "f1": 0.37545126353790614,
+            "true_alerts": 52,
+            "false_alerts": 73,
+            "alerts": 125,
+            "eligible_episodes": 152,
+            "missed_episodes": 100,
+            "false_alerts_per_object_day": 0.05879983890455095,
+            "median_lead_hours": 0.5356944444444445,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 29796,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.458128078817734,
+            "recall": 0.49732620320855614,
+            "f1": 0.47692307692307695,
+            "true_alerts": 93,
+            "false_alerts": 110,
+            "alerts": 203,
+            "eligible_episodes": 187,
+            "missed_episodes": 94,
+            "false_alerts_per_object_day": 0.052393427006430106,
+            "median_lead_hours": 2.2725,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          },
+          "reference": {
+            "precision": 0.6705882352941176,
+            "recall": 0.3048128342245989,
+            "f1": 0.41911764705882354,
+            "true_alerts": 57,
+            "false_alerts": 28,
+            "alerts": 85,
+            "eligible_episodes": 187,
+            "missed_episodes": 130,
+            "false_alerts_per_object_day": 0.013336508692545844,
+            "median_lead_hours": 1.4494444444444445,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.3870967741935484,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 0.9736842105263158,
+              "f1": 0.9866666666666667,
+              "true_alerts": 148,
+              "false_alerts": 0,
+              "alerts": 148,
+              "eligible_episodes": 152,
+              "missed_episodes": 4,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 22.147777777777776,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 29796
+            }
+          }
+        },
+        {
+          "fold": "confirmation",
+          "policy": {
+            "capacity": "2",
+            "margin": 1,
+            "floor": 0,
+            "precision": 0.3901098901098901,
+            "recall": 0.44375,
+            "f1": 0.4152046783625731,
+            "true_alerts": 71,
+            "false_alerts": 111,
+            "alerts": 182,
+            "eligible_episodes": 160,
+            "missed_episodes": 89,
+            "false_alerts_per_object_day": 0.09540180489901161,
+            "median_lead_hours": 0.88,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.37825059101654845,
+            "recall": 0.6177606177606177,
+            "f1": 0.46920821114369504,
+            "true_alerts": 160,
+            "false_alerts": 263,
+            "alerts": 423,
+            "eligible_episodes": 259,
+            "missed_episodes": 99,
+            "false_alerts_per_object_day": 0.11270623526890937,
+            "median_lead_hours": 6.160972222222222,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.4880952380952381,
+            "recall": 0.4749034749034749,
+            "f1": 0.48140900195694714,
+            "true_alerts": 123,
+            "false_alerts": 129,
+            "alerts": 252,
+            "eligible_episodes": 259,
+            "missed_episodes": 136,
+            "false_alerts_per_object_day": 0.05528176558817227,
+            "median_lead_hours": 2.6238888888888887,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.43636363636363634,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 160,
+              "false_alerts": 0,
+              "alerts": 160,
+              "eligible_episodes": 160,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 20.41041666666667,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 27924
+            }
+          }
+        },
+        {
+          "fold": "stress_1",
+          "policy": {
+            "capacity": "1",
+            "margin": 0.25,
+            "floor": 0,
+            "precision": 0.39705882352941174,
+            "recall": 0.39705882352941174,
+            "f1": 0.39705882352941174,
+            "true_alerts": 27,
+            "false_alerts": 41,
+            "alerts": 68,
+            "eligible_episodes": 68,
+            "missed_episodes": 41,
+            "false_alerts_per_object_day": 0.035238504512247526,
+            "median_lead_hours": 4.3,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 27924,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.532051282051282,
+            "recall": 0.20544554455445543,
+            "f1": 0.29642857142857143,
+            "true_alerts": 83,
+            "false_alerts": 73,
+            "alerts": 156,
+            "eligible_episodes": 404,
+            "missed_episodes": 321,
+            "false_alerts_per_object_day": 0.031283479751446325,
+            "median_lead_hours": 0.3388888888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.532051282051282,
+            "recall": 0.20544554455445543,
+            "f1": 0.29642857142857143,
+            "true_alerts": 83,
+            "false_alerts": 73,
+            "alerts": 156,
+            "eligible_episodes": 404,
+            "missed_episodes": 321,
+            "false_alerts_per_object_day": 0.031283479751446325,
+            "median_lead_hours": 0.3388888888888889,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.4084507042253521,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 68,
+              "false_alerts": 0,
+              "alerts": 68,
+              "eligible_episodes": 68,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 23.190555555555555,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 27924
+            }
+          }
+        },
+        {
+          "fold": "stress_2",
+          "policy": {
+            "capacity": "1",
+            "margin": 0.5,
+            "floor": 0,
+            "precision": 0.5222222222222223,
+            "recall": 0.4845360824742268,
+            "f1": 0.5026737967914439,
+            "true_alerts": 47,
+            "false_alerts": 43,
+            "alerts": 90,
+            "eligible_episodes": 97,
+            "missed_episodes": 50,
+            "false_alerts_per_object_day": 0.042679900744416875,
+            "median_lead_hours": 2.6055555555555556,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 24180,
+            "status": "supported"
+          },
+          "scores": {
+            "precision": 0.6460905349794238,
+            "recall": 0.35280898876404493,
+            "f1": 0.4563953488372093,
+            "true_alerts": 157,
+            "false_alerts": 86,
+            "alerts": 243,
+            "eligible_episodes": 445,
+            "missed_episodes": 288,
+            "false_alerts_per_object_day": 0.03685451039211485,
+            "median_lead_hours": 0.9633333333333334,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "reference": {
+            "precision": 0.8087431693989071,
+            "recall": 0.3325842696629214,
+            "f1": 0.4713375796178344,
+            "true_alerts": 148,
+            "false_alerts": 35,
+            "alerts": 183,
+            "eligible_episodes": 445,
+            "missed_episodes": 297,
+            "false_alerts_per_object_day": 0.014998928647953718,
+            "median_lead_hours": 1.1411111111111112,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          },
+          "diagnostic": {
+            "period": "preceding_policy_only",
+            "recall_at_precision_90": 0.15463917525773196,
+            "precision_at_recall_90": 0,
+            "max_f1": 0.5256410256410257,
+            "any_both_90": false,
+            "perfect_future_schedule_not_model": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "true_alerts": 97,
+              "false_alerts": 0,
+              "alerts": 97,
+              "eligible_episodes": 97,
+              "missed_episodes": 0,
+              "false_alerts_per_object_day": 0.0,
+              "median_lead_hours": 22.464444444444446,
+              "cooldown_hours": 1,
+              "matching": "one_to_one",
+              "forecast_opportunities": 24180
+            }
+          }
+        }
+      ],
+      "pooled": {
+        "true_alerts": 528,
+        "alerts": 1118,
+        "eligible_episodes": 1396,
+        "precision": 0.47227191413237923,
+        "recall": 0.37822349570200575,
+        "f1": 0.4200477326968974,
+        "primary_score": 0.42024832855778416,
+        "both_90": false
+      },
+      "reference_pooled": {
+        "true_alerts": 437,
+        "alerts": 729,
+        "eligible_episodes": 1396,
+        "precision": 0.5994513031550068,
+        "recall": 0.3130372492836676,
+        "f1": 0.4112941176470588,
+        "primary_score": 0.3478191658707418,
+        "both_90": false
+      }
+    }
+  },
+  "uncertainty": {
+    "scope": "conditional_post_selection_sensitivity_not_independent_validation",
+    "method": "5000 paired samples of complete parent-node histories across all five months, seed20260921; per-object counts recomputed from fixed predictions.",
+    "limits": "Conditional on fitted and adaptively selected models. Does not include training/selection uncertainty, dependence across parents or future calendar shifts. Bootstrap frequencies are not probabilities of future success.",
+    "comparisons": {
+      "archived_operational_family": {
+        "counts": [
+          {
+            "object_id": 20,
+            "model_tp": 211,
+            "model_alerts": 245,
+            "episodes": 312,
+            "baseline_tp": 138,
+            "baseline_alerts": 148,
+            "parent_id": 6
+          },
+          {
+            "object_id": 28,
+            "model_tp": 225,
+            "model_alerts": 357,
+            "episodes": 288,
+            "baseline_tp": 171,
+            "baseline_alerts": 239,
+            "parent_id": 9
+          },
+          {
+            "object_id": 42,
+            "model_tp": 315,
+            "model_alerts": 542,
+            "episodes": 455,
+            "baseline_tp": 238,
+            "baseline_alerts": 329,
+            "parent_id": 15
+          },
+          {
+            "object_id": 99,
+            "model_tp": 26,
+            "model_alerts": 77,
+            "episodes": 83,
+            "baseline_tp": 10,
+            "baseline_alerts": 31,
+            "parent_id": 9
+          },
+          {
+            "object_id": 108,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 12,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 111,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 6,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 6
+          },
+          {
+            "object_id": 165,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 20,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 6
+          },
+          {
+            "object_id": 3215,
+            "model_tp": 1393,
+            "model_alerts": 1641,
+            "episodes": 1514,
+            "baseline_tp": 1410,
+            "baseline_alerts": 1610,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3216,
+            "model_tp": 1,
+            "model_alerts": 12,
+            "episodes": 37,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3250,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 16,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3356,
+            "model_tp": 333,
+            "model_alerts": 557,
+            "episodes": 407,
+            "baseline_tp": 304,
+            "baseline_alerts": 448,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 3360,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 3388,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 3902,
+            "model_tp": 9,
+            "model_alerts": 28,
+            "episodes": 54,
+            "baseline_tp": 0,
+            "baseline_alerts": 2,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3903,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 35,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3904,
+            "model_tp": 7,
+            "model_alerts": 12,
+            "episodes": 48,
+            "baseline_tp": 3,
+            "baseline_alerts": 4,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3905,
+            "model_tp": 139,
+            "model_alerts": 237,
+            "episodes": 191,
+            "baseline_tp": 91,
+            "baseline_alerts": 126,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4069,
+            "model_tp": 3,
+            "model_alerts": 5,
+            "episodes": 23,
+            "baseline_tp": 3,
+            "baseline_alerts": 4,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4095,
+            "model_tp": 26,
+            "model_alerts": 41,
+            "episodes": 101,
+            "baseline_tp": 13,
+            "baseline_alerts": 21,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4177,
+            "model_tp": 2,
+            "model_alerts": 4,
+            "episodes": 23,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4369,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4370,
+            "model_tp": 111,
+            "model_alerts": 180,
+            "episodes": 185,
+            "baseline_tp": 57,
+            "baseline_alerts": 81,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4391,
+            "model_tp": 264,
+            "model_alerts": 397,
+            "episodes": 338,
+            "baseline_tp": 219,
+            "baseline_alerts": 306,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4392,
+            "model_tp": 0,
+            "model_alerts": 1,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4541,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 8,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4543,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4569,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 16,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4574,
+            "model_tp": 20,
+            "model_alerts": 40,
+            "episodes": 77,
+            "baseline_tp": 4,
+            "baseline_alerts": 8,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4577,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 1,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4610,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 8
+          },
+          {
+            "object_id": 4648,
+            "model_tp": 158,
+            "model_alerts": 266,
+            "episodes": 216,
+            "baseline_tp": 118,
+            "baseline_alerts": 171,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4763,
+            "model_tp": 0,
+            "model_alerts": 1,
+            "episodes": 28,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4765,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 30,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 6
+          },
+          {
+            "object_id": 4767,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 47,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 9
+          },
+          {
+            "object_id": 4768,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 19,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4770,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 3,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5003,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 5009,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 5011,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 9
+          },
+          {
+            "object_id": 5113,
+            "model_tp": 407,
+            "model_alerts": 641,
+            "episodes": 472,
+            "baseline_tp": 344,
+            "baseline_alerts": 485,
+            "parent_id": 8
+          },
+          {
+            "object_id": 5114,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 10,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 8
+          },
+          {
+            "object_id": 5122,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5123,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 17,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5124,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5129,
+            "model_tp": 49,
+            "model_alerts": 73,
+            "episodes": 112,
+            "baseline_tp": 27,
+            "baseline_alerts": 33,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5132,
+            "model_tp": 1,
+            "model_alerts": 2,
+            "episodes": 23,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5218,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 5332,
+            "model_tp": 42,
+            "model_alerts": 109,
+            "episodes": 89,
+            "baseline_tp": 22,
+            "baseline_alerts": 46,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5333,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5336,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 43,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5338,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 23,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5339,
+            "model_tp": 128,
+            "model_alerts": 214,
+            "episodes": 160,
+            "baseline_tp": 76,
+            "baseline_alerts": 106,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5340,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 5,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5343,
+            "model_tp": 72,
+            "model_alerts": 193,
+            "episodes": 159,
+            "baseline_tp": 29,
+            "baseline_alerts": 65,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5537,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5539,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5540,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 14,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5567,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5574,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 22,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5578,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5579,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 6,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5580,
+            "model_tp": 153,
+            "model_alerts": 348,
+            "episodes": 207,
+            "baseline_tp": 94,
+            "baseline_alerts": 172,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5581,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5582,
+            "model_tp": 12,
+            "model_alerts": 21,
+            "episodes": 55,
+            "baseline_tp": 2,
+            "baseline_alerts": 5,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5583,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5591,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5593,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 1,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5594,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 2,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5657,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5674,
+            "model_tp": 1,
+            "model_alerts": 7,
+            "episodes": 41,
+            "baseline_tp": 1,
+            "baseline_alerts": 2,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5675,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5676,
+            "model_tp": 170,
+            "model_alerts": 331,
+            "episodes": 225,
+            "baseline_tp": 122,
+            "baseline_alerts": 199,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5677,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5678,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5961,
+            "model_tp": 628,
+            "model_alerts": 817,
+            "episodes": 1075,
+            "baseline_tp": 578,
+            "baseline_alerts": 741,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5962,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5963,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5966,
+            "model_tp": 81,
+            "model_alerts": 92,
+            "episodes": 182,
+            "baseline_tp": 15,
+            "baseline_alerts": 20,
+            "parent_id": 7
+          }
+        ],
+        "by_parent": {
+          "clusters": 16,
+          "clusters_with_episodes": 16,
+          "clusters_with_true_alerts": 16,
+          "replicates": 5000,
+          "seed": 20260921,
+          "percentile_95": {
+            "precision": {
+              "low": 0.5692994734651206,
+              "high": 0.7422626090047008,
+              "valid_replicates": 5000
+            },
+            "recall": {
+              "low": 0.5496019287118707,
+              "high": 0.7585393989785257,
+              "valid_replicates": 5000
+            },
+            "f1": {
+              "low": 0.5694482317802926,
+              "high": 0.7428185125818677,
+              "valid_replicates": 5000
+            },
+            "baseline_f1": {
+              "low": 0.49352722652943887,
+              "high": 0.7408166329084261,
+              "valid_replicates": 5000
+            },
+            "f1_difference": {
+              "low": -0.00010213957220850663,
+              "high": 0.08116766575702807,
+              "valid_replicates": 5000
+            }
+          },
+          "leave_one_cluster_out_f1_difference": {
+            "min": 0.02555219504186923,
+            "max": 0.060236358531934986,
+            "valid_replicates": 16
+          },
+          "paired_differences_95": {
+            "precision": {
+              "low": -0.1140977225934335,
+              "high": -0.06237641506773016,
+              "valid_replicates": 5000
+            },
+            "recall": {
+              "low": 0.06897200216464887,
+              "high": 0.17845826938992287,
+              "valid_replicates": 5000
+            },
+            "primary_score": {
+              "low": 0.03584350119666051,
+              "high": 0.19262216803260399,
+              "valid_replicates": 5000
+            }
+          }
+        }
+      },
+      "mean_with_90_policy": {
+        "counts": [
+          {
+            "object_id": 20,
+            "model_tp": 211,
+            "model_alerts": 245,
+            "episodes": 312,
+            "baseline_tp": 188,
+            "baseline_alerts": 222,
+            "parent_id": 6
+          },
+          {
+            "object_id": 28,
+            "model_tp": 225,
+            "model_alerts": 357,
+            "episodes": 288,
+            "baseline_tp": 198,
+            "baseline_alerts": 303,
+            "parent_id": 9
+          },
+          {
+            "object_id": 42,
+            "model_tp": 315,
+            "model_alerts": 542,
+            "episodes": 455,
+            "baseline_tp": 294,
+            "baseline_alerts": 456,
+            "parent_id": 15
+          },
+          {
+            "object_id": 99,
+            "model_tp": 26,
+            "model_alerts": 77,
+            "episodes": 83,
+            "baseline_tp": 23,
+            "baseline_alerts": 69,
+            "parent_id": 9
+          },
+          {
+            "object_id": 108,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 12,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 111,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 6,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 6
+          },
+          {
+            "object_id": 165,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 20,
+            "baseline_tp": 2,
+            "baseline_alerts": 3,
+            "parent_id": 6
+          },
+          {
+            "object_id": 3215,
+            "model_tp": 1393,
+            "model_alerts": 1641,
+            "episodes": 1514,
+            "baseline_tp": 1415,
+            "baseline_alerts": 1760,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3216,
+            "model_tp": 1,
+            "model_alerts": 12,
+            "episodes": 37,
+            "baseline_tp": 7,
+            "baseline_alerts": 10,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3250,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 16,
+            "baseline_tp": 0,
+            "baseline_alerts": 1,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 3356,
+            "model_tp": 333,
+            "model_alerts": 557,
+            "episodes": 407,
+            "baseline_tp": 327,
+            "baseline_alerts": 537,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 3360,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 3388,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 3902,
+            "model_tp": 9,
+            "model_alerts": 28,
+            "episodes": 54,
+            "baseline_tp": 6,
+            "baseline_alerts": 14,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3903,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 35,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3904,
+            "model_tp": 7,
+            "model_alerts": 12,
+            "episodes": 48,
+            "baseline_tp": 7,
+            "baseline_alerts": 12,
+            "parent_id": 11
+          },
+          {
+            "object_id": 3905,
+            "model_tp": 139,
+            "model_alerts": 237,
+            "episodes": 191,
+            "baseline_tp": 122,
+            "baseline_alerts": 193,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4069,
+            "model_tp": 3,
+            "model_alerts": 5,
+            "episodes": 23,
+            "baseline_tp": 5,
+            "baseline_alerts": 8,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4095,
+            "model_tp": 26,
+            "model_alerts": 41,
+            "episodes": 101,
+            "baseline_tp": 32,
+            "baseline_alerts": 62,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4177,
+            "model_tp": 2,
+            "model_alerts": 4,
+            "episodes": 23,
+            "baseline_tp": 1,
+            "baseline_alerts": 2,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4369,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4370,
+            "model_tp": 111,
+            "model_alerts": 180,
+            "episodes": 185,
+            "baseline_tp": 105,
+            "baseline_alerts": 157,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4391,
+            "model_tp": 264,
+            "model_alerts": 397,
+            "episodes": 338,
+            "baseline_tp": 261,
+            "baseline_alerts": 408,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4392,
+            "model_tp": 0,
+            "model_alerts": 1,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4541,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 8,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4543,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 4569,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 16,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4356
+          },
+          {
+            "object_id": 4574,
+            "model_tp": 20,
+            "model_alerts": 40,
+            "episodes": 77,
+            "baseline_tp": 22,
+            "baseline_alerts": 43,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4577,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 1,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4610,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 8
+          },
+          {
+            "object_id": 4648,
+            "model_tp": 158,
+            "model_alerts": 266,
+            "episodes": 216,
+            "baseline_tp": 152,
+            "baseline_alerts": 241,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 4763,
+            "model_tp": 0,
+            "model_alerts": 1,
+            "episodes": 28,
+            "baseline_tp": 4,
+            "baseline_alerts": 5,
+            "parent_id": 3359
+          },
+          {
+            "object_id": 4765,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 30,
+            "baseline_tp": 2,
+            "baseline_alerts": 2,
+            "parent_id": 6
+          },
+          {
+            "object_id": 4767,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 47,
+            "baseline_tp": 2,
+            "baseline_alerts": 2,
+            "parent_id": 9
+          },
+          {
+            "object_id": 4768,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 19,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4068
+          },
+          {
+            "object_id": 4770,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 3,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5003,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 4573
+          },
+          {
+            "object_id": 5009,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3355
+          },
+          {
+            "object_id": 5011,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 9
+          },
+          {
+            "object_id": 5113,
+            "model_tp": 407,
+            "model_alerts": 641,
+            "episodes": 472,
+            "baseline_tp": 389,
+            "baseline_alerts": 632,
+            "parent_id": 8
+          },
+          {
+            "object_id": 5114,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 10,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 8
+          },
+          {
+            "object_id": 5122,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5123,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 17,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5124,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5129,
+            "model_tp": 49,
+            "model_alerts": 73,
+            "episodes": 112,
+            "baseline_tp": 51,
+            "baseline_alerts": 75,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5132,
+            "model_tp": 1,
+            "model_alerts": 2,
+            "episodes": 23,
+            "baseline_tp": 0,
+            "baseline_alerts": 1,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5218,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3218
+          },
+          {
+            "object_id": 5332,
+            "model_tp": 42,
+            "model_alerts": 109,
+            "episodes": 89,
+            "baseline_tp": 36,
+            "baseline_alerts": 85,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5333,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5336,
+            "model_tp": 1,
+            "model_alerts": 1,
+            "episodes": 43,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5338,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 23,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5339,
+            "model_tp": 128,
+            "model_alerts": 214,
+            "episodes": 160,
+            "baseline_tp": 114,
+            "baseline_alerts": 179,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5340,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 5,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 5
+          },
+          {
+            "object_id": 5343,
+            "model_tp": 72,
+            "model_alerts": 193,
+            "episodes": 159,
+            "baseline_tp": 54,
+            "baseline_alerts": 125,
+            "parent_id": 5327
+          },
+          {
+            "object_id": 5537,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5539,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5540,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 14,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 11
+          },
+          {
+            "object_id": 5567,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5574,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 22,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5578,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5579,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 6,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5580,
+            "model_tp": 153,
+            "model_alerts": 348,
+            "episodes": 207,
+            "baseline_tp": 133,
+            "baseline_alerts": 279,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5581,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5582,
+            "model_tp": 12,
+            "model_alerts": 21,
+            "episodes": 55,
+            "baseline_tp": 17,
+            "baseline_alerts": 36,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5583,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5591,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5593,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 1,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5594,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 2,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 12
+          },
+          {
+            "object_id": 5657,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 15
+          },
+          {
+            "object_id": 5674,
+            "model_tp": 1,
+            "model_alerts": 7,
+            "episodes": 41,
+            "baseline_tp": 3,
+            "baseline_alerts": 8,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5675,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5676,
+            "model_tp": 170,
+            "model_alerts": 331,
+            "episodes": 225,
+            "baseline_tp": 163,
+            "baseline_alerts": 296,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5677,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5678,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 13,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 3828
+          },
+          {
+            "object_id": 5961,
+            "model_tp": 628,
+            "model_alerts": 817,
+            "episodes": 1075,
+            "baseline_tp": 611,
+            "baseline_alerts": 839,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5962,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5963,
+            "model_tp": 0,
+            "model_alerts": 0,
+            "episodes": 0,
+            "baseline_tp": 0,
+            "baseline_alerts": 0,
+            "parent_id": 7
+          },
+          {
+            "object_id": 5966,
+            "model_tp": 81,
+            "model_alerts": 92,
+            "episodes": 182,
+            "baseline_tp": 26,
+            "baseline_alerts": 36,
+            "parent_id": 7
+          }
+        ],
+        "by_parent": {
+          "clusters": 16,
+          "clusters_with_episodes": 16,
+          "clusters_with_true_alerts": 16,
+          "replicates": 5000,
+          "seed": 20260921,
+          "percentile_95": {
+            "precision": {
+              "low": 0.5692994734651206,
+              "high": 0.7422626090047008,
+              "valid_replicates": 5000
+            },
+            "recall": {
+              "low": 0.5496019287118707,
+              "high": 0.7585393989785257,
+              "valid_replicates": 5000
+            },
+            "f1": {
+              "low": 0.5694482317802926,
+              "high": 0.7428185125818677,
+              "valid_replicates": 5000
+            },
+            "baseline_f1": {
+              "low": 0.5562138356360425,
+              "high": 0.7329249673404871,
+              "valid_replicates": 5000
+            },
+            "f1_difference": {
+              "low": -0.00020366567348680241,
+              "high": 0.028558150291846475,
+              "valid_replicates": 5000
+            }
+          },
+          "leave_one_cluster_out_f1_difference": {
+            "min": 0.004287275681023384,
+            "max": 0.016037907233970028,
+            "valid_replicates": 16
+          },
+          "paired_differences_95": {
+            "precision": {
+              "low": -0.03089993525475868,
+              "high": 0.015318629885115738,
+              "valid_replicates": 5000
+            },
+            "recall": {
+              "low": 0.008501219124188508,
+              "high": 0.048821099361904846,
+              "valid_replicates": 5000
+            },
+            "primary_score": {
+              "low": -0.019619734368132257,
+              "high": 0.05409336171172432,
+              "valid_replicates": 5000
+            }
+          }
+        }
+      }
+    }
+  },
+  "flood": {
+    "status": "unsupported_too_few_episodes",
+    "target_achievement_claimed": false
+  },
+  "baseline_access_five_months": {
+    "precision": 0.7569418733802296,
+    "recall": 0.5398019801980198,
+    "f1": 0.6301918779378901,
+    "true_alerts": 4089,
+    "alerts": 5402,
+    "eligible_episodes": 7575,
+    "goal_score": 1.0
+  },
+  "errors": {
+    "true_alerts": 4089,
+    "false_alerts_no_future_episode": 917,
+    "false_alerts_future_episodes_already_matched": 396,
+    "missed_episodes": 3486
+  },
+  "source_and_code_hashes_verified": true,
+  "original_features_episodes_and_june_hashes_verified": {
+    "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/evaluation_report.json": "c02e54d60663388c79f16267982bac3077a60f94a4e898e81b7f1049b2e69656"
+  },
+  "new_blind_test": false,
+  "goal_achieved": false,
+  "promotion_decision": "Retain current bundle. V11 passes its intermediate research gates but falls well short of90/90 and lowers precision; December false-warning workload rises. Conditional F1 gain intervals include zero. V12 andV14 fail their predeclared gates. No automatic activation was authorized by an experimental gate.",
+  "limitations": "No individual-head result can establish 90/90 for the entire solution. F1 gains involving lower precision are recorded explicitly. No candidate is promoted automatically."
+}

@@ -1,0 +1,90 @@
+{
+  "checked_on": "2026-09-21",
+  "source": "https://disk.yandex.ru/d/Os09EWI6VU093g",
+  "method": "Visible authenticated browser folder listing, using the provided materials password; password omitted from this record.",
+  "api_attempt": "Public metadata API returned HTTP403; browser folder access succeeded.",
+  "visible_files": [
+    {
+      "name": "ext-journal-2019.7z",
+      "date": "2026-09-09",
+      "displayed_size": "134.9 MiB",
+      "local_sha256": "262d5fb712feee3d4b92ae4cf09ce8e02c52eef25d9539f3a5769bae3d05a39c",
+      "local_bytes": 141465610
+    },
+    {
+      "name": "ext-journal-2020.7z",
+      "date": "2026-09-09",
+      "displayed_size": "168.2 MiB",
+      "local_sha256": "632deca3a179b6e4114c0e619324738b508ea68aaf85b350462bff9b27db0edc",
+      "local_bytes": 176467481
+    },
+    {
+      "name": "ext-journal-2021.7z",
+      "date": "2026-09-09",
+      "displayed_size": "271.1 MiB",
+      "local_sha256": "2970bdce42bcbb7a93358a19145d5cd45f0596e4c2633c1e9507d244b28e10f5",
+      "local_bytes": 284299144
+    },
+    {
+      "name": "ext-journal-2022.7z",
+      "date": "2026-09-09",
+      "displayed_size": "227.6 MiB",
+      "local_sha256": "ca58b2a4931d738b38a596e279d2effa490700bb2ebe8d3db971283a6eef446d",
+      "local_bytes": 238723816
+    },
+    {
+      "name": "ext-journal-2023.7z",
+      "date": "2026-09-09",
+      "displayed_size": "177.2 MiB",
+      "local_sha256": "6737008e77a0ce1610bb1205652a842311ab319cf7eac8edc951670a28a3ab40",
+      "local_bytes": 185893242
+    },
+    {
+      "name": "ext-journal-2024.7z",
+      "date": "2026-09-09",
+      "displayed_size": "252.1 MiB",
+      "local_sha256": "d39ce19910e0761f7435eb4a6ebb3004b6df383e18d57c3cad8865deea1bbea9",
+      "local_bytes": 264372460
+    },
+    {
+      "name": "ext-journal-2025.7z",
+      "date": "2026-09-09",
+      "displayed_size": "277.2 MiB",
+      "local_sha256": "605232bc0bcffd585e7a11cd87f239896b9dab1c58efebd256c4ec8478c6cd56",
+      "local_bytes": 290680118
+    },
+    {
+      "name": "ext-journal-2026.7z",
+      "date": "2026-09-09",
+      "displayed_size": "157.6 MiB",
+      "local_sha256": "bdc0a6ebcdedf145d390abe8e2c9c3272f6a17d39d47e488acea7142ca7dec29",
+      "local_bytes": 165304211
+    },
+    {
+      "name": "журнал_событий_пример.csv",
+      "date": "2026-09-07",
+      "displayed_size": "9.2 MiB",
+      "local_sha256": "3a06fe5d4fc3d8350c2e8fb6d74887ecf9545b4f72638953dc16d78ff3130f5c",
+      "local_bytes": 9707502
+    },
+    {
+      "name": "справочник_каналов_датчиков.csv",
+      "date": "2026-09-16",
+      "displayed_size": "1.2 MiB",
+      "local_sha256": "87b3230e93ae00e3f03d915336acde6b3990c8b58d7378175cf02c000f67a45f",
+      "local_bytes": 1321317
+    },
+    {
+      "name": "справочник_объектов_диспетчер.csv",
+      "date": "2026-09-07",
+      "displayed_size": "5 KiB",
+      "local_sha256": "219b4dbe34a78581640d839837649d3ef481c62c089fef18db1b364cff007084",
+      "local_bytes": 5266
+    }
+  ],
+  "comparison": "Same11 file names as the user-provided dataset.zip; rounded sizes are consistent with local originals. No additional telemetry file, incident ledger or maintenance ledger is listed.",
+  "remote_content_hashes_verified": false,
+  "new_data_imported": false,
+  "local_2026_telemetry_end": "2026-06-30 23:59:59",
+  "limit": "Folder listing does not establish byte-for-byte identity of remote contents. No claim that newer data do not exist elsewhere."
+}

@@ -1,0 +1,942 @@
+{
+  "scope": "Descriptive error analysis of already-used five retrospective months; not model selection or a new test.",
+  "kind": "access",
+  "episode_source_sha256": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+  "periods": [
+    {
+      "fold": "screen_1",
+      "true_alerts": 777,
+      "false_alerts_no_future_episode": 159,
+      "false_alerts_future_episodes_already_matched": 54,
+      "missed_episodes": 705,
+      "source_sha256": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e"
+    },
+    {
+      "fold": "screen_2",
+      "true_alerts": 708,
+      "false_alerts_no_future_episode": 213,
+      "false_alerts_future_episodes_already_matched": 31,
+      "missed_episodes": 477,
+      "source_sha256": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3"
+    },
+    {
+      "fold": "confirmation",
+      "true_alerts": 603,
+      "false_alerts_no_future_episode": 65,
+      "false_alerts_future_episodes_already_matched": 58,
+      "missed_episodes": 631,
+      "source_sha256": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642"
+    },
+    {
+      "fold": "stress_1",
+      "true_alerts": 1039,
+      "false_alerts_no_future_episode": 324,
+      "false_alerts_future_episodes_already_matched": 131,
+      "missed_episodes": 928,
+      "source_sha256": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1"
+    },
+    {
+      "fold": "stress_2",
+      "true_alerts": 962,
+      "false_alerts_no_future_episode": 156,
+      "false_alerts_future_episodes_already_matched": 122,
+      "missed_episodes": 745,
+      "source_sha256": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667"
+    }
+  ],
+  "totals": {
+    "true_alerts": 4089,
+    "false_alerts_no_future_episode": 917,
+    "false_alerts_future_episodes_already_matched": 396,
+    "missed_episodes": 3486
+  },
+  "top_missed_objects": [
+    {
+      "object_id": 5961,
+      "true_alerts": 578,
+      "empty_false_alerts": 95,
+      "redundant_false_alerts": 68,
+      "missed_episodes": 497,
+      "episodes": 1075,
+      "false_alerts": 163
+    },
+    {
+      "object_id": 42,
+      "true_alerts": 238,
+      "empty_false_alerts": 61,
+      "redundant_false_alerts": 30,
+      "missed_episodes": 217,
+      "episodes": 455,
+      "false_alerts": 91
+    },
+    {
+      "object_id": 20,
+      "true_alerts": 138,
+      "empty_false_alerts": 9,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 174,
+      "episodes": 312,
+      "false_alerts": 10
+    },
+    {
+      "object_id": 5966,
+      "true_alerts": 15,
+      "empty_false_alerts": 4,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 167,
+      "episodes": 182,
+      "false_alerts": 5
+    },
+    {
+      "object_id": 5343,
+      "true_alerts": 29,
+      "empty_false_alerts": 33,
+      "redundant_false_alerts": 3,
+      "missed_episodes": 130,
+      "episodes": 159,
+      "false_alerts": 36
+    },
+    {
+      "object_id": 4370,
+      "true_alerts": 57,
+      "empty_false_alerts": 18,
+      "redundant_false_alerts": 6,
+      "missed_episodes": 128,
+      "episodes": 185,
+      "false_alerts": 24
+    },
+    {
+      "object_id": 5113,
+      "true_alerts": 344,
+      "empty_false_alerts": 97,
+      "redundant_false_alerts": 44,
+      "missed_episodes": 128,
+      "episodes": 472,
+      "false_alerts": 141
+    },
+    {
+      "object_id": 4391,
+      "true_alerts": 219,
+      "empty_false_alerts": 62,
+      "redundant_false_alerts": 25,
+      "missed_episodes": 119,
+      "episodes": 338,
+      "false_alerts": 87
+    },
+    {
+      "object_id": 28,
+      "true_alerts": 171,
+      "empty_false_alerts": 49,
+      "redundant_false_alerts": 19,
+      "missed_episodes": 117,
+      "episodes": 288,
+      "false_alerts": 68
+    },
+    {
+      "object_id": 5580,
+      "true_alerts": 94,
+      "empty_false_alerts": 65,
+      "redundant_false_alerts": 13,
+      "missed_episodes": 113,
+      "episodes": 207,
+      "false_alerts": 78
+    }
+  ],
+  "top_false_alert_objects": [
+    {
+      "object_id": 3215,
+      "true_alerts": 1410,
+      "empty_false_alerts": 102,
+      "redundant_false_alerts": 98,
+      "missed_episodes": 104,
+      "episodes": 1514,
+      "false_alerts": 200
+    },
+    {
+      "object_id": 5961,
+      "true_alerts": 578,
+      "empty_false_alerts": 95,
+      "redundant_false_alerts": 68,
+      "missed_episodes": 497,
+      "episodes": 1075,
+      "false_alerts": 163
+    },
+    {
+      "object_id": 3356,
+      "true_alerts": 304,
+      "empty_false_alerts": 89,
+      "redundant_false_alerts": 55,
+      "missed_episodes": 103,
+      "episodes": 407,
+      "false_alerts": 144
+    },
+    {
+      "object_id": 5113,
+      "true_alerts": 344,
+      "empty_false_alerts": 97,
+      "redundant_false_alerts": 44,
+      "missed_episodes": 128,
+      "episodes": 472,
+      "false_alerts": 141
+    },
+    {
+      "object_id": 42,
+      "true_alerts": 238,
+      "empty_false_alerts": 61,
+      "redundant_false_alerts": 30,
+      "missed_episodes": 217,
+      "episodes": 455,
+      "false_alerts": 91
+    },
+    {
+      "object_id": 4391,
+      "true_alerts": 219,
+      "empty_false_alerts": 62,
+      "redundant_false_alerts": 25,
+      "missed_episodes": 119,
+      "episodes": 338,
+      "false_alerts": 87
+    },
+    {
+      "object_id": 5580,
+      "true_alerts": 94,
+      "empty_false_alerts": 65,
+      "redundant_false_alerts": 13,
+      "missed_episodes": 113,
+      "episodes": 207,
+      "false_alerts": 78
+    },
+    {
+      "object_id": 5676,
+      "true_alerts": 122,
+      "empty_false_alerts": 68,
+      "redundant_false_alerts": 9,
+      "missed_episodes": 103,
+      "episodes": 225,
+      "false_alerts": 77
+    },
+    {
+      "object_id": 28,
+      "true_alerts": 171,
+      "empty_false_alerts": 49,
+      "redundant_false_alerts": 19,
+      "missed_episodes": 117,
+      "episodes": 288,
+      "false_alerts": 68
+    },
+    {
+      "object_id": 4648,
+      "true_alerts": 118,
+      "empty_false_alerts": 43,
+      "redundant_false_alerts": 10,
+      "missed_episodes": 98,
+      "episodes": 216,
+      "false_alerts": 53
+    }
+  ],
+  "all_objects": [
+    {
+      "object_id": 20,
+      "true_alerts": 138,
+      "empty_false_alerts": 9,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 174,
+      "episodes": 312,
+      "false_alerts": 10
+    },
+    {
+      "object_id": 28,
+      "true_alerts": 171,
+      "empty_false_alerts": 49,
+      "redundant_false_alerts": 19,
+      "missed_episodes": 117,
+      "episodes": 288,
+      "false_alerts": 68
+    },
+    {
+      "object_id": 42,
+      "true_alerts": 238,
+      "empty_false_alerts": 61,
+      "redundant_false_alerts": 30,
+      "missed_episodes": 217,
+      "episodes": 455,
+      "false_alerts": 91
+    },
+    {
+      "object_id": 99,
+      "true_alerts": 10,
+      "empty_false_alerts": 17,
+      "redundant_false_alerts": 4,
+      "missed_episodes": 73,
+      "episodes": 83,
+      "false_alerts": 21
+    },
+    {
+      "object_id": 108,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 12,
+      "episodes": 12,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 111,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 6,
+      "episodes": 6,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 165,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 20,
+      "episodes": 20,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3215,
+      "true_alerts": 1410,
+      "empty_false_alerts": 102,
+      "redundant_false_alerts": 98,
+      "missed_episodes": 104,
+      "episodes": 1514,
+      "false_alerts": 200
+    },
+    {
+      "object_id": 3216,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 37,
+      "episodes": 37,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3250,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 16,
+      "episodes": 16,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3356,
+      "true_alerts": 304,
+      "empty_false_alerts": 89,
+      "redundant_false_alerts": 55,
+      "missed_episodes": 103,
+      "episodes": 407,
+      "false_alerts": 144
+    },
+    {
+      "object_id": 3360,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3388,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3902,
+      "true_alerts": 0,
+      "empty_false_alerts": 2,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 54,
+      "episodes": 54,
+      "false_alerts": 2
+    },
+    {
+      "object_id": 3903,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 35,
+      "episodes": 35,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 3904,
+      "true_alerts": 3,
+      "empty_false_alerts": 1,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 45,
+      "episodes": 48,
+      "false_alerts": 1
+    },
+    {
+      "object_id": 3905,
+      "true_alerts": 91,
+      "empty_false_alerts": 31,
+      "redundant_false_alerts": 4,
+      "missed_episodes": 100,
+      "episodes": 191,
+      "false_alerts": 35
+    },
+    {
+      "object_id": 4069,
+      "true_alerts": 3,
+      "empty_false_alerts": 1,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 20,
+      "episodes": 23,
+      "false_alerts": 1
+    },
+    {
+      "object_id": 4095,
+      "true_alerts": 13,
+      "empty_false_alerts": 8,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 88,
+      "episodes": 101,
+      "false_alerts": 8
+    },
+    {
+      "object_id": 4177,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 23,
+      "episodes": 23,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4369,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4370,
+      "true_alerts": 57,
+      "empty_false_alerts": 18,
+      "redundant_false_alerts": 6,
+      "missed_episodes": 128,
+      "episodes": 185,
+      "false_alerts": 24
+    },
+    {
+      "object_id": 4391,
+      "true_alerts": 219,
+      "empty_false_alerts": 62,
+      "redundant_false_alerts": 25,
+      "missed_episodes": 119,
+      "episodes": 338,
+      "false_alerts": 87
+    },
+    {
+      "object_id": 4392,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 13,
+      "episodes": 13,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4541,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 8,
+      "episodes": 8,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4543,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4569,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 16,
+      "episodes": 16,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4574,
+      "true_alerts": 4,
+      "empty_false_alerts": 3,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 73,
+      "episodes": 77,
+      "false_alerts": 4
+    },
+    {
+      "object_id": 4577,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 1,
+      "episodes": 1,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4610,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4648,
+      "true_alerts": 118,
+      "empty_false_alerts": 43,
+      "redundant_false_alerts": 10,
+      "missed_episodes": 98,
+      "episodes": 216,
+      "false_alerts": 53
+    },
+    {
+      "object_id": 4763,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 28,
+      "episodes": 28,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4765,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 30,
+      "episodes": 30,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4767,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 47,
+      "episodes": 47,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4768,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 19,
+      "episodes": 19,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 4770,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 3,
+      "episodes": 3,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5003,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5009,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 13,
+      "episodes": 13,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5011,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5113,
+      "true_alerts": 344,
+      "empty_false_alerts": 97,
+      "redundant_false_alerts": 44,
+      "missed_episodes": 128,
+      "episodes": 472,
+      "false_alerts": 141
+    },
+    {
+      "object_id": 5114,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 10,
+      "episodes": 10,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5122,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5123,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 17,
+      "episodes": 17,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5124,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5129,
+      "true_alerts": 27,
+      "empty_false_alerts": 5,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 85,
+      "episodes": 112,
+      "false_alerts": 6
+    },
+    {
+      "object_id": 5132,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 23,
+      "episodes": 23,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5218,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5332,
+      "true_alerts": 22,
+      "empty_false_alerts": 21,
+      "redundant_false_alerts": 3,
+      "missed_episodes": 67,
+      "episodes": 89,
+      "false_alerts": 24
+    },
+    {
+      "object_id": 5333,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5336,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 43,
+      "episodes": 43,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5338,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 23,
+      "episodes": 23,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5339,
+      "true_alerts": 76,
+      "empty_false_alerts": 29,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 84,
+      "episodes": 160,
+      "false_alerts": 30
+    },
+    {
+      "object_id": 5340,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 5,
+      "episodes": 5,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5343,
+      "true_alerts": 29,
+      "empty_false_alerts": 33,
+      "redundant_false_alerts": 3,
+      "missed_episodes": 130,
+      "episodes": 159,
+      "false_alerts": 36
+    },
+    {
+      "object_id": 5537,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5539,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5540,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 14,
+      "episodes": 14,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5567,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5574,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 22,
+      "episodes": 22,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5578,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5579,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 6,
+      "episodes": 6,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5580,
+      "true_alerts": 94,
+      "empty_false_alerts": 65,
+      "redundant_false_alerts": 13,
+      "missed_episodes": 113,
+      "episodes": 207,
+      "false_alerts": 78
+    },
+    {
+      "object_id": 5581,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5582,
+      "true_alerts": 2,
+      "empty_false_alerts": 3,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 53,
+      "episodes": 55,
+      "false_alerts": 3
+    },
+    {
+      "object_id": 5583,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5591,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5593,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 1,
+      "episodes": 1,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5594,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 2,
+      "episodes": 2,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5657,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5674,
+      "true_alerts": 1,
+      "empty_false_alerts": 1,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 40,
+      "episodes": 41,
+      "false_alerts": 1
+    },
+    {
+      "object_id": 5675,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5676,
+      "true_alerts": 122,
+      "empty_false_alerts": 68,
+      "redundant_false_alerts": 9,
+      "missed_episodes": 103,
+      "episodes": 225,
+      "false_alerts": 77
+    },
+    {
+      "object_id": 5677,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5678,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 13,
+      "episodes": 13,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5961,
+      "true_alerts": 578,
+      "empty_false_alerts": 95,
+      "redundant_false_alerts": 68,
+      "missed_episodes": 497,
+      "episodes": 1075,
+      "false_alerts": 163
+    },
+    {
+      "object_id": 5962,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5963,
+      "true_alerts": 0,
+      "empty_false_alerts": 0,
+      "redundant_false_alerts": 0,
+      "missed_episodes": 0,
+      "episodes": 0,
+      "false_alerts": 0
+    },
+    {
+      "object_id": 5966,
+      "true_alerts": 15,
+      "empty_false_alerts": 4,
+      "redundant_false_alerts": 1,
+      "missed_episodes": 167,
+      "episodes": 182,
+      "false_alerts": 5
+    }
+  ],
+  "interpretation": "A redundant warning may have real future episodes, but all were already assigned to earlier warnings by the unchanged one-to-one evaluator. No error category is excluded from reported metrics."
+}
