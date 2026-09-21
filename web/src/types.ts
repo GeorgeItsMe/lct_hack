@@ -133,6 +133,27 @@ export type Evaluation = {
   splits: Record<string, [string, string]>;
   horizon_hours: number;
   purge_hours: number;
+  uncertainty?: {
+    models: Record<
+      Kind,
+      {
+        status: string;
+        by_parent?: {
+          clusters: number;
+          clusters_with_true_alerts: number;
+          replicates: number;
+          percentile_95: Record<
+            "f1" | "baseline_f1" | "f1_difference",
+            {
+              low: number | null;
+              high: number | null;
+              valid_replicates: number;
+            }
+          >;
+        };
+      }
+    >;
+  } | null;
   models: Record<
     Kind,
     {

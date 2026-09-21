@@ -298,7 +298,8 @@ def replay(user=Depends(current_user)):
 
 @app.get("/api/evaluation")
 def evaluation(user=Depends(current_user)):
-    return analytics().report
+    service = analytics()
+    return {**service.report, "uncertainty": getattr(service, "uncertainty", None)}
 
 
 @app.get("/api/evaluation/matches/{kind}")

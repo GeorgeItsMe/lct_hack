@@ -77,6 +77,11 @@ export function EvaluationPage() {
   const m = data.models[kind],
     metric = m.test.alerts,
     base = m.test.baseline_alerts;
+  const sensitivity = data.uncertainty?.models[kind]?.by_parent;
+  const rangeText = (range: { low: number | null; high: number | null }) =>
+    range.low === null || range.high === null
+      ? "Недостаточно данных"
+      : `${range.low.toFixed(3)} … ${range.high.toFixed(3)}`;
   const comparison = [
     {
       name: "Точность предупреждений",
@@ -172,6 +177,54 @@ export function EvaluationPage() {
           <p>{metric.false_alerts} ложных предупреждений на тесте</p>
         </div>
       </div>
+      {sensitivity && (
+        <section className="panel">
+          <div className="panel-heading">
+            <div>
+              <h2>Насколько устойчив результат</h2>
+              <span>
+                Приближённые 95% диапазоны при повторной выборке целых
+                эксплуатационных узлов
+              </span>
+            </div>
+          </div>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>F1 модели</th>
+                  <th>F1 базового прогноза</th>
+                  <th>Разница F1: модель − база</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{rangeText(sensitivity.percentile_95.f1)}</td>
+                  <td>{rangeText(sensitivity.percentile_95.baseline_f1)}</td>
+                  <td>{rangeText(sensitivity.percentile_95.f1_difference)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="evidence-note">
+            <CircleAlert size={20} />
+            <div>
+              <strong>
+                {(sensitivity.percentile_95.f1_difference.low ?? 0) <= 0
+                  ? "Устойчивое превосходство над базой пока не подтверждено"
+                  : "Прирост сохраняется в этой проверке устойчивости"}
+              </strong>
+              <p>
+                {num(sensitivity.replicates)} повторных выборок,{" "}
+                {sensitivity.clusters} узлов. Верно предсказанные эпизоды
+                приходятся на {sensitivity.clusters_with_true_alerts} из них.
+                Истории внутри узла сохраняются вместе. Общие сбои между узлами,
+                сезонность и качество на новом месяце эта проверка не оценивает.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
       <div className="two-column">
         <section className="panel">
           <div className="panel-heading">
@@ -294,9 +347,9 @@ export function EvaluationPage() {
         <div className="split-timeline">
           {[
             ["train", "Обучение", "до марта 2026"],
-            ["validation", "Выбор модели", "март — апрель"],
+            ["validation", "Ранняя остановка обучения", "март — апрель"],
             ["calibration", "Калибровка", "1–15 мая"],
-            ["policy", "Выбор порога", "16–31 мая"],
+            ["policy", "Выбор модели и порога", "16–31 мая"],
             ["test", "Отложенный тест", "июнь 2026"],
           ].map(([key, title, period], i) => (
             <div key={key} className={key === "test" ? "test" : ""}>

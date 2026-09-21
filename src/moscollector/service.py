@@ -62,6 +62,13 @@ class AnalyticsService:
             model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
             self.models[kind] = model
         self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text())
+        self.uncertainty = None
+        uncertainty_path = ARTIFACTS / "uncertainty_report.json"
+        if uncertainty_path.exists():
+            sensitivity = json.loads(uncertainty_path.read_text())
+            report_hash = hashlib.sha256((ARTIFACTS / "evaluation_report.json").read_bytes()).hexdigest()
+            if sensitivity.get("input_sha256", {}).get("evaluation_report") == report_hash:
+                self.uncertainty = sensitivity
         self.catalog_audit = json.loads((ARTIFACTS / "catalog_audit.json").read_text())
         self.feature_audit = json.loads((ARTIFACTS / "feature_audit.json").read_text())
         self.audits = [json.loads(p.read_text()) for p in sorted(ARTIFACTS.glob("audit-*.json"))]
