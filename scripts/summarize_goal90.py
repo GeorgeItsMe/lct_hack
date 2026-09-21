@@ -42,6 +42,7 @@ studies = {
     "v28": Path("artifacts/research-v28"),
     "v29": Path("artifacts/research-v29"),
     "v30": Path("artifacts/research-v30"),
+    "v31": Path("artifacts/research-v31"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -183,7 +184,9 @@ for kind, outcome in blend_report.items():
             raise ValueError(f"Neural blend confirmation incomplete: {kind}")
         for fold in ("confirmation", "stress_1", "stress_2"):
             for variant in ("mlp", "gru"):
-                expected_blend_fits.add(str(studies["v29"] / "controls" / kind / fold / "models" / variant / "fit.json"))
+                expected_blend_fits.add(
+                    str(studies["v29"] / "controls" / kind / fold / "models" / variant / "fit.json")
+                )
 for meta_path in sorted((studies["v29"] / "controls").glob("*/*/models/*/fit.json")):
     meta = read(meta_path)
     signature = meta["signature"]
@@ -228,6 +231,105 @@ for meta_path in sorted(studies["v30"].glob("*/*/peer/fit.json")):
     peer_models[str(meta_path)] = meta
 if set(peer_models) != expected_peer_models:
     raise ValueError("Peer weights differ from the declared completed stages")
+selfsup_root = studies["v31"]
+selfsup_report = read(selfsup_root / "report.json")
+if set(selfsup_report) != {"access", "fire", "fault"}:
+    raise ValueError("Self-supervised report is incomplete")
+selfsup_plan_hash = sha256(selfsup_root / "plan.json")
+selfsup_control_plan = selfsup_root / "controls/plan.json"
+if (
+    read(selfsup_control_plan)["parent_plan_sha256"] != selfsup_plan_hash
+    or read(selfsup_control_plan)["frozen_training_source_plan_sha256"] != neural_plan_hash
+):
+    raise ValueError("Self-supervised control plan differs from its sources")
+selfsup_models, selfsup_controls = {}, {}
+expected_selfsup_fits, expected_selfsup_controls = set(), set()
+for kind, outcome in selfsup_report.items():
+    folds = ["screen_1", "screen_2"]
+    if outcome["selection"]["passed_screen"]:
+        if len(outcome["periods"]) != 5:
+            raise ValueError(f"Self-supervised confirmation incomplete: {kind}")
+        folds.extend(["confirmation", "stress_1", "stress_2"])
+    for fold in folds:
+        directory = selfsup_root / kind / fold
+        result = read(directory / "result.json")
+        aggregate = read(directory / "fit.json")
+        source = Path(result["source_control_directory"])
+        control = read(source / "result.json")
+        if result["fit"] != aggregate or sha256(directory / "codec.json") != sha256(source / "codec.json"):
+            raise ValueError(f"Changed self-supervised aggregate or codec: {directory}")
+        if not all(
+            aggregate[key]
+            for key in (
+                "same_count_architecture",
+                "same_rows_and_codec_as_control",
+                "only_history_weights_transferred",
+            )
+        ):
+            raise ValueError(f"Self-supervised comparability check failed: {directory}")
+        for stage in ("pretext", "count"):
+            meta_path = directory / "models" / stage / "fit.json"
+            expected_selfsup_fits.add(str(meta_path))
+            meta = read(meta_path)
+            signature = meta["signature"]
+            if (
+                signature["plan_sha256"] != selfsup_plan_hash
+                or signature["kind"] != kind
+                or signature["fold"] != fold
+                or signature["stage"] != stage
+                or meta["stage"] != stage
+                or signature["codec_sha256"] != aggregate["codec_sha256"]
+                or signature["codec_sha256"] != sha256(directory / "codec.json")
+                or signature["device"] != plans["v31"]["device"]
+                or signature["torch"] != plans["v31"]["torch_version"]
+                or signature["sizes"] != control["fits"]["gru"]["sizes"]
+                or signature["count_config"] != control["fits"]["gru"]["config"]
+                or sha256(meta_path.parent / "model.pt") != meta["model_sha256"]
+                or aggregate[stage] != meta
+            ):
+                raise ValueError(f"Changed self-supervised stage: {meta_path}")
+            selfsup_models[str(meta_path)] = meta
+        count, pretext = aggregate["count"], aggregate["pretext"]
+        if (
+            count["signature"]["pretext_model_sha256"] != pretext["model_sha256"]
+            or count["signature"]["pretext_fit_sha256"] != sha256(directory / "models/pretext/fit.json")
+            or count["parameter_count"] != control["fits"]["gru"]["parameter_count"]
+        ):
+            raise ValueError(f"Broken pretext-to-count transfer provenance: {directory}")
+        if source.is_relative_to(selfsup_root / "controls"):
+            for variant in ("mlp", "gru"):
+                expected_selfsup_controls.add(str(source / "models" / variant / "fit.json"))
+actual_selfsup_fits = {str(p) for p in selfsup_root.glob("*/*/models/*/fit.json")}
+if actual_selfsup_fits != expected_selfsup_fits:
+    raise ValueError("Self-supervised stages differ from declared completed periods")
+for meta_path in sorted((selfsup_root / "controls").glob("*/*/models/*/fit.json")):
+    meta = read(meta_path)
+    signature = meta["signature"]
+    result = read(meta_path.parents[2] / "result.json")
+    if (
+        signature["plan_sha256"] != sha256(selfsup_control_plan)
+        or signature["codec_sha256"] != sha256(meta_path.parents[2] / "codec.json")
+        or signature["codec_sha256"] != result["codec_sha256"]
+        or signature["device"] != plans["v31"]["device"]
+        or signature["torch"] != plans["v31"]["torch_version"]
+        or sha256(meta_path.parent / "model.pt") != meta["model_sha256"]
+        or result["fits"][meta["variant"]] != meta
+    ):
+        raise ValueError(f"Changed self-supervised scratch control: {meta_path}")
+    selfsup_controls[str(meta_path)] = meta
+if set(selfsup_controls) != expected_selfsup_controls:
+    raise ValueError("Self-supervised scratch controls differ from declared completed periods")
+selfsup_error_audit = read(Path("artifacts/self_supervised_fault_error_audit.json"))
+for category in ("source_hashes", "code_hashes"):
+    for source, digest in selfsup_error_audit[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed self-supervised fault error audit: {source}")
+for variant in ("pretrained", "global_control", "scratch_gru"):
+    if (
+        selfsup_error_audit["totals"][variant]
+        != selfsup_report["fault"]["five_period_pooled"][variant]["true_alerts"]
+    ):
+        raise ValueError("Self-supervised audit differs from the final event totals")
 object_kind_audit = read(Path("artifacts/object_kind_error_audit.json"))
 for category in ("source_hashes", "code_hashes"):
     for source, digest in object_kind_audit[category].items():
@@ -337,6 +439,14 @@ report = {
         for p in sorted(studies["v27"].glob("*/screen_*/result.json"))
     },
     "neural_count_v28": neural_report,
+    "self_supervised_v31": selfsup_report,
+    "self_supervised_stages_verified": selfsup_models,
+    "self_supervised_scratch_controls_verified": selfsup_controls,
+    "self_supervised_fault_error_audit": selfsup_error_audit,
+    "self_supervised_decision": "V31 trains9 telemetry predictors and9 identically sized GRU count networks, with only history weights transferred and fresh count optimizers. Access fails screen1983/2851/2667 P.696/R.744/F1.719; fire improves on scratch GRU145/341/288 P.425/R.503/F1.461 but fails CatBoost/anchor gates. Fault passes screen13/28/46 P.464/R.283, then fails May0/15/29 and stress December5/31/106, March0/0/36. Five months18/74/217 P.243/R.083/F1.124 versus CatBoost58/223/217 P.260/R.267/F1.264;109 fewer false warnings cost40 true warnings and both metrics decline. Reused3 v29 scratch GRU controls; no additional controls fitted. Fault error audit finds4/92 quiet-history episodes versus1/92 control, but only13/92 within-day recurrence versus49/92. All original events remain included. No activation, June reuse, substitution, or90/90 claim; telemetry reconstruction improvement is not forecast quality, and extra pretraining compute is not matched to scratch training.",
+    "self_supervised_screen_periods": {
+        str(p.relative_to(selfsup_root)): read(p) for p in sorted(selfsup_root.glob("*/screen_*/result.json"))
+    },
     "peer_context_v30": peer_report,
     "peer_context_feature_build": peer_build,
     "peer_context_models_verified": peer_models,
@@ -361,8 +471,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "129 passed, 1 skipped (optional PyTorch module)",
-        "neural_suite": "135 passed, including causal peer context, blend alignment/domain checks and interrupted MLP and GRU checkpoint resume on CPU and MPS",
+        "base_suite": "129 passed, 2 skipped (optional PyTorch modules)",
+        "neural_suite": "143 passed, including masked telemetry pretraining, restricted history transfer and exact interrupted pretext/count checkpoint resume on CPU and MPS",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,

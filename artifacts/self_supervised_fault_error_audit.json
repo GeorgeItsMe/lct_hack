@@ -1,0 +1,2435 @@
+{
+  "scope": "Descriptive audit of already-used historical outcomes, not a new test, trained ensemble, or predictability bound. No thresholds selected, events removed, or labels changed.",
+  "regime": "At the latest eligible forecast at/before each episode, use only earlier episodes whose confirmation is available at floor(start+70min to hour)+1h. Regime is descriptive at this snapshot, not necessarily at the matched earlier warning. Quiet history does not rule out raw-sensor precursors.",
+  "summary": [
+    {
+      "regime": "1_to_7d",
+      "episodes": 33,
+      "pretrained": 1,
+      "global_control": 8,
+      "scratch_gru": 5
+    },
+    {
+      "regime": "7_to_30d",
+      "episodes": 26,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 4
+    },
+    {
+      "regime": "no_observed_prior_episode",
+      "episodes": 12,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "regime": "over_30d",
+      "episodes": 54,
+      "pretrained": 3,
+      "global_control": 1,
+      "scratch_gru": 2
+    },
+    {
+      "regime": "within_1d",
+      "episodes": 92,
+      "pretrained": 13,
+      "global_control": 49,
+      "scratch_gru": 21
+    }
+  ],
+  "totals": {
+    "episodes": 217,
+    "pretrained": 18,
+    "global_control": 58,
+    "scratch_gru": 33
+  },
+  "per_period": [
+    {
+      "fold": "confirmation",
+      "regime": "1_to_7d",
+      "episodes": 10,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "regime": "7_to_30d",
+      "episodes": 6,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "regime": "over_30d",
+      "episodes": 8,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "regime": "within_1d",
+      "episodes": 4,
+      "pretrained": 0,
+      "global_control": 2,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_1",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "regime": "7_to_30d",
+      "episodes": 2,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 7,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "regime": "over_30d",
+      "episodes": 7,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "regime": "7_to_30d",
+      "episodes": 7,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 4
+    },
+    {
+      "fold": "screen_2",
+      "regime": "over_30d",
+      "episodes": 8,
+      "pretrained": 2,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "regime": "within_1d",
+      "episodes": 11,
+      "pretrained": 10,
+      "global_control": 11,
+      "scratch_gru": 5
+    },
+    {
+      "fold": "stress_1",
+      "regime": "1_to_7d",
+      "episodes": 14,
+      "pretrained": 1,
+      "global_control": 7,
+      "scratch_gru": 4
+    },
+    {
+      "fold": "stress_1",
+      "regime": "7_to_30d",
+      "episodes": 3,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "regime": "over_30d",
+      "episodes": 18,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "regime": "within_1d",
+      "episodes": 69,
+      "pretrained": 3,
+      "global_control": 36,
+      "scratch_gru": 15
+    },
+    {
+      "fold": "stress_2",
+      "regime": "1_to_7d",
+      "episodes": 5,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "regime": "7_to_30d",
+      "episodes": 8,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "regime": "over_30d",
+      "episodes": 13,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "regime": "within_1d",
+      "episodes": 8,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    }
+  ],
+  "cases": [
+    {
+      "fold": "screen_1",
+      "object_id": 20,
+      "start_ts": "2025-11-21T10:08:14",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 20,
+      "start_ts": "2025-11-21T10:22:33",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 165,
+      "start_ts": "2025-11-21T09:54:06",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 3250,
+      "start_ts": "2025-11-17T04:49:12",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 3250,
+      "start_ts": "2025-11-20T10:22:28",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 4370,
+      "start_ts": "2025-11-25T10:00:38",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T09:31:42",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T09:46:14",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T09:57:15",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T10:17:54",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T10:29:15",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T10:44:15",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5122,
+      "start_ts": "2025-11-06T10:56:02",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5129,
+      "start_ts": "2025-11-20T09:31:15",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5132,
+      "start_ts": "2025-11-20T10:49:07",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5677,
+      "start_ts": "2025-11-04T13:24:28",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5966,
+      "start_ts": "2025-11-14T06:18:42",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_1",
+      "object_id": 5966,
+      "start_ts": "2025-11-16T23:30:08",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3250,
+      "start_ts": "2026-02-09T04:49:43",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3250,
+      "start_ts": "2026-02-23T04:49:13",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-02T10:37:40",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-02T10:50:18",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-02T11:05:31",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-02T11:15:45",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T09:32:04",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T10:09:37",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T10:24:08",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T10:37:20",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T10:51:18",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T11:04:11",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T11:25:00",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T11:35:39",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T11:49:15",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3356,
+      "start_ts": "2026-02-03T13:41:54",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 3902,
+      "start_ts": "2026-02-10T09:34:52",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 4610,
+      "start_ts": "2026-02-03T08:54:11",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 4610,
+      "start_ts": "2026-02-03T09:04:39",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 4610,
+      "start_ts": "2026-02-03T13:26:51",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 4770,
+      "start_ts": "2026-02-01T11:57:33",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 4770,
+      "start_ts": "2026-02-20T17:12:00",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5003,
+      "start_ts": "2026-02-05T17:07:27",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5003,
+      "start_ts": "2026-02-09T14:42:55",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5003,
+      "start_ts": "2026-02-18T10:29:24",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5657,
+      "start_ts": "2026-02-16T08:04:38",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5657,
+      "start_ts": "2026-02-18T07:58:16",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "screen_2",
+      "object_id": 5677,
+      "start_ts": "2026-02-26T10:27:42",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 20,
+      "start_ts": "2026-05-18T09:52:20",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 165,
+      "start_ts": "2026-05-18T10:36:37",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 3356,
+      "start_ts": "2026-05-06T08:08:37",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 3356,
+      "start_ts": "2026-05-18T10:55:56",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 3356,
+      "start_ts": "2026-05-21T10:17:27",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 3902,
+      "start_ts": "2026-05-23T08:01:02",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 4610,
+      "start_ts": "2026-05-21T15:06:34",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 4610,
+      "start_ts": "2026-05-26T09:21:56",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 4610,
+      "start_ts": "2026-05-31T17:34:37",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 4770,
+      "start_ts": "2026-05-12T04:47:06",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5011,
+      "start_ts": "2026-05-04T12:07:32",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5578,
+      "start_ts": "2026-05-26T10:24:56",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-13T07:58:43",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-13T09:50:03",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-13T13:22:12",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-15T08:13:38",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-18T08:10:04",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5657,
+      "start_ts": "2026-05-19T09:16:20",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5677,
+      "start_ts": "2026-05-27T00:15:40",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5962,
+      "start_ts": "2026-05-18T02:31:02",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5962,
+      "start_ts": "2026-05-19T15:41:20",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5962,
+      "start_ts": "2026-05-19T18:04:39",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5962,
+      "start_ts": "2026-05-25T08:21:52",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5962,
+      "start_ts": "2026-05-25T14:21:59",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5963,
+      "start_ts": "2026-05-07T03:39:06",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5963,
+      "start_ts": "2026-05-08T04:20:06",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5963,
+      "start_ts": "2026-05-08T06:51:11",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5963,
+      "start_ts": "2026-05-11T20:07:14",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "confirmation",
+      "object_id": 5963,
+      "start_ts": "2026-05-29T10:37:39",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 42,
+      "start_ts": "2025-12-09T10:31:42",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3250,
+      "start_ts": "2025-12-04T10:21:47",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3250,
+      "start_ts": "2025-12-15T04:49:22",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3250,
+      "start_ts": "2025-12-18T10:21:06",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-01T10:55:34",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-02T09:38:22",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-02T09:50:26",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-02T10:03:08",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-02T10:17:36",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-02T11:26:55",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3356,
+      "start_ts": "2025-12-05T17:48:33",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 3902,
+      "start_ts": "2025-12-22T12:07:42",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 4610,
+      "start_ts": "2025-12-18T15:48:44",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 4770,
+      "start_ts": "2025-12-12T17:11:23",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5123,
+      "start_ts": "2025-12-26T08:25:54",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5332,
+      "start_ts": "2025-12-03T12:29:50",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T10:18:28",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T10:28:46",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T10:39:40",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T11:01:04",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T11:13:38",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T11:24:20",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T11:34:31",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-02T11:44:56",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-03T11:16:10",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T08:35:24",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T08:57:42",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T09:08:55",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T09:19:50",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T10:29:49",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T11:01:33",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T13:26:08",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T14:04:06",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T14:17:28",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T14:40:22",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T15:22:01",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T15:41:34",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T16:09:52",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T16:27:12",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T16:40:57",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T16:55:12",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T17:24:47",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T17:39:05",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T18:12:56",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T18:26:15",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T19:06:56",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T19:33:55",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T19:46:20",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T20:05:34",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T20:17:39",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T21:09:28",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T22:22:21",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-04T22:58:21",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T01:02:44",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T01:25:25",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T01:50:27",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T02:04:35",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T02:16:17",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T02:26:42",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T03:28:03",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T07:34:17",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-05T13:01:00",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-07T13:49:26",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-07T23:28:00",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5333,
+      "start_ts": "2025-12-08T01:31:11",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5567,
+      "start_ts": "2025-12-17T12:08:50",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5961,
+      "start_ts": "2025-12-04T13:18:34",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5961,
+      "start_ts": "2025-12-04T14:47:18",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-01T16:01:42",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T01:21:53",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T02:33:15",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T04:46:28",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T09:57:43",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T12:06:09",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T12:20:43",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T13:01:33",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T13:23:17",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T14:28:41",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T14:57:11",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-02T22:29:19",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-03T09:51:20",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-04T11:21:21",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 1,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-07T23:30:06",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-08T11:00:00",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-10T16:27:55",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-10T18:35:57",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-10T23:48:56",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-12T15:32:13",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-13T15:43:37",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-13T18:44:03",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-13T21:18:37",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-14T03:42:38",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-15T10:08:01",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-16T21:30:54",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-16T22:34:00",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5962,
+      "start_ts": "2025-12-24T23:15:05",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-05T14:01:12",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-08T11:08:21",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-10T16:01:29",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-10T16:22:23",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-10T18:27:50",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-11T10:11:24",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-11T18:26:27",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-12T11:18:45",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-13T17:23:38",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 1
+    },
+    {
+      "fold": "stress_1",
+      "object_id": 5963,
+      "start_ts": "2025-12-13T19:49:46",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 1,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 20,
+      "start_ts": "2026-03-10T10:02:16",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 99,
+      "start_ts": "2026-03-11T10:07:26",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 3356,
+      "start_ts": "2026-03-16T08:33:21",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 3356,
+      "start_ts": "2026-03-28T04:27:32",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 3902,
+      "start_ts": "2026-03-29T15:17:38",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4369,
+      "start_ts": "2026-03-27T10:16:13",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4369,
+      "start_ts": "2026-03-27T10:28:58",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4767,
+      "start_ts": "2026-03-13T11:44:32",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4767,
+      "start_ts": "2026-03-27T11:44:24",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4770,
+      "start_ts": "2026-03-06T17:12:10",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 4770,
+      "start_ts": "2026-03-26T14:37:26",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5003,
+      "start_ts": "2026-03-19T10:17:31",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5124,
+      "start_ts": "2026-03-23T11:02:42",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5129,
+      "start_ts": "2026-03-16T09:07:03",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5129,
+      "start_ts": "2026-03-16T09:19:31",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5343,
+      "start_ts": "2026-03-05T13:05:02",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5343,
+      "start_ts": "2026-03-26T18:15:42",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5567,
+      "start_ts": "2026-03-12T09:47:50",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5567,
+      "start_ts": "2026-03-20T18:59:10",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5567,
+      "start_ts": "2026-03-21T05:16:22",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5578,
+      "start_ts": "2026-03-27T12:49:24",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5675,
+      "start_ts": "2026-03-12T13:48:28",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5675,
+      "start_ts": "2026-03-12T21:27:39",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-09T11:37:26",
+      "regime": "7_to_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-11T13:05:00",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-13T00:04:28",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-13T20:56:02",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-16T13:56:14",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-17T03:43:48",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-17T10:27:16",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-19T09:13:18",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-24T10:28:18",
+      "regime": "1_to_7d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5677,
+      "start_ts": "2026-03-25T09:01:28",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5961,
+      "start_ts": "2026-03-17T11:16:20",
+      "regime": "over_30d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5961,
+      "start_ts": "2026-03-17T14:19:59",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    },
+    {
+      "fold": "stress_2",
+      "object_id": 5961,
+      "start_ts": "2026-03-17T16:51:37",
+      "regime": "within_1d",
+      "episodes": 1,
+      "pretrained": 0,
+      "global_control": 0,
+      "scratch_gru": 0
+    }
+  ],
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/research-v28/fault/screen_1/global_control-test.parquet": "81e8b6ac66b21fe52da6c3c6da791fdd448463283ae1e62fe16b66947f683671",
+    "artifacts/research-v28/fault/screen_1/gru-test.parquet": "894392b10a871045a5454de0d27137f8e1a6f901f028007cd3eea05b3a753262",
+    "artifacts/research-v28/fault/screen_2/global_control-test.parquet": "32fcf01f526c667d54803929fb7585d2844160fe9698393ac1b1ecaa895a1487",
+    "artifacts/research-v28/fault/screen_2/gru-test.parquet": "1952a6ab241e5c03b0cdbb58d5641a25319934aad7322a596aff6128b68f7a30",
+    "artifacts/research-v29/controls/fault/confirmation/global_control-test.parquet": "d012e6507181fae7e14313079de57e482b2b679c1040cc4720abbd2886d47505",
+    "artifacts/research-v29/controls/fault/confirmation/gru-test.parquet": "03000ef0ddf809d0c02d27f9a7de7d2a3c72856480967dfa312882699b6de677",
+    "artifacts/research-v29/controls/fault/stress_1/global_control-test.parquet": "8a73c37431275e8fb119da96cc9292266ca0fcce4a509ce4a18f358fc1beea32",
+    "artifacts/research-v29/controls/fault/stress_1/gru-test.parquet": "14c7b494a9ca0ac45c3825e8f0dc14b1a04c76adec485cf0fe681e5871decb6f",
+    "artifacts/research-v29/controls/fault/stress_2/global_control-test.parquet": "1706c52ea9e4d7cb4ab3bd3b5e0f7cc63366a74562b32e96b100499649f3ea03",
+    "artifacts/research-v29/controls/fault/stress_2/gru-test.parquet": "6e7cf11259168fc62d96f0212b6361b3d292f4cfeedb26b04ac25ba0066bdebc",
+    "artifacts/research-v31/fault/confirmation/pretrained-test.parquet": "53e0490101c065a8fdd3b56e239de6627e05ef9a792f9665b14dfa133baf6b80",
+    "artifacts/research-v31/fault/confirmation/result.json": "4a1fc8c8def2bc98a0b13d98643571b9c5e5dfe69717801dfe1fda34a05d0327",
+    "artifacts/research-v31/fault/screen_1/pretrained-test.parquet": "ba059b55b5de0609187e2090815c6c9feec67f283ef91c27ca0fed74d399038d",
+    "artifacts/research-v31/fault/screen_1/result.json": "e8167991571198ae58a8d9e8738d35693158d4e77c903e62f87f8a59975d5cd5",
+    "artifacts/research-v31/fault/screen_2/pretrained-test.parquet": "0c3de75b8053397480659fcb41c480740fc6ea564654a57cc7dd75e38fd81e03",
+    "artifacts/research-v31/fault/screen_2/result.json": "56ba1763e9b455e6f145b4c0e7edea861632f69e0e04b98539ff531dcc26e694",
+    "artifacts/research-v31/fault/stress_1/pretrained-test.parquet": "b2b278e521455119f5abf3a39a831a7cb03f2934a931dc6d3a901aa6bb815db5",
+    "artifacts/research-v31/fault/stress_1/result.json": "54a91c1cc4398b1ab9d292d3071b88e19add6a9230de3d68b1cd096da296dc8f",
+    "artifacts/research-v31/fault/stress_2/pretrained-test.parquet": "b6be906060623a3046e22b45e49ac05fff5a9eb5034cb9696c81de7742534f12",
+    "artifacts/research-v31/fault/stress_2/result.json": "b6a137824dfacb49296bac1dd01e948dfe56cd02a5551d9549c6535f79620077",
+    "artifacts/research-v31/plan.json": "20fe3ebb8c6d5546e1e168977ea0416df010b719c8a0ea40a1d65a86e84fce8e",
+    "artifacts/research-v31/report.json": "1febe73174cb9b60838cea343b332aae186430bcde3d5461d9836793ec8fdce4"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_self_supervised_fault_errors.py": "2867be342e16fda9ce4f85638cd183ae36ed92624f58d48b9945bdf0f85c28df",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5"
+  }
+}
