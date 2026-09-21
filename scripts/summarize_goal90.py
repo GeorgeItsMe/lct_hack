@@ -41,6 +41,7 @@ studies = {
     "v27": Path("artifacts/research-v27"),
     "v28": Path("artifacts/research-v28"),
     "v29": Path("artifacts/research-v29"),
+    "v30": Path("artifacts/research-v30"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -86,7 +87,7 @@ for manifest in [phase_build, *phase_manifests]:
         for source, digest in manifest[category].items():
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed phase augmentation provenance: {source}")
-for name in ("v15", "v16", "v17", "v18", "v19", "v23"):
+for name in ("v15", "v16", "v17", "v18", "v19", "v23", "v30"):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
         weights = meta_path.parent / "model.cbm"
@@ -200,6 +201,33 @@ for meta_path in sorted((studies["v29"] / "controls").glob("*/*/models/*/fit.jso
     blend_neural_models[str(meta_path)] = meta
 if set(blend_neural_models) != expected_blend_fits:
     raise ValueError("Neural blend controls differ from declared completed stages")
+peer_build = read(Path("data/processed/peer-context-v30/build.json"))
+for category in ("inputs", "outputs", "code_hashes"):
+    for source, digest in peer_build[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed cross-object feature provenance: {source}")
+peer_report = read(studies["v30"] / "report.json")
+if set(peer_report) != {"access", "fire", "fault"}:
+    raise ValueError("Peer count study is incomplete")
+peer_models, expected_peer_models = {}, set()
+for kind, outcome in peer_report.items():
+    folds = ["screen_1", "screen_2"]
+    if outcome["selection"]["passed_screen"]:
+        if len(outcome["periods"]) != 5:
+            raise ValueError(f"Peer confirmation incomplete: {kind}")
+        folds.extend(["confirmation", "stress_1", "stress_2"])
+    expected_peer_models.update(str(studies["v30"] / kind / fold / "peer/fit.json") for fold in folds)
+for meta_path in sorted(studies["v30"].glob("*/*/peer/fit.json")):
+    meta = read(meta_path)
+    if meta["signature"]["plan_sha256"] != sha256(studies["v30"] / "plan.json"):
+        raise ValueError(f"Peer weights belong to another study: {meta_path}")
+    if meta["added_columns"] != peer_build["columns"] or len(meta["added_columns"]) != 64:
+        raise ValueError(f"Unexpected peer feature set: {meta_path}")
+    if read(meta_path.parents[1] / "result.json")["fit"] != meta:
+        raise ValueError(f"Peer fit/result mismatch: {meta_path}")
+    peer_models[str(meta_path)] = meta
+if set(peer_models) != expected_peer_models:
+    raise ValueError("Peer weights differ from the declared completed stages")
 object_kind_audit = read(Path("artifacts/object_kind_error_audit.json"))
 for category in ("source_hashes", "code_hashes"):
     for source, digest in object_kind_audit[category].items():
@@ -309,6 +337,14 @@ report = {
         for p in sorted(studies["v27"].glob("*/screen_*/result.json"))
     },
     "neural_count_v28": neural_report,
+    "peer_context_v30": peer_report,
+    "peer_context_feature_build": peer_build,
+    "peer_context_models_verified": peer_models,
+    "peer_context_decision": "V30 adds64 same-time strictly-past cross-object report features while retaining original66/94/144 columns and fitting6 Poisson models under the original protocol. New peer inputs exactly match on151632 shared original/dense rows and preserve all old columns. Access1942/2803/2667 P.693/R.728/F1.710 adds49 true and51 false warnings versus control. Fire133/277/288 P.480/R.462/F1.471 adds2 true and removes17 false, but primary improvement2.94% is below predeclared>5%. Fault12/99/46 P.121/R.261/F1.166 adds1 true and24 false. All fail screen; no additional-month evaluation, feature substitution or activation. Historical static catalog and proxy-label limitations remain; full-scope90/90 is not reached.",
+    "peer_context_screen_periods": {
+        str(p.relative_to(studies["v30"])): read(p)
+        for p in sorted(studies["v30"].glob("*/screen_*/result.json"))
+    },
     "neural_complementarity_audit": neural_overlap,
     "neural_blend_v29": blend_report,
     "neural_blend_screen_periods": {
@@ -325,8 +361,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "126 passed, 1 skipped (optional PyTorch module)",
-        "neural_suite": "132 passed, including blend alignment/domain checks and interrupted MLP and GRU checkpoint resume on CPU and MPS",
+        "base_suite": "129 passed, 1 skipped (optional PyTorch module)",
+        "neural_suite": "135 passed, including causal peer context, blend alignment/domain checks and interrupted MLP and GRU checkpoint resume on CPU and MPS",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
