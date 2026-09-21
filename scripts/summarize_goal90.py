@@ -33,6 +33,8 @@ studies = {
     "v21": Path("artifacts/research-v21"),
     "v22": Path("artifacts/research-v22"),
     "v23": Path("artifacts/research-v23"),
+    "v24": Path("artifacts/research-v24"),
+    "v25": Path("artifacts/research-v25"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -85,6 +87,27 @@ for name in ("v15", "v16", "v17", "v18", "v19", "v23"):
         if sha256(weights) != meta["model_sha256"]:
             raise ValueError(f"Changed research weights: {weights}")
         new_weights[str(weights)] = meta["model_sha256"]
+probability_weights = {}
+for folder in (studies["v24"], studies["v25"] / "controls"):
+    for meta_path in folder.glob("*/*/binary/fit.json"):
+        meta = read(meta_path)
+        weights = Path(meta["weights_file"])
+        if sha256(weights) != meta["model_sha256"]:
+            raise ValueError(f"Changed probability weights: {weights}")
+        probability_weights[str(weights)] = meta["model_sha256"]
+        if meta["newly_fitted"]:
+            new_weights[str(weights)] = meta["model_sha256"]
+conditional_models = {}
+for meta_path in studies["v25"].glob("*/*/conditional/fit.json"):
+    meta = read(meta_path)
+    if meta["mode"] == "catboost":
+        weights = meta_path.parent / "model.cbm"
+        if sha256(weights) != meta["model_sha256"]:
+            raise ValueError(f"Changed conditional count weights: {weights}")
+        new_weights[str(weights)] = meta["model_sha256"]
+    elif meta["mode"] != "constant" or meta["constant_extra"] < 0:
+        raise ValueError(f"Invalid conditional model: {meta_path}")
+    conditional_models[str(meta_path)] = meta
 capacity = read(Path("artifacts/hourly_capacity_audit.json"))
 for category in ("inputs", "code_hashes"):
     for source, digest in capacity[category].items():
@@ -148,6 +171,19 @@ report = {
     "phase_augmentation_raw_manifests": phase_manifests,
     "phase_augmentation_provenance_verified": True,
     "fine_cadence_error_audit": fine_errors,
+    "binary_gate_v24": read(studies["v24"] / "report.json"),
+    "binary_gate_screen_periods": {
+        str(p.relative_to(studies["v24"])): read(p)
+        for p in sorted(studies["v24"].glob("*/screen_*/result.json"))
+    },
+    "probability_weights_verified": probability_weights,
+    "two_part_count_v25": read(studies["v25"] / "report.json"),
+    "two_part_count_screen_periods": {
+        str(p.relative_to(studies["v25"])): read(p)
+        for p in sorted(studies["v25"].glob("*/screen_*/result.json"))
+    },
+    "conditional_count_models_verified": conditional_models,
+    "latest_probability_studies_decision": "V24 separate binary gate fails all screening gates: access loses precision, fire primary gain4.94% is below predeclared>5%, fault fails its historical count anchor. V25 adds six conditional extra-count models: access P.696/R.736/F1.715 but only1.01% primary gain over binary control and precision below count control; fire loses precision; fault P.084/R.174. All fail screening, so no additional-month evaluation or activation. Expanded-grid control improvements are not attributed to the binary model. Best fully checked access candidate remains v20, not90/90.",
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
     "additional_research_weights_verified": new_weights,
