@@ -1,0 +1,238 @@
+{
+  "created_at": "2026-09-21T13:25:44.162985+00:00",
+  "plan": {
+    "scope": "additional_retrospective_evaluation_of_selected_access_family_not_blind_test",
+    "folds": {
+      "stress_1": "2025-12-01",
+      "stress_2": "2026-03-01"
+    },
+    "model": "Unchanged v9 Poisson recent_reference and pending-warning policy; refit at each historical origin. No alternative configuration or test-label threshold selection.",
+    "source_hashes": {
+      "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+      "/Users/main/vs_projects/lct_hack/data/processed/features-dense-round4.parquet": "7824730141ec08488354711e802ab6c35bd7053e192415e07f80e0076e3d4cfe",
+      "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29"
+    },
+    "implementation_sha256": "c20716beae01126b7d275eac00c265b4ef5518e1fa15b728b9aaf521ea5a006e",
+    "count_implementation_sha256": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+    "selection": "No new selection or automatic model activation. Report each extra period and all five months regardless of performance.",
+    "limits": "These dates previously appeared in training/calibration. Final deployed weights are not independently tested by historical refits."
+  },
+  "model_version": "op-d87946a7b7fd",
+  "periods": {
+    "screen_1": {
+      "test_period": [
+        "2025-11-01 00:00:00",
+        "2025-12-01 00:00:00"
+      ],
+      "scores": {
+        "precision": 0.7848484848484848,
+        "recall": 0.5242914979757085,
+        "f1": 0.6286407766990292,
+        "true_alerts": 777,
+        "false_alerts": 213,
+        "alerts": 990,
+        "eligible_episodes": 1482,
+        "missed_episodes": 705,
+        "false_alerts_per_object_day": 0.09443582354245178,
+        "median_lead_hours": 11.757222222222222,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 54132
+      },
+      "policy": {
+        "margin": 3,
+        "probability_floor": 0,
+        "precision": 0.7732463295269169,
+        "recall": 0.5197368421052632,
+        "f1": 0.6216393442622951,
+        "true_alerts": 474,
+        "false_alerts": 139,
+        "alerts": 613,
+        "eligible_episodes": 912,
+        "missed_episodes": 438,
+        "false_alerts_per_object_day": 0.11196133709222715,
+        "median_lead_hours": 16.15736111111111,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 29796,
+        "status": "supported"
+      }
+    },
+    "screen_2": {
+      "test_period": [
+        "2026-02-01 00:00:00",
+        "2026-03-01 00:00:00"
+      ],
+      "scores": {
+        "precision": 0.7436974789915967,
+        "recall": 0.5974683544303797,
+        "f1": 0.6626111371080955,
+        "true_alerts": 708,
+        "false_alerts": 244,
+        "alerts": 952,
+        "eligible_episodes": 1185,
+        "missed_episodes": 477,
+        "false_alerts_per_object_day": 0.1162181471778995,
+        "median_lead_hours": 9.76388888888889,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 50388
+      },
+      "policy": {
+        "margin": 1.5,
+        "probability_floor": 0,
+        "precision": 0.7516233766233766,
+        "recall": 0.5402567094515752,
+        "f1": 0.6286490156143923,
+        "true_alerts": 463,
+        "false_alerts": 153,
+        "alerts": 616,
+        "eligible_episodes": 857,
+        "missed_episodes": 394,
+        "false_alerts_per_object_day": 0.12323801852597664,
+        "median_lead_hours": 9.058333333333334,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 29796,
+        "status": "supported"
+      }
+    },
+    "confirmation": {
+      "test_period": [
+        "2026-05-01 00:00:00",
+        "2026-06-01 00:00:00"
+      ],
+      "scores": {
+        "precision": 0.8305785123966942,
+        "recall": 0.4886547811993517,
+        "f1": 0.6153061224489796,
+        "true_alerts": 603,
+        "false_alerts": 123,
+        "alerts": 726,
+        "eligible_episodes": 1234,
+        "missed_episodes": 631,
+        "false_alerts_per_object_day": 0.052710520677094495,
+        "median_lead_hours": 9.365277777777777,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 56004
+      },
+      "policy": {
+        "margin": 3,
+        "probability_floor": 0.75,
+        "precision": 0.7456521739130435,
+        "recall": 0.5196969696969697,
+        "f1": 0.6125,
+        "true_alerts": 343,
+        "false_alerts": 117,
+        "alerts": 460,
+        "eligible_episodes": 660,
+        "missed_episodes": 317,
+        "false_alerts_per_object_day": 0.1005586592178771,
+        "median_lead_hours": 10.51361111111111,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 27924,
+        "status": "supported"
+      }
+    },
+    "stress_1": {
+      "test_period": [
+        "2025-12-01 00:00:00",
+        "2026-01-01 00:00:00"
+      ],
+      "scores": {
+        "precision": 0.6954484605087015,
+        "recall": 0.5282155566853076,
+        "f1": 0.6004045073678128,
+        "true_alerts": 1039,
+        "false_alerts": 455,
+        "alerts": 1494,
+        "eligible_episodes": 1967,
+        "missed_episodes": 928,
+        "false_alerts_per_object_day": 0.19498607242339833,
+        "median_lead_hours": 10.502777777777778,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 56004
+      },
+      "policy": {
+        "margin": 1,
+        "probability_floor": 0.5,
+        "precision": 0.7601156069364162,
+        "recall": 0.5723612622415669,
+        "f1": 0.6530105524518932,
+        "true_alerts": 526,
+        "false_alerts": 166,
+        "alerts": 692,
+        "eligible_episodes": 919,
+        "missed_episodes": 393,
+        "false_alerts_per_object_day": 0.14267296948861194,
+        "median_lead_hours": 9.555138888888889,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 27924,
+        "status": "supported"
+      }
+    },
+    "stress_2": {
+      "test_period": [
+        "2026-03-01 00:00:00",
+        "2026-04-01 00:00:00"
+      ],
+      "scores": {
+        "precision": 0.7758064516129032,
+        "recall": 0.5635618043350908,
+        "f1": 0.652867322701052,
+        "true_alerts": 962,
+        "false_alerts": 278,
+        "alerts": 1240,
+        "eligible_episodes": 1707,
+        "missed_episodes": 745,
+        "false_alerts_per_object_day": 0.11913434754660382,
+        "median_lead_hours": 9.841111111111111,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 56004
+      },
+      "policy": {
+        "margin": 2,
+        "probability_floor": 0,
+        "precision": 0.7431818181818182,
+        "recall": 0.5767195767195767,
+        "f1": 0.6494538232373386,
+        "true_alerts": 327,
+        "false_alerts": 113,
+        "alerts": 440,
+        "eligible_episodes": 567,
+        "missed_episodes": 240,
+        "false_alerts_per_object_day": 0.11215880893300248,
+        "median_lead_hours": 10.139166666666666,
+        "cooldown_hours": 1,
+        "matching": "one_to_one",
+        "forecast_opportunities": 24180,
+        "status": "supported"
+      }
+    }
+  },
+  "additional_pooled": {
+    "precision": 0.7318946598390637,
+    "recall": 0.5446379967338051,
+    "f1": 0.6245318352059925,
+    "true_alerts": 2001,
+    "alerts": 2734,
+    "eligible_episodes": 3674,
+    "goal_score": 0.9758595464520848
+  },
+  "five_period_pooled": {
+    "precision": 0.7569418733802296,
+    "recall": 0.5398019801980198,
+    "f1": 0.6301918779378901,
+    "true_alerts": 4089,
+    "alerts": 5402,
+    "eligible_episodes": 7575,
+    "goal_score": 1.0
+  },
+  "new_model_selection": false,
+  "final_refit_has_new_blind_test": false
+}

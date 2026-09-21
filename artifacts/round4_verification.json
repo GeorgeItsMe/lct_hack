@@ -1,0 +1,26 @@
+{
+  "model_weights_changed": false,
+  "aggregate_counts_verified": true,
+  "checks": [
+    {
+      "port": 8000,
+      "ready": "ready",
+      "active_version": "op-d87946a7b7fd",
+      "five_period_metrics_match": true,
+      "stream_as_of": "2026-06-15T13:05:00",
+      "stream_events": 2658
+    },
+    {
+      "port": 8001,
+      "ready": "ready",
+      "active_version": "op-d87946a7b7fd",
+      "five_period_metrics_match": true,
+      "stream_as_of": "2026-06-15T13:05:00",
+      "stream_events": 2658
+    }
+  ],
+  "tests_passed": 76,
+  "web_build_passed": true,
+  "browser_quality_table_visually_verified": true,
+  "original_features_episodes_and_june_report_unchanged": true
+}

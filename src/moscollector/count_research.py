@@ -93,16 +93,43 @@ def pending_alerts(predictions, episodes, margin, probability_floor):
     return result
 
 
-def fit_one(frame, dense, episodes, directory, kind, test_begin):
+def fit_one(
+    frame,
+    dense,
+    episodes,
+    directory,
+    kind,
+    test_begin,
+    *,
+    feature_config="recent_reference",
+    depth=6,
+    l2_leaf_reg=8,
+    half_life_days=None,
+):
+    training_spec = {
+        "feature_config": feature_config,
+        "depth": depth,
+        "l2_leaf_reg": l2_leaf_reg,
+        "half_life_days": half_life_days,
+    }
     meta_path = directory / f"{kind}.json"
     if meta_path.exists():
-        return json.loads(meta_path.read_text())
+        saved = json.loads(meta_path.read_text())
+        default = {
+            "feature_config": "recent_reference",
+            "depth": 6,
+            "l2_leaf_reg": 8,
+            "half_life_days": None,
+        }
+        if saved.get("training_spec", default) != training_spec:
+            raise ValueError("Cached model has a different training configuration")
+        return saved
     directory.mkdir(parents=True, exist_ok=True)
     periods = periods_for(test_begin, kind)
     used = np.logical_or.reduce([mask(frame, *periods[k]) for k in ("train", "validation", "calibration")])
     training = frame.loc[used].reset_index(drop=True)
     masks = {k: mask(training, *periods[k]) for k in ("train", "validation", "calibration")}
-    columns = columns_for(training, "recent_reference", kind)
+    columns = columns_for(training, feature_config, kind)
     eps = episodes[episodes.kind.eq(kind)]
     counts = episode_counts(training, eps)
     y = training[f"target_{kind}"].to_numpy()
@@ -111,8 +138,8 @@ def fit_one(frame, dense, episodes, directory, kind, test_begin):
     x = model_input(training, columns)
     model = CatBoostRegressor(
         iterations=1000,
-        depth=6,
-        l2_leaf_reg=8,
+        depth=depth,
+        l2_leaf_reg=l2_leaf_reg,
         learning_rate=0.04,
         loss_function="Poisson",
         eval_metric="Poisson",
@@ -124,9 +151,17 @@ def fit_one(frame, dense, episodes, directory, kind, test_begin):
         verbose=200,
     )
     print("START count", directory.name, kind, int(masks["train"].sum()), flush=True)
+    weights = None
+    if half_life_days is not None:
+        if half_life_days <= 0:
+            raise ValueError("Weight half-life must be positive")
+        age = (periods["train"][1] - training.loc[masks["train"], "as_of"]).dt.total_seconds() / 86400
+        weights = np.exp2(-age.to_numpy() / half_life_days)
+        weights /= weights.mean()
     model.fit(
         x[masks["train"]],
         counts[masks["train"]],
+        sample_weight=weights,
         eval_set=(x[masks["validation"]], counts[masks["validation"]]),
     )
     raw = model.predict(x[masks["calibration"]], prediction_type="RawFormulaVal")
@@ -177,6 +212,7 @@ def fit_one(frame, dense, episodes, directory, kind, test_begin):
     scores["pending"] = evaluator.evaluate(test_pred.pending_alert, 0.5, 1)
     result = {
         "kind": kind,
+        "training_spec": training_spec,
         "features": columns,
         "periods": {k: list(map(str, v)) for k, v in periods.items()},
         "training_rows": int(masks["train"].sum()),

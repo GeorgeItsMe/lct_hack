@@ -1,0 +1,15 @@
+{
+  "old_rows": 338832,
+  "new_rows": 116064,
+  "shared_new_rows": 38688,
+  "columns": 423,
+  "new_3h_features_exact": true,
+  "old_hourly_features_exact": true,
+  "old_source_sha256": "7fc46613f2ef6b9b91c303995f1c473414fadddcf77d5db814187148549b8397",
+  "output_sha256": "7824730141ec08488354711e802ab6c35bd7053e192415e07f80e0076e3d4cfe",
+  "periods_added": [
+    "2025-12",
+    "2026-03"
+  ],
+  "old_source_unchanged": true
+}

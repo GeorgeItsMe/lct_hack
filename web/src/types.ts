@@ -133,6 +133,9 @@ export type Evaluation = {
   operational_quality?: {
     model_version: string;
     kind: Kind;
+    target_summary?: string;
+    below_target?: string;
+    additional_periods?: boolean;
     rows: {
       period: string;
       precision: number;

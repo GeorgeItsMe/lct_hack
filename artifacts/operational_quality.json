@@ -20,6 +20,22 @@
       "forecast_opportunities": 54132
     },
     {
+      "period": "Декабрь 2025",
+      "precision": 0.6954484605087015,
+      "recall": 0.5282155566853076,
+      "f1": 0.6004045073678128,
+      "true_alerts": 1039,
+      "false_alerts": 455,
+      "alerts": 1494,
+      "eligible_episodes": 1967,
+      "missed_episodes": 928,
+      "false_alerts_per_object_day": 0.19498607242339833,
+      "median_lead_hours": 10.502777777777778,
+      "cooldown_hours": 1,
+      "matching": "one_to_one",
+      "forecast_opportunities": 56004
+    },
+    {
       "period": "Февраль 2026",
       "precision": 0.7436974789915967,
       "recall": 0.5974683544303797,
@@ -34,6 +50,22 @@
       "cooldown_hours": 1,
       "matching": "one_to_one",
       "forecast_opportunities": 50388
+    },
+    {
+      "period": "Март 2026",
+      "precision": 0.7758064516129032,
+      "recall": 0.5635618043350908,
+      "f1": 0.652867322701052,
+      "true_alerts": 962,
+      "false_alerts": 278,
+      "alerts": 1240,
+      "eligible_episodes": 1707,
+      "missed_episodes": 745,
+      "false_alerts_per_object_day": 0.11913434754660382,
+      "median_lead_hours": 9.841111111111111,
+      "cooldown_hours": 1,
+      "matching": "one_to_one",
+      "forecast_opportunities": 56004
     },
     {
       "period": "Май 2026",
@@ -52,16 +84,19 @@
       "forecast_opportunities": 56004
     },
     {
-      "period": "Суммарно",
-      "precision": 0.782608695652174,
-      "recall": 0.5352473724685978,
-      "f1": 0.6357131983559141,
-      "true_alerts": 2088,
-      "alerts": 2668,
-      "eligible_episodes": 3901,
+      "period": "Суммарно: 5 периодов",
+      "precision": 0.7569418733802296,
+      "recall": 0.5398019801980198,
+      "f1": 0.6301918779378901,
+      "true_alerts": 4089,
+      "alerts": 5402,
+      "eligible_episodes": 7575,
       "goal_score": 1.0
     }
   ],
+  "target_summary": "Цель 75% / 50% выполнена суммарно по 5 периодам. Обе цели выполнены отдельно в 2 из 5 месяцев.",
+  "below_target": "Декабрь 2025: ниже цели Precision; Февраль 2026: ниже цели Precision; Май 2026: ниже цели Recall",
+  "additional_periods": true,
   "f1_gain_interval": {
     "low": 0.05906774799723288,
     "high": 0.14481000639304065,
