@@ -236,9 +236,13 @@ class ImportManager:
             state["result"] = json.loads((directory / "result.json").read_text())
         return state
 
-    def list(self):
+    def list(self, mode=None):
         return sorted(
-            [json.loads(p.read_text()) for p in self.root.glob("*/status.json")],
+            [
+                s
+                for p in self.root.glob("*/status.json")
+                if (s := json.loads(p.read_text())) and (mode is None or s.get("mode") == mode)
+            ],
             key=lambda x: x["created_at"],
             reverse=True,
         )[:100]

@@ -53,6 +53,8 @@ type StreamStatus = {
   as_of: string | null;
   last_event: string | null;
   latest_job: Batch | null;
+  forecast_status: string;
+  forecast_error: string | null;
   receipts: { id: number; inserted_rows: number; duplicate_rows: number }[];
 };
 const statuses: Record<string, string> = {
@@ -60,6 +62,8 @@ const statuses: Record<string, string> = {
   running: "Расчёт",
   complete: "Готово",
   failed: "Не выполнен",
+  waiting: "Ожидание событий",
+  accepted_unprocessed: "Данные сохранены, прогноз не рассчитан",
 };
 export function ImportPanel({ user }: { user: User }) {
   const [file, setFile] = useState<File | null>(null),
@@ -145,6 +149,24 @@ export function ImportPanel({ user }: { user: User }) {
       setBusy(false);
     }
   }
+  async function retryStream() {
+    if (!stream?.as_of) return;
+    setBusy(true);
+    setError("");
+    try {
+      const job = await api<Batch>(
+        `/stream/forecast?as_of=${encodeURIComponent(stream.as_of)}`,
+        { method: "POST" },
+      );
+      setSelected(job);
+      setStream(await api<StreamStatus>("/stream"));
+      setBatches(await api<Batch[]>("/imports"));
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
     <section className="panel import-panel">
       <div className="panel-heading">
@@ -203,6 +225,29 @@ export function ImportPanel({ user }: { user: User }) {
           </p>
         )}
         {receipt && <p role="status">{receipt}</p>}
+        {stream && stream.forecast_status !== "waiting" && (
+          <div role="status">
+            <p>
+              Текущий пакет:{" "}
+              {statuses[stream.forecast_status] || stream.forecast_status}.
+            </p>
+            {stream.forecast_error && (
+              <ErrorNotice message={stream.forecast_error} />
+            )}
+            {["failed", "accepted_unprocessed"].includes(
+              stream.forecast_status,
+            ) &&
+              user.role !== "analyst" && (
+                <button
+                  className="secondary-button"
+                  disabled={busy}
+                  onClick={retryStream}
+                >
+                  Повторить расчёт сохранённого потока
+                </button>
+              )}
+          </div>
+        )}
         <form className="import-form" onSubmit={submit}>
           <label>
             Способ обработки

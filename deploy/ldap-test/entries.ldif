@@ -1,0 +1,11 @@
+dn: dc=contour,dc=test
+objectClass: top
+objectClass: domain
+dc: contour
+
+dn: uid=employee,dc=contour,dc=test
+objectClass: inetOrgPerson
+uid: employee
+cn: Local LDAP test employee
+sn: Fixture
+userPassword: local-ldap-fixture-password

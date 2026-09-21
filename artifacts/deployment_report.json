@@ -7,8 +7,8 @@
   "decision_write": "passed",
   "restore_target": "contour_restore_qa_20260921",
   "restore_policy": "new database, original preserved",
-  "ldap_live_test": "not_performed_no_directory",
-  "tls_live_test": "not_performed_no_certificate",
+  "ldap_live_test": "passed_local_OpenLDAP_fixture",
+  "tls_live_test": "passed_local_Caddy_TLS_1.2_1.3",
   "restored_decisions": 1,
   "restored_audit_records": 6,
   "original_database_preserved": true,
@@ -25,5 +25,6 @@
     "checksums": "passed",
     "decision_snapshot_explanations": "passed",
     "original_volume_preserved": true
-  }
+  },
+  "customer_tls_ldap_test": "not_performed_no_customer_directory_or_certificate"
 }

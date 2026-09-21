@@ -12,6 +12,10 @@
 
 Для профиля `tls` положите действующий сертификат и ключ в `deploy/certs/fullchain.pem` и `privkey.pem`. Выполните `docker compose --profile tls up -d`. Caddy слушает loopback 8443 и допускает TLS 1.2–1.3. Браузер должен доверять сертификату; проверки сертификатов не отключаются. Production-cookie использует Secure, HttpOnly, SameSite=Strict.
 
+Локальное испытание `scripts/verify_tls.py` прошло с отдельным тестовым сертификатом: TLS 1.2 и 1.3, проверка имени и доверия, доступ к API PostgreSQL; TLS 1.1 отклонён сервером, недоверенный сертификат — клиентом. Системное хранилище доверия не менялось. Тестовые сертификаты не входят в Git, Docker build context или пакет исходников и не предназначены для промышленного стенда. Настройка `header defer` исключает дублирование заголовков от API и прокси согласно [документации Caddy](https://caddyserver.com/docs/caddyfile/directives/header).
+
+На чистом тестовом стенде сертификат для localhost создаёт `./deploy/create_test_certificate.sh` (срок два дня, существующие файлы не перезаписываются). Затем запустить профиль `tls` и `.venv/bin/python scripts/verify_tls.py`. После QA остановить тестовый прокси: `docker compose --profile tls stop tls`. Это не меняет основной HTTP-стенд.
+
 Поддержан необязательный LDAPS bind для предварительно заведённых пользователей. Настройки: `CONTOUR_LDAP_URL=ldaps://directory.example:636`, `CONTOUR_LDAP_BIND_TEMPLATE={username}@example`, при необходимости `CONTOUR_LDAP_CA_FILE=/certs/ldap-ca.pem`. Сервис проверяет сертификат, запрещает перенаправление учётных данных на LDAP referrals, использует соединение только для чтения. Локальный `admin` остаётся аварийной учётной записью. Роли назначаются в собственной БД, автоматического расширения прав по группам каталога нет.
 
 Создание пользователя:
@@ -21,6 +25,8 @@ docker compose exec api python -m moscollector.users employee --name 'Диспе
 ```
 
 Без `--ldap` команда запрашивает локальный пароль интерактивно. Реальный сервер LDAP/AD не был предоставлен, поэтому интеграционное испытание каталога остаётся обязательным шагом пилота. Основа клиента: [официальная документация ldap3 о TLS](https://ldap3.readthedocs.io/en/latest/ssltls.html) и [соединениях](https://ldap3.readthedocs.io/en/latest/connection.html).
+
+Клиент проверен на изолированном OpenLDAP: корректный LDAPS bind работает, неверный пароль, неизвестный пользователь и недоверенный сертификат отклоняются; локальный пароль не подменяет неуспешный вход LDAP-пользователя. Отчёт — `artifacts/ldap_report.json`. Воспроизведение: собрать `docker build -t contour-ldap-test:local deploy/ldap-test`, запустить образ с публикацией **только** `127.0.0.1:1636:636` и read-only mount тестовых сертификатов в `/certs`, затем выполнить `.venv/bin/python scripts/verify_ldap.py`. Учётные записи в `deploy/ldap-test` являются явными тестовыми фикстурами. Они не применяются для production. TLS каталога настроен по [руководству OpenLDAP](https://www.openldap.org/doc/admin26/tls.html). После проверки тестовый контейнер следует остановить.
 
 ## Резервные копии
 

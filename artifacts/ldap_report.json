@@ -1,0 +1,9 @@
+{
+  "server": "local OpenLDAP fixture on loopback:1636",
+  "valid_ldaps_bind": "passed",
+  "wrong_password": "rejected",
+  "unknown_user": "rejected",
+  "local_password_fallback_for_ldap_user": "rejected",
+  "untrusted_certificate": "rejected",
+  "customer_directory_tested": false
+}

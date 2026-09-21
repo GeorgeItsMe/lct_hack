@@ -20,14 +20,20 @@ class SnapshotQueue:
         if self.full:
             raise ValueError("Очередь заполнена")
         self.snapshots.setdefault(identity, frame.copy(deep=True))
-        self.jobs[identity] = {"id": identity[:32], "as_of": cutoff.isoformat(), **counts, **(metadata or {})}
+        self.jobs[identity] = {
+            "id": identity[:32],
+            "status": "queued",
+            "as_of": cutoff.isoformat(),
+            **counts,
+            **(metadata or {}),
+        }
         return self.jobs[identity]
 
     def find(self, identity):
         return self.jobs.get(identity)
 
-    def list(self):
-        return []
+    def list(self, mode=None):
+        return [j for j in reversed(list(self.jobs.values())) if mode is None or j.get("mode") == mode]
 
 
 @pytest.fixture
@@ -127,3 +133,25 @@ def test_inference_cannot_silently_jump_past_watermark(stream):
     send(manager, event())
     with pytest.raises(ValueError):
         manager.forecast("2026-06-15T12:10", 1)
+
+
+def test_old_success_cannot_hide_unprocessed_current_revision(stream):
+    manager, _ = stream
+    first = send(manager, event())
+    first["job"]["status"] = "complete"
+    manager.importer.full = True
+    send(manager, event(ts="2026-06-15T12:02"), at="2026-06-15T12:05")
+    state = manager.status()
+    assert state["latest_job"]["status"] == "complete"
+    assert state["forecast_status"] == "accepted_unprocessed"
+    assert state["current_revision"] == 2
+
+
+def test_failed_current_forecast_exposes_error_and_retry_state(stream):
+    manager, _ = stream
+    assert manager.status()["forecast_status"] == "waiting"
+    result = send(manager, event())
+    assert manager.status()["forecast_status"] == "queued"
+    result["job"].update(status="failed", error="Разрыв истории")
+    assert manager.status()["forecast_status"] == "failed"
+    assert manager.status()["forecast_error"] == "Разрыв истории"

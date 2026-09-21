@@ -1,0 +1,11 @@
+{
+  "target": "localhost:8443",
+  "certificate_scope": "local_test_only",
+  "checks": {
+    "TLSv1.2": "passed_hostname_certificate_and_api",
+    "TLSv1.3": "passed_hostname_certificate_and_api",
+    "untrusted_certificate": "rejected",
+    "TLSv1.1": "server_rejected_protocol_version"
+  },
+  "customer_certificate_tested": false
+}

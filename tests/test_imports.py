@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 from moscollector.features import group_episodes
-from moscollector.importing import normalize_events, read_events
+from moscollector.importing import ImportManager, normalize_events, read_events
 
 
 def sample(**changes):
@@ -65,3 +65,22 @@ def test_empty_episode_set_is_a_valid_healthy_history():
     grouped = group_episodes(pd.DataFrame(columns=["object_id", "kind"]))
     assert grouped.empty and "episode_id" in grouped
     assert pd.api.types.is_datetime64_any_dtype(grouped.start_ts)
+
+
+def test_many_previews_do_not_hide_the_latest_stream_job(tmp_path):
+    for i in range(105):
+        directory = tmp_path / str(i)
+        directory.mkdir()
+        (directory / "status.json").write_text(
+            json.dumps(
+                {
+                    "id": str(i),
+                    "created_at": f"{i:04d}",
+                    "mode": "accumulated_stream" if i == 0 else "import_preview",
+                }
+            )
+        )
+    manager = ImportManager.__new__(ImportManager)
+    manager.root = tmp_path
+    assert len(manager.list()) == 100
+    assert manager.list(mode="accumulated_stream")[0]["id"] == "0"

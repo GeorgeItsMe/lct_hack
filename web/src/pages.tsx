@@ -240,6 +240,8 @@ export function EvaluationPage() {
                 <CartesianGrid stroke="#e8ece8" vertical={false} />
                 <XAxis
                   dataKey="predicted"
+                  type="number"
+                  domain={[0, 1]}
                   tickFormatter={(v) => pct(v, 0)}
                   tick={{ fontSize: 11 }}
                   axisLine={false}

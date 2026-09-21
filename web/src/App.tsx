@@ -235,41 +235,50 @@ export default function App() {
     [profileOpen, setProfileOpen] = useState(false);
   const closeDrawer = useCallback(() => setSelected(null), []);
   const [streamAlert, setStreamAlert] = useState<{
-    id: string;
-    asOf: string;
-    count: number;
+    asOf: string | null;
+    message: string;
   } | null>(null);
   useEffect(() => {
     if (!user) {
       setStreamAlert(null);
       return;
     }
-    let active = true,
-      knownJob = "";
+    let active = true;
     async function pollStream() {
       try {
         const state = await api<{
+          as_of: string | null;
+          forecast_status: string;
+          forecast_error: string | null;
           latest_job: { id: string; status: string; as_of: string } | null;
         }>("/stream");
-        if (
-          state.latest_job?.status !== "complete" ||
-          state.latest_job.id === knownJob
-        )
+        let message = "";
+        if (state.forecast_status === "waiting") {
+          if (active) setStreamAlert(null);
           return;
-        const result = await api<{
-          result: { forecasts: { above_threshold: boolean }[] };
-        }>(`/imports/${state.latest_job.id}`);
-        if (active) {
-          knownJob = state.latest_job.id;
-          setStreamAlert({
-            id: knownJob,
-            asOf: state.latest_job.as_of,
-            count: result.result.forecasts.filter((f) => f.above_threshold)
-              .length,
-          });
         }
+        if (state.forecast_status === "complete" && state.latest_job) {
+          const result = await api<{
+            result: { forecasts: { above_threshold: boolean }[] };
+          }>(`/imports/${state.latest_job.id}`);
+          message = `Прогноз готов · выше порога: ${result.result.forecasts.filter((f) => f.above_threshold).length}`;
+        } else if (state.forecast_status === "failed")
+          message = `Расчёт не выполнен: ${state.forecast_error || "проверьте журнал"}`;
+        else if (state.forecast_status === "accepted_unprocessed")
+          message = "Данные сохранены, актуальный прогноз ещё не рассчитан";
+        else
+          message =
+            state.forecast_status === "running"
+              ? "Расчёт нового прогноза выполняется"
+              : "Новый прогноз ожидает расчёта";
+        if (active) setStreamAlert({ asOf: state.as_of, message });
       } catch {
-        /* The Data page displays request errors with an explicit retry. */
+        if (active)
+          setStreamAlert({
+            asOf: null,
+            message:
+              "Не удалось обновить состояние потока. Проверьте соединение.",
+          });
       }
     }
     pollStream();
@@ -513,8 +522,9 @@ export default function App() {
             <div className="stream-notification" role="status">
               <Bell size={18} />
               <span>
-                Расчёт поступившего потока · {date(streamAlert.asOf, true)} ·
-                выше порога: {streamAlert.count}
+                Поступивший поток
+                {streamAlert.asOf ? ` · ${date(streamAlert.asOf, true)}` : ""} ·{" "}
+                {streamAlert.message}
               </span>
               <button className="text-link" onClick={() => setPage("quality")}>
                 Открыть проверку

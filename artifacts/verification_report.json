@@ -1,5 +1,5 @@
 {
-  "tests_passed": 38,
+  "tests_passed": 41,
   "ruff": "passed",
   "web_build": "passed",
   "browser_checked": [
@@ -16,6 +16,9 @@
   ],
   "browser_file_upload": "blocked_by_extension_file_url_permission",
   "production_external_ldap": "not_tested",
-  "presentation_template": "unavailable",
-  "stream_linux_e2e": "passed"
+  "presentation_template": "out_of_scope_by_user_instruction",
+  "stream_linux_e2e": "passed",
+  "local_tls": "passed",
+  "local_ldaps": "passed",
+  "stream_failure_visibility": "covered_by_tests"
 }

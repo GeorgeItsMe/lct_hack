@@ -180,7 +180,12 @@ class StreamManager:
                 )
             ).one()
             batches = db.scalars(select(StreamBatch).order_by(StreamBatch.id.desc()).limit(10)).all()
-            jobs = [j for j in self.importer.list() if j.get("mode") == "accumulated_stream"]
+            jobs = self.importer.list(mode="accumulated_stream")
+            revision = batches[0].id if batches else None
+            current_job = next((j for j in jobs if j.get("stream_revision") == revision), None)
+            forecast_status = (
+                current_job["status"] if current_job else "accepted_unprocessed" if revision else "waiting"
+            )
             return {
                 "source": "smvu_gateway",
                 "source_connection": "push_api_ready",
@@ -191,5 +196,8 @@ class StreamManager:
                 "as_of": max((b.as_of for b in batches), default=None),
                 "receipts": [receipt(b) for b in batches],
                 "latest_job": jobs[0] if jobs else None,
+                "current_revision": revision,
+                "forecast_status": forecast_status,
+                "forecast_error": current_job.get("error") if current_job else None,
                 "notice": "Накопленные копии пакетов в собственной БД. Подключение реальной СМВУ ещё не выполнено.",
             }
