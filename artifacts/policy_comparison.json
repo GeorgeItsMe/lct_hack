@@ -1,0 +1,825 @@
+{
+  "scope": "policy_only_on_previously_trained_models_no_new_weights",
+  "selection_period": "Only original policy month; test threshold never optimized.",
+  "results": {
+    "screen_1/fault": {
+      "policies": {
+        "original": {
+          "threshold": 0.02,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.013791146829670269,
+          "precision": 0.14285714285714285,
+          "recall": 0.18518518518518517,
+          "f1": 0.16129032258064516,
+          "true_alerts": 5,
+          "false_alerts": 30,
+          "alerts": 35,
+          "eligible_episodes": 27,
+          "missed_episodes": 22,
+          "false_alerts_per_object_day": 0.01282051282051282,
+          "median_lead_hours": 2.885,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.19047619047619047
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.02,
+          "precision": 0.38461538461538464,
+          "recall": 0.18518518518518517,
+          "f1": 0.25,
+          "true_alerts": 5,
+          "false_alerts": 8,
+          "alerts": 13,
+          "eligible_episodes": 27,
+          "missed_episodes": 22,
+          "false_alerts_per_object_day": 0.003418803418803419,
+          "median_lead_hours": 22.661944444444444,
+          "cooldown_hours": 12,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.37037037037037035
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 2,
+          "alerts": 2,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0008841732979664014,
+          "median_lead_hours": null,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 5,
+          "alerts": 5,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0022104332449160036,
+          "median_lead_hours": null,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "true_alerts": 0,
+          "false_alerts": 2,
+          "alerts": 2,
+          "eligible_episodes": 18,
+          "missed_episodes": 18,
+          "false_alerts_per_object_day": 0.0008841732979664014,
+          "median_lead_hours": null,
+          "cooldown_hours": 12,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        }
+      }
+    },
+    "screen_1/fire": {
+      "policies": {
+        "original": {
+          "threshold": 0.05080282975944752,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.11,
+          "precision": 0.18421052631578946,
+          "recall": 0.11382113821138211,
+          "f1": 0.1407035175879397,
+          "true_alerts": 14,
+          "false_alerts": 62,
+          "alerts": 76,
+          "eligible_episodes": 123,
+          "missed_episodes": 109,
+          "false_alerts_per_object_day": 0.026495726495726495,
+          "median_lead_hours": 0.5581944444444444,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.22764227642276422
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.11,
+          "precision": 0.18421052631578946,
+          "recall": 0.11382113821138211,
+          "f1": 0.1407035175879397,
+          "true_alerts": 14,
+          "false_alerts": 62,
+          "alerts": 76,
+          "eligible_episodes": 123,
+          "missed_episodes": 109,
+          "false_alerts_per_object_day": 0.026495726495726495,
+          "median_lead_hours": 0.5581944444444444,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.22764227642276422
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.10084033613445378,
+          "recall": 0.2376237623762376,
+          "f1": 0.1415929203539823,
+          "true_alerts": 24,
+          "false_alerts": 214,
+          "alerts": 238,
+          "eligible_episodes": 101,
+          "missed_episodes": 77,
+          "false_alerts_per_object_day": 0.09460654288240496,
+          "median_lead_hours": 9.740555555555556,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.2638888888888889,
+          "recall": 0.18811881188118812,
+          "f1": 0.21965317919075145,
+          "true_alerts": 19,
+          "false_alerts": 53,
+          "alerts": 72,
+          "eligible_episodes": 101,
+          "missed_episodes": 82,
+          "false_alerts_per_object_day": 0.023430592396109638,
+          "median_lead_hours": 2.2583333333333333,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.2638888888888889,
+          "recall": 0.18811881188118812,
+          "f1": 0.21965317919075145,
+          "true_alerts": 19,
+          "false_alerts": 53,
+          "alerts": 72,
+          "eligible_episodes": 101,
+          "missed_episodes": 82,
+          "false_alerts_per_object_day": 0.023430592396109638,
+          "median_lead_hours": 2.2583333333333333,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        }
+      }
+    },
+    "screen_1/access": {
+      "policies": {
+        "original": {
+          "threshold": 0.26473684210526316,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.18000000000000002,
+          "precision": 0.5142857142857142,
+          "recall": 0.20618556701030927,
+          "f1": 0.294358135731807,
+          "true_alerts": 360,
+          "false_alerts": 340,
+          "alerts": 700,
+          "eligible_episodes": 1746,
+          "missed_episodes": 1386,
+          "false_alerts_per_object_day": 0.1452991452991453,
+          "median_lead_hours": 8.869583333333333,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.41237113402061853
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.55,
+          "precision": 0.644082332761578,
+          "recall": 0.43012600229095077,
+          "f1": 0.5157967032967034,
+          "true_alerts": 751,
+          "false_alerts": 415,
+          "alerts": 1166,
+          "eligible_episodes": 1746,
+          "missed_episodes": 995,
+          "false_alerts_per_object_day": 0.17735042735042736,
+          "median_lead_hours": 11.58611111111111,
+          "cooldown_hours": 6,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720,
+          "status": "supported_policy",
+          "goal_score": 0.858776443682104
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.5253940455341506,
+          "recall": 0.20242914979757085,
+          "f1": 0.2922552362396493,
+          "true_alerts": 300,
+          "false_alerts": 271,
+          "alerts": 571,
+          "eligible_episodes": 1482,
+          "missed_episodes": 1182,
+          "false_alerts_per_object_day": 0.1198054818744474,
+          "median_lead_hours": 8.897083333333333,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.4514200298953662,
+          "recall": 0.203778677462888,
+          "f1": 0.2807996280799628,
+          "true_alerts": 302,
+          "false_alerts": 367,
+          "alerts": 669,
+          "eligible_episodes": 1482,
+          "missed_episodes": 1180,
+          "false_alerts_per_object_day": 0.16224580017683465,
+          "median_lead_hours": 8.64625,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.5450049455984174,
+          "recall": 0.3717948717948718,
+          "f1": 0.44203770557561173,
+          "true_alerts": 551,
+          "false_alerts": 460,
+          "alerts": 1011,
+          "eligible_episodes": 1482,
+          "missed_episodes": 931,
+          "false_alerts_per_object_day": 0.20335985853227231,
+          "median_lead_hours": 11.27361111111111,
+          "cooldown_hours": 6,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096
+        }
+      }
+    },
+    "screen_2/fault": {
+      "policies": {
+        "original": {
+          "threshold": 0.02,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.09,
+          "precision": 0.05714285714285714,
+          "recall": 0.08695652173913043,
+          "f1": 0.06896551724137931,
+          "true_alerts": 2,
+          "false_alerts": 33,
+          "alerts": 35,
+          "eligible_episodes": 23,
+          "missed_episodes": 21,
+          "false_alerts_per_object_day": 0.01839464882943144,
+          "median_lead_hours": 1.6537499999999998,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.07619047619047618
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.09,
+          "precision": 0.05714285714285714,
+          "recall": 0.08695652173913043,
+          "f1": 0.06896551724137931,
+          "true_alerts": 2,
+          "false_alerts": 33,
+          "alerts": 35,
+          "eligible_episodes": 23,
+          "missed_episodes": 21,
+          "false_alerts_per_object_day": 0.01839464882943144,
+          "median_lead_hours": 1.6537499999999998,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.07619047619047618
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.037209302325581395,
+          "recall": 0.2857142857142857,
+          "f1": 0.06584362139917696,
+          "true_alerts": 8,
+          "false_alerts": 207,
+          "alerts": 215,
+          "eligible_episodes": 28,
+          "missed_episodes": 20,
+          "false_alerts_per_object_day": 0.09829059829059829,
+          "median_lead_hours": 13.431111111111111,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.1111111111111111,
+          "recall": 0.14285714285714285,
+          "f1": 0.125,
+          "true_alerts": 4,
+          "false_alerts": 32,
+          "alerts": 36,
+          "eligible_episodes": 28,
+          "missed_episodes": 24,
+          "false_alerts_per_object_day": 0.015194681861348529,
+          "median_lead_hours": 6.828749999999999,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.1111111111111111,
+          "recall": 0.14285714285714285,
+          "f1": 0.125,
+          "true_alerts": 4,
+          "false_alerts": 32,
+          "alerts": 36,
+          "eligible_episodes": 28,
+          "missed_episodes": 24,
+          "false_alerts_per_object_day": 0.015194681861348529,
+          "median_lead_hours": 6.828749999999999,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        }
+      }
+    },
+    "screen_2/fire": {
+      "policies": {
+        "original": {
+          "threshold": 0.06894736842105263,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.09999999999999999,
+          "precision": 0.21367521367521367,
+          "recall": 0.15337423312883436,
+          "f1": 0.17857142857142858,
+          "true_alerts": 25,
+          "false_alerts": 92,
+          "alerts": 117,
+          "eligible_episodes": 163,
+          "missed_episodes": 138,
+          "false_alerts_per_object_day": 0.05128205128205128,
+          "median_lead_hours": 7.1402777777777775,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.2849002849002849
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.39,
+          "precision": 0.2396694214876033,
+          "recall": 0.17791411042944785,
+          "f1": 0.20422535211267606,
+          "true_alerts": 29,
+          "false_alerts": 92,
+          "alerts": 121,
+          "eligible_episodes": 163,
+          "missed_episodes": 134,
+          "false_alerts_per_object_day": 0.05128205128205128,
+          "median_lead_hours": 7.497777777777777,
+          "cooldown_hours": 6,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.31955922865013775
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.1827956989247312,
+          "recall": 0.18181818181818182,
+          "f1": 0.18230563002680966,
+          "true_alerts": 34,
+          "false_alerts": 152,
+          "alerts": 186,
+          "eligible_episodes": 187,
+          "missed_episodes": 153,
+          "false_alerts_per_object_day": 0.0721747388414055,
+          "median_lead_hours": 6.949444444444444,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.2185430463576159,
+          "recall": 0.17647058823529413,
+          "f1": 0.1952662721893491,
+          "true_alerts": 33,
+          "false_alerts": 118,
+          "alerts": 151,
+          "eligible_episodes": 187,
+          "missed_episodes": 154,
+          "false_alerts_per_object_day": 0.0560303893637227,
+          "median_lead_hours": 6.2588888888888885,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.381294964028777,
+          "recall": 0.28342245989304815,
+          "f1": 0.32515337423312884,
+          "true_alerts": 53,
+          "false_alerts": 86,
+          "alerts": 139,
+          "eligible_episodes": 187,
+          "missed_episodes": 134,
+          "false_alerts_per_object_day": 0.04083570750237417,
+          "median_lead_hours": 6.4944444444444445,
+          "cooldown_hours": 6,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        }
+      }
+    },
+    "screen_2/access": {
+      "policies": {
+        "original": {
+          "threshold": 0.20905619346363224,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.1760149361960821,
+          "precision": 0.42066420664206644,
+          "recall": 0.23147208121827412,
+          "f1": 0.29862475442043224,
+          "true_alerts": 228,
+          "false_alerts": 314,
+          "alerts": 542,
+          "eligible_episodes": 985,
+          "missed_episodes": 757,
+          "false_alerts_per_object_day": 0.1750278706800446,
+          "median_lead_hours": 10.320833333333333,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.46294416243654823
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.67,
+          "precision": 0.5455974842767296,
+          "recall": 0.3522842639593909,
+          "f1": 0.4281307834669957,
+          "true_alerts": 347,
+          "false_alerts": 289,
+          "alerts": 636,
+          "eligible_episodes": 985,
+          "missed_episodes": 638,
+          "false_alerts_per_object_day": 0.16109253065774806,
+          "median_lead_hours": 9.325277777777778,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 14352,
+          "status": "supported_policy",
+          "goal_score": 0.7045685279187818
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.4290484140233723,
+          "recall": 0.2168776371308017,
+          "f1": 0.2881165919282511,
+          "true_alerts": 257,
+          "false_alerts": 342,
+          "alerts": 599,
+          "eligible_episodes": 1185,
+          "missed_episodes": 928,
+          "false_alerts_per_object_day": 0.1623931623931624,
+          "median_lead_hours": 8.6575,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.39938556067588327,
+          "recall": 0.21940928270042195,
+          "f1": 0.28322440087145967,
+          "true_alerts": 260,
+          "false_alerts": 391,
+          "alerts": 651,
+          "eligible_episodes": 1185,
+          "missed_episodes": 925,
+          "false_alerts_per_object_day": 0.18566001899335233,
+          "median_lead_hours": 7.4622222222222225,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.5635294117647058,
+          "recall": 0.40421940928270045,
+          "f1": 0.47076167076167075,
+          "true_alerts": 479,
+          "false_alerts": 371,
+          "alerts": 850,
+          "eligible_episodes": 1185,
+          "missed_episodes": 706,
+          "false_alerts_per_object_day": 0.1761633428300095,
+          "median_lead_hours": 10.504444444444445,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 16848
+        }
+      }
+    },
+    "confirmation/fault": {
+      "policies": {
+        "original": {
+          "threshold": 0.11789473684210526,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.12,
+          "precision": 0.35,
+          "recall": 0.23863636363636365,
+          "f1": 0.28378378378378377,
+          "true_alerts": 21,
+          "false_alerts": 39,
+          "alerts": 60,
+          "eligible_episodes": 88,
+          "missed_episodes": 67,
+          "false_alerts_per_object_day": 0.017241379310344827,
+          "median_lead_hours": 17.75611111111111,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.4666666666666666
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.37,
+          "precision": 0.4,
+          "recall": 0.29545454545454547,
+          "f1": 0.33986928104575165,
+          "true_alerts": 26,
+          "false_alerts": 39,
+          "alerts": 65,
+          "eligible_episodes": 88,
+          "missed_episodes": 62,
+          "false_alerts_per_object_day": 0.017241379310344827,
+          "median_lead_hours": 12.000138888888888,
+          "cooldown_hours": 12,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.5333333333333333
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.18604651162790697,
+          "recall": 0.27586206896551724,
+          "f1": 0.2222222222222222,
+          "true_alerts": 8,
+          "false_alerts": 35,
+          "alerts": 43,
+          "eligible_episodes": 29,
+          "missed_episodes": 21,
+          "false_alerts_per_object_day": 0.014957264957264958,
+          "median_lead_hours": 16.428333333333335,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.19047619047619047,
+          "recall": 0.27586206896551724,
+          "f1": 0.22535211267605634,
+          "true_alerts": 8,
+          "false_alerts": 34,
+          "alerts": 42,
+          "eligible_episodes": 29,
+          "missed_episodes": 21,
+          "false_alerts_per_object_day": 0.01452991452991453,
+          "median_lead_hours": 16.428333333333335,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.125,
+          "recall": 0.034482758620689655,
+          "f1": 0.05405405405405406,
+          "true_alerts": 1,
+          "false_alerts": 7,
+          "alerts": 8,
+          "eligible_episodes": 29,
+          "missed_episodes": 28,
+          "false_alerts_per_object_day": 0.0029914529914529917,
+          "median_lead_hours": 0.0775,
+          "cooldown_hours": 12,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        }
+      }
+    },
+    "confirmation/fire": {
+      "policies": {
+        "original": {
+          "threshold": 0.1552354744973704,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.06999999999999999,
+          "precision": 0.2112676056338028,
+          "recall": 0.13975155279503104,
+          "f1": 0.16822429906542055,
+          "true_alerts": 45,
+          "false_alerts": 168,
+          "alerts": 213,
+          "eligible_episodes": 322,
+          "missed_episodes": 277,
+          "false_alerts_per_object_day": 0.07427055702917772,
+          "median_lead_hours": 10.563055555555556,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.2795031055900621
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.45,
+          "precision": 0.3744292237442922,
+          "recall": 0.2546583850931677,
+          "f1": 0.3031423290203327,
+          "true_alerts": 82,
+          "false_alerts": 137,
+          "alerts": 219,
+          "eligible_episodes": 322,
+          "missed_episodes": 240,
+          "false_alerts_per_object_day": 0.0605658709106985,
+          "median_lead_hours": 7.244583333333333,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.4992389649923896
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.34057971014492755,
+          "recall": 0.18146718146718147,
+          "f1": 0.2367758186397985,
+          "true_alerts": 47,
+          "false_alerts": 91,
+          "alerts": 138,
+          "eligible_episodes": 259,
+          "missed_episodes": 212,
+          "false_alerts_per_object_day": 0.03888888888888889,
+          "median_lead_hours": 10.232222222222223,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.24034334763948498,
+          "recall": 0.21621621621621623,
+          "f1": 0.22764227642276422,
+          "true_alerts": 56,
+          "false_alerts": 177,
+          "alerts": 233,
+          "eligible_episodes": 259,
+          "missed_episodes": 203,
+          "false_alerts_per_object_day": 0.07564102564102564,
+          "median_lead_hours": 9.547916666666666,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.4716981132075472,
+          "recall": 0.19305019305019305,
+          "f1": 0.273972602739726,
+          "true_alerts": 50,
+          "false_alerts": 56,
+          "alerts": 106,
+          "eligible_episodes": 259,
+          "missed_episodes": 209,
+          "false_alerts_per_object_day": 0.023931623931623933,
+          "median_lead_hours": 3.293611111111111,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        }
+      }
+    },
+    "confirmation/access": {
+      "policies": {
+        "original": {
+          "threshold": 0.16684210526315787,
+          "cooldown_hours": 24
+        },
+        "precision_goal_fixed24": {
+          "threshold": 0.17,
+          "precision": 0.5092989985693849,
+          "recall": 0.24929971988795518,
+          "f1": 0.33474377056887633,
+          "true_alerts": 356,
+          "false_alerts": 343,
+          "alerts": 699,
+          "eligible_episodes": 1428,
+          "missed_episodes": 1072,
+          "false_alerts_per_object_day": 0.15163572060123784,
+          "median_lead_hours": 9.202361111111111,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.49859943977591037
+        },
+        "precision_goal_adaptive": {
+          "threshold": 0.74,
+          "precision": 0.6276923076923077,
+          "recall": 0.42857142857142855,
+          "f1": 0.5093632958801498,
+          "true_alerts": 612,
+          "false_alerts": 363,
+          "alerts": 975,
+          "eligible_episodes": 1428,
+          "missed_episodes": 816,
+          "false_alerts_per_object_day": 0.16047745358090185,
+          "median_lead_hours": 11.859861111111112,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18096,
+          "status": "supported_policy",
+          "goal_score": 0.8369230769230769
+        }
+      },
+      "scores": {
+        "original": {
+          "precision": 0.45545977011494254,
+          "recall": 0.2568881685575365,
+          "f1": 0.32849740932642485,
+          "true_alerts": 317,
+          "false_alerts": 379,
+          "alerts": 696,
+          "eligible_episodes": 1234,
+          "missed_episodes": 917,
+          "false_alerts_per_object_day": 0.16196581196581197,
+          "median_lead_hours": 9.683333333333334,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_fixed24": {
+          "precision": 0.4553314121037464,
+          "recall": 0.2560777957860616,
+          "f1": 0.3278008298755187,
+          "true_alerts": 316,
+          "false_alerts": 378,
+          "alerts": 694,
+          "eligible_episodes": 1234,
+          "missed_episodes": 918,
+          "false_alerts_per_object_day": 0.16153846153846155,
+          "median_lead_hours": 9.741388888888888,
+          "cooldown_hours": 24,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        },
+        "precision_goal_adaptive": {
+          "precision": 0.6539379474940334,
+          "recall": 0.44408427876823336,
+          "f1": 0.528957528957529,
+          "true_alerts": 548,
+          "false_alerts": 290,
+          "alerts": 838,
+          "eligible_episodes": 1234,
+          "missed_episodes": 686,
+          "false_alerts_per_object_day": 0.12393162393162394,
+          "median_lead_hours": 12.087777777777777,
+          "cooldown_hours": 3,
+          "matching": "one_to_one",
+          "forecast_opportunities": 18720
+        }
+      }
+    }
+  }
+}

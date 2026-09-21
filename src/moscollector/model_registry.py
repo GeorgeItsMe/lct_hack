@@ -64,6 +64,13 @@ class OperationalHead:
         x = Pool(model_input(frame, self.meta["features"]), cat_features=CATEGORICAL)
         return sum(w * m.get_feature_importance(x, type="ShapValues") for w, m in self.members)
 
+    def expected_count(self, frame):
+        if "rate_scale" not in self.meta:
+            return None
+        x = model_input(frame, self.meta["features"])
+        raw = sum(w * m.predict(x, prediction_type="RawFormulaVal") for w, m in self.members)
+        return np.exp(np.clip(raw, -20, 20)) * self.meta["rate_scale"]
+
 
 def activate(version):
     load_bundle(version)  # Validate every model before publishing the pointer.

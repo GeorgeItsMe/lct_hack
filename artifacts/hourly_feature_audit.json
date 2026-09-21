@@ -1,0 +1,32 @@
+{
+  "years": [
+    2025,
+    2026
+  ],
+  "rows": 965952,
+  "eligible_rows": 936000,
+  "cadence_hours": 1,
+  "horizon_hours": 24,
+  "failure_min_duration_seconds": 3600,
+  "cascade_window_minutes": 10,
+  "label_type": "proxy_sensor_episodes",
+  "episodes": {
+    "access": 23929,
+    "fire": 3360,
+    "fault": 481,
+    "flood": 136
+  },
+  "positive_rows": {
+    "fault": 6567,
+    "fire": 18515,
+    "flood": 1780,
+    "access": 138409
+  },
+  "feature_count": 94,
+  "limitations": [
+    "Incident labels are sensor proxies, not confirmed physical incidents.",
+    "Catalog is a current snapshot; historical equipment inventory is unavailable.",
+    "Last known states assume changes are logged; no per-device heartbeat is available.",
+    "Each year starts a new state history; first observations are left-censored."
+  ]
+}

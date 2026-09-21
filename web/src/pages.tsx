@@ -119,10 +119,62 @@ export function EvaluationPage() {
           </button>
         ))}
       </div>
+      {data.operational_quality?.kind === kind && (
+        <section className="panel research-panel">
+          <div className="research-body">
+            <h3>Новая модель охранных эпизодов</h3>
+            <p>
+              Прогноз числа эпизодов и учёт незавершённых предупреждений. Одна
+              тревога сопоставляется с одним эпизодом.
+            </p>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Период</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>Эпизодов</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.operational_quality.rows.map((row) => (
+                    <tr key={row.period}>
+                      <td>{row.period}</td>
+                      <td>{pct(row.precision)}</td>
+                      <td>{pct(row.recall)}</td>
+                      <td>{num(Number(row.f1.toFixed(3)))}</td>
+                      <td>{num(row.eligible_episodes)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Цель 75% / 50% выполнена суммарно. В феврале Precision немного
+              ниже 75%, в мае Recall — ниже 50%. Оценены сигналы датчиков, а не
+              подтверждённые физические инциденты.
+            </p>
+            <p>
+              Условный диапазон прироста F1 по узлам:{" "}
+              {rangeText(data.operational_quality.f1_gain_interval)}. Прирост
+              относится к модели вместе с правилом повторных предупреждений.
+            </p>
+            <small>
+              Повторно использованные исторические периоды; это не новый слепой
+              тест. Окончательные переобученные веса ещё не проверены на новом
+              периоде. Версия новых расчётов:{" "}
+              {data.operational_quality.model_version}. Июньская оценка исходной
+              версии ниже сохранена.
+            </small>
+          </div>
+        </section>
+      )}
       {data.research?.models[kind] && (
         <details className="panel research-panel">
           <summary>
-            Дополнительные эксперименты <span>3 временных периода</span>
+            Предыдущий цикл экспериментов <span>3 временных периода</span>
           </summary>
           <div className="research-body">
             <p>
@@ -160,7 +212,7 @@ export function EvaluationPage() {
             </div>
             <p>
               {data.research.models[kind]!.selected === "reference"
-                ? "Новые варианты не прошли заранее заданные условия устойчивого улучшения. Исходная модель сохранена."
+                ? "В этом цикле новые варианты не прошли заранее заданные условия улучшения. Его результаты не описывают последующие обновления модели."
                 : data.research.deployed_changed
                   ? "Новый вариант используется в новых пакетных расчётах. Он прошёл ретроспективное сравнение; для независимого подтверждения нужен новый период. Архивные прогнозы сохранены."
                   : "Кандидат прошёл ретроспективное сравнение. Для независимого подтверждения нужен новый период."}

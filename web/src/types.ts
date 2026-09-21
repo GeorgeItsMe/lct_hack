@@ -130,6 +130,18 @@ export type RowMetrics = {
   calibration_curve: { predicted: number; observed: number; count: number }[];
 };
 export type Evaluation = {
+  operational_quality?: {
+    model_version: string;
+    kind: Kind;
+    rows: {
+      period: string;
+      precision: number;
+      recall: number;
+      f1: number;
+      eligible_episodes: number;
+    }[];
+    f1_gain_interval: { low: number; high: number };
+  } | null;
   research?: {
     deployed_changed: boolean;
     models: Partial<

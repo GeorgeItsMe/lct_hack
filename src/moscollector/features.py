@@ -10,6 +10,7 @@ import argparse
 import json
 import logging
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -194,10 +195,28 @@ def future_counts(counts: np.ndarray, horizon: int) -> np.ndarray:
     return totals[end] - totals[:-1]
 
 
-def build_dataset(years: list[int], step_hours: int = 3):
+def build_dataset(
+    years: list[int],
+    step_hours: int = 3,
+    *,
+    output_path: Path | None = None,
+    episode_output_path: Path | None = None,
+    audit_output_path: Path | None = None,
+    before: str | None = None,
+):
+    alternate_outputs = (output_path, episode_output_path, audit_output_path)
+    if (before or any(alternate_outputs)) and not all(alternate_outputs):
+        raise ValueError("Research/cutoff builds require all three explicit output paths")
     years = sorted(y for y in years if y != 2021)
     channel_episodes = pd.concat(
-        [pd.read_parquet(PROCESSED / f"episodes-{y}.parquet") for y in years], ignore_index=True
+        [
+            pd.read_parquet(
+                PROCESSED / f"episodes-{y}.parquet",
+                filters=[("start_ts", "<", pd.Timestamp(before))] if before else None,
+            )
+            for y in years
+        ],
+        ignore_index=True,
     )
     episodes = group_episodes(channel_episodes)
     channels = pd.read_parquet(PROCESSED / "channels.parquet")
@@ -206,10 +225,15 @@ def build_dataset(years: list[int], step_hours: int = 3):
     all_frames = []
     retained = []
     for year in years:
-        hourly = pd.read_parquet(PROCESSED / f"hourly-{year}.parquet")
+        hourly = pd.read_parquet(
+            PROCESSED / f"hourly-{year}.parquet",
+            filters=[("hour", "<", pd.Timestamp(before))] if before else None,
+        )
         audit = json.loads((ARTIFACTS / f"audit-{year}.json").read_text())
         start = pd.Timestamp(audit["summary"]["start"]).floor("h")
         end = pd.Timestamp(audit["summary"]["end"]).floor("h")
+        if before:
+            end = min(end, pd.Timestamp(before).ceil("h") - pd.Timedelta(hours=1))
         index = pd.date_range(start, end, freq="h")
         # A complete absence of fleet telemetry is a source gap, not a healthy label.
         fleet = hourly.groupby("hour").events.sum().reindex(index, fill_value=0)
@@ -312,9 +336,9 @@ def build_dataset(years: list[int], step_hours: int = 3):
             all_frames.append(frame.reset_index(drop=True))
         LOG.info("Features completed for %s", year)
     dataset = pd.concat(all_frames, ignore_index=True).sort_values(["as_of", "object_id"])
-    dataset.to_parquet(PROCESSED / "features.parquet", index=False, compression="zstd")
+    dataset.to_parquet(output_path or PROCESSED / "features.parquet", index=False, compression="zstd")
     final_eps = pd.concat(retained, ignore_index=True).sort_values("start_ts")
-    final_eps.to_parquet(PROCESSED / "episodes.parquet", index=False)
+    final_eps.to_parquet(episode_output_path or PROCESSED / "episodes.parquet", index=False)
     summary = {
         "years": years,
         "rows": len(dataset),
@@ -334,7 +358,7 @@ def build_dataset(years: list[int], step_hours: int = 3):
             "Each year starts a new state history; first observations are left-censored.",
         ],
     }
-    write_json(ARTIFACTS / "feature_audit.json", summary)
+    write_json(audit_output_path or ARTIFACTS / "feature_audit.json", summary)
     LOG.info("Dataset: %s", summary)
 
 

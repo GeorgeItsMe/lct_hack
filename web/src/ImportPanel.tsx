@@ -45,6 +45,9 @@ type Batch = {
       kind: Kind;
       probability: number;
       above_threshold: boolean;
+      expected_episodes?: number;
+      notification_due?: boolean;
+      notification_status?: string;
       recommendation: string;
     }[];
   };
@@ -423,6 +426,21 @@ export function ImportPanel({ user }: { user: User }) {
                           <td>{f.kind_label}</td>
                           <td>
                             <strong>{pct(f.probability)}</strong>
+                            {f.expected_episodes !== undefined && (
+                              <div className="micro-note">
+                                Ожидается эпизодов:{" "}
+                                {num(Number(f.expected_episodes.toFixed(1)))}
+                                {f.notification_due && (
+                                  <div>Новое предупреждение</div>
+                                )}
+                                {f.notification_status ===
+                                  "between_hourly_checks" && (
+                                  <div>
+                                    Следующая проверка повторов — в начале часа
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </td>
                           <td>{f.recommendation}</td>
                           <td>

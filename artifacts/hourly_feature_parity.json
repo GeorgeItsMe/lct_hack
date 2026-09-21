@@ -1,0 +1,15 @@
+{
+  "shared_rows": 321360,
+  "shared_columns": 100,
+  "exact_parity": true,
+  "hourly_rows": 965952,
+  "horizon_hours": 24,
+  "step_hours": 1,
+  "before": "2026-06-01",
+  "source_files_unchanged": {
+    "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/evaluation_report.json": "c02e54d60663388c79f16267982bac3077a60f94a4e898e81b7f1049b2e69656"
+  },
+  "output_sha256": "7e81c1de4cba584d6901dd9d7fddb5c7e0be3f936a53916bc79e72caaf3b0d92"
+}

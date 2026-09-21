@@ -1,0 +1,11 @@
+{
+  "rows": 338832,
+  "shared_rows": 112320,
+  "columns": 423,
+  "exact_parity": true,
+  "sha256": "7fc46613f2ef6b9b91c303995f1c473414fadddcf77d5db814187148549b8397",
+  "corrected_three_hour_features_sha256": "7b8f753d4fb9eb8fc54c94916b3ed2efd088fc4a32a12125fccf658b9ec313b2",
+  "before": "2026-06-01",
+  "cadence_hours": 1,
+  "horizon_hours": 24
+}

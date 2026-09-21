@@ -1,0 +1,14 @@
+{
+  "version": "op-d87946a7b7fd",
+  "rows": 624,
+  "count_and_shap_parity": true,
+  "inherited_fire_exact_parity": true,
+  "policy": {
+    "type": "pending_count",
+    "margin": 0.75,
+    "probability_floor": 0.5,
+    "cadence_hours": 1,
+    "confirmation_minutes": 70
+  },
+  "scope": "inference_consistency_not_quality_evaluation"
+}

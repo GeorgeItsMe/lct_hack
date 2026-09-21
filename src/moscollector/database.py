@@ -97,6 +97,26 @@ class StreamBatch(Base):
     )
 
 
+class WarningLock(Base):
+    __tablename__ = "warning_lock"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    last_as_of: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class WarningPolicyState(Base):
+    __tablename__ = "warning_policy_states"
+    key: Mapped[str] = mapped_column(String(80), primary_key=True)
+    state_json: Mapped[str] = mapped_column(Text)
+
+
+class WarningBatch(Base):
+    __tablename__ = "warning_batches"
+    job_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    as_of: Mapped[datetime] = mapped_column(DateTime)
+    model_version: Mapped[str] = mapped_column(String(40))
+    decisions_json: Mapped[str] = mapped_column(Text)
+
+
 def hash_password(password: str, salt: str | None = None):
     salt = salt or secrets.token_hex(16)
     digest = hashlib.pbkdf2_hmac("sha256", password.encode(), bytes.fromhex(salt), 310000).hex()

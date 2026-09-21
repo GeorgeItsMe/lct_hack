@@ -1,0 +1,72 @@
+{
+  "url": "http://127.0.0.1:8000",
+  "model_version": "op-d87946a7b7fd",
+  "old_job_id": "c5a9aa3e30c94dc7b9ccc0a35c0064ac",
+  "new_job_id": "1d8b023f9d0e4a16b3814587db05fc0f",
+  "changed_kinds": [
+    "access"
+  ],
+  "changed_probability_rows": 78,
+  "unchanged_probability_rows": 234,
+  "old_result_and_explanation_unchanged": true,
+  "versioned_retry_idempotent": true,
+  "stream_events_unchanged": 1389,
+  "source_events_cutoff_verified": true,
+  "forecast_count": 312,
+  "worker_seconds": 21.62,
+  "new_explanation": [
+    {
+      "feature": "access_reports_168h",
+      "label": "Охранные сигналы за 168 ч",
+      "value": 50.0,
+      "contribution": 0.9195407145534988
+    },
+    {
+      "feature": "object_id",
+      "label": "Исторический профиль объекта",
+      "value": 3215,
+      "contribution": 0.6869656423868358
+    },
+    {
+      "feature": "temperature_channels",
+      "label": "Температурные каналы",
+      "value": 34,
+      "contribution": 0.5984108964392484
+    },
+    {
+      "feature": "access_reports_24h",
+      "label": "Охранные сигналы за 24 ч",
+      "value": 8.0,
+      "contribution": 0.5287977496023936
+    },
+    {
+      "feature": "temperature_max_age_h",
+      "label": "Давность: Последний максимум температуры",
+      "value": 1.0,
+      "contribution": 0.46344160983241767
+    },
+    {
+      "feature": "access_reports_1h",
+      "label": "Охранные сигналы за 1 ч",
+      "value": 4.0,
+      "contribution": 0.33170966967971455
+    },
+    {
+      "feature": "day_of_week",
+      "label": "День недели",
+      "value": 0,
+      "contribution": 0.2799003752806615
+    },
+    {
+      "feature": "temperature_age_h",
+      "label": "Давность: Последняя средняя температура",
+      "value": 1.0,
+      "contribution": 0.22689650973651906
+    }
+  ],
+  "models_present_in_bundle": [
+    "access",
+    "fire"
+  ],
+  "actual_changed_kinds_verified": true
+}

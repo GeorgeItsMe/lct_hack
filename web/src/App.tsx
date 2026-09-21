@@ -290,9 +290,21 @@ export default function App() {
         }
         if (state.forecast_status === "complete" && state.latest_job) {
           const result = await api<{
-            result: { forecasts: { above_threshold: boolean }[] };
+            result: {
+              forecasts: {
+                above_threshold: boolean;
+                notification_due?: boolean;
+              }[];
+            };
           }>(`/imports/${state.latest_job.id}`);
           message = `Прогноз готов · выше порога: ${result.result.forecasts.filter((f) => f.above_threshold).length}`;
+          if (
+            result.result.forecasts.some(
+              (f) => f.notification_due !== undefined,
+            )
+          ) {
+            message += ` · новых предупреждений по охране: ${result.result.forecasts.filter((f) => f.notification_due).length}`;
+          }
         } else if (state.forecast_status === "failed")
           message = `Расчёт не выполнен: ${state.forecast_error || "проверьте журнал"}`;
         else if (state.forecast_status === "accepted_unprocessed")

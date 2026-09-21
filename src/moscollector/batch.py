@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import sys
@@ -84,9 +85,11 @@ def run(directory: Path, as_of: str):
     names = pd.read_parquet(processed / "objects.parquet").set_index("object_id").object_name.to_dict()
     forecasts = []
     for kind in ("fault", "fire", "flood", "access"):
+        expected_counts = None
         if kind in heads:
             meta = heads[kind].meta
             probabilities = heads[kind].probability(frame)
+            expected_counts = heads[kind].expected_count(frame)
         else:
             meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
             model = CatBoostClassifier()
@@ -95,7 +98,10 @@ def run(directory: Path, as_of: str):
                 model.predict(model_input(frame, meta["features"]), prediction_type="RawFormulaVal"),
                 meta["calibration"],
             )
-        for obj, p in zip(frame.object_id, probabilities, strict=True):
+        for i, (obj, p) in enumerate(zip(frame.object_id, probabilities, strict=True)):
+            policy = meta.get("alert_policy")
+            count = float(expected_counts[i]) if expected_counts is not None else None
+            above = bool(p >= meta["threshold"] and (policy is None or count >= policy["margin"]))
             forecasts.append(
                 {
                     "object_id": int(obj),
@@ -104,11 +110,42 @@ def run(directory: Path, as_of: str):
                     "kind_label": KIND_LABELS[kind],
                     "probability": float(p),
                     "threshold": meta["threshold"],
-                    "above_threshold": bool(p >= meta["threshold"]),
+                    "above_threshold": above,
+                    **(
+                        {
+                            "expected_episodes": count,
+                            "notification_due": False,
+                            "notification_status": "preview",
+                        }
+                        if count is not None
+                        else {}
+                    ),
                     "recommendation": RECOMMENDATIONS[kind][0],
                 }
             )
-    forecasts.sort(key=lambda r: (not r["above_threshold"], -r["probability"] / r["threshold"]))
+    forecasts.sort(key=lambda r: (not r["above_threshold"], -r["probability"] / max(r["threshold"], 0.001)))
+    policies = {
+        kind: head.meta["alert_policy"] for kind, head in heads.items() if "alert_policy" in head.meta
+    }
+    if policies and state.get("mode") == "accumulated_stream":
+        from moscollector.database import make_database
+        from moscollector.warning_storage import decide_stream_warnings
+
+        observed = pd.read_parquet(processed / "episodes.parquet")
+        observed["start_ts"] += offset
+        engine, factory = make_database()
+        try:
+            warning_identity = hashlib.sha256(
+                f"{state.get('sha256', directory.name)}:{version}".encode()
+            ).hexdigest()
+            decisions = decide_stream_warnings(
+                factory, warning_identity, cutoff, version, forecasts, observed, policies
+            )
+            lookup = {(d["object_id"], d["kind"]): d for d in decisions}
+            for row in forecasts:
+                row.update(lookup.get((row["object_id"], row["kind"]), {}))
+        finally:
+            engine.dispose()
     result = {
         "as_of": cutoff.isoformat(),
         "model_version": version,

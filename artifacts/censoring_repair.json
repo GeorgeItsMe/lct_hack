@@ -1,0 +1,29 @@
+{
+  "created_at": "2026-09-21T10:24:44.811862+00:00",
+  "changed_rows": {
+    "seq_fault_active_confirmed": 0,
+    "seq_fire_active_confirmed": 0,
+    "seq_flood_active_confirmed": 0,
+    "seq_access_active_confirmed": 10012
+  },
+  "reason": "A grouped episode with at least one unobserved member end has no observed group completion, even if other members ended.",
+  "mixed_groups": 1,
+  "unchanged_original_features_sha256": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+  "files": {
+    "features-sequence": {
+      "before_sha256": "d409ddff3047021909052491f40f93038998f0e390ed18098cfd5013df34ff76",
+      "after_sha256": "93bd8a1edff79903e0c861977c9d34dce58c9c071ad700895ab6c637db788791",
+      "archived_source": "/Users/main/vs_projects/lct_hack/data/processed/features-sequence-invalid-v1.parquet"
+    },
+    "features-device": {
+      "before_sha256": "e036c29881b673befa1c69693e28d8d9cd0d15d558a87095182440b34d05681b",
+      "after_sha256": "7b8f753d4fb9eb8fc54c94916b3ed2efd088fc4a32a12125fccf658b9ec313b2",
+      "archived_source": "/Users/main/vs_projects/lct_hack/data/processed/features-device-invalid-v1.parquet"
+    }
+  },
+  "reference_all_input_rows_identical": true,
+  "reused_reference_folders": [
+    "artifacts/research-v6b/screen_2/recent_reference",
+    "artifacts/research-v6b/screen_1/recent_reference"
+  ]
+}

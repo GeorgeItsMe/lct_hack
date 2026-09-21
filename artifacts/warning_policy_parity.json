@@ -1,0 +1,118 @@
+{
+  "scope": "exact_implementation_parity_not_new_validation",
+  "cases": [
+    {
+      "source": "artifacts/research-v9/confirmation/access-policy.parquet",
+      "sha256": "887ef9b927d663f152a63582774e6e8089334bc70cfeff69fe57641d8e125592",
+      "rows": 27924,
+      "alerts": 460,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/confirmation/access-test.parquet",
+      "sha256": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+      "rows": 56004,
+      "alerts": 726,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/confirmation/fire-policy.parquet",
+      "sha256": "6c2c7171a5f7ff938240aa539103391819682d5b02c309324b006c940bc4196f",
+      "rows": 27924,
+      "alerts": 103,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/confirmation/fire-test.parquet",
+      "sha256": "c6054f69d3bb652ce6a4dbed2be7353f8de4da398092148771755eba5e5cf11a",
+      "rows": 56004,
+      "alerts": 252,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/access-policy.parquet",
+      "sha256": "a158166ff7cc8e49c3a13b4d36ea238a3417100a0ca54d3794228aa3d9f6858f",
+      "rows": 29796,
+      "alerts": 613,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/access-test.parquet",
+      "sha256": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+      "rows": 54132,
+      "alerts": 990,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/fault-policy.parquet",
+      "sha256": "1392718c8a40e3441d8d8bf08bf64e36a841d5c31360cfea11909097f99426b8",
+      "rows": 29796,
+      "alerts": 0,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/fault-test.parquet",
+      "sha256": "6b700896e8fa1f637d1fa4554fc39f7b93e21c048c4c9adad14ab3ff2158242e",
+      "rows": 54132,
+      "alerts": 2,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/fire-policy.parquet",
+      "sha256": "c4bb80b19ef176577ddfe9da5e3ae552a37596e7fb825b5137ce5f96dbde1f5d",
+      "rows": 29796,
+      "alerts": 25,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_1/fire-test.parquet",
+      "sha256": "eb9598c4d937ebaabc5cc35f4d7300129a58da8ae1281b9c3f2b0f1f2c1dbaca",
+      "rows": 54132,
+      "alerts": 53,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/access-policy.parquet",
+      "sha256": "66ed8dda37f58663a324009faada9943e894ec43b3fc69878ec778461b06146d",
+      "rows": 29796,
+      "alerts": 616,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/access-test.parquet",
+      "sha256": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+      "rows": 50388,
+      "alerts": 952,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/fault-policy.parquet",
+      "sha256": "66f5e7c4379e233c50c59b06ced9c6d58d977c9d0ec650777d126d635b44d492",
+      "rows": 29796,
+      "alerts": 4,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/fault-test.parquet",
+      "sha256": "2ce391e67c37bb8820a015326a4b86c289ef4118b68abafa1c15046d5f91b411",
+      "rows": 50388,
+      "alerts": 11,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/fire-policy.parquet",
+      "sha256": "d218a81a89ae771af7be7bd7e1c99421ca424a7e665cb7b9fd76c4a4d6037499",
+      "rows": 29796,
+      "alerts": 52,
+      "exact_parity_after_restart": true
+    },
+    {
+      "source": "artifacts/research-v9/screen_2/fire-test.parquet",
+      "sha256": "cf799c9da1ecfc24912ef3fef2848fc1bcc79c7cfce9035c53fac4ce94af6f82",
+      "rows": 50388,
+      "alerts": 85,
+      "exact_parity_after_restart": true
+    }
+  ],
+  "total_rows": 660192
+}

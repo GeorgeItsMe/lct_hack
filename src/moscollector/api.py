@@ -311,7 +311,14 @@ def evaluation(user=Depends(current_user)):
     service = analytics()
     research_path = ARTIFACTS / "research_report.json"
     research = json.loads(research_path.read_text()) if research_path.exists() else None
-    return {**service.report, "uncertainty": getattr(service, "uncertainty", None), "research": research}
+    quality_path = ARTIFACTS / "operational_quality.json"
+    quality = json.loads(quality_path.read_text()) if quality_path.exists() else None
+    return {
+        **service.report,
+        "uncertainty": getattr(service, "uncertainty", None),
+        "research": research,
+        "operational_quality": quality,
+    }
 
 
 @app.get("/api/evaluation/matches/{kind}")
