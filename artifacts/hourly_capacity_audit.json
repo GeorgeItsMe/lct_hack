@@ -1,0 +1,286 @@
+{
+  "scope": "Exact combinatorial capacity of fixed hourly slots using full future outcomes. NOT model performance, a deployed schedule, or a bound on models with a different cadence. No forecast precision claim.",
+  "method": "Maximum bipartite matching: one side original eligible events, other side original hourly opportunities; edge if0<=event-t<24h. Slots separated by>=1h. Replay selected slots through original evaluator and assert cardinality agreement.",
+  "inputs": {
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/research-v9/screen_1/access-test.parquet": "0dbd9a8cfa297e95d379a732194ca82dd4fdbe7d2fee12fc477fa175720c715e",
+    "artifacts/research-v9/screen_2/access-test.parquet": "0a466350753779a60eb75defede9c4b908cb951a5948f45857172b48134304a3",
+    "artifacts/research-v9/confirmation/access-test.parquet": "7f9936ab5cf564416c6372195190433eb55567a3d44af022015c7fb0ea939642",
+    "artifacts/research-access-stress/stress_1/access-test.parquet": "bf6b6d0e628b9ca9e59be69ee777e4f0ee2ddd1d69bd6e1357100948db1308d1",
+    "artifacts/research-access-stress/stress_2/access-test.parquet": "c44947a8665d8ac352d338f1288159761ac21e1a89a2370f3a4cf31840910667",
+    "artifacts/research-v9/screen_1/fire-test.parquet": "eb9598c4d937ebaabc5cc35f4d7300129a58da8ae1281b9c3f2b0f1f2c1dbaca",
+    "artifacts/research-v9/screen_2/fire-test.parquet": "cf799c9da1ecfc24912ef3fef2848fc1bcc79c7cfce9035c53fac4ce94af6f82",
+    "artifacts/research-v9/confirmation/fire-test.parquet": "c6054f69d3bb652ce6a4dbed2be7353f8de4da398092148771755eba5e5cf11a",
+    "artifacts/research-v10b/stress_1/reference/fire-test.parquet": "db2f2e45d81ddbc645511db52f6b2f0302ff03022eead96e88a8f878ea359b2f",
+    "artifacts/research-v10b/stress_2/reference/fire-test.parquet": "75451de418e2ba823b79bdf6824a5ebd870eeb0f4aa36f75f5d1f347d21ce2a6",
+    "artifacts/research-v9/screen_1/fault-test.parquet": "6b700896e8fa1f637d1fa4554fc39f7b93e21c048c4c9adad14ab3ff2158242e",
+    "artifacts/research-v9/screen_2/fault-test.parquet": "2ce391e67c37bb8820a015326a4b86c289ef4118b68abafa1c15046d5f91b411",
+    "artifacts/research-v10b/confirmation/reference/fault-test.parquet": "80192170c3b897ea267411dd481080c5660686ebc80e178cf2ddf8e7701b42ab",
+    "artifacts/research-v10b/stress_1/reference/fault-test.parquet": "a3594b58866ba6ff2e300f00338589f2ab49b5e739005af5088b677b1bbc9497",
+    "artifacts/research-v10b/stress_2/reference/fault-test.parquet": "39e625e0ecdb4a181699bdbd32c6cd07c1b957008f347261bf44f501a1387b2e"
+  },
+  "periods": [
+    {
+      "kind": "access",
+      "fold": "screen_1",
+      "matching_capacity": 1482,
+      "eligible_episodes": 1482,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "access",
+      "fold": "screen_2",
+      "matching_capacity": 1181,
+      "eligible_episodes": 1185,
+      "capacity_fraction": 0.9966244725738397
+    },
+    {
+      "kind": "access",
+      "fold": "confirmation",
+      "matching_capacity": 1234,
+      "eligible_episodes": 1234,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "access",
+      "fold": "stress_1",
+      "matching_capacity": 1723,
+      "eligible_episodes": 1967,
+      "capacity_fraction": 0.8759532282663955
+    },
+    {
+      "kind": "access",
+      "fold": "stress_2",
+      "matching_capacity": 1656,
+      "eligible_episodes": 1707,
+      "capacity_fraction": 0.9701230228471002
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_1",
+      "matching_capacity": 101,
+      "eligible_episodes": 101,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fire",
+      "fold": "screen_2",
+      "matching_capacity": 187,
+      "eligible_episodes": 187,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fire",
+      "fold": "confirmation",
+      "matching_capacity": 259,
+      "eligible_episodes": 259,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_1",
+      "matching_capacity": 362,
+      "eligible_episodes": 404,
+      "capacity_fraction": 0.8960396039603961
+    },
+    {
+      "kind": "fire",
+      "fold": "stress_2",
+      "matching_capacity": 431,
+      "eligible_episodes": 445,
+      "capacity_fraction": 0.9685393258426966
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "matching_capacity": 18,
+      "eligible_episodes": 18,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "matching_capacity": 28,
+      "eligible_episodes": 28,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "matching_capacity": 29,
+      "eligible_episodes": 29,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "matching_capacity": 106,
+      "eligible_episodes": 106,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "matching_capacity": 36,
+      "eligible_episodes": 36,
+      "capacity_fraction": 1.0
+    }
+  ],
+  "pooled": [
+    {
+      "kind": "access",
+      "matching_capacity": 7276,
+      "eligible_episodes": 7575,
+      "capacity_fraction": 0.9605280528052805
+    },
+    {
+      "kind": "fault",
+      "matching_capacity": 217,
+      "eligible_episodes": 217,
+      "capacity_fraction": 1.0
+    },
+    {
+      "kind": "fire",
+      "matching_capacity": 1340,
+      "eligible_episodes": 1396,
+      "capacity_fraction": 0.9598853868194842
+    }
+  ],
+  "implementation_test": "Matches exhaustive assignment search on40 small random graphs; explicit boundary tests.",
+  "quarter_hour": {
+    "scope": "Same cohort, offline densification between adjacent eligible hourly slots only. No new model or policy quality is implied.",
+    "periods": [
+      {
+        "kind": "access",
+        "fold": "screen_1",
+        "matching_capacity": 1482,
+        "eligible_episodes": 1482,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "access",
+        "fold": "screen_2",
+        "matching_capacity": 1185,
+        "eligible_episodes": 1185,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "access",
+        "fold": "confirmation",
+        "matching_capacity": 1234,
+        "eligible_episodes": 1234,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "access",
+        "fold": "stress_1",
+        "matching_capacity": 1967,
+        "eligible_episodes": 1967,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "access",
+        "fold": "stress_2",
+        "matching_capacity": 1707,
+        "eligible_episodes": 1707,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "fold": "screen_1",
+        "matching_capacity": 101,
+        "eligible_episodes": 101,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "fold": "screen_2",
+        "matching_capacity": 187,
+        "eligible_episodes": 187,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "fold": "confirmation",
+        "matching_capacity": 259,
+        "eligible_episodes": 259,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "fold": "stress_1",
+        "matching_capacity": 404,
+        "eligible_episodes": 404,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "fold": "stress_2",
+        "matching_capacity": 445,
+        "eligible_episodes": 445,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "fold": "screen_1",
+        "matching_capacity": 18,
+        "eligible_episodes": 18,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "fold": "screen_2",
+        "matching_capacity": 28,
+        "eligible_episodes": 28,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "fold": "confirmation",
+        "matching_capacity": 29,
+        "eligible_episodes": 29,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "fold": "stress_1",
+        "matching_capacity": 106,
+        "eligible_episodes": 106,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "fold": "stress_2",
+        "matching_capacity": 36,
+        "eligible_episodes": 36,
+        "capacity_fraction": 1.0
+      }
+    ],
+    "pooled": [
+      {
+        "kind": "access",
+        "matching_capacity": 7575,
+        "eligible_episodes": 7575,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fault",
+        "matching_capacity": 217,
+        "eligible_episodes": 217,
+        "capacity_fraction": 1.0
+      },
+      {
+        "kind": "fire",
+        "matching_capacity": 1396,
+        "eligible_episodes": 1396,
+        "capacity_fraction": 1.0
+      }
+    ]
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_hourly_capacity.py": "f28faf0946a3669dba09dbaa308d45c712a5852893a9fe4cb2ad2dad7b2bc522",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2"
+  }
+}

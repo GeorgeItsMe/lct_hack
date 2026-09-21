@@ -27,6 +27,9 @@ studies = {
     "v15": Path("artifacts/research-v15"),
     "v16": Path("artifacts/research-v16"),
     "v17": Path("artifacts/research-v17"),
+    "v18": Path("artifacts/research-v18"),
+    "v19": Path("artifacts/research-v19"),
+    "v20": Path("artifacts/research-v20"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -48,14 +51,31 @@ for manifest in ordered_manifests:
         for source, digest in manifest[category].items():
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed ordered-feature provenance: {source}")
+novelty_folder = Path("data/processed/channel-novelty-v18")
+novelty_build = read(novelty_folder / "build.json")
+for manifest in [novelty_build] + [read(p) for p in sorted(novelty_folder.glob("onsets-*.json"))]:
+    for category in ("inputs", "outputs"):
+        for source, digest in manifest[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed channel-novelty provenance: {source}")
 new_weights = {}
-for name in ("v15", "v16", "v17"):
+for name in ("v15", "v16", "v17", "v18", "v19"):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
         weights = meta_path.parent / "model.cbm"
         if sha256(weights) != meta["model_sha256"]:
             raise ValueError(f"Changed research weights: {weights}")
         new_weights[str(weights)] = meta["model_sha256"]
+capacity = read(Path("artifacts/hourly_capacity_audit.json"))
+for category in ("inputs", "code_hashes"):
+    for source, digest in capacity[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed cadence-capacity evidence: {source}")
+fine_uncertainty = read(Path("artifacts/fine_cadence_uncertainty.json"))
+for category in ("source_hashes", "code_hashes"):
+    for source, digest in fine_uncertainty[category].items():
+        if sha256(Path(source)) != digest:
+            raise ValueError(f"Changed fine-cadence evidence: {source}")
 version = active_version()
 load_bundle(version)
 if version != "op-d87946a7b7fd":
@@ -66,7 +86,7 @@ report = {
         "python": python_version(),
         **{
             p: package_version(p)
-            for p in ("catboost", "numpy", "pandas", "pyarrow", "scikit-learn", "duckdb")
+            for p in ("catboost", "numpy", "pandas", "pyarrow", "scikit-learn", "duckdb", "scipy")
         },
     },
     "goal_interpretation": "Both event precision and recall>=90%; user clarification pending. Accuracy and precision-only are not success substitutes.",
@@ -81,6 +101,15 @@ report = {
     "waiting_time_v15": read(studies["v15"] / "report.json"),
     "near_term_capacity_v16": read(studies["v16"] / "report.json"),
     "ordered_states_v17": read(studies["v17"] / "report.json"),
+    "channel_novelty_classifier_v18": read(studies["v18"] / "report.json"),
+    "channel_novelty_count_v19": read(studies["v19"] / "report.json"),
+    "channel_novelty_uncertainty": read(Path("artifacts/channel_novelty_uncertainty.json")),
+    "channel_novelty_recurrence": read(Path("artifacts/channel_novelty_recurrence_audit.json")),
+    "channel_novelty_feature_build": novelty_build,
+    "channel_novelty_raw_provenance_verified": True,
+    "hourly_capacity_diagnostic": capacity,
+    "fine_cadence_v20": read(studies["v20"] / "report.json"),
+    "fine_cadence_uncertainty": fine_uncertainty,
     "ordered_feature_build": ordered_build,
     "ordered_feature_raw_provenance_verified": True,
     "additional_research_weights_verified": new_weights,
@@ -97,7 +126,7 @@ report = {
     "original_features_episodes_and_june_hashes_verified": original_hashes,
     "new_blind_test": False,
     "goal_achieved": False,
-    "promotion_decision": "Retain current bundle. V11 passes its intermediate research gates but falls well short of90/90 and lowers precision; December false-warning workload rises. Conditional F1 gain intervals include zero. V12,V14,V15,V16 fail their predeclared gates; V17 decisions are recorded separately per kind. No experimental gate automatically activates weights.",
+    "promotion_decision": "Retain current bundle. V11 passes intermediate gates but falls well short of90/90 and lowers precision. V12,V14,V15,V16,V17,V18 fail final gates. V19 fault passes research gates against its count anchor but precision remains.269 and recall.272, with2/92 quiet-history episodes found. Its positive conditional F1 gain interval does not establish superiority to the deployed classifier or the full goal. V19 access/fire fail screening. V20 access passes all research gates with P.714/R.714/F1.714 on five months, improving both metrics over its recalibrated hourly control; compared with the archived operational family it improves recall but loses precision and adds false alerts. Conditional paired gains do not establish independent future performance. V20 fire fails screening. No experimental gate automatically activates weights.",
     "limitations": "No individual-head result can establish 90/90 for the entire solution. F1 gains involving lower precision are recorded explicitly. No candidate is promoted automatically.",
 }
 target = Path("artifacts/goal90_research_report.json")

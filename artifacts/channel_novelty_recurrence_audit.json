@@ -1,0 +1,240 @@
+{
+  "scope": "Descriptive recurrence audit on already-used historical folds, not a new test or a predictability bound.",
+  "reference": "V19 fault count model with per-channel novelty and90/90 policy. Not the serving classifier. Compare with the same cohort in recurrence_regime_audit.json.",
+  "history": "At the latest eligible forecast at/before each episode, only starts strictly earlier than forecast minus70min can count as known history. No observed prior means none in the supplied history, not necessarily none ever.",
+  "episode_source_sha256": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+  "summary": [
+    {
+      "kind": "fault",
+      "regime": "1_to_7d",
+      "episodes": 33,
+      "matched": 8,
+      "missed": 25,
+      "recall": 0.24242424242424243,
+      "episode_share_within_kind": 0.15207373271889402
+    },
+    {
+      "kind": "fault",
+      "regime": "7_to_30d",
+      "episodes": 26,
+      "matched": 0,
+      "missed": 26,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.11981566820276497
+    },
+    {
+      "kind": "fault",
+      "regime": "no_observed_prior_episode",
+      "episodes": 12,
+      "matched": 0,
+      "missed": 12,
+      "recall": 0.0,
+      "episode_share_within_kind": 0.055299539170506916
+    },
+    {
+      "kind": "fault",
+      "regime": "over_30d",
+      "episodes": 54,
+      "matched": 2,
+      "missed": 52,
+      "recall": 0.037037037037037035,
+      "episode_share_within_kind": 0.2488479262672811
+    },
+    {
+      "kind": "fault",
+      "regime": "within_1d",
+      "episodes": 92,
+      "matched": 49,
+      "missed": 43,
+      "recall": 0.532608695652174,
+      "episode_share_within_kind": 0.423963133640553
+    }
+  ],
+  "per_period": [
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "1_to_7d",
+      "episodes": 10,
+      "matched": 1,
+      "missed": 9
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "7_to_30d",
+      "episodes": 6,
+      "matched": 0,
+      "missed": 6
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "no_observed_prior_episode",
+      "episodes": 1,
+      "matched": 0,
+      "missed": 1
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "over_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "confirmation",
+      "regime": "within_1d",
+      "episodes": 4,
+      "matched": 2,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "7_to_30d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_1",
+      "regime": "over_30d",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "1_to_7d",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "7_to_30d",
+      "episodes": 7,
+      "matched": 0,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "over_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "screen_2",
+      "regime": "within_1d",
+      "episodes": 11,
+      "matched": 11,
+      "missed": 0
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "1_to_7d",
+      "episodes": 14,
+      "matched": 7,
+      "missed": 7
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "7_to_30d",
+      "episodes": 3,
+      "matched": 0,
+      "missed": 3
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "over_30d",
+      "episodes": 18,
+      "matched": 2,
+      "missed": 16
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_1",
+      "regime": "within_1d",
+      "episodes": 69,
+      "matched": 36,
+      "missed": 33
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "1_to_7d",
+      "episodes": 5,
+      "matched": 0,
+      "missed": 5
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "7_to_30d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "no_observed_prior_episode",
+      "episodes": 2,
+      "matched": 0,
+      "missed": 2
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "over_30d",
+      "episodes": 13,
+      "matched": 0,
+      "missed": 13
+    },
+    {
+      "kind": "fault",
+      "fold": "stress_2",
+      "regime": "within_1d",
+      "episodes": 8,
+      "matched": 0,
+      "missed": 8
+    }
+  ],
+  "limits": "A quiet event history does not rule out raw-sensor precursors. Every episode remains in the denominator; no relabeling or exclusion."
+}
