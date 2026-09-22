@@ -10,6 +10,7 @@ import pandas as pd
 from moscollector.event_trigger_grid import trigger_alerts, trigger_grid
 from moscollector.fine_cadence_research import cohort, evaluator_for
 from moscollector.goal90_research import pooled, read
+from moscollector.minute_cadence_verification import verify as verify_minute_cadence
 from moscollector.model_registry import active_version, load_bundle
 from moscollector.onset_verification import verify as verify_onset_study
 from moscollector.prepare import sha256, write_json
@@ -48,6 +49,7 @@ studies = {
     "v31": Path("artifacts/research-v31"),
     "v32": Path("artifacts/research-v32"),
     "v33": Path("artifacts/research-v33"),
+    "v34": Path("artifacts/research-v34"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -455,6 +457,7 @@ for category in ("source_hashes", "code_hashes"):
         if sha256(Path(source)) != digest:
             raise ValueError(f"Changed fine-cadence error audit: {source}")
 onset_verified = verify_onset_study(studies["v33"])
+minute_cadence_verified = verify_minute_cadence(studies["v34"])
 version = active_version()
 load_bundle(version)
 if version != "op-d87946a7b7fd":
@@ -529,6 +532,7 @@ report = {
     },
     "neural_count_v28": neural_report,
     "onset_count_v33": onset_verified,
+    "minute_cadence_v34": minute_cadence_verified,
     "minute_fire_precursor_v32": trigger_report,
     "minute_trigger_slot_hashes_verified": trigger_slot_hashes,
     "minute_trigger_decision": "V32 is a fixed-rule timing audit, not a newly trained model. All8 arms are reported across the same217 faults. One-minute release makes past fire onsets in hindsight-known member channels available before42 faults versus7 at hourly release;35 additional cases, none lost. This membership audit is not a predictor or a predictability bound. Causal minute rule using ALL fire onset channels yields67/5125/217 P.013/R.309 without suppression, or33/264/217 P.125/R.152 with24h cooldown. Corresponding hourly rules yield38/737/217 and19/266/217. Rapid raw signals are worth evaluating with a learned gate; naive firing is rejected because precision remains low and unrestricted minute alerts exceed the original FP budget in4/5 periods. Unknown transport latency limits one-second sensitivity results. No model or warning policy activated, no June reuse, full90/90 not reached.",
@@ -564,8 +568,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "149 passed, 2 skipped (optional PyTorch modules)",
-        "neural_suite": "163 passed, including strictly past channel context, preserved snapshot mass and event cohorts, exact456-policy replay with explicit cadence, delayed confirmation and interrupted pretext/count checkpoint resume on CPU and MPS",
+        "base_suite": "152 passed, 2 skipped (optional PyTorch modules)",
+        "neural_suite": "166 passed, including both-reference/per-month cadence selection guards, strictly past channel context, preserved snapshot mass and event cohorts, exact456-policy replay with explicit cadence, delayed confirmation and interrupted pretext/count checkpoint resume on CPU and MPS",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
