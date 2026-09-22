@@ -7,7 +7,9 @@ from platform import python_version
 
 import pandas as pd
 
-from moscollector.goal90_research import read
+from moscollector.event_trigger_grid import trigger_alerts, trigger_grid
+from moscollector.fine_cadence_research import cohort, evaluator_for
+from moscollector.goal90_research import pooled, read
 from moscollector.model_registry import active_version, load_bundle
 from moscollector.prepare import sha256, write_json
 
@@ -43,6 +45,7 @@ studies = {
     "v29": Path("artifacts/research-v29"),
     "v30": Path("artifacts/research-v30"),
     "v31": Path("artifacts/research-v31"),
+    "v32": Path("artifacts/research-v32"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -330,6 +333,89 @@ for variant in ("pretrained", "global_control", "scratch_gru"):
         != selfsup_report["fault"]["five_period_pooled"][variant]["true_alerts"]
     ):
         raise ValueError("Self-supervised audit differs from the final event totals")
+trigger_root = studies["v32"]
+trigger_report = read(trigger_root / "report.json")
+if (
+    trigger_report["plan_sha256"] != sha256(trigger_root / "plan.json")
+    or trigger_report["source_hashes"] != plans["v32"]["source_hashes"]
+    or trigger_report["code_hashes"] != plans["v32"]["code_hashes"]
+    or {p["fold"] for p in trigger_report["periods"]}
+    != {"screen_1", "screen_2", "confirmation", "stress_1", "stress_2"}
+    or len(trigger_report["periods"]) != 5
+):
+    raise ValueError("Minute-trigger audit is incomplete or belongs to another plan")
+trigger_onsets = pd.concat(
+    [
+        pd.read_parquet(
+            f"data/processed/channel-novelty-v18/onsets-{year}.parquet",
+            filters=[("signal", "==", "fire"), ("ts", "<", pd.Timestamp("2026-06-01"))],
+        )
+        for year in (2025, 2026)
+    ],
+    ignore_index=True,
+)
+trigger_episodes = pd.read_parquet(
+    "data/processed/episodes.parquet",
+    filters=[("kind", "==", "fault"), ("start_ts", "<", pd.Timestamp("2026-06-01"))],
+)
+trigger_slot_hashes, trigger_case_keys = {}, set()
+for period in trigger_report["periods"]:
+    fold = period["fold"]
+    if read(trigger_root / fold / "result.json") != period:
+        raise ValueError("Minute-trigger period/report mismatch")
+    old = pd.read_parquet(selfsup_root / "fault" / fold / "pretrained-test.parquet")
+    hourly = old.loc[old.as_of.eq(old.as_of.dt.floor("h")), ["object_id", "as_of"]].reset_index(drop=True)
+    original_cohort = cohort(hourly, trigger_episodes, 1)
+    if len(hourly) / 24 != period["exposure_days"]:
+        raise ValueError("Trigger grid changed exposure denominator")
+    for seconds in plans["v32"]["resolutions_seconds"]:
+        target = trigger_root / fold / f"slots-{seconds}.parquet"
+        regenerated = trigger_grid(hourly, trigger_onsets, seconds)
+        stored = pd.read_parquet(target)
+        pd.testing.assert_frame_equal(regenerated, stored)
+        if cohort(stored, trigger_episodes, seconds / 3600) != original_cohort:
+            raise ValueError("Trigger grid changed eligible episode identities")
+        trigger_slot_hashes[str(target)] = sha256(target)
+        for obj, events in original_cohort.items():
+            trigger_case_keys.update(
+                (fold, obj, pd.Timestamp(event).isoformat(), seconds) for event in events
+            )
+        for cooldown in plans["v32"]["cooldowns_hours"]:
+            alerts = trigger_alerts(stored, cooldown)
+            actual = evaluator_for(
+                stored, trigger_episodes, seconds / 3600, period["exposure_days"]
+            ).evaluate(alerts, 0.5, max(seconds / 3600, cooldown))
+            saved = period["arms"][f"release_{seconds}s_cooldown_{cooldown}h"]
+            if actual != saved["scores"] or saved["within_original_fp_budget"] != (
+                actual["false_alerts_per_object_day"] <= 0.25
+            ):
+                raise ValueError("Trigger-warning rule/metric replay failed")
+for arm, actual in trigger_report["pooled"].items():
+    if actual != pooled([p["arms"][arm]["scores"] for p in trigger_report["periods"]]):
+        raise ValueError("Trigger pooled metrics differ from period counts")
+actual_keys = {
+    (c["fold"], c["object_id"], c["start_ts"], c["resolution_seconds"])
+    for c in trigger_report["case_diagnostic"]
+}
+if actual_keys != trigger_case_keys or len(actual_keys) != len(trigger_report["case_diagnostic"]):
+    raise ValueError("Trigger case audit lost or duplicated original events")
+for seconds in plans["v32"]["resolutions_seconds"]:
+    cases = [c for c in trigger_report["case_diagnostic"] if c["resolution_seconds"] == seconds]
+    actual = {
+        "eligible_episodes": len(cases),
+        "member_fire_onset_visible_strictly_before_fault": sum(
+            c["member_fire_onset_visible_strictly_before_fault"] for c in cases
+        ),
+    }
+    if actual != trigger_report["precursor_availability"][str(seconds)]:
+        raise ValueError("Trigger precursor totals differ from cases")
+    if any(
+        (not (0 < c["max_lead_minutes"] < 1440))
+        if c["member_fire_onset_visible_strictly_before_fault"]
+        else c["max_lead_minutes"] is not None
+        for c in cases
+    ):
+        raise ValueError("Invalid precursor timing")
 object_kind_audit = read(Path("artifacts/object_kind_error_audit.json"))
 for category in ("source_hashes", "code_hashes"):
     for source, digest in object_kind_audit[category].items():
@@ -439,6 +525,9 @@ report = {
         for p in sorted(studies["v27"].glob("*/screen_*/result.json"))
     },
     "neural_count_v28": neural_report,
+    "minute_fire_precursor_v32": trigger_report,
+    "minute_trigger_slot_hashes_verified": trigger_slot_hashes,
+    "minute_trigger_decision": "V32 is a fixed-rule timing audit, not a newly trained model. All8 arms are reported across the same217 faults. One-minute release makes past fire onsets in hindsight-known member channels available before42 faults versus7 at hourly release;35 additional cases, none lost. This membership audit is not a predictor or a predictability bound. Causal minute rule using ALL fire onset channels yields67/5125/217 P.013/R.309 without suppression, or33/264/217 P.125/R.152 with24h cooldown. Corresponding hourly rules yield38/737/217 and19/266/217. Rapid raw signals are worth evaluating with a learned gate; naive firing is rejected because precision remains low and unrestricted minute alerts exceed the original FP budget in4/5 periods. Unknown transport latency limits one-second sensitivity results. No model or warning policy activated, no June reuse, full90/90 not reached.",
     "self_supervised_v31": selfsup_report,
     "self_supervised_stages_verified": selfsup_models,
     "self_supervised_scratch_controls_verified": selfsup_controls,
@@ -471,8 +560,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "129 passed, 2 skipped (optional PyTorch modules)",
-        "neural_suite": "143 passed, including masked telemetry pretraining, restricted history transfer and exact interrupted pretext/count checkpoint resume on CPU and MPS",
+        "base_suite": "137 passed, 2 skipped (optional PyTorch modules)",
+        "neural_suite": "151 passed, including strict delayed event-trigger grids, unchanged event cohorts, causal warning cooldowns and exact interrupted pretext/count checkpoint resume on CPU and MPS",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
