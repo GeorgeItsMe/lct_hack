@@ -22,6 +22,7 @@ from moscollector.onset_pending_verification import verify as verify_onset_pendi
 from moscollector.onset_verification import verify as verify_onset_study
 from moscollector.prefix_checkpoint_verification import verified_evidence as verify_prefix_checkpoints
 from moscollector.prepare import sha256, write_json
+from moscollector.temporal_count_verification import verified_evidence as verify_temporal_count
 
 root = Path("artifacts/research-v11")
 selection = read(root / "selection.json")
@@ -76,6 +77,9 @@ if (numeric_root / "weight-replay.json").exists():
 tag_root = Path("artifacts/research-v41")
 if (tag_root / "weight-replay.json").exists():
     studies["v41"] = tag_root
+temporal_root = Path("artifacts/research-v42")
+if (temporal_root / "weight-replay.json").exists():
+    studies["v42"] = temporal_root
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
 for source, digest in original_hashes.items():
@@ -134,6 +138,7 @@ for name in (
     *(("v38",) if "v38" in studies else ()),
     *(("v40",) if "v40" in studies else ()),
     *(("v41",) if "v41" in studies else ()),
+    *(("v42",) if "v42" in studies else ()),
 ):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
@@ -529,6 +534,7 @@ prefix_audit = verify_prefix() if Path("artifacts/event_prefix_audit.json").exis
 prefix_checkpoints = verify_prefix_checkpoints(prefix_root) if "v39" in studies else None
 numeric_count = verify_numeric_count(numeric_root) if "v40" in studies else None
 channel_tag = verify_channel_tag(tag_root) if "v41" in studies else None
+temporal_count = verify_temporal_count(temporal_root) if "v42" in studies else None
 tag_audit_path = Path("artifacts/channel_tag_feature_audit.json")
 tag_audit = read(tag_audit_path) if tag_audit_path.exists() else None
 tag_support_path = Path("artifacts/channel_tag_support_audit.json")
@@ -662,6 +668,7 @@ report = {
     **({"channel_tag_v41": channel_tag} if channel_tag else {}),
     **({"channel_tag_feature_audit": tag_audit} if tag_audit else {}),
     **({"channel_tag_support_audit": tag_support} if tag_support else {}),
+    **({"temporal_count_v42": temporal_count} if temporal_count else {}),
     **(
         {
             "prefix_checkpoint_decision": "V39 completes12 one-epoch retrainings with intermediate validation. Nine selected early checkpoints beat their prior validation minima;3 old models remain. Both original numerical guard failures are retained, and trajectory equivalence or an isolated causal effect of validation frequency is not claimed. Independent selected-weight replay covers6 periods,48 forecast/frontier files,9 new inference models and3 exact archived controls. Access GRU1928/2776/2667 P.695/R.723 loses18 true and removes42 false warnings versus its old GRU; fresh CatBoost is stronger in both metrics. Fire GRU155/366/288 P.423/R.538 adds28 true and removes50 false versus old GRU but adds31 true and55 false versus old count, failing the all-reference primary improvement gate. Fault MLP7/45/46 removes124 false versus old MLP without increasing recall, and old count11/43/46 remains stronger. All kinds fail screening, so no additional-month evaluation or activation. This is retrospective evidence on known months, not a new blind test; full90/90 remains unachieved."
@@ -706,8 +713,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "234 passed, 6 skipped (optional PyTorch modules)",
-        "neural_suite": "265 passed, including exact tag-parent grouping, singleton unknown tags, cross-object isolation, exclusion of the same channel from peers, causal distinct-channel windows, direct set comparisons, new water/pump predicates, unchanged negative opportunities and all-reference gates; earlier numeric invalidation, count-loss profiling, within-epoch CPU/MPS resume, flood separation and event-cohort checks retained",
+        "base_suite": "253 passed, 6 skipped (optional PyTorch modules)",
+        "neural_suite": "284 passed, including exact four-bin target boundaries, preserved negative anchors and sample mass, deadline forecast allocation, full-tick parity with gaps and delayed confirmations, all456 policies checked against direct simulation, causal prefixes and all-reference gates; earlier tag, numeric, CPU/MPS resume and full event-cohort tests retained",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
