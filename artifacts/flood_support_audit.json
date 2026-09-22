@@ -1,0 +1,1962 @@
+{
+  "scope": "Descriptive support audit for the remaining flood head. No fitting, policy selection, June reads, label changes, event exclusion or forecast-quality claim. These are proxy sensor episodes, not confirmed physical floods.",
+  "period_design": "Fixed train start2022, separate calibration/policy windows of1/3/6months each, same existing five test months, original3h eligible opportunities and25h purge. Initial one-month validation has only1-2events in several cases, so also audit validation extended to the same3/6month length. Window lengths inspect event support only, not prediction outcomes. Not a new blind evaluation.",
+  "episodes": 481,
+  "objects": 16,
+  "monthly_counts": [
+    {
+      "month": "2022-01",
+      "episodes": 4,
+      "objects": 2
+    },
+    {
+      "month": "2022-02",
+      "episodes": 3,
+      "objects": 2
+    },
+    {
+      "month": "2022-03",
+      "episodes": 3,
+      "objects": 3
+    },
+    {
+      "month": "2022-04",
+      "episodes": 19,
+      "objects": 6
+    },
+    {
+      "month": "2022-05",
+      "episodes": 7,
+      "objects": 2
+    },
+    {
+      "month": "2022-06",
+      "episodes": 7,
+      "objects": 4
+    },
+    {
+      "month": "2022-07",
+      "episodes": 15,
+      "objects": 5
+    },
+    {
+      "month": "2022-08",
+      "episodes": 5,
+      "objects": 3
+    },
+    {
+      "month": "2022-09",
+      "episodes": 8,
+      "objects": 2
+    },
+    {
+      "month": "2022-10",
+      "episodes": 15,
+      "objects": 6
+    },
+    {
+      "month": "2022-11",
+      "episodes": 7,
+      "objects": 2
+    },
+    {
+      "month": "2022-12",
+      "episodes": 23,
+      "objects": 5
+    },
+    {
+      "month": "2023-01",
+      "episodes": 1,
+      "objects": 1
+    },
+    {
+      "month": "2023-02",
+      "episodes": 7,
+      "objects": 4
+    },
+    {
+      "month": "2023-03",
+      "episodes": 12,
+      "objects": 4
+    },
+    {
+      "month": "2023-04",
+      "episodes": 11,
+      "objects": 6
+    },
+    {
+      "month": "2023-05",
+      "episodes": 7,
+      "objects": 3
+    },
+    {
+      "month": "2023-06",
+      "episodes": 10,
+      "objects": 6
+    },
+    {
+      "month": "2023-07",
+      "episodes": 19,
+      "objects": 5
+    },
+    {
+      "month": "2023-08",
+      "episodes": 8,
+      "objects": 4
+    },
+    {
+      "month": "2023-09",
+      "episodes": 6,
+      "objects": 2
+    },
+    {
+      "month": "2023-10",
+      "episodes": 16,
+      "objects": 6
+    },
+    {
+      "month": "2023-11",
+      "episodes": 8,
+      "objects": 2
+    },
+    {
+      "month": "2023-12",
+      "episodes": 8,
+      "objects": 4
+    },
+    {
+      "month": "2024-01",
+      "episodes": 4,
+      "objects": 4
+    },
+    {
+      "month": "2024-02",
+      "episodes": 1,
+      "objects": 1
+    },
+    {
+      "month": "2024-03",
+      "episodes": 8,
+      "objects": 3
+    },
+    {
+      "month": "2024-04",
+      "episodes": 17,
+      "objects": 7
+    },
+    {
+      "month": "2024-05",
+      "episodes": 17,
+      "objects": 3
+    },
+    {
+      "month": "2024-06",
+      "episodes": 17,
+      "objects": 6
+    },
+    {
+      "month": "2024-07",
+      "episodes": 13,
+      "objects": 6
+    },
+    {
+      "month": "2024-09",
+      "episodes": 11,
+      "objects": 4
+    },
+    {
+      "month": "2024-10",
+      "episodes": 17,
+      "objects": 6
+    },
+    {
+      "month": "2024-11",
+      "episodes": 4,
+      "objects": 3
+    },
+    {
+      "month": "2024-12",
+      "episodes": 7,
+      "objects": 3
+    },
+    {
+      "month": "2025-01",
+      "episodes": 9,
+      "objects": 5
+    },
+    {
+      "month": "2025-02",
+      "episodes": 1,
+      "objects": 1
+    },
+    {
+      "month": "2025-03",
+      "episodes": 8,
+      "objects": 3
+    },
+    {
+      "month": "2025-04",
+      "episodes": 10,
+      "objects": 5
+    },
+    {
+      "month": "2025-05",
+      "episodes": 2,
+      "objects": 2
+    },
+    {
+      "month": "2025-07",
+      "episodes": 12,
+      "objects": 5
+    },
+    {
+      "month": "2025-08",
+      "episodes": 2,
+      "objects": 2
+    },
+    {
+      "month": "2025-09",
+      "episodes": 12,
+      "objects": 5
+    },
+    {
+      "month": "2025-10",
+      "episodes": 20,
+      "objects": 5
+    },
+    {
+      "month": "2025-11",
+      "episodes": 1,
+      "objects": 1
+    },
+    {
+      "month": "2025-12",
+      "episodes": 17,
+      "objects": 4
+    },
+    {
+      "month": "2026-01",
+      "episodes": 6,
+      "objects": 3
+    },
+    {
+      "month": "2026-02",
+      "episodes": 4,
+      "objects": 2
+    },
+    {
+      "month": "2026-03",
+      "episodes": 17,
+      "objects": 6
+    },
+    {
+      "month": "2026-04",
+      "episodes": 14,
+      "objects": 7
+    },
+    {
+      "month": "2026-05",
+      "episodes": 1,
+      "objects": 1
+    }
+  ],
+  "duration_at_most_60_seconds": 427,
+  "right_censored": 0,
+  "duration_quantiles_seconds": {
+    "0": 1.0,
+    "0.25": 3.0,
+    "0.5": 6.0,
+    "0.75": 10.0,
+    "0.9": 82.0,
+    "1": 259045.0
+  },
+  "windows": [
+    {
+      "fold": "screen_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 1,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 755186,
+          "positive_rows": 1504,
+          "positive_row_fraction": 0.0019915623435815813,
+          "eligible_episodes": 380,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 16,
+          "positive_row_fraction": 0.0008547008547008547,
+          "eligible_episodes": 2,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        },
+        "calibration": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-10-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 43,
+          "positive_row_fraction": 0.002376215738284704,
+          "eligible_episodes": 12,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "policy": {
+          "dates": [
+            "2025-10-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 20,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "test": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "screen_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-04-01 00:00:00"
+          ],
+          "rows": 679058,
+          "positive_rows": 1397,
+          "positive_row_fraction": 0.002057261677205776,
+          "eligible_episodes": 356,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-04-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 40,
+          "positive_row_fraction": 0.0022104332449160036,
+          "eligible_episodes": 10,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 67,
+          "positive_row_fraction": 0.0011799098337559877,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "policy": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 132,
+          "positive_row_fraction": 0.002324598478444632,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "screen_1",
+      "validation_months": 3,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-02-01 00:00:00"
+          ],
+          "rows": 642242,
+          "positive_rows": 1364,
+          "positive_row_fraction": 0.0021238100279956777,
+          "eligible_episodes": 347,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-02-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 54912,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.001329399766899767,
+          "eligible_episodes": 19,
+          "observed_objects": 78,
+          "positive_query_objects": 8
+        },
+        "calibration": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 67,
+          "positive_row_fraction": 0.0011799098337559877,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "policy": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 132,
+          "positive_row_fraction": 0.002324598478444632,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "screen_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-10-01 00:00:00"
+          ],
+          "rows": 573426,
+          "positive_rows": 1199,
+          "positive_row_fraction": 0.0020909411153313593,
+          "eligible_episodes": 310,
+          "observed_objects": 74,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2024-10-01 00:00:00",
+            "2024-11-01 00:00:00"
+          ],
+          "rows": 17760,
+          "positive_rows": 64,
+          "positive_row_fraction": 0.0036036036036036037,
+          "eligible_episodes": 17,
+          "observed_objects": 74,
+          "positive_query_objects": 6
+        },
+        "calibration": {
+          "dates": [
+            "2024-11-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 105408,
+          "positive_rows": 174,
+          "positive_row_fraction": 0.001650728597449909,
+          "eligible_episodes": 39,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 204,
+          "positive_row_fraction": 0.0017864649012189996,
+          "eligible_episodes": 48,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "screen_1",
+      "validation_months": 6,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-05-01 00:00:00"
+          ],
+          "rows": 482850,
+          "positive_rows": 1016,
+          "positive_row_fraction": 0.002104173138655897,
+          "eligible_episodes": 251,
+          "observed_objects": 74,
+          "positive_query_objects": 12
+        },
+        "validation": {
+          "dates": [
+            "2024-05-01 00:00:00",
+            "2024-11-01 00:00:00"
+          ],
+          "rows": 108336,
+          "positive_rows": 239,
+          "positive_row_fraction": 0.0022060995421651157,
+          "eligible_episodes": 75,
+          "observed_objects": 74,
+          "positive_query_objects": 12
+        },
+        "calibration": {
+          "dates": [
+            "2024-11-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 105408,
+          "positive_rows": 174,
+          "positive_row_fraction": 0.001650728597449909,
+          "eligible_episodes": 39,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 204,
+          "positive_row_fraction": 0.0017864649012189996,
+          "eligible_episodes": 48,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "screen_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 1,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 812594,
+          "positive_rows": 1641,
+          "positive_row_fraction": 0.0020194586718582713,
+          "eligible_episodes": 414,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        },
+        "calibration": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        },
+        "policy": {
+          "dates": [
+            "2026-01-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 14352,
+          "positive_rows": 25,
+          "positive_row_fraction": 0.001741917502787068,
+          "eligible_episodes": 6,
+          "observed_objects": 78,
+          "positive_query_objects": 3
+        },
+        "test": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        }
+      }
+    },
+    {
+      "fold": "screen_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-07-01 00:00:00"
+          ],
+          "rows": 735842,
+          "positive_rows": 1453,
+          "positive_row_fraction": 0.001974608679580671,
+          "eligible_episodes": 368,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-07-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 51,
+          "positive_row_fraction": 0.0027243589743589742,
+          "eligible_episodes": 12,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 132,
+          "positive_row_fraction": 0.002324598478444632,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 51792,
+          "positive_rows": 91,
+          "positive_row_fraction": 0.0017570281124497991,
+          "eligible_episodes": 24,
+          "observed_objects": 78,
+          "positive_query_objects": 8
+        },
+        "test": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        }
+      }
+    },
+    {
+      "fold": "screen_2",
+      "validation_months": 3,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 697778,
+          "positive_rows": 1437,
+          "positive_row_fraction": 0.0020593942486005577,
+          "eligible_episodes": 366,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 67,
+          "positive_row_fraction": 0.0011799098337559877,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "calibration": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 132,
+          "positive_row_fraction": 0.002324598478444632,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 51792,
+          "positive_rows": 91,
+          "positive_row_fraction": 0.0017570281124497991,
+          "eligible_episodes": 24,
+          "observed_objects": 78,
+          "positive_query_objects": 8
+        },
+        "test": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        }
+      }
+    },
+    {
+      "fold": "screen_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-01-01 00:00:00"
+          ],
+          "rows": 627890,
+          "positive_rows": 1313,
+          "positive_row_fraction": 0.0020911306120498813,
+          "eligible_episodes": 338,
+          "observed_objects": 74,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-01-01 00:00:00",
+            "2025-02-01 00:00:00"
+          ],
+          "rows": 14352,
+          "positive_rows": 51,
+          "positive_row_fraction": 0.0035535117056856185,
+          "eligible_episodes": 9,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-02-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 112320,
+          "positive_rows": 140,
+          "positive_row_fraction": 0.0012464387464387464,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 109200,
+          "positive_rows": 223,
+          "positive_row_fraction": 0.002042124542124542,
+          "eligible_episodes": 58,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        }
+      }
+    },
+    {
+      "fold": "screen_2",
+      "validation_months": 6,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-08-01 00:00:00"
+          ],
+          "rows": 537314,
+          "positive_rows": 1158,
+          "positive_row_fraction": 0.0021551643917709197,
+          "eligible_episodes": 299,
+          "observed_objects": 74,
+          "positive_query_objects": 13
+        },
+        "validation": {
+          "dates": [
+            "2024-08-01 00:00:00",
+            "2025-02-01 00:00:00"
+          ],
+          "rows": 104336,
+          "positive_rows": 206,
+          "positive_row_fraction": 0.0019743904309155037,
+          "eligible_episodes": 48,
+          "observed_objects": 78,
+          "positive_query_objects": 11
+        },
+        "calibration": {
+          "dates": [
+            "2025-02-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 112320,
+          "positive_rows": 140,
+          "positive_row_fraction": 0.0012464387464387464,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 109200,
+          "positive_rows": 223,
+          "positive_row_fraction": 0.002042124542124542,
+          "eligible_episodes": 58,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        }
+      }
+    },
+    {
+      "fold": "confirmation",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 1,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 865010,
+          "positive_rows": 1732,
+          "positive_row_fraction": 0.002002288990878718,
+          "eligible_episodes": 438,
+          "observed_objects": 78,
+          "positive_query_objects": 15
+        },
+        "validation": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        },
+        "calibration": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        },
+        "policy": {
+          "dates": [
+            "2026-04-01 00:00:00",
+            "2026-05-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 62,
+          "positive_row_fraction": 0.0034261715296198055,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "test": {
+          "dates": [
+            "2026-05-01 00:00:00",
+            "2026-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.00042735042735042735,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "confirmation",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-10-01 00:00:00"
+          ],
+          "rows": 793250,
+          "positive_rows": 1568,
+          "positive_row_fraction": 0.0019766782225023637,
+          "eligible_episodes": 394,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-10-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 20,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 51792,
+          "positive_rows": 91,
+          "positive_row_fraction": 0.0017570281124497991,
+          "eligible_episodes": 24,
+          "observed_objects": 78,
+          "positive_query_objects": 8
+        },
+        "policy": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-05-01 00:00:00"
+          ],
+          "rows": 54912,
+          "positive_rows": 163,
+          "positive_row_fraction": 0.002968385780885781,
+          "eligible_episodes": 35,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-05-01 00:00:00",
+            "2026-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.00042735042735042735,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "confirmation",
+      "validation_months": 3,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 755186,
+          "positive_rows": 1504,
+          "positive_row_fraction": 0.0019915623435815813,
+          "eligible_episodes": 380,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 132,
+          "positive_row_fraction": 0.002324598478444632,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "calibration": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 51792,
+          "positive_rows": 91,
+          "positive_row_fraction": 0.0017570281124497991,
+          "eligible_episodes": 24,
+          "observed_objects": 78,
+          "positive_query_objects": 8
+        },
+        "policy": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-05-01 00:00:00"
+          ],
+          "rows": 54912,
+          "positive_rows": 163,
+          "positive_row_fraction": 0.002968385780885781,
+          "eligible_episodes": 35,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-05-01 00:00:00",
+            "2026-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.00042735042735042735,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "confirmation",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-04-01 00:00:00"
+          ],
+          "rows": 679058,
+          "positive_rows": 1397,
+          "positive_row_fraction": 0.002057261677205776,
+          "eligible_episodes": 356,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-04-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 40,
+          "positive_row_fraction": 0.0022104332449160036,
+          "eligible_episodes": 10,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 204,
+          "positive_row_fraction": 0.0017864649012189996,
+          "eligible_episodes": 48,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-05-01 00:00:00"
+          ],
+          "rows": 107328,
+          "positive_rows": 254,
+          "positive_row_fraction": 0.002366577221228384,
+          "eligible_episodes": 59,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-05-01 00:00:00",
+            "2026-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.00042735042735042735,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "confirmation",
+      "validation_months": 6,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-11-01 00:00:00"
+          ],
+          "rows": 591778,
+          "positive_rows": 1263,
+          "positive_row_fraction": 0.00213424628830406,
+          "eligible_episodes": 327,
+          "observed_objects": 74,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2024-11-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 105408,
+          "positive_rows": 174,
+          "positive_row_fraction": 0.001650728597449909,
+          "eligible_episodes": 39,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "calibration": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 204,
+          "positive_row_fraction": 0.0017864649012189996,
+          "eligible_episodes": 48,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2026-05-01 00:00:00"
+          ],
+          "rows": 107328,
+          "positive_rows": 254,
+          "positive_row_fraction": 0.002366577221228384,
+          "eligible_episodes": 59,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-05-01 00:00:00",
+            "2026-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.00042735042735042735,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        }
+      }
+    },
+    {
+      "fold": "stress_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 1,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 774530,
+          "positive_rows": 1525,
+          "positive_row_fraction": 0.0019689359998967117,
+          "eligible_episodes": 382,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-10-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 43,
+          "positive_row_fraction": 0.002376215738284704,
+          "eligible_episodes": 12,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "calibration": {
+          "dates": [
+            "2025-10-01 00:00:00",
+            "2025-11-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 20,
+          "observed_objects": 78,
+          "positive_query_objects": 5
+        },
+        "policy": {
+          "dates": [
+            "2025-11-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 18096,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004420866489832007,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        },
+        "test": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        }
+      }
+    },
+    {
+      "fold": "stress_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-05-01 00:00:00"
+          ],
+          "rows": 697778,
+          "positive_rows": 1437,
+          "positive_row_fraction": 0.0020593942486005577,
+          "eligible_episodes": 366,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-05-01 00:00:00",
+            "2025-06-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 16,
+          "positive_row_fraction": 0.0008547008547008547,
+          "eligible_episodes": 2,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        },
+        "calibration": {
+          "dates": [
+            "2025-06-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 72,
+          "positive_row_fraction": 0.001267962806424345,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        },
+        "policy": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 56160,
+          "positive_rows": 124,
+          "positive_row_fraction": 0.002207977207977208,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        }
+      }
+    },
+    {
+      "fold": "stress_1",
+      "validation_months": 3,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-03-01 00:00:00"
+          ],
+          "rows": 659714,
+          "positive_rows": 1372,
+          "positive_row_fraction": 0.0020796890773880803,
+          "eligible_episodes": 348,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-03-01 00:00:00",
+            "2025-06-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 81,
+          "positive_row_fraction": 0.001426458157227388,
+          "eligible_episodes": 20,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "calibration": {
+          "dates": [
+            "2025-06-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 72,
+          "positive_row_fraction": 0.001267962806424345,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        },
+        "policy": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 56160,
+          "positive_rows": 124,
+          "positive_row_fraction": 0.002207977207977208,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        }
+      }
+    },
+    {
+      "fold": "stress_1",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-11-01 00:00:00"
+          ],
+          "rows": 591778,
+          "positive_rows": 1263,
+          "positive_row_fraction": 0.00213424628830406,
+          "eligible_episodes": 327,
+          "observed_objects": 74,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2024-11-01 00:00:00",
+            "2024-12-01 00:00:00"
+          ],
+          "rows": 17168,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0013979496738117428,
+          "eligible_episodes": 4,
+          "observed_objects": 74,
+          "positive_query_objects": 3
+        },
+        "calibration": {
+          "dates": [
+            "2024-12-01 00:00:00",
+            "2025-06-01 00:00:00"
+          ],
+          "rows": 106992,
+          "positive_rows": 166,
+          "positive_row_fraction": 0.0015515178704949902,
+          "eligible_episodes": 37,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-06-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 113568,
+          "positive_rows": 196,
+          "positive_row_fraction": 0.0017258382642998027,
+          "eligible_episodes": 47,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        }
+      }
+    },
+    {
+      "fold": "stress_1",
+      "validation_months": 6,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-06-01 00:00:00"
+          ],
+          "rows": 501202,
+          "positive_rows": 1059,
+          "positive_row_fraction": 0.002112920539024186,
+          "eligible_episodes": 269,
+          "observed_objects": 74,
+          "positive_query_objects": 13
+        },
+        "validation": {
+          "dates": [
+            "2024-06-01 00:00:00",
+            "2024-12-01 00:00:00"
+          ],
+          "rows": 107744,
+          "positive_rows": 228,
+          "positive_row_fraction": 0.002116127116127116,
+          "eligible_episodes": 62,
+          "observed_objects": 74,
+          "positive_query_objects": 11
+        },
+        "calibration": {
+          "dates": [
+            "2024-12-01 00:00:00",
+            "2025-06-01 00:00:00"
+          ],
+          "rows": 106992,
+          "positive_rows": 166,
+          "positive_row_fraction": 0.0015515178704949902,
+          "eligible_episodes": 37,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-06-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 113568,
+          "positive_rows": 196,
+          "positive_row_fraction": 0.0017258382642998027,
+          "eligible_episodes": 47,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "test": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        }
+      }
+    },
+    {
+      "fold": "stress_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 1,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 831314,
+          "positive_rows": 1649,
+          "positive_row_fraction": 0.001983606675696548,
+          "eligible_episodes": 415,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-01-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 58,
+          "positive_row_fraction": 0.003098290598290598,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 4
+        },
+        "calibration": {
+          "dates": [
+            "2026-01-01 00:00:00",
+            "2026-02-01 00:00:00"
+          ],
+          "rows": 14352,
+          "positive_rows": 25,
+          "positive_row_fraction": 0.001741917502787068,
+          "eligible_episodes": 6,
+          "observed_objects": 78,
+          "positive_query_objects": 3
+        },
+        "policy": {
+          "dates": [
+            "2026-02-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 24,
+          "positive_row_fraction": 0.0014245014245014246,
+          "eligible_episodes": 4,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        },
+        "test": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        }
+      }
+    },
+    {
+      "fold": "stress_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-08-01 00:00:00"
+          ],
+          "rows": 755186,
+          "positive_rows": 1504,
+          "positive_row_fraction": 0.0019915623435815813,
+          "eligible_episodes": 380,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-08-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 16,
+          "positive_row_fraction": 0.0008547008547008547,
+          "eligible_episodes": 2,
+          "observed_objects": 78,
+          "positive_query_objects": 2
+        },
+        "calibration": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 56160,
+          "positive_rows": 124,
+          "positive_row_fraction": 0.002207977207977208,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 50544,
+          "positive_rows": 107,
+          "positive_row_fraction": 0.0021169673947451727,
+          "eligible_episodes": 27,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "test": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        }
+      }
+    },
+    {
+      "fold": "stress_2",
+      "validation_months": 3,
+      "calibration_and_policy_months_each": 3,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-06-01 00:00:00"
+          ],
+          "rows": 717122,
+          "positive_rows": 1453,
+          "positive_row_fraction": 0.002026154545530607,
+          "eligible_episodes": 368,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-06-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 56784,
+          "positive_rows": 72,
+          "positive_row_fraction": 0.001267962806424345,
+          "eligible_episodes": 14,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        },
+        "calibration": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2025-12-01 00:00:00"
+          ],
+          "rows": 56160,
+          "positive_rows": 124,
+          "positive_row_fraction": 0.002207977207977208,
+          "eligible_episodes": 33,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-12-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 50544,
+          "positive_rows": 107,
+          "positive_row_fraction": 0.0021169673947451727,
+          "eligible_episodes": 27,
+          "observed_objects": 78,
+          "positive_query_objects": 7
+        },
+        "test": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        }
+      }
+    },
+    {
+      "fold": "stress_2",
+      "validation_months": 1,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2025-02-01 00:00:00"
+          ],
+          "rows": 642242,
+          "positive_rows": 1364,
+          "positive_row_fraction": 0.0021238100279956777,
+          "eligible_episodes": 347,
+          "observed_objects": 78,
+          "positive_query_objects": 14
+        },
+        "validation": {
+          "dates": [
+            "2025-02-01 00:00:00",
+            "2025-03-01 00:00:00"
+          ],
+          "rows": 16848,
+          "positive_rows": 8,
+          "positive_row_fraction": 0.0004748338081671415,
+          "eligible_episodes": 1,
+          "observed_objects": 78,
+          "positive_query_objects": 1
+        },
+        "calibration": {
+          "dates": [
+            "2025-03-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 153,
+          "positive_row_fraction": 0.0013398486759142497,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 107328,
+          "positive_rows": 231,
+          "positive_row_fraction": 0.0021522808586762073,
+          "eligible_episodes": 60,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        }
+      }
+    },
+    {
+      "fold": "stress_2",
+      "validation_months": 6,
+      "calibration_and_policy_months_each": 6,
+      "parts": {
+        "train": {
+          "dates": [
+            "2022-01-01 00:00:00",
+            "2024-09-01 00:00:00"
+          ],
+          "rows": 555666,
+          "positive_rows": 1158,
+          "positive_row_fraction": 0.002083985703642116,
+          "eligible_episodes": 299,
+          "observed_objects": 74,
+          "positive_query_objects": 13
+        },
+        "validation": {
+          "dates": [
+            "2024-09-01 00:00:00",
+            "2025-03-01 00:00:00"
+          ],
+          "rows": 103456,
+          "positive_rows": 214,
+          "positive_row_fraction": 0.0020685122177544076,
+          "eligible_episodes": 49,
+          "observed_objects": 78,
+          "positive_query_objects": 11
+        },
+        "calibration": {
+          "dates": [
+            "2025-03-01 00:00:00",
+            "2025-09-01 00:00:00"
+          ],
+          "rows": 114192,
+          "positive_rows": 153,
+          "positive_row_fraction": 0.0013398486759142497,
+          "eligible_episodes": 34,
+          "observed_objects": 78,
+          "positive_query_objects": 9
+        },
+        "policy": {
+          "dates": [
+            "2025-09-01 00:00:00",
+            "2026-03-01 00:00:00"
+          ],
+          "rows": 107328,
+          "positive_rows": 231,
+          "positive_row_fraction": 0.0021522808586762073,
+          "eligible_episodes": 60,
+          "observed_objects": 78,
+          "positive_query_objects": 10
+        },
+        "test": {
+          "dates": [
+            "2026-03-01 00:00:00",
+            "2026-04-01 00:00:00"
+          ],
+          "rows": 18720,
+          "positive_rows": 73,
+          "positive_row_fraction": 0.0038995726495726496,
+          "eligible_episodes": 17,
+          "observed_objects": 78,
+          "positive_query_objects": 6
+        }
+      }
+    }
+  ],
+  "original_binary_targets_exact_parity": true,
+  "limitations": "Longer calibration does not create new events or prove90/90. Short pulses are retained, not labelled false without confirmation. The count of eligible test events is not the number of independent physical incidents. The currently disabled production head is unchanged.",
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/features-channel-novelty.parquet": "55103c76a806daba106c1f2f198b2ee734c41d18afceccab78d6d0d33b30eba7",
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_flood_support.py": "53974cddffb0a6c3341f1b261fbe524d77f53ecf821b44a9831138ae618b1289",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065"
+  }
+}
