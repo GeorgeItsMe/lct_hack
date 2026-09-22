@@ -1,0 +1,1430 @@
+{
+  "scope": "Descriptive post-result audit of ALL40original test episodes and both fixed arms. No model/rule selection, event removal, June reads, physical flood validation or prediction upper-bound claim.",
+  "recurrence_note": "Gap between original episode start times. It is a descriptive grouping, not a causal feature or claim that the preceding episode was already confirmed at warning time.",
+  "cases": [
+    {
+      "fold": "screen_1",
+      "arm": "poisson",
+      "object_id": 165,
+      "episode_id": "EP-0067178",
+      "start_ts": "2025-11-21 10:41:46",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1729.0430555555556,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "screen_1",
+      "arm": "object_weekday",
+      "object_id": 165,
+      "episode_id": "EP-0067178",
+      "start_ts": "2025-11-21 10:41:46",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1729.0430555555556,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 4095,
+      "episode_id": "EP-0071755",
+      "start_ts": "2026-02-05 11:34:33",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1080.7083333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 516.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 4095,
+      "episode_id": "EP-0071948",
+      "start_ts": "2026-02-10 09:36:53",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 118.03888888888889,
+      "recurrence": "within_7d",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 4095,
+      "episode_id": "EP-0071960",
+      "start_ts": "2026-02-10 10:49:36",
+      "matched": true,
+      "lead_hours": 0.8266666666666667,
+      "previous_onset_gap_hours": 1.2119444444444445,
+      "recurrence": "within_24h",
+      "duration_seconds": 1.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0072786",
+      "start_ts": "2026-02-26 13:06:43",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1586.4675,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 805.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 4095,
+      "episode_id": "EP-0071755",
+      "start_ts": "2026-02-05 11:34:33",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1080.7083333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 516.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 4095,
+      "episode_id": "EP-0071948",
+      "start_ts": "2026-02-10 09:36:53",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 118.03888888888889,
+      "recurrence": "within_7d",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 4095,
+      "episode_id": "EP-0071960",
+      "start_ts": "2026-02-10 10:49:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.2119444444444445,
+      "recurrence": "within_24h",
+      "duration_seconds": 1.0
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0072786",
+      "start_ts": "2026-02-26 13:06:43",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1586.4675,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 805.0
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 165,
+      "episode_id": "EP-0077688",
+      "start_ts": "2026-05-18 11:26:09",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1657.6758333333332,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 5.0
+    },
+    {
+      "fold": "confirmation",
+      "arm": "object_weekday",
+      "object_id": 165,
+      "episode_id": "EP-0077688",
+      "start_ts": "2026-05-18 11:26:09",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1657.6758333333332,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 5.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0069583",
+      "start_ts": "2025-12-17 10:41:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2202.8680555555557,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0069610",
+      "start_ts": "2025-12-17 11:56:12",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.2455555555555555,
+      "recurrence": "within_24h",
+      "duration_seconds": 18.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0069644",
+      "start_ts": "2025-12-17 13:37:22",
+      "matched": true,
+      "lead_hours": 1.6227777777777779,
+      "previous_onset_gap_hours": 1.6861111111111111,
+      "recurrence": "within_24h",
+      "duration_seconds": 12.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 4095,
+      "episode_id": "EP-0069874",
+      "start_ts": "2025-12-22 10:52:03",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1488.8461111111112,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 16.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069686",
+      "start_ts": "2025-12-18 10:12:00",
+      "matched": true,
+      "lead_hours": 20.2,
+      "previous_onset_gap_hours": 2036.6083333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 12.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069702",
+      "start_ts": "2025-12-18 11:13:34",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.0261111111111112,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069713",
+      "start_ts": "2025-12-18 11:57:46",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.7366666666666667,
+      "recurrence": "within_24h",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069717",
+      "start_ts": "2025-12-18 12:20:54",
+      "matched": true,
+      "lead_hours": 0.34833333333333333,
+      "previous_onset_gap_hours": 0.38555555555555554,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069721",
+      "start_ts": "2025-12-18 12:41:20",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.34055555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069724",
+      "start_ts": "2025-12-18 12:56:18",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.24944444444444444,
+      "recurrence": "within_24h",
+      "duration_seconds": 32.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069727",
+      "start_ts": "2025-12-18 13:09:50",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.22555555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069731",
+      "start_ts": "2025-12-18 13:26:17",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.27416666666666667,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0069865",
+      "start_ts": "2025-12-22 10:38:40",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 93.2063888888889,
+      "recurrence": "within_7d",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5961,
+      "episode_id": "EP-0067996",
+      "start_ts": "2025-12-03 11:28:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": null,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5961,
+      "episode_id": "EP-0068066",
+      "start_ts": "2025-12-03 14:13:22",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2.7483333333333335,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5961,
+      "episode_id": "EP-0068543",
+      "start_ts": "2025-12-08 12:16:16",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 118.04833333333333,
+      "recurrence": "within_7d",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5961,
+      "episode_id": "EP-0068700",
+      "start_ts": "2025-12-09 10:08:50",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 21.87611111111111,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0069583",
+      "start_ts": "2025-12-17 10:41:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2202.8680555555557,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0069610",
+      "start_ts": "2025-12-17 11:56:12",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.2455555555555555,
+      "recurrence": "within_24h",
+      "duration_seconds": 18.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0069644",
+      "start_ts": "2025-12-17 13:37:22",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.6861111111111111,
+      "recurrence": "within_24h",
+      "duration_seconds": 12.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 4095,
+      "episode_id": "EP-0069874",
+      "start_ts": "2025-12-22 10:52:03",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1488.8461111111112,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 16.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069686",
+      "start_ts": "2025-12-18 10:12:00",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2036.6083333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 12.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069702",
+      "start_ts": "2025-12-18 11:13:34",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.0261111111111112,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069713",
+      "start_ts": "2025-12-18 11:57:46",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.7366666666666667,
+      "recurrence": "within_24h",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069717",
+      "start_ts": "2025-12-18 12:20:54",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.38555555555555554,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069721",
+      "start_ts": "2025-12-18 12:41:20",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.34055555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069724",
+      "start_ts": "2025-12-18 12:56:18",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.24944444444444444,
+      "recurrence": "within_24h",
+      "duration_seconds": 32.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069727",
+      "start_ts": "2025-12-18 13:09:50",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.22555555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069731",
+      "start_ts": "2025-12-18 13:26:17",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.27416666666666667,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0069865",
+      "start_ts": "2025-12-22 10:38:40",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 93.2063888888889,
+      "recurrence": "within_7d",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5961,
+      "episode_id": "EP-0067996",
+      "start_ts": "2025-12-03 11:28:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": null,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5961,
+      "episode_id": "EP-0068066",
+      "start_ts": "2025-12-03 14:13:22",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2.7483333333333335,
+      "recurrence": "within_24h",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5961,
+      "episode_id": "EP-0068543",
+      "start_ts": "2025-12-08 12:16:16",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 118.04833333333333,
+      "recurrence": "within_7d",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_1",
+      "arm": "object_weekday",
+      "object_id": 5961,
+      "episode_id": "EP-0068700",
+      "start_ts": "2025-12-09 10:08:50",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 21.87611111111111,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0073646",
+      "start_ts": "2026-03-12 09:40:56",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2036.0594444444444,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0073679",
+      "start_ts": "2026-03-12 10:49:32",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.1433333333333333,
+      "recurrence": "within_24h",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0073704",
+      "start_ts": "2026-03-12 11:46:52",
+      "matched": true,
+      "lead_hours": 0.7811111111111111,
+      "previous_onset_gap_hours": 0.9555555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 22.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0073721",
+      "start_ts": "2026-03-12 12:26:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.6622222222222223,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "episode_id": "EP-0073723",
+      "start_ts": "2026-03-12 12:41:10",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.2427777777777778,
+      "recurrence": "within_24h",
+      "duration_seconds": 16.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 165,
+      "episode_id": "EP-0073380",
+      "start_ts": "2026-03-10 09:45:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2615.063888888889,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5113,
+      "episode_id": "EP-0074461",
+      "start_ts": "2026-03-22 14:32:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1560.3055555555557,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 67.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5113,
+      "episode_id": "EP-0074462",
+      "start_ts": "2026-03-22 14:46:16",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.23,
+      "recurrence": "within_24h",
+      "duration_seconds": 1290.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5113,
+      "episode_id": "EP-0074639",
+      "start_ts": "2026-03-24 10:40:20",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 43.90111111111111,
+      "recurrence": "within_7d",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5580,
+      "episode_id": "EP-0074776",
+      "start_ts": "2026-03-26 10:10:48",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1559.6383333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5582,
+      "episode_id": "EP-0073880",
+      "start_ts": "2026-03-16 10:06:02",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1320.0683333333334,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5582,
+      "episode_id": "EP-0075016",
+      "start_ts": "2026-03-30 14:01:06",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 339.91777777777776,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0074498",
+      "start_ts": "2026-03-23 10:03:22",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 596.9441666666667,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0074505",
+      "start_ts": "2026-03-23 10:22:30",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.3188888888888889,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0074531",
+      "start_ts": "2026-03-23 11:27:18",
+      "matched": true,
+      "lead_hours": 0.455,
+      "previous_onset_gap_hours": 1.08,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0074645",
+      "start_ts": "2026-03-24 11:01:28",
+      "matched": true,
+      "lead_hours": 23.024444444444445,
+      "previous_onset_gap_hours": 23.569444444444443,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "episode_id": "EP-0074652",
+      "start_ts": "2026-03-24 11:33:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.5355555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0073646",
+      "start_ts": "2026-03-12 09:40:56",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2036.0594444444444,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 10.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0073679",
+      "start_ts": "2026-03-12 10:49:32",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.1433333333333333,
+      "recurrence": "within_24h",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0073704",
+      "start_ts": "2026-03-12 11:46:52",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.9555555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 22.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0073721",
+      "start_ts": "2026-03-12 12:26:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.6622222222222223,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 42,
+      "episode_id": "EP-0073723",
+      "start_ts": "2026-03-12 12:41:10",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.2427777777777778,
+      "recurrence": "within_24h",
+      "duration_seconds": 16.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 165,
+      "episode_id": "EP-0073380",
+      "start_ts": "2026-03-10 09:45:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 2615.063888888889,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5113,
+      "episode_id": "EP-0074461",
+      "start_ts": "2026-03-22 14:32:28",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1560.3055555555557,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 67.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5113,
+      "episode_id": "EP-0074462",
+      "start_ts": "2026-03-22 14:46:16",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.23,
+      "recurrence": "within_24h",
+      "duration_seconds": 1290.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5113,
+      "episode_id": "EP-0074639",
+      "start_ts": "2026-03-24 10:40:20",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 43.90111111111111,
+      "recurrence": "within_7d",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5580,
+      "episode_id": "EP-0074776",
+      "start_ts": "2026-03-26 10:10:48",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1559.6383333333333,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5582,
+      "episode_id": "EP-0073880",
+      "start_ts": "2026-03-16 10:06:02",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1320.0683333333334,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 2.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5582,
+      "episode_id": "EP-0075016",
+      "start_ts": "2026-03-30 14:01:06",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 339.91777777777776,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 4.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0074498",
+      "start_ts": "2026-03-23 10:03:22",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 596.9441666666667,
+      "recurrence": "after_7d_or_first",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0074505",
+      "start_ts": "2026-03-23 10:22:30",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.3188888888888889,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0074531",
+      "start_ts": "2026-03-23 11:27:18",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 1.08,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0074645",
+      "start_ts": "2026-03-24 11:01:28",
+      "matched": true,
+      "lead_hours": 11.024444444444445,
+      "previous_onset_gap_hours": 23.569444444444443,
+      "recurrence": "within_24h",
+      "duration_seconds": 6.0
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "episode_id": "EP-0074652",
+      "start_ts": "2026-03-24 11:33:36",
+      "matched": false,
+      "lead_hours": null,
+      "previous_onset_gap_hours": 0.5355555555555556,
+      "recurrence": "within_24h",
+      "duration_seconds": 8.0
+    }
+  ],
+  "warnings": [
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 4095,
+      "as_of": "2026-02-05 12:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 4095,
+      "as_of": "2026-02-10 10:00:00",
+      "reason": "matched",
+      "lead_hours": 0.8266666666666667
+    },
+    {
+      "fold": "screen_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2026-02-26 14:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-03 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-04 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-10 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-11 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-17 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-18 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-24 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "screen_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-02-25 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-13 16:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-15 11:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-18 13:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-20 09:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-21 11:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-26 12:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-05-28 12:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "confirmation",
+      "arm": "poisson",
+      "object_id": 5113,
+      "as_of": "2026-05-26 20:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2025-12-17 12:00:00",
+      "reason": "matched",
+      "lead_hours": 1.6227777777777779
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2025-12-15 01:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2025-12-17 14:00:00",
+      "reason": "matched",
+      "lead_hours": 20.2
+    },
+    {
+      "fold": "stress_1",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2025-12-18 12:00:00",
+      "reason": "matched",
+      "lead_hours": 0.34833333333333333
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-03-12 11:00:00",
+      "reason": "matched",
+      "lead_hours": 0.7811111111111111
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 42,
+      "as_of": "2026-03-12 13:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5582,
+      "as_of": "2026-03-30 15:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2026-03-23 11:00:00",
+      "reason": "matched",
+      "lead_hours": 0.455
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2026-03-23 12:00:00",
+      "reason": "matched",
+      "lead_hours": 23.024444444444445
+    },
+    {
+      "fold": "stress_2",
+      "arm": "poisson",
+      "object_id": 5676,
+      "as_of": "2026-03-24 12:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-03 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-04 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-10 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-11 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-17 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-18 00:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-24 00:00:00",
+      "reason": "matched",
+      "lead_hours": 11.024444444444445
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-24 13:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    },
+    {
+      "fold": "stress_2",
+      "arm": "object_weekday",
+      "object_id": 5676,
+      "as_of": "2026-03-25 13:00:00",
+      "reason": "no_future_episode",
+      "lead_hours": null
+    }
+  ],
+  "summary": {
+    "poisson": {
+      "warnings_by_reason": {
+        "no_future_episode": 14,
+        "matched": 7
+      },
+      "matched_lead_at_least_1h": 3,
+      "by_recurrence": [
+        {
+          "recurrence": "after_7d_or_first",
+          "episodes": 15,
+          "matched": 1
+        },
+        {
+          "recurrence": "within_24h",
+          "episodes": 21,
+          "matched": 6
+        },
+        {
+          "recurrence": "within_7d",
+          "episodes": 4,
+          "matched": 0
+        }
+      ],
+      "by_object": [
+        {
+          "object_id": 42,
+          "episodes": 8,
+          "matched": 2
+        },
+        {
+          "object_id": 165,
+          "episodes": 3,
+          "matched": 0
+        },
+        {
+          "object_id": 4095,
+          "episodes": 4,
+          "matched": 1
+        },
+        {
+          "object_id": 5113,
+          "episodes": 3,
+          "matched": 0
+        },
+        {
+          "object_id": 5580,
+          "episodes": 1,
+          "matched": 0
+        },
+        {
+          "object_id": 5582,
+          "episodes": 2,
+          "matched": 0
+        },
+        {
+          "object_id": 5676,
+          "episodes": 15,
+          "matched": 4
+        },
+        {
+          "object_id": 5961,
+          "episodes": 4,
+          "matched": 0
+        }
+      ]
+    },
+    "object_weekday": {
+      "warnings_by_reason": {
+        "no_future_episode": 16,
+        "matched": 1
+      },
+      "matched_lead_at_least_1h": 1,
+      "by_recurrence": [
+        {
+          "recurrence": "after_7d_or_first",
+          "episodes": 15,
+          "matched": 0
+        },
+        {
+          "recurrence": "within_24h",
+          "episodes": 21,
+          "matched": 1
+        },
+        {
+          "recurrence": "within_7d",
+          "episodes": 4,
+          "matched": 0
+        }
+      ],
+      "by_object": [
+        {
+          "object_id": 42,
+          "episodes": 8,
+          "matched": 0
+        },
+        {
+          "object_id": 165,
+          "episodes": 3,
+          "matched": 0
+        },
+        {
+          "object_id": 4095,
+          "episodes": 4,
+          "matched": 0
+        },
+        {
+          "object_id": 5113,
+          "episodes": 3,
+          "matched": 0
+        },
+        {
+          "object_id": 5580,
+          "episodes": 1,
+          "matched": 0
+        },
+        {
+          "object_id": 5582,
+          "episodes": 2,
+          "matched": 0
+        },
+        {
+          "object_id": 5676,
+          "episodes": 15,
+          "matched": 1
+        },
+        {
+          "object_id": 5961,
+          "episodes": 4,
+          "matched": 0
+        }
+      ]
+    }
+  },
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+    "artifacts/research-v38/confirmation/object_weekday-test.parquet": "22cfa3d15449a5f38b95c5da4b82e302eecf8ee923b580072585db503243ad0a",
+    "artifacts/research-v38/confirmation/poisson-test.parquet": "687b941a51554748f845c57af0f5ec7ce149a315a334c9e4899676f86cfeef3d",
+    "artifacts/research-v38/confirmation/result.json": "177e3db1fe2332d8273ed16abbdf0bd3ce339abb7b5a7cc33b58329ad738ac1d",
+    "artifacts/research-v38/report.json": "66f5688c9e92d699df8db10fa9e28266cd7e3425fab71a16500770f096fed721",
+    "artifacts/research-v38/screen_1/object_weekday-test.parquet": "a34851fc90a11313aed31fb8b310dd25b50d08ab998d12fb209ff6fdfee432d1",
+    "artifacts/research-v38/screen_1/poisson-test.parquet": "b260118f4337e2ea63d28df76b293ad5e35e8247577ec0c3b02e91c5051c2a46",
+    "artifacts/research-v38/screen_1/result.json": "c917d56a1f8fec08df25bd699b4280be3864246e749041fb5976e8262c5b09e4",
+    "artifacts/research-v38/screen_2/object_weekday-test.parquet": "58c8e78ea7ca62098bdfdb487a0f393b822af68a361f6bf6a7e794ff508fa622",
+    "artifacts/research-v38/screen_2/poisson-test.parquet": "90be3d7d6754255b9fce6df48b2fecd192cf1334a7889f2e346a9c146ca9d8b6",
+    "artifacts/research-v38/screen_2/result.json": "c3e5226b9ca6fed8bade1232f68ae7eb0a944a21bf1aec610b00d6a04b7c1e98",
+    "artifacts/research-v38/stress_1/object_weekday-test.parquet": "0351c18a353185bff6058a4a1e014278cdaf431a0dbdc34b9fd9ca9c856993d6",
+    "artifacts/research-v38/stress_1/poisson-test.parquet": "7b87a7ff9d915c2f578d29b166dec4124b25c679bec172a625bed86d0b555a2f",
+    "artifacts/research-v38/stress_1/result.json": "9ea12ed7e7cc8e5f7c000b4c7de43cfca2220420a76f3a958d9f7d462fc4f62f",
+    "artifacts/research-v38/stress_2/object_weekday-test.parquet": "9e6438b5ca5865c7bf72ec66a17c2122182345a8308ba53e5b087fb6e1f749d0",
+    "artifacts/research-v38/stress_2/poisson-test.parquet": "dec2a8a521649c29e9abf04a40338935f7c0ae3932cfada4fe1b11912727b558",
+    "artifacts/research-v38/stress_2/result.json": "bd69c502bdcd9e897170e48d514bdefef25858b1135fc1508f30101522a5aab9",
+    "artifacts/research-v38/weight-replay.json": "5e59f1173a60b41f26aa2db104f545aedf44955fd18e0d108069b9e24cdbdd9a"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_flood_errors.py": "5e5ea74da3a7c3feb6f5ff71b5cba88dc015842615c4c7371e558ba941bbba3f",
+    "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489"
+  }
+}

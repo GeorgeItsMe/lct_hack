@@ -10,6 +10,7 @@ import pandas as pd
 from moscollector.event_sequence_verification import verified_evidence as verify_event_sequence
 from moscollector.event_trigger_grid import trigger_alerts, trigger_grid
 from moscollector.fine_cadence_research import cohort, evaluator_for
+from moscollector.flood_verification import verified_evidence as verify_flood
 from moscollector.goal90_research import pooled, read
 from moscollector.minute_cadence_verification import verify as verify_minute_cadence
 from moscollector.model_registry import active_version, load_bundle
@@ -59,6 +60,9 @@ studies = {
 event_sequence_root = Path("artifacts/research-v37-fixed")
 if (event_sequence_root / "weight-replay.json").exists():
     studies["v37"] = event_sequence_root
+flood_root = Path("artifacts/research-v38")
+if (flood_root / "weight-replay.json").exists():
+    studies["v38"] = flood_root
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
 for source, digest in original_hashes.items():
@@ -103,7 +107,19 @@ for manifest in [phase_build, *phase_manifests]:
         for source, digest in manifest[category].items():
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed phase augmentation provenance: {source}")
-for name in ("v15", "v16", "v17", "v18", "v19", "v23", "v30", "v33", "v35", "v36"):
+for name in (
+    "v15",
+    "v16",
+    "v17",
+    "v18",
+    "v19",
+    "v23",
+    "v30",
+    "v33",
+    "v35",
+    "v36",
+    *(("v38",) if "v38" in studies else ()),
+):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
         weights = meta_path.parent / "model.cbm"
@@ -475,6 +491,22 @@ minute_cadence_verified = verify_minute_cadence(studies["v34"])
 onset_binary_verified = verify_onset_binary(studies["v35"])
 onset_pending_verified = verify_onset_pending(studies["v36"], onset_binary_verified, minute_cadence_verified)
 event_sequence_verified = verify_event_sequence(studies["v37"]) if "v37" in studies else None
+flood_verified = verify_flood(studies["v38"]) if "v38" in studies else None
+flood_errors = read(Path("artifacts/flood_count_error_audit.json")) if flood_verified else None
+if flood_errors:
+    for category in ("source_hashes", "code_hashes"):
+        for source, digest in flood_errors[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed flood error audit: {source}")
+    for arm, item in flood_errors["summary"].items():
+        expected = read(flood_root / "report.json")["five_period_pooled"][arm]
+        if (
+            sum(r["episodes"] for r in item["by_recurrence"]) != expected["eligible_episodes"]
+            or sum(r["matched"] for r in item["by_recurrence"]) != expected["true_alerts"]
+            or sum(item["warnings_by_reason"].values()) != expected["alerts"]
+            or item["warnings_by_reason"].get("matched", 0) != expected["true_alerts"]
+        ):
+            raise ValueError("Flood case/warning audit differs from verified model results")
 flood_support = read(Path("artifacts/flood_support_audit.json"))
 event_optimization = read(Path("artifacts/event_sequence_optimization_audit.json"))
 for audit in (flood_support, event_optimization):
@@ -565,7 +597,13 @@ report = {
     "onset_binary_v35": onset_binary_verified,
     "onset_pending_v36": onset_pending_verified,
     **({"raw_onset_event_v37": event_sequence_verified} if event_sequence_verified is not None else {}),
+    **(
+        {"flood_count_v38": {"verification": flood_verified, "results": read(flood_root / "report.json")}}
+        if flood_verified is not None
+        else {}
+    ),
     "flood_support_audit": flood_support,
+    **({"flood_error_audit": flood_errors} if flood_errors else {}),
     "raw_onset_optimization_audit": event_optimization,
     "onset_pending_decision": "V36 combines frozen v35 occurrence probabilities with the exact old minute-grid count capacity and delayed pending-state policy, without new trees. All six matched count controls reproduce archived forecasts, policies, complete456-option frontiers and metrics. Screening access1922/2771/2667 P.694/R.721 adds27 true and34 false alerts versus pending control; precision falls. Fire140/278/288 P.504/R.486 improves pending control but versus direct classifier adds7 true and36 false alerts, loses F1 despite a5.26% primary gain and fails the no-F1-loss guard. Fault10/27/46 P.370/R.217 removes15 false alerts at cost of1 true; recall/primary decline. All fail, so no additional periods or model fits. Motivation audit describes higher December row AP and353/404 fire episodes with some above-threshold prior opportunity versus86 direct true alerts; shared opportunities mean this is not attainable recall or evidence that cooldown alone causes misses. No activation, June reuse or90/90 claim.",
     "onset_binary_error_audit": onset_binary_errors,
@@ -604,8 +642,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "171 passed, 5 skipped (optional PyTorch modules)",
-        "neural_suite": "196 passed, including strictly-past raw event sequences and train-only event vocabularies, weighted count objectives and interrupted CPU/MPS training, current-input/event-cohort parity, all-reference selection guards, and rejection of stale or incomplete optional-GPU verification evidence",
+        "base_suite": "180 passed, 5 skipped (optional PyTorch modules)",
+        "neural_suite": "205 passed, including flood three-month separation, train-only smoothed baseline and unseen-object fallback, unchanged event cohorts and negative opportunities, policy/test isolation, strictly-past raw event sequences and train-only event vocabularies, weighted count objectives and interrupted CPU/MPS training, current-input/event-cohort parity, all-reference selection guards, and rejection of stale or incomplete verification evidence",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
@@ -619,7 +657,11 @@ report = {
     "fault_precursor_cases": read(Path("artifacts/fault_precursor_audit.json")),
     "ordered_uncertainty": read(Path("artifacts/ordered_state_uncertainty.json")),
     "uncertainty": read(Path("artifacts/goal90_uncertainty.json")),
-    "flood": {"status": "unsupported_too_few_episodes", "target_achievement_claimed": False},
+    "flood": {
+        "serving_status": "disabled_original_policy_insufficient_support",
+        "research_status": "fixed_five_period_count_study_verified" if flood_verified else "support_audited",
+        "target_achievement_claimed": False,
+    },
     "baseline_access_five_months": read(Path("artifacts/access_additional_validation.json"))[
         "five_period_pooled"
     ],

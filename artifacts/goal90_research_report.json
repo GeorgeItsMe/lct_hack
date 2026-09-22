@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-09-22T13:19:30.939262+00:00",
+  "created_at": "2026-09-22T14:04:43.217951+00:00",
   "environment": {
     "python": "3.12.14",
     "catboost": "1.2.10",
@@ -4607,6 +4607,385 @@
         "tests/test_event_sequence_research.py": "cf1393ba2dce04673e5d1503bb9119b1181dada5b9d808a250e55c2356447353",
         "tests/test_event_sequence_training.py": "12b3b92f2b46c73b0f16401b2502487c01d8eb5edeedfbd20701cfa0718d778c"
       }
+    },
+    "v38": {
+      "scope": "adaptive_retrospective_flood_research_not_new_blind_test",
+      "kind": "flood",
+      "hypothesis": "Separate three-month validation, calibration and policy windows provide enough past flood episodes to fit and assess the previously disabled rare head.",
+      "support_basis": "artifacts/flood_support_audit.json: window lengths chosen from support only, without fitting candidate models. Original short pulses retained.",
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01",
+        "stress_1": "2025-12-01",
+        "stress_2": "2026-03-01"
+      },
+      "periods": "Train from2022 until test-9months; validation, calibration and policy each3months; test1month. Every part purges25h before its end. No June telemetry reads.",
+      "features": "The original94 extended features in archived v9 schema order. The fire metadata supplies names only, no fire model weights or outcomes. No novelty or target/eligibility features.",
+      "training": "Original3h eligible anchors. CatBoost Poisson depth6,l2=8,lr=.04,max1000,seed42,CPU4,Poisson early stopping100; no weighting or hyperparameter search.",
+      "baseline": "Train-only smoothed24h count rate. Object=(sum+240*globalmean)/(n+240); object-weekday=(sum+32*objectrate)/(n+32). Only object_id/as_of at prediction; unseen object uses global mean, unseen weekday uses object rate. Fixed pseudocounts represent30days and4weekday-weeks on3h anchors.",
+      "calibration": "Each arm separately: sigmoid of log count plus mean-count scale on hourly calibration rows; neither policy nor test refits these.",
+      "opportunities": "Original hourly research cache, only between consecutive eligible3h anchors with gap<=3h. Exact same event identities,94shared features and targets. Same hourly exposure for both arms.",
+      "policy": "Fixed120 FinePendingSimulator rules: capacity .5/1/1.5/2, margin .25/.5/1/2/3/5, floor0/.5/.75/.9/.95. Select on preceding3months only by min(P/.9,R/.9,1),F1,R,P; FP<=.25/object-day, prefer>=10alerts, supported requires>=10events. Strict70min whole-hour release, one-to-one matching,24h expiry.",
+      "evaluation": "Fit this single fixed family on ALL five folds, irrespective of Nov/Feb results (only5flood events there). Report all40eligible test episodes and each month. Compare against the fixed object-weekday baseline and disabled zero-alert head; no test-based model or rule selection.",
+      "promotion": "No automatic activation. P/R90% refers to events and remains a whole-solution objective across all incident types. Flood proxy counts are not independent physical incident evidence.",
+      "source": "https://catboost.ai/docs/en/concepts/loss-functions-regression#Poisson",
+      "poisson_limit": "Nonnegative count loss, not an assertion that incidents follow a Poisson process.",
+      "created_at": "2026-09-22T13:46:03.661621+00:00",
+      "feature_columns": [
+        "events_1h",
+        "alarms_1h",
+        "fault_reports_1h",
+        "power_reports_1h",
+        "unknown_reports_1h",
+        "smoke_reports_1h",
+        "flood_reports_1h",
+        "access_reports_1h",
+        "pump_switches_1h",
+        "ambiguous_1h",
+        "technical_codes_1h",
+        "events_6h",
+        "alarms_6h",
+        "fault_reports_6h",
+        "power_reports_6h",
+        "unknown_reports_6h",
+        "smoke_reports_6h",
+        "flood_reports_6h",
+        "access_reports_6h",
+        "pump_switches_6h",
+        "ambiguous_6h",
+        "technical_codes_6h",
+        "events_24h",
+        "alarms_24h",
+        "fault_reports_24h",
+        "power_reports_24h",
+        "unknown_reports_24h",
+        "smoke_reports_24h",
+        "flood_reports_24h",
+        "access_reports_24h",
+        "pump_switches_24h",
+        "ambiguous_24h",
+        "technical_codes_24h",
+        "events_168h",
+        "alarms_168h",
+        "fault_reports_168h",
+        "power_reports_168h",
+        "unknown_reports_168h",
+        "smoke_reports_168h",
+        "flood_reports_168h",
+        "access_reports_168h",
+        "pump_switches_168h",
+        "ambiguous_168h",
+        "technical_codes_168h",
+        "fault_reports_recency_h",
+        "fault_reports_burst",
+        "power_reports_recency_h",
+        "power_reports_burst",
+        "unknown_reports_recency_h",
+        "unknown_reports_burst",
+        "smoke_reports_recency_h",
+        "smoke_reports_burst",
+        "flood_reports_recency_h",
+        "flood_reports_burst",
+        "access_reports_recency_h",
+        "access_reports_burst",
+        "temperature",
+        "temperature_age_h",
+        "temperature_change_24h",
+        "temperature_max",
+        "temperature_max_age_h",
+        "temperature_max_change_24h",
+        "gas",
+        "gas_age_h",
+        "gas_change_24h",
+        "reporting_channels_24h",
+        "channel_count",
+        "temperature_channels",
+        "smoke_channels",
+        "pump_channels",
+        "water_channels",
+        "hour",
+        "day_of_week",
+        "month",
+        "weekend",
+        "object_id",
+        "parent_id",
+        "object_kind",
+        "past_fault_episodes_24h",
+        "past_fault_episodes_168h",
+        "past_fault_episodes_720h",
+        "past_fault_recency_h",
+        "past_fire_episodes_24h",
+        "past_fire_episodes_168h",
+        "past_fire_episodes_720h",
+        "past_fire_recency_h",
+        "past_flood_episodes_24h",
+        "past_flood_episodes_168h",
+        "past_flood_episodes_720h",
+        "past_flood_recency_h",
+        "past_access_episodes_24h",
+        "past_access_episodes_168h",
+        "past_access_episodes_720h",
+        "past_access_recency_h"
+      ],
+      "environment": {
+        "catboost": "1.2.10",
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.9.1"
+      },
+      "preflight": {
+        "screen_1": {
+          "parts": {
+            "train": {
+              "rows": 642242,
+              "positive_rows": 1364,
+              "count_target_sum": 2760,
+              "eligible_episodes": 347,
+              "fingerprint": "9c795d15fcecabacf9b892db0851c87a902f921b9cf45cf8efe8983981089bc9",
+              "cadence_hours": 3
+            },
+            "validation": {
+              "rows": 54912,
+              "positive_rows": 73,
+              "count_target_sum": 152,
+              "eligible_episodes": 19,
+              "fingerprint": "95f89df79177c46907276523f4d35342b67f7b6278f0e58bee3a9006e1a374d9",
+              "cadence_hours": 3
+            },
+            "calibration": {
+              "rows": 170196,
+              "positive_rows": 202,
+              "count_target_sum": 320,
+              "eligible_episodes": 14,
+              "fingerprint": "66ca95291ea65b316583ecad4672ddadeff0034ee39523311da593b75a8709ed",
+              "cadence_hours": 1
+            },
+            "policy": {
+              "rows": 170196,
+              "positive_rows": 398,
+              "count_target_sum": 816,
+              "eligible_episodes": 34,
+              "fingerprint": "fbdadd040904cc0acbb25a021a693a9582d0b387ed6c987ebb8247f441a8401e",
+              "cadence_hours": 1
+            },
+            "test": {
+              "rows": 54132,
+              "positive_rows": 24,
+              "count_target_sum": 24,
+              "eligible_episodes": 1,
+              "fingerprint": "a7152054083d6e6ed30112dbe2fb75f66d5fecd12c8ae36208cd2e2bbf6a85fb",
+              "cadence_hours": 1
+            }
+          },
+          "test_hourly_matching_capacity": 1
+        },
+        "screen_2": {
+          "parts": {
+            "train": {
+              "rows": 697778,
+              "positive_rows": 1437,
+              "count_target_sum": 2912,
+              "eligible_episodes": 366,
+              "fingerprint": "734a2f8c4fe6ab62c984bd29a70b45e2ee32233d458bdcc38fd683275563c976",
+              "cadence_hours": 3
+            },
+            "validation": {
+              "rows": 56784,
+              "positive_rows": 67,
+              "count_target_sum": 107,
+              "eligible_episodes": 14,
+              "fingerprint": "3efefbbf265449ca1724e50b99c669c85aa07ff3b78a87a28d2c8a47d1eb22bd",
+              "cadence_hours": 3
+            },
+            "calibration": {
+              "rows": 170196,
+              "positive_rows": 398,
+              "count_target_sum": 816,
+              "eligible_episodes": 34,
+              "fingerprint": "fbdadd040904cc0acbb25a021a693a9582d0b387ed6c987ebb8247f441a8401e",
+              "cadence_hours": 1
+            },
+            "policy": {
+              "rows": 155064,
+              "positive_rows": 275,
+              "count_target_sum": 576,
+              "eligible_episodes": 24,
+              "fingerprint": "7a45a1fa50e45708fda3ba006e418f9bc8a5097d637f4793e1f8fcd64bb3dbbd",
+              "cadence_hours": 1
+            },
+            "test": {
+              "rows": 50388,
+              "positive_rows": 73,
+              "count_target_sum": 96,
+              "eligible_episodes": 4,
+              "fingerprint": "9b2d7791d4cdb2f1970cd675b7d70f274158cfba7defbee3ddfb04db5ee46bfe",
+              "cadence_hours": 1
+            }
+          },
+          "test_hourly_matching_capacity": 4
+        },
+        "confirmation": {
+          "parts": {
+            "train": {
+              "rows": 755186,
+              "positive_rows": 1504,
+              "count_target_sum": 3019,
+              "eligible_episodes": 380,
+              "fingerprint": "35373e24bbf16e378375186222f915576fde1c1c6940a42be206195fc4759038",
+              "cadence_hours": 3
+            },
+            "validation": {
+              "rows": 56784,
+              "positive_rows": 132,
+              "count_target_sum": 272,
+              "eligible_episodes": 34,
+              "fingerprint": "570243e6b96a2f339f450d960d95beb14a85e8a0d0ec9b50b854f00ebd4c38c3",
+              "cadence_hours": 3
+            },
+            "calibration": {
+              "rows": 155064,
+              "positive_rows": 275,
+              "count_target_sum": 576,
+              "eligible_episodes": 24,
+              "fingerprint": "7a45a1fa50e45708fda3ba006e418f9bc8a5097d637f4793e1f8fcd64bb3dbbd",
+              "cadence_hours": 1
+            },
+            "policy": {
+              "rows": 164580,
+              "positive_rows": 489,
+              "count_target_sum": 840,
+              "eligible_episodes": 35,
+              "fingerprint": "626cd213cecab38da08edc8a349e22ee5e8480ff3afa21f4c684272535f5a2ca",
+              "cadence_hours": 1
+            },
+            "test": {
+              "rows": 56004,
+              "positive_rows": 24,
+              "count_target_sum": 24,
+              "eligible_episodes": 1,
+              "fingerprint": "d3f2cd90eae815e8f3c5651ca39a4fefd67096cc66bd9c2146d956a606e0a740",
+              "cadence_hours": 1
+            }
+          },
+          "test_hourly_matching_capacity": 1
+        },
+        "stress_1": {
+          "parts": {
+            "train": {
+              "rows": 659714,
+              "positive_rows": 1372,
+              "count_target_sum": 2768,
+              "eligible_episodes": 348,
+              "fingerprint": "bbabec740020c343cabf48deb341770d48f2139d7569c6f3e7593b3f9dd1a8d5",
+              "cadence_hours": 3
+            },
+            "validation": {
+              "rows": 56784,
+              "positive_rows": 81,
+              "count_target_sum": 160,
+              "eligible_episodes": 20,
+              "fingerprint": "6112cc5345ba27af7d52e75a967c32dad666954fc07beac535f1a6a5361e8d0e",
+              "cadence_hours": 3
+            },
+            "calibration": {
+              "rows": 170196,
+              "positive_rows": 218,
+              "count_target_sum": 336,
+              "eligible_episodes": 14,
+              "fingerprint": "f4915f4abd75bdc6deb5522fb437d912d0abfe79f52cb9b0e62b8042df55f699",
+              "cadence_hours": 1
+            },
+            "policy": {
+              "rows": 168324,
+              "positive_rows": 374,
+              "count_target_sum": 792,
+              "eligible_episodes": 33,
+              "fingerprint": "9166d54c49465f6bf09934ec4551d81bea3d2f73b5855f9cf7785d4d3117505c",
+              "cadence_hours": 1
+            },
+            "test": {
+              "rows": 56004,
+              "positive_rows": 175,
+              "count_target_sum": 408,
+              "eligible_episodes": 17,
+              "fingerprint": "fda29d7c1f530a375aa490d7da762ad3206f5a25eb4b9758943c94b090a7a4ad",
+              "cadence_hours": 1
+            }
+          },
+          "test_hourly_matching_capacity": 17
+        },
+        "stress_2": {
+          "parts": {
+            "train": {
+              "rows": 717122,
+              "positive_rows": 1453,
+              "count_target_sum": 2928,
+              "eligible_episodes": 368,
+              "fingerprint": "8ceace6cdfce215f7f375e12da5d164aa1501322284334e259c49841590d3349",
+              "cadence_hours": 3
+            },
+            "validation": {
+              "rows": 56784,
+              "positive_rows": 72,
+              "count_target_sum": 112,
+              "eligible_episodes": 14,
+              "fingerprint": "853772d3207a3e64f789fe3ac9081641286afedc548780ca0badb1cae0a2a754",
+              "cadence_hours": 3
+            },
+            "calibration": {
+              "rows": 168324,
+              "positive_rows": 374,
+              "count_target_sum": 792,
+              "eligible_episodes": 33,
+              "fingerprint": "9166d54c49465f6bf09934ec4551d81bea3d2f73b5855f9cf7785d4d3117505c",
+              "cadence_hours": 1
+            },
+            "policy": {
+              "rows": 151320,
+              "positive_rows": 324,
+              "count_target_sum": 648,
+              "eligible_episodes": 27,
+              "fingerprint": "950c5d37b75af04b5b2ca7dd0541ad58279885077cee79625dd665415db6155b",
+              "cadence_hours": 1
+            },
+            "test": {
+              "rows": 56004,
+              "positive_rows": 220,
+              "count_target_sum": 408,
+              "eligible_episodes": 17,
+              "fingerprint": "285657a833391be3eba8747e97c312214a846e51cba75d62d44364ce5e407154",
+              "cadence_hours": 1
+            }
+          },
+          "test_hourly_matching_capacity": 17
+        }
+      },
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-hourly-research.parquet": "7e81c1de4cba584d6901dd9d7fddb5c7e0be3f936a53916bc79e72caaf3b0d92",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v9/screen_1/fire.json": "1d3e7fad1278e97fb731622c090a664b7a6177ea8630a6b3ae38246feb8eacf7",
+        "artifacts/flood_support_audit.json": "539786496e826ce8dd0d3dcdfa2985f3216a4c297b2c276d5d136486f82a13ad",
+        "artifacts/hourly_feature_parity.json": "1a59393cad678a8c32ac98b1a80389b700b27908ac2535bf2db530667c23cf6c"
+      },
+      "code_hashes": {
+        "src/moscollector/flood_research.py": "628aad08feb3d5000bcb7763ec2c79f0169cb0b847d4d31ed0f87fc55b5576f7",
+        "src/moscollector/flood_verification.py": "2388aa4404dae64a82bc6d8c80dd30aa440a416668b86541baeb843dc1a8c474",
+        "src/moscollector/features.py": "e60335a8be5d28248755996d6f5298ce45dde608c4f038f2eb3ed9fe6459c2bb",
+        "src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+        "src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5",
+        "src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
+        "src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "src/moscollector/paths.py": "025cea00220a2cd85ef139172e8aa2f3f7bf6daeb91de6555ec9e09e97f40489",
+        "src/moscollector/prepare.py": "fe59268bc8cef34cd4abc27ad3b5b57d5c4a9818281f87ea93f6bceb9048c353",
+        "tests/test_flood_research.py": "6dd099f5cf02343e2a13a669c2bb3c0c637d27e4b22f8baf2d46a3e0834c826c"
+      },
+      "capacity_limit": "Future-informed matching diagnostic only, not a deployable prediction score."
     }
   },
   "access_v11": {
@@ -75274,6 +75653,955 @@
       "/Users/main/vs_projects/lct_hack/src/moscollector/event_sequence_verification.py": "dd42c7c2b6af3f8d9e1df30b680248b2150d5f180f112909927213cdc88b8bc5"
     }
   },
+  "flood_count_v38": {
+    "verification": {
+      "status": "exact_replay_passed",
+      "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+      "folds": [
+        "screen_1",
+        "screen_2",
+        "confirmation",
+        "stress_1",
+        "stress_2"
+      ],
+      "models": 5,
+      "forecast_and_frontier_files": 40,
+      "source_hashes": {
+        "/Users/main/vs_projects/lct_hack/data/processed/features.parquet": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373",
+        "/Users/main/vs_projects/lct_hack/data/processed/features-hourly-research.parquet": "7e81c1de4cba584d6901dd9d7fddb5c7e0be3f936a53916bc79e72caaf3b0d92",
+        "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+        "artifacts/research-v9/screen_1/fire.json": "1d3e7fad1278e97fb731622c090a664b7a6177ea8630a6b3ae38246feb8eacf7",
+        "artifacts/flood_support_audit.json": "539786496e826ce8dd0d3dcdfa2985f3216a4c297b2c276d5d136486f82a13ad",
+        "artifacts/hourly_feature_parity.json": "1a59393cad678a8c32ac98b1a80389b700b27908ac2535bf2db530667c23cf6c",
+        "artifacts/research-v38/plan.json": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+        "artifacts/research-v38/report.json": "66f5688c9e92d699df8db10fa9e28266cd7e3425fab71a16500770f096fed721",
+        "artifacts/research-v38/stress_2/object_weekday-policy.parquet": "3da4bb67e3e754c0004f7814d4a80dcd277c9fb282be0962b145f3a2d4af8b94",
+        "artifacts/research-v38/stress_2/result.json": "bd69c502bdcd9e897170e48d514bdefef25858b1135fc1508f30101522a5aab9",
+        "artifacts/research-v38/stress_2/poisson-policy.parquet": "94968077d432a858e8f8278fc5e672cd8081bf6c821fa66619766285aa20c6c6",
+        "artifacts/research-v38/stress_2/poisson-test.parquet": "dec2a8a521649c29e9abf04a40338935f7c0ae3932cfada4fe1b11912727b558",
+        "artifacts/research-v38/stress_2/poisson-calibration.parquet": "f8ce8b6a41bb24bc836977b14d012b57bf270488f70e977e26e25dc06b523761",
+        "artifacts/research-v38/stress_2/fit.json": "8e1b7cbe9729d5d696ad12154d41e4c8214812a726f2fbb99c6709d105ee8b5a",
+        "artifacts/research-v38/stress_2/poisson-frontier.json": "add65a351fe1565f6131812a10c30568fdf45d6700c605bee581ee9ddea49b46",
+        "artifacts/research-v38/stress_2/model.cbm": "39cdda7613b1581611a11102ef4eb1dae727098e500cea9f2f04375b541fbec2",
+        "artifacts/research-v38/stress_2/baseline.json": "f73e2e2553af56ead76520893ff43fb4e9c338d735cb82488cd4f732b7b050fe",
+        "artifacts/research-v38/stress_2/object_weekday-frontier.json": "11ca201a51e9df7ad8565261515a2e4bf361f4110b078959aa56e627af7419ba",
+        "artifacts/research-v38/stress_2/object_weekday-calibration.parquet": "cd15d7ac6650cd1ae36a2aea3785c5d91257c0bce8fdf0e518263828f1aa5880",
+        "artifacts/research-v38/stress_2/object_weekday-test.parquet": "9e6438b5ca5865c7bf72ec66a17c2122182345a8308ba53e5b087fb6e1f749d0",
+        "artifacts/research-v38/screen_2/object_weekday-policy.parquet": "3b762e9107ec46becc9fbc5f50d0e22fc5995b79fb08693a763743b4b7aff91a",
+        "artifacts/research-v38/screen_2/result.json": "c3e5226b9ca6fed8bade1232f68ae7eb0a944a21bf1aec610b00d6a04b7c1e98",
+        "artifacts/research-v38/screen_2/poisson-policy.parquet": "40fa0752f6b7b9ddfa39659b28b5e33e4c6651b059b0a6b475e74318dc08fa4b",
+        "artifacts/research-v38/screen_2/poisson-test.parquet": "90be3d7d6754255b9fce6df48b2fecd192cf1334a7889f2e346a9c146ca9d8b6",
+        "artifacts/research-v38/screen_2/poisson-calibration.parquet": "a462bb5cb8f4636eac757009792e4e3d3ec948ec431b8df5f0a99314191ee19b",
+        "artifacts/research-v38/screen_2/fit.json": "20d901e4485e2571eb632fb99268820752ecb87133320b377b70502b9f7d6d79",
+        "artifacts/research-v38/screen_2/poisson-frontier.json": "2fcf6cac21741905cf78d1962306175c8467eb962e20079b9db3f5b71561cd87",
+        "artifacts/research-v38/screen_2/model.cbm": "8225731d2b064c6069e593d8207c9beef0ebbb6ced425c818a7ce792584b36ae",
+        "artifacts/research-v38/screen_2/baseline.json": "00a9d02c6f4909d63fd8ea7b942ebd6a96c9d84479b18ab61da31af06de5aa8a",
+        "artifacts/research-v38/screen_2/object_weekday-frontier.json": "d7f664d4d04567a8a15398e79a90fda8e5187e79a24c5dc9d2b9041e6f575ac1",
+        "artifacts/research-v38/screen_2/object_weekday-calibration.parquet": "8cdacc7e7a74fe9ce368a3dc55bb7e0f3e816767da2d19e774cbd5725e9bdff6",
+        "artifacts/research-v38/screen_2/object_weekday-test.parquet": "58c8e78ea7ca62098bdfdb487a0f393b822af68a361f6bf6a7e794ff508fa622",
+        "artifacts/research-v38/confirmation/object_weekday-policy.parquet": "1c71348b36f2a566d14e83d49cad3228975d81d933a6928bb55b2ad05832ba37",
+        "artifacts/research-v38/confirmation/result.json": "177e3db1fe2332d8273ed16abbdf0bd3ce339abb7b5a7cc33b58329ad738ac1d",
+        "artifacts/research-v38/confirmation/poisson-policy.parquet": "c5cc025efec8aab30153f7a1d008e792c9eb9e46f8168b3b87eddb90ac0e407e",
+        "artifacts/research-v38/confirmation/poisson-test.parquet": "687b941a51554748f845c57af0f5ec7ce149a315a334c9e4899676f86cfeef3d",
+        "artifacts/research-v38/confirmation/poisson-calibration.parquet": "f82410f071ee65633d1416b2f61fdd0fca41a27ab555cd8c2298ca30715e2b5f",
+        "artifacts/research-v38/confirmation/fit.json": "6f1d11738d83938eac223e452323a674192fe9ae292bc71dd5016191f089c561",
+        "artifacts/research-v38/confirmation/poisson-frontier.json": "8e2e3fb5b0080b78c0c14b89b3e36e2de6ba57b71973be40be3c49a1160ae6ab",
+        "artifacts/research-v38/confirmation/model.cbm": "2c2b18c582e1e2644c8600a9b86e1c630e6a913e4e29897974da7f92ae9a25fb",
+        "artifacts/research-v38/confirmation/baseline.json": "768ed5a5223b471ac187640603f298ab2e7c7ff2c73b11b386ac46ba042cc0b8",
+        "artifacts/research-v38/confirmation/object_weekday-frontier.json": "1b785202426349fd3fa7430eaa14a6ec17e3db2c83c81922688fb3baa97103a8",
+        "artifacts/research-v38/confirmation/object_weekday-calibration.parquet": "fc6c70e57c75b184370f39452aa9c37555bffd4317d9e9eab5a5db04a5d22b93",
+        "artifacts/research-v38/confirmation/object_weekday-test.parquet": "22cfa3d15449a5f38b95c5da4b82e302eecf8ee923b580072585db503243ad0a",
+        "artifacts/research-v38/stress_1/object_weekday-policy.parquet": "3493ce745688e625896982b3b1b185a9630f41673f98817f12a29c67e321b13f",
+        "artifacts/research-v38/stress_1/result.json": "9ea12ed7e7cc8e5f7c000b4c7de43cfca2220420a76f3a958d9f7d462fc4f62f",
+        "artifacts/research-v38/stress_1/poisson-policy.parquet": "9a36a0cc59a45d6ea783c2ce122016b270db7518c3ac74925c97499662307192",
+        "artifacts/research-v38/stress_1/poisson-test.parquet": "7b87a7ff9d915c2f578d29b166dec4124b25c679bec172a625bed86d0b555a2f",
+        "artifacts/research-v38/stress_1/poisson-calibration.parquet": "bdae6bca1d3a0bca8d621b4cb178a0be97951282ff97ebf165eef4e20fc77c27",
+        "artifacts/research-v38/stress_1/fit.json": "488351548f9d2bf706265d56b6349dbd0292a89d52db0253978e5b9fd0338f91",
+        "artifacts/research-v38/stress_1/poisson-frontier.json": "1001e401c259f58cae774d1af8ce4ec81887de14ad390323404c6d0134a3301d",
+        "artifacts/research-v38/stress_1/model.cbm": "1a17981ebee732cab7f0d943d2ff3f483e90f6febbe0e889a45d13d73102d8e0",
+        "artifacts/research-v38/stress_1/baseline.json": "aee008413040df3b8a84b14918a20b250c923ffb829a79265d6746b63ccb8d18",
+        "artifacts/research-v38/stress_1/object_weekday-frontier.json": "adcb82afe88c10ce45f21e0f8b0f6aaec633552d8499230b4885f29617d56810",
+        "artifacts/research-v38/stress_1/object_weekday-calibration.parquet": "aeeabcaf44dea4e8baa2b22db4b67e259efc29c50b587d30d559ffaac3821b90",
+        "artifacts/research-v38/stress_1/object_weekday-test.parquet": "0351c18a353185bff6058a4a1e014278cdaf431a0dbdc34b9fd9ca9c856993d6",
+        "artifacts/research-v38/screen_1/object_weekday-policy.parquet": "80d6eaf032a070f2944265995336f32581b98e3885adfcbc503f98ffd3ca12c8",
+        "artifacts/research-v38/screen_1/result.json": "c917d56a1f8fec08df25bd699b4280be3864246e749041fb5976e8262c5b09e4",
+        "artifacts/research-v38/screen_1/poisson-policy.parquet": "ab829ae21dd82143bbe56f8885189afdb818543f35bd5faf49a49f8bec1f8a30",
+        "artifacts/research-v38/screen_1/poisson-test.parquet": "b260118f4337e2ea63d28df76b293ad5e35e8247577ec0c3b02e91c5051c2a46",
+        "artifacts/research-v38/screen_1/poisson-calibration.parquet": "25ca41be63e4390987b0907aa15fc52f9b3b2d17c2a1cf8559590bca3bdd7d99",
+        "artifacts/research-v38/screen_1/fit.json": "0c445887b5cf0cf3242db3d1f41229ae2366b6a904dbe094ab9553b74e3bd3f9",
+        "artifacts/research-v38/screen_1/poisson-frontier.json": "e83075bb788ed33c44f55fbbe10c124cf8d570c72c048b2b6167e57cfa06c417",
+        "artifacts/research-v38/screen_1/model.cbm": "4a9f35b365c03f2d38510cf558cf3fa13cf879c87248b229b347be397d41df84",
+        "artifacts/research-v38/screen_1/baseline.json": "7a073650875b9899b3a2febd07a2648abcb6c8b994a54b2daf4bcc1377b8f838",
+        "artifacts/research-v38/screen_1/object_weekday-frontier.json": "b60a2111befeee69665b2d9b6e798edf8eccac833cc0358ec0815b8209e0ede2",
+        "artifacts/research-v38/screen_1/object_weekday-calibration.parquet": "89d5327aedbfd8ae1c04c976256e5872fb6cf34d26d17fccc3528b621c38a47a",
+        "artifacts/research-v38/screen_1/object_weekday-test.parquet": "a34851fc90a11313aed31fb8b310dd25b50d08ab998d12fb209ff6fdfee432d1"
+      },
+      "code_hashes": {
+        "src/moscollector/flood_research.py": "628aad08feb3d5000bcb7763ec2c79f0169cb0b847d4d31ed0f87fc55b5576f7",
+        "src/moscollector/flood_verification.py": "2388aa4404dae64a82bc6d8c80dd30aa440a416668b86541baeb843dc1a8c474",
+        "src/moscollector/features.py": "e60335a8be5d28248755996d6f5298ce45dde608c4f038f2eb3ed9fe6459c2bb",
+        "src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
+        "src/moscollector/cadence_capacity.py": "9bc1e7f7799b15bcb5760e9e096d7a5be1d7cdf45b295b60755e5a6fc14f9a34",
+        "src/moscollector/cadence_research.py": "fb22e864a089bfd262cddb1f8acf6f32166bf19c8e53d1d8b45c4f31956b09e2",
+        "src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
+        "src/moscollector/fine_cadence_research.py": "6e5bd0a420fa991da615ce18a2628b47e7c830cd7ddc813dd01690ce73b897b5",
+        "src/moscollector/goal90_research.py": "52e155f8beb092d310012c5c4411a9ebb08bfda3281b3eb81c62296284785e74",
+        "src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065",
+        "src/moscollector/train.py": "8989ec1aa25fc6b9675ed739a770a8064f9484d7655beb097ce3ccb48d5f6fa7",
+        "src/moscollector/paths.py": "025cea00220a2cd85ef139172e8aa2f3f7bf6daeb91de6555ec9e09e97f40489",
+        "src/moscollector/prepare.py": "fe59268bc8cef34cd4abc27ad3b5b57d5c4a9818281f87ea93f6bceb9048c353",
+        "tests/test_flood_research.py": "6dd099f5cf02343e2a13a669c2bb3c0c637d27e4b22f8baf2d46a3e0834c826c"
+      },
+      "checks": "Rebuilt every training/evaluation input, count target and train-only baseline; loaded5weights; exact30forecast tables,10complete120-rulefrontiers, calibrations, policies, alerts and pooled event metrics. No fitting or June evaluation."
+    },
+    "results": {
+      "scope": "adaptive_retrospective_flood_research_not_new_blind_test",
+      "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+      "periods": [
+        {
+          "fold": "screen_1",
+          "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+          "periods": {
+            "train": [
+              "2022-01-01 00:00:00",
+              "2025-02-01 00:00:00"
+            ],
+            "validation": [
+              "2025-02-01 00:00:00",
+              "2025-05-01 00:00:00"
+            ],
+            "calibration": [
+              "2025-05-01 00:00:00",
+              "2025-08-01 00:00:00"
+            ],
+            "policy": [
+              "2025-08-01 00:00:00",
+              "2025-11-01 00:00:00"
+            ],
+            "test": [
+              "2025-11-01 00:00:00",
+              "2025-12-01 00:00:00"
+            ]
+          },
+          "arms": {
+            "poisson": {
+              "calibration": {
+                "slope": 0.7794483174871962,
+                "intercept": -2.427957368108453,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.2538434452262141,
+              "policy": {
+                "capacity": 1.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 1.0,
+                "recall": 0.08823529411764706,
+                "f1": 0.16216216216216217,
+                "true_alerts": 3,
+                "false_alerts": 0,
+                "alerts": 3,
+                "eligible_episodes": 34,
+                "missed_episodes": 31,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": 0.7019444444444445,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 170196,
+                "status": "low_support"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 1.0,
+                  "recall": 0.08823529411764706,
+                  "f1": 0.16216216216216217,
+                  "true_alerts": 3,
+                  "false_alerts": 0,
+                  "alerts": 3,
+                  "eligible_episodes": 34,
+                  "missed_episodes": 31,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": 0.7019444444444445,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 170196
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 1,
+                  "missed_episodes": 1,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 54132
+                }
+              }
+            },
+            "object_weekday": {
+              "calibration": {
+                "slope": 0.5726363498241458,
+                "intercept": -2.7228207230844927,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.45411540594118843,
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 34,
+                "missed_episodes": 34,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 170196,
+                "status": "low_support"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 34,
+                  "missed_episodes": 34,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 170196
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 1,
+                  "missed_episodes": 1,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 54132
+                }
+              }
+            }
+          },
+          "disabled_head": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 1,
+            "missed_episodes": 1,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 54132
+          }
+        },
+        {
+          "fold": "screen_2",
+          "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+          "periods": {
+            "train": [
+              "2022-01-01 00:00:00",
+              "2025-05-01 00:00:00"
+            ],
+            "validation": [
+              "2025-05-01 00:00:00",
+              "2025-08-01 00:00:00"
+            ],
+            "calibration": [
+              "2025-08-01 00:00:00",
+              "2025-11-01 00:00:00"
+            ],
+            "policy": [
+              "2025-11-01 00:00:00",
+              "2026-02-01 00:00:00"
+            ],
+            "test": [
+              "2026-02-01 00:00:00",
+              "2026-03-01 00:00:00"
+            ]
+          },
+          "arms": {
+            "poisson": {
+              "calibration": {
+                "slope": 1.5275032464647234,
+                "intercept": 1.61959875643441,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 1.2407520751835144,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.34782608695652173,
+                "recall": 0.3333333333333333,
+                "f1": 0.3404255319148936,
+                "true_alerts": 8,
+                "false_alerts": 15,
+                "alerts": 23,
+                "eligible_episodes": 24,
+                "missed_episodes": 16,
+                "false_alerts_per_object_day": 0.002321622039931899,
+                "median_lead_hours": 1.7761111111111112,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 155064,
+                "status": "supported"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.34782608695652173,
+                  "recall": 0.3333333333333333,
+                  "f1": 0.3404255319148936,
+                  "true_alerts": 8,
+                  "false_alerts": 15,
+                  "alerts": 23,
+                  "eligible_episodes": 24,
+                  "missed_episodes": 16,
+                  "false_alerts_per_object_day": 0.002321622039931899,
+                  "median_lead_hours": 1.7761111111111112,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 155064
+                },
+                "test": {
+                  "precision": 0.3333333333333333,
+                  "recall": 0.25,
+                  "f1": 0.2857142857142857,
+                  "true_alerts": 1,
+                  "false_alerts": 2,
+                  "alerts": 3,
+                  "eligible_episodes": 4,
+                  "missed_episodes": 3,
+                  "false_alerts_per_object_day": 0.0009526077637532746,
+                  "median_lead_hours": 0.8266666666666667,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 50388
+                }
+              }
+            },
+            "object_weekday": {
+              "calibration": {
+                "slope": 0.6498382671830975,
+                "intercept": -1.663287071779735,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 1.2032982238574492,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 23,
+                "alerts": 23,
+                "eligible_episodes": 24,
+                "missed_episodes": 24,
+                "false_alerts_per_object_day": 0.003559820461228912,
+                "median_lead_hours": null,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 155064,
+                "status": "supported"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 23,
+                  "alerts": 23,
+                  "eligible_episodes": 24,
+                  "missed_episodes": 24,
+                  "false_alerts_per_object_day": 0.003559820461228912,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 155064
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 8,
+                  "alerts": 8,
+                  "eligible_episodes": 4,
+                  "missed_episodes": 4,
+                  "false_alerts_per_object_day": 0.0038104310550130982,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 50388
+                }
+              }
+            }
+          },
+          "disabled_head": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 4,
+            "missed_episodes": 4,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 50388
+          }
+        },
+        {
+          "fold": "confirmation",
+          "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+          "periods": {
+            "train": [
+              "2022-01-01 00:00:00",
+              "2025-08-01 00:00:00"
+            ],
+            "validation": [
+              "2025-08-01 00:00:00",
+              "2025-11-01 00:00:00"
+            ],
+            "calibration": [
+              "2025-11-01 00:00:00",
+              "2026-02-01 00:00:00"
+            ],
+            "policy": [
+              "2026-02-01 00:00:00",
+              "2026-05-01 00:00:00"
+            ],
+            "test": [
+              "2026-05-01 00:00:00",
+              "2026-06-01 00:00:00"
+            ]
+          },
+          "arms": {
+            "poisson": {
+              "calibration": {
+                "slope": 0.6884314418908086,
+                "intercept": -1.9361766961268434,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.8182780662840702,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.16666666666666666,
+                "recall": 0.14285714285714285,
+                "f1": 0.15384615384615385,
+                "true_alerts": 5,
+                "false_alerts": 25,
+                "alerts": 30,
+                "eligible_episodes": 35,
+                "missed_episodes": 30,
+                "false_alerts_per_object_day": 0.0036456434560699965,
+                "median_lead_hours": 0.8266666666666667,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 164580,
+                "status": "supported"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.16666666666666666,
+                  "recall": 0.14285714285714285,
+                  "f1": 0.15384615384615385,
+                  "true_alerts": 5,
+                  "false_alerts": 25,
+                  "alerts": 30,
+                  "eligible_episodes": 35,
+                  "missed_episodes": 30,
+                  "false_alerts_per_object_day": 0.0036456434560699965,
+                  "median_lead_hours": 0.8266666666666667,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 164580
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 8,
+                  "alerts": 8,
+                  "eligible_episodes": 1,
+                  "missed_episodes": 1,
+                  "false_alerts_per_object_day": 0.0034283265481037067,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            },
+            "object_weekday": {
+              "calibration": {
+                "slope": 0.4044972456208351,
+                "intercept": -2.952782785277856,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.979026182283135,
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 35,
+                "missed_episodes": 35,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 164580,
+                "status": "low_support"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 35,
+                  "missed_episodes": 35,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 164580
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 1,
+                  "missed_episodes": 1,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            }
+          },
+          "disabled_head": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 1,
+            "missed_episodes": 1,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          }
+        },
+        {
+          "fold": "stress_1",
+          "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+          "periods": {
+            "train": [
+              "2022-01-01 00:00:00",
+              "2025-03-01 00:00:00"
+            ],
+            "validation": [
+              "2025-03-01 00:00:00",
+              "2025-06-01 00:00:00"
+            ],
+            "calibration": [
+              "2025-06-01 00:00:00",
+              "2025-09-01 00:00:00"
+            ],
+            "policy": [
+              "2025-09-01 00:00:00",
+              "2025-12-01 00:00:00"
+            ],
+            "test": [
+              "2025-12-01 00:00:00",
+              "2026-01-01 00:00:00"
+            ]
+          },
+          "arms": {
+            "poisson": {
+              "calibration": {
+                "slope": 0.7028378233545324,
+                "intercept": -2.634684595398101,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.22315808020683084,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 1.0,
+                "recall": 0.12121212121212122,
+                "f1": 0.21621621621621623,
+                "true_alerts": 4,
+                "false_alerts": 0,
+                "alerts": 4,
+                "eligible_episodes": 33,
+                "missed_episodes": 29,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": 0.4506944444444444,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 168324,
+                "status": "low_support"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 1.0,
+                  "recall": 0.12121212121212122,
+                  "f1": 0.21621621621621623,
+                  "true_alerts": 4,
+                  "false_alerts": 0,
+                  "alerts": 4,
+                  "eligible_episodes": 33,
+                  "missed_episodes": 29,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": 0.4506944444444444,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 168324
+                },
+                "test": {
+                  "precision": 0.75,
+                  "recall": 0.17647058823529413,
+                  "f1": 0.2857142857142857,
+                  "true_alerts": 3,
+                  "false_alerts": 1,
+                  "alerts": 4,
+                  "eligible_episodes": 17,
+                  "missed_episodes": 14,
+                  "false_alerts_per_object_day": 0.00042854081851296334,
+                  "median_lead_hours": 1.6227777777777779,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            },
+            "object_weekday": {
+              "calibration": {
+                "slope": 0.7342582312610801,
+                "intercept": -2.016631465358984,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 0.4918005990922835,
+              "policy": {
+                "capacity": 0.5,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 0,
+                "alerts": 0,
+                "eligible_episodes": 33,
+                "missed_episodes": 33,
+                "false_alerts_per_object_day": 0.0,
+                "median_lead_hours": null,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 168324,
+                "status": "low_support"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 33,
+                  "missed_episodes": 33,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 168324
+                },
+                "test": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 0,
+                  "alerts": 0,
+                  "eligible_episodes": 17,
+                  "missed_episodes": 17,
+                  "false_alerts_per_object_day": 0.0,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            }
+          },
+          "disabled_head": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 17,
+            "missed_episodes": 17,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          }
+        },
+        {
+          "fold": "stress_2",
+          "plan_sha256": "a55d6b5a8d681c518eef69b9b7d006055f4908c4462bc361166931460f43efa3",
+          "periods": {
+            "train": [
+              "2022-01-01 00:00:00",
+              "2025-06-01 00:00:00"
+            ],
+            "validation": [
+              "2025-06-01 00:00:00",
+              "2025-09-01 00:00:00"
+            ],
+            "calibration": [
+              "2025-09-01 00:00:00",
+              "2025-12-01 00:00:00"
+            ],
+            "policy": [
+              "2025-12-01 00:00:00",
+              "2026-03-01 00:00:00"
+            ],
+            "test": [
+              "2026-03-01 00:00:00",
+              "2026-04-01 00:00:00"
+            ]
+          },
+          "arms": {
+            "poisson": {
+              "calibration": {
+                "slope": 1.3765039402107326,
+                "intercept": 0.9629875780010952,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 1.244507188674695,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.5,
+                "floor": 0,
+                "precision": 0.5,
+                "recall": 0.2222222222222222,
+                "f1": 0.3076923076923077,
+                "true_alerts": 6,
+                "false_alerts": 6,
+                "alerts": 12,
+                "eligible_episodes": 27,
+                "missed_episodes": 21,
+                "false_alerts_per_object_day": 0.0009516256938937351,
+                "median_lead_hours": 0.8816666666666666,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 151320,
+                "status": "supported"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.5,
+                  "recall": 0.2222222222222222,
+                  "f1": 0.3076923076923077,
+                  "true_alerts": 6,
+                  "false_alerts": 6,
+                  "alerts": 12,
+                  "eligible_episodes": 27,
+                  "missed_episodes": 21,
+                  "false_alerts_per_object_day": 0.0009516256938937351,
+                  "median_lead_hours": 0.8816666666666666,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 151320
+                },
+                "test": {
+                  "precision": 0.5,
+                  "recall": 0.17647058823529413,
+                  "f1": 0.2608695652173913,
+                  "true_alerts": 3,
+                  "false_alerts": 3,
+                  "alerts": 6,
+                  "eligible_episodes": 17,
+                  "missed_episodes": 14,
+                  "false_alerts_per_object_day": 0.0012856224555388902,
+                  "median_lead_hours": 0.7811111111111111,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            },
+            "object_weekday": {
+              "calibration": {
+                "slope": 0.6280491186319929,
+                "intercept": -1.7800747140750657,
+                "status": "sigmoid_independent_period"
+              },
+              "rate_scale": 1.2024628639566202,
+              "policy": {
+                "capacity": 2,
+                "margin": 0.25,
+                "floor": 0,
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 23,
+                "alerts": 23,
+                "eligible_episodes": 27,
+                "missed_episodes": 27,
+                "false_alerts_per_object_day": 0.003647898493259318,
+                "median_lead_hours": null,
+                "cooldown_hours": 1,
+                "matching": "one_to_one",
+                "forecast_opportunities": 151320,
+                "status": "supported"
+              },
+              "scores": {
+                "policy": {
+                  "precision": 0.0,
+                  "recall": 0.0,
+                  "f1": 0.0,
+                  "true_alerts": 0,
+                  "false_alerts": 23,
+                  "alerts": 23,
+                  "eligible_episodes": 27,
+                  "missed_episodes": 27,
+                  "false_alerts_per_object_day": 0.003647898493259318,
+                  "median_lead_hours": null,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 151320
+                },
+                "test": {
+                  "precision": 0.1111111111111111,
+                  "recall": 0.058823529411764705,
+                  "f1": 0.07692307692307693,
+                  "true_alerts": 1,
+                  "false_alerts": 8,
+                  "alerts": 9,
+                  "eligible_episodes": 17,
+                  "missed_episodes": 16,
+                  "false_alerts_per_object_day": 0.0034283265481037067,
+                  "median_lead_hours": 11.024444444444445,
+                  "cooldown_hours": 1,
+                  "matching": "one_to_one",
+                  "forecast_opportunities": 56004
+                }
+              }
+            }
+          },
+          "disabled_head": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "true_alerts": 0,
+            "false_alerts": 0,
+            "alerts": 0,
+            "eligible_episodes": 17,
+            "missed_episodes": 17,
+            "false_alerts_per_object_day": 0.0,
+            "median_lead_hours": null,
+            "cooldown_hours": 1,
+            "matching": "one_to_one",
+            "forecast_opportunities": 56004
+          }
+        }
+      ],
+      "five_period_pooled": {
+        "poisson": {
+          "true_alerts": 7,
+          "alerts": 21,
+          "eligible_episodes": 40,
+          "precision": 0.3333333333333333,
+          "recall": 0.175,
+          "f1": 0.22950819672131148,
+          "primary_score": 0.19444444444444442,
+          "both_90": false
+        },
+        "object_weekday": {
+          "true_alerts": 1,
+          "alerts": 17,
+          "eligible_episodes": 40,
+          "precision": 0.058823529411764705,
+          "recall": 0.025,
+          "f1": 0.03508771929824561,
+          "primary_score": 0.02777777777777778,
+          "both_90": false
+        }
+      },
+      "disabled_head": {
+        "true_alerts": 0,
+        "alerts": 0,
+        "eligible_episodes": 40,
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "primary_score": 0.0,
+        "both_90": false
+      },
+      "all_original_test_episodes_retained": true,
+      "goal_achieved": false,
+      "serving_changed": false,
+      "limitation": "40proxy sensor episodes across five already used months;1/4/1/17/17. No independent physical incident labels. This study does not establish the whole-solution90/90 objective."
+    }
+  },
   "flood_support_audit": {
     "scope": "Descriptive support audit for the remaining flood head. No fitting, policy selection, June reads, label changes, event exclusion or forecast-quality claim. These are proxy sensor episodes, not confirmed physical floods.",
     "period_design": "Fixed train start2022, separate calibration/policy windows of1/3/6months each, same existing five test months, original3h eligible opportunities and25h purge. Initial one-month validation has only1-2events in several cases, so also audit validation extended to the same3/6month length. Window lengths inspect event support only, not prediction outcomes. Not a new blind evaluation.",
@@ -77234,6 +78562,1436 @@
       "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489",
       "/Users/main/vs_projects/lct_hack/src/moscollector/count_research.py": "487ee30a2b0f0f92d82ecac66c53471b7fc48d1928139617130b722e26d2ba18",
       "/Users/main/vs_projects/lct_hack/src/moscollector/research.py": "2422046199a339b637d985d2b3fcaae82e0f14d421be189d0bfebc861334a065"
+    }
+  },
+  "flood_error_audit": {
+    "scope": "Descriptive post-result audit of ALL40original test episodes and both fixed arms. No model/rule selection, event removal, June reads, physical flood validation or prediction upper-bound claim.",
+    "recurrence_note": "Gap between original episode start times. It is a descriptive grouping, not a causal feature or claim that the preceding episode was already confirmed at warning time.",
+    "cases": [
+      {
+        "fold": "screen_1",
+        "arm": "poisson",
+        "object_id": 165,
+        "episode_id": "EP-0067178",
+        "start_ts": "2025-11-21 10:41:46",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1729.0430555555556,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "screen_1",
+        "arm": "object_weekday",
+        "object_id": 165,
+        "episode_id": "EP-0067178",
+        "start_ts": "2025-11-21 10:41:46",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1729.0430555555556,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 4095,
+        "episode_id": "EP-0071755",
+        "start_ts": "2026-02-05 11:34:33",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1080.7083333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 516.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 4095,
+        "episode_id": "EP-0071948",
+        "start_ts": "2026-02-10 09:36:53",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 118.03888888888889,
+        "recurrence": "within_7d",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 4095,
+        "episode_id": "EP-0071960",
+        "start_ts": "2026-02-10 10:49:36",
+        "matched": true,
+        "lead_hours": 0.8266666666666667,
+        "previous_onset_gap_hours": 1.2119444444444445,
+        "recurrence": "within_24h",
+        "duration_seconds": 1.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0072786",
+        "start_ts": "2026-02-26 13:06:43",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1586.4675,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 805.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 4095,
+        "episode_id": "EP-0071755",
+        "start_ts": "2026-02-05 11:34:33",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1080.7083333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 516.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 4095,
+        "episode_id": "EP-0071948",
+        "start_ts": "2026-02-10 09:36:53",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 118.03888888888889,
+        "recurrence": "within_7d",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 4095,
+        "episode_id": "EP-0071960",
+        "start_ts": "2026-02-10 10:49:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.2119444444444445,
+        "recurrence": "within_24h",
+        "duration_seconds": 1.0
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0072786",
+        "start_ts": "2026-02-26 13:06:43",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1586.4675,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 805.0
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 165,
+        "episode_id": "EP-0077688",
+        "start_ts": "2026-05-18 11:26:09",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1657.6758333333332,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 5.0
+      },
+      {
+        "fold": "confirmation",
+        "arm": "object_weekday",
+        "object_id": 165,
+        "episode_id": "EP-0077688",
+        "start_ts": "2026-05-18 11:26:09",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1657.6758333333332,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 5.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0069583",
+        "start_ts": "2025-12-17 10:41:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2202.8680555555557,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0069610",
+        "start_ts": "2025-12-17 11:56:12",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.2455555555555555,
+        "recurrence": "within_24h",
+        "duration_seconds": 18.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0069644",
+        "start_ts": "2025-12-17 13:37:22",
+        "matched": true,
+        "lead_hours": 1.6227777777777779,
+        "previous_onset_gap_hours": 1.6861111111111111,
+        "recurrence": "within_24h",
+        "duration_seconds": 12.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 4095,
+        "episode_id": "EP-0069874",
+        "start_ts": "2025-12-22 10:52:03",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1488.8461111111112,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 16.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069686",
+        "start_ts": "2025-12-18 10:12:00",
+        "matched": true,
+        "lead_hours": 20.2,
+        "previous_onset_gap_hours": 2036.6083333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 12.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069702",
+        "start_ts": "2025-12-18 11:13:34",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.0261111111111112,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069713",
+        "start_ts": "2025-12-18 11:57:46",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.7366666666666667,
+        "recurrence": "within_24h",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069717",
+        "start_ts": "2025-12-18 12:20:54",
+        "matched": true,
+        "lead_hours": 0.34833333333333333,
+        "previous_onset_gap_hours": 0.38555555555555554,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069721",
+        "start_ts": "2025-12-18 12:41:20",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.34055555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069724",
+        "start_ts": "2025-12-18 12:56:18",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.24944444444444444,
+        "recurrence": "within_24h",
+        "duration_seconds": 32.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069727",
+        "start_ts": "2025-12-18 13:09:50",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.22555555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069731",
+        "start_ts": "2025-12-18 13:26:17",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.27416666666666667,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0069865",
+        "start_ts": "2025-12-22 10:38:40",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 93.2063888888889,
+        "recurrence": "within_7d",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5961,
+        "episode_id": "EP-0067996",
+        "start_ts": "2025-12-03 11:28:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": null,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5961,
+        "episode_id": "EP-0068066",
+        "start_ts": "2025-12-03 14:13:22",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2.7483333333333335,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5961,
+        "episode_id": "EP-0068543",
+        "start_ts": "2025-12-08 12:16:16",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 118.04833333333333,
+        "recurrence": "within_7d",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5961,
+        "episode_id": "EP-0068700",
+        "start_ts": "2025-12-09 10:08:50",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 21.87611111111111,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0069583",
+        "start_ts": "2025-12-17 10:41:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2202.8680555555557,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0069610",
+        "start_ts": "2025-12-17 11:56:12",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.2455555555555555,
+        "recurrence": "within_24h",
+        "duration_seconds": 18.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0069644",
+        "start_ts": "2025-12-17 13:37:22",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.6861111111111111,
+        "recurrence": "within_24h",
+        "duration_seconds": 12.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 4095,
+        "episode_id": "EP-0069874",
+        "start_ts": "2025-12-22 10:52:03",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1488.8461111111112,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 16.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069686",
+        "start_ts": "2025-12-18 10:12:00",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2036.6083333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 12.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069702",
+        "start_ts": "2025-12-18 11:13:34",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.0261111111111112,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069713",
+        "start_ts": "2025-12-18 11:57:46",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.7366666666666667,
+        "recurrence": "within_24h",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069717",
+        "start_ts": "2025-12-18 12:20:54",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.38555555555555554,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069721",
+        "start_ts": "2025-12-18 12:41:20",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.34055555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069724",
+        "start_ts": "2025-12-18 12:56:18",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.24944444444444444,
+        "recurrence": "within_24h",
+        "duration_seconds": 32.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069727",
+        "start_ts": "2025-12-18 13:09:50",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.22555555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069731",
+        "start_ts": "2025-12-18 13:26:17",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.27416666666666667,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0069865",
+        "start_ts": "2025-12-22 10:38:40",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 93.2063888888889,
+        "recurrence": "within_7d",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5961,
+        "episode_id": "EP-0067996",
+        "start_ts": "2025-12-03 11:28:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": null,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5961,
+        "episode_id": "EP-0068066",
+        "start_ts": "2025-12-03 14:13:22",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2.7483333333333335,
+        "recurrence": "within_24h",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5961,
+        "episode_id": "EP-0068543",
+        "start_ts": "2025-12-08 12:16:16",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 118.04833333333333,
+        "recurrence": "within_7d",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_1",
+        "arm": "object_weekday",
+        "object_id": 5961,
+        "episode_id": "EP-0068700",
+        "start_ts": "2025-12-09 10:08:50",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 21.87611111111111,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0073646",
+        "start_ts": "2026-03-12 09:40:56",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2036.0594444444444,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0073679",
+        "start_ts": "2026-03-12 10:49:32",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.1433333333333333,
+        "recurrence": "within_24h",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0073704",
+        "start_ts": "2026-03-12 11:46:52",
+        "matched": true,
+        "lead_hours": 0.7811111111111111,
+        "previous_onset_gap_hours": 0.9555555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 22.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0073721",
+        "start_ts": "2026-03-12 12:26:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.6622222222222223,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "episode_id": "EP-0073723",
+        "start_ts": "2026-03-12 12:41:10",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.2427777777777778,
+        "recurrence": "within_24h",
+        "duration_seconds": 16.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 165,
+        "episode_id": "EP-0073380",
+        "start_ts": "2026-03-10 09:45:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2615.063888888889,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5113,
+        "episode_id": "EP-0074461",
+        "start_ts": "2026-03-22 14:32:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1560.3055555555557,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 67.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5113,
+        "episode_id": "EP-0074462",
+        "start_ts": "2026-03-22 14:46:16",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.23,
+        "recurrence": "within_24h",
+        "duration_seconds": 1290.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5113,
+        "episode_id": "EP-0074639",
+        "start_ts": "2026-03-24 10:40:20",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 43.90111111111111,
+        "recurrence": "within_7d",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5580,
+        "episode_id": "EP-0074776",
+        "start_ts": "2026-03-26 10:10:48",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1559.6383333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5582,
+        "episode_id": "EP-0073880",
+        "start_ts": "2026-03-16 10:06:02",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1320.0683333333334,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5582,
+        "episode_id": "EP-0075016",
+        "start_ts": "2026-03-30 14:01:06",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 339.91777777777776,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0074498",
+        "start_ts": "2026-03-23 10:03:22",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 596.9441666666667,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0074505",
+        "start_ts": "2026-03-23 10:22:30",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.3188888888888889,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0074531",
+        "start_ts": "2026-03-23 11:27:18",
+        "matched": true,
+        "lead_hours": 0.455,
+        "previous_onset_gap_hours": 1.08,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0074645",
+        "start_ts": "2026-03-24 11:01:28",
+        "matched": true,
+        "lead_hours": 23.024444444444445,
+        "previous_onset_gap_hours": 23.569444444444443,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "episode_id": "EP-0074652",
+        "start_ts": "2026-03-24 11:33:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.5355555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0073646",
+        "start_ts": "2026-03-12 09:40:56",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2036.0594444444444,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 10.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0073679",
+        "start_ts": "2026-03-12 10:49:32",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.1433333333333333,
+        "recurrence": "within_24h",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0073704",
+        "start_ts": "2026-03-12 11:46:52",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.9555555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 22.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0073721",
+        "start_ts": "2026-03-12 12:26:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.6622222222222223,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 42,
+        "episode_id": "EP-0073723",
+        "start_ts": "2026-03-12 12:41:10",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.2427777777777778,
+        "recurrence": "within_24h",
+        "duration_seconds": 16.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 165,
+        "episode_id": "EP-0073380",
+        "start_ts": "2026-03-10 09:45:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 2615.063888888889,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5113,
+        "episode_id": "EP-0074461",
+        "start_ts": "2026-03-22 14:32:28",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1560.3055555555557,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 67.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5113,
+        "episode_id": "EP-0074462",
+        "start_ts": "2026-03-22 14:46:16",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.23,
+        "recurrence": "within_24h",
+        "duration_seconds": 1290.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5113,
+        "episode_id": "EP-0074639",
+        "start_ts": "2026-03-24 10:40:20",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 43.90111111111111,
+        "recurrence": "within_7d",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5580,
+        "episode_id": "EP-0074776",
+        "start_ts": "2026-03-26 10:10:48",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1559.6383333333333,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5582,
+        "episode_id": "EP-0073880",
+        "start_ts": "2026-03-16 10:06:02",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1320.0683333333334,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 2.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5582,
+        "episode_id": "EP-0075016",
+        "start_ts": "2026-03-30 14:01:06",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 339.91777777777776,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 4.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0074498",
+        "start_ts": "2026-03-23 10:03:22",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 596.9441666666667,
+        "recurrence": "after_7d_or_first",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0074505",
+        "start_ts": "2026-03-23 10:22:30",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.3188888888888889,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0074531",
+        "start_ts": "2026-03-23 11:27:18",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 1.08,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0074645",
+        "start_ts": "2026-03-24 11:01:28",
+        "matched": true,
+        "lead_hours": 11.024444444444445,
+        "previous_onset_gap_hours": 23.569444444444443,
+        "recurrence": "within_24h",
+        "duration_seconds": 6.0
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "episode_id": "EP-0074652",
+        "start_ts": "2026-03-24 11:33:36",
+        "matched": false,
+        "lead_hours": null,
+        "previous_onset_gap_hours": 0.5355555555555556,
+        "recurrence": "within_24h",
+        "duration_seconds": 8.0
+      }
+    ],
+    "warnings": [
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 4095,
+        "as_of": "2026-02-05 12:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 4095,
+        "as_of": "2026-02-10 10:00:00",
+        "reason": "matched",
+        "lead_hours": 0.8266666666666667
+      },
+      {
+        "fold": "screen_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2026-02-26 14:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-03 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-04 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-10 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-11 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-17 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-18 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-24 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "screen_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-02-25 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-13 16:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-15 11:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-18 13:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-20 09:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-21 11:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-26 12:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-05-28 12:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "confirmation",
+        "arm": "poisson",
+        "object_id": 5113,
+        "as_of": "2026-05-26 20:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2025-12-17 12:00:00",
+        "reason": "matched",
+        "lead_hours": 1.6227777777777779
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2025-12-15 01:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2025-12-17 14:00:00",
+        "reason": "matched",
+        "lead_hours": 20.2
+      },
+      {
+        "fold": "stress_1",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2025-12-18 12:00:00",
+        "reason": "matched",
+        "lead_hours": 0.34833333333333333
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-03-12 11:00:00",
+        "reason": "matched",
+        "lead_hours": 0.7811111111111111
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 42,
+        "as_of": "2026-03-12 13:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5582,
+        "as_of": "2026-03-30 15:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2026-03-23 11:00:00",
+        "reason": "matched",
+        "lead_hours": 0.455
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2026-03-23 12:00:00",
+        "reason": "matched",
+        "lead_hours": 23.024444444444445
+      },
+      {
+        "fold": "stress_2",
+        "arm": "poisson",
+        "object_id": 5676,
+        "as_of": "2026-03-24 12:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-03 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-04 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-10 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-11 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-17 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-18 00:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-24 00:00:00",
+        "reason": "matched",
+        "lead_hours": 11.024444444444445
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-24 13:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      },
+      {
+        "fold": "stress_2",
+        "arm": "object_weekday",
+        "object_id": 5676,
+        "as_of": "2026-03-25 13:00:00",
+        "reason": "no_future_episode",
+        "lead_hours": null
+      }
+    ],
+    "summary": {
+      "poisson": {
+        "warnings_by_reason": {
+          "no_future_episode": 14,
+          "matched": 7
+        },
+        "matched_lead_at_least_1h": 3,
+        "by_recurrence": [
+          {
+            "recurrence": "after_7d_or_first",
+            "episodes": 15,
+            "matched": 1
+          },
+          {
+            "recurrence": "within_24h",
+            "episodes": 21,
+            "matched": 6
+          },
+          {
+            "recurrence": "within_7d",
+            "episodes": 4,
+            "matched": 0
+          }
+        ],
+        "by_object": [
+          {
+            "object_id": 42,
+            "episodes": 8,
+            "matched": 2
+          },
+          {
+            "object_id": 165,
+            "episodes": 3,
+            "matched": 0
+          },
+          {
+            "object_id": 4095,
+            "episodes": 4,
+            "matched": 1
+          },
+          {
+            "object_id": 5113,
+            "episodes": 3,
+            "matched": 0
+          },
+          {
+            "object_id": 5580,
+            "episodes": 1,
+            "matched": 0
+          },
+          {
+            "object_id": 5582,
+            "episodes": 2,
+            "matched": 0
+          },
+          {
+            "object_id": 5676,
+            "episodes": 15,
+            "matched": 4
+          },
+          {
+            "object_id": 5961,
+            "episodes": 4,
+            "matched": 0
+          }
+        ]
+      },
+      "object_weekday": {
+        "warnings_by_reason": {
+          "no_future_episode": 16,
+          "matched": 1
+        },
+        "matched_lead_at_least_1h": 1,
+        "by_recurrence": [
+          {
+            "recurrence": "after_7d_or_first",
+            "episodes": 15,
+            "matched": 0
+          },
+          {
+            "recurrence": "within_24h",
+            "episodes": 21,
+            "matched": 1
+          },
+          {
+            "recurrence": "within_7d",
+            "episodes": 4,
+            "matched": 0
+          }
+        ],
+        "by_object": [
+          {
+            "object_id": 42,
+            "episodes": 8,
+            "matched": 0
+          },
+          {
+            "object_id": 165,
+            "episodes": 3,
+            "matched": 0
+          },
+          {
+            "object_id": 4095,
+            "episodes": 4,
+            "matched": 0
+          },
+          {
+            "object_id": 5113,
+            "episodes": 3,
+            "matched": 0
+          },
+          {
+            "object_id": 5580,
+            "episodes": 1,
+            "matched": 0
+          },
+          {
+            "object_id": 5582,
+            "episodes": 2,
+            "matched": 0
+          },
+          {
+            "object_id": 5676,
+            "episodes": 15,
+            "matched": 1
+          },
+          {
+            "object_id": 5961,
+            "episodes": 4,
+            "matched": 0
+          }
+        ]
+      }
+    },
+    "source_hashes": {
+      "/Users/main/vs_projects/lct_hack/data/processed/episodes.parquet": "55236af1c78198a943342b425a9cfdb55769e53d4d6291f16c8a4bcc770e5b29",
+      "artifacts/research-v38/confirmation/object_weekday-test.parquet": "22cfa3d15449a5f38b95c5da4b82e302eecf8ee923b580072585db503243ad0a",
+      "artifacts/research-v38/confirmation/poisson-test.parquet": "687b941a51554748f845c57af0f5ec7ce149a315a334c9e4899676f86cfeef3d",
+      "artifacts/research-v38/confirmation/result.json": "177e3db1fe2332d8273ed16abbdf0bd3ce339abb7b5a7cc33b58329ad738ac1d",
+      "artifacts/research-v38/report.json": "66f5688c9e92d699df8db10fa9e28266cd7e3425fab71a16500770f096fed721",
+      "artifacts/research-v38/screen_1/object_weekday-test.parquet": "a34851fc90a11313aed31fb8b310dd25b50d08ab998d12fb209ff6fdfee432d1",
+      "artifacts/research-v38/screen_1/poisson-test.parquet": "b260118f4337e2ea63d28df76b293ad5e35e8247577ec0c3b02e91c5051c2a46",
+      "artifacts/research-v38/screen_1/result.json": "c917d56a1f8fec08df25bd699b4280be3864246e749041fb5976e8262c5b09e4",
+      "artifacts/research-v38/screen_2/object_weekday-test.parquet": "58c8e78ea7ca62098bdfdb487a0f393b822af68a361f6bf6a7e794ff508fa622",
+      "artifacts/research-v38/screen_2/poisson-test.parquet": "90be3d7d6754255b9fce6df48b2fecd192cf1334a7889f2e346a9c146ca9d8b6",
+      "artifacts/research-v38/screen_2/result.json": "c3e5226b9ca6fed8bade1232f68ae7eb0a944a21bf1aec610b00d6a04b7c1e98",
+      "artifacts/research-v38/stress_1/object_weekday-test.parquet": "0351c18a353185bff6058a4a1e014278cdaf431a0dbdc34b9fd9ca9c856993d6",
+      "artifacts/research-v38/stress_1/poisson-test.parquet": "7b87a7ff9d915c2f578d29b166dec4124b25c679bec172a625bed86d0b555a2f",
+      "artifacts/research-v38/stress_1/result.json": "9ea12ed7e7cc8e5f7c000b4c7de43cfca2220420a76f3a958d9f7d462fc4f62f",
+      "artifacts/research-v38/stress_2/object_weekday-test.parquet": "9e6438b5ca5865c7bf72ec66a17c2122182345a8308ba53e5b087fb6e1f749d0",
+      "artifacts/research-v38/stress_2/poisson-test.parquet": "dec2a8a521649c29e9abf04a40338935f7c0ae3932cfada4fe1b11912727b558",
+      "artifacts/research-v38/stress_2/result.json": "bd69c502bdcd9e897170e48d514bdefef25858b1135fc1508f30101522a5aab9",
+      "artifacts/research-v38/weight-replay.json": "5e59f1173a60b41f26aa2db104f545aedf44955fd18e0d108069b9e24cdbdd9a"
+    },
+    "code_hashes": {
+      "/Users/main/vs_projects/lct_hack/scripts/audit_flood_errors.py": "5e5ea74da3a7c3feb6f5ff71b5cba88dc015842615c4c7371e558ba941bbba3f",
+      "/Users/main/vs_projects/lct_hack/src/moscollector/alert_diagnostics.py": "ad35c24df6eb79749ebc1640c0afd69fb8bf3fbca3e4ddb09acac3f6afeac489"
     }
   },
   "raw_onset_optimization_audit": {
@@ -113784,8 +116542,8 @@
   },
   "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
   "neural_verification": {
-    "base_suite": "171 passed, 5 skipped (optional PyTorch modules)",
-    "neural_suite": "196 passed, including strictly-past raw event sequences and train-only event vocabularies, weighted count objectives and interrupted CPU/MPS training, current-input/event-cohort parity, all-reference selection guards, and rejection of stale or incomplete optional-GPU verification evidence",
+    "base_suite": "180 passed, 5 skipped (optional PyTorch modules)",
+    "neural_suite": "205 passed, including flood three-month separation, train-only smoothed baseline and unseen-object fallback, unchanged event cohorts and negative opportunities, policy/test isolation, strictly-past raw event sequences and train-only event vocabularies, weighted count objectives and interrupted CPU/MPS training, current-input/event-cohort parity, all-reference selection guards, and rejection of stale or incomplete verification evidence",
     "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements."
   },
   "object_kind_policy_diagnostic": {
@@ -113921,6 +116679,11 @@
     "artifacts/research-v35/fire/screen_1/binary/model.cbm": "849a7dceee4220fae17f1c8208b09c2471fe8ecaaed906be02ae478e626c9d0d",
     "artifacts/research-v35/fault/screen_2/binary/model.cbm": "ff67c52ef3244969eba77c37cf0140d564799c5d73506177b1fdf06dacb4c1b5",
     "artifacts/research-v35/fault/screen_1/binary/model.cbm": "96566975c6dd597e47dd404d2ea630a7aa23dd594906569c1caea98419b55a9f",
+    "artifacts/research-v38/stress_2/model.cbm": "39cdda7613b1581611a11102ef4eb1dae727098e500cea9f2f04375b541fbec2",
+    "artifacts/research-v38/screen_2/model.cbm": "8225731d2b064c6069e593d8207c9beef0ebbb6ced425c818a7ce792584b36ae",
+    "artifacts/research-v38/confirmation/model.cbm": "2c2b18c582e1e2644c8600a9b86e1c630e6a913e4e29897974da7f92ae9a25fb",
+    "artifacts/research-v38/stress_1/model.cbm": "1a17981ebee732cab7f0d943d2ff3f483e90f6febbe0e889a45d13d73102d8e0",
+    "artifacts/research-v38/screen_1/model.cbm": "4a9f35b365c03f2d38510cf558cf3fa13cf879c87248b229b347be397d41df84",
     "artifacts/research-v25/access/screen_2/conditional/model.cbm": "83603bcb8d2d4df48f54718d98e03a5e7cb9ce11546a230b4336989b1572eba8",
     "artifacts/research-v25/access/screen_1/conditional/model.cbm": "fa2e95e7068f87e82f92ec27dc0babff06da154ac33311c6c6f1e59f44f03ff2",
     "artifacts/research-v25/fire/screen_2/conditional/model.cbm": "9bf398ff60e6d37e046ea8673604b0e7231e9d4429a4ff5bac83063efd63469e",
@@ -120076,7 +122839,8 @@
     }
   },
   "flood": {
-    "status": "unsupported_too_few_episodes",
+    "serving_status": "disabled_original_policy_insufficient_support",
+    "research_status": "fixed_five_period_count_study_verified",
     "target_achievement_claimed": false
   },
   "baseline_access_five_months": {
