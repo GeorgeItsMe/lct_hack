@@ -13,6 +13,7 @@ from moscollector.goal90_research import pooled, read
 from moscollector.minute_cadence_verification import verify as verify_minute_cadence
 from moscollector.model_registry import active_version, load_bundle
 from moscollector.onset_binary_verification import verify as verify_onset_binary
+from moscollector.onset_pending_verification import verify as verify_onset_pending
 from moscollector.onset_verification import verify as verify_onset_study
 from moscollector.prepare import sha256, write_json
 
@@ -52,6 +53,7 @@ studies = {
     "v33": Path("artifacts/research-v33"),
     "v34": Path("artifacts/research-v34"),
     "v35": Path("artifacts/research-v35"),
+    "v36": Path("artifacts/research-v36"),
 }
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
@@ -97,7 +99,7 @@ for manifest in [phase_build, *phase_manifests]:
         for source, digest in manifest[category].items():
             if sha256(Path(source)) != digest:
                 raise ValueError(f"Changed phase augmentation provenance: {source}")
-for name in ("v15", "v16", "v17", "v18", "v19", "v23", "v30", "v33", "v35"):
+for name in ("v15", "v16", "v17", "v18", "v19", "v23", "v30", "v33", "v35", "v36"):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
         weights = meta_path.parent / "model.cbm"
@@ -461,6 +463,7 @@ for category in ("source_hashes", "code_hashes"):
 onset_verified = verify_onset_study(studies["v33"])
 minute_cadence_verified = verify_minute_cadence(studies["v34"])
 onset_binary_verified = verify_onset_binary(studies["v35"])
+onset_pending_verified = verify_onset_pending(studies["v36"], onset_binary_verified, minute_cadence_verified)
 onset_binary_errors = read(studies["v35"] / "error-audit.json")
 for category in ("source_hashes", "code_hashes"):
     for source, digest in onset_binary_errors[category].items():
@@ -542,6 +545,8 @@ report = {
     "onset_count_v33": onset_verified,
     "minute_cadence_v34": minute_cadence_verified,
     "onset_binary_v35": onset_binary_verified,
+    "onset_pending_v36": onset_pending_verified,
+    "onset_pending_decision": "V36 combines frozen v35 occurrence probabilities with the exact old minute-grid count capacity and delayed pending-state policy, without new trees. All six matched count controls reproduce archived forecasts, policies, complete456-option frontiers and metrics. Screening access1922/2771/2667 P.694/R.721 adds27 true and34 false alerts versus pending control; precision falls. Fire140/278/288 P.504/R.486 improves pending control but versus direct classifier adds7 true and36 false alerts, loses F1 despite a5.26% primary gain and fails the no-F1-loss guard. Fault10/27/46 P.370/R.217 removes15 false alerts at cost of1 true; recall/primary decline. All fail, so no additional periods or model fits. Motivation audit describes higher December row AP and353/404 fire episodes with some above-threshold prior opportunity versus86 direct true alerts; shared opportunities mean this is not attainable recall or evidence that cooldown alone causes misses. No activation, June reuse or90/90 claim.",
     "onset_binary_error_audit": onset_binary_errors,
     "minute_fire_precursor_v32": trigger_report,
     "minute_trigger_slot_hashes_verified": trigger_slot_hashes,
@@ -578,8 +583,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "156 passed, 2 skipped (optional PyTorch modules)",
-        "neural_suite": "170 passed, including explicitly weighted classifier PRAUC, count-independent direct warnings and all-reference/per-month guards, strictly past channel context, preserved snapshot mass/event cohorts, delayed confirmation and interrupted pretext/count checkpoint resume on CPU and MPS",
+        "base_suite": "161 passed, 2 skipped (optional PyTorch modules)",
+        "neural_suite": "175 passed, including occurrence/count alignment and delayed pending rearming, explicitly weighted classifier PRAUC, count-independent direct warnings and all-reference/per-month guards, strictly past channel context, preserved snapshot mass/event cohorts, delayed confirmation and interrupted pretext/count checkpoint resume on CPU and MPS",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
