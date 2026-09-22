@@ -1,0 +1,167 @@
+{
+  "scope": "Descriptive numeric-input support only; no targets or model selection.",
+  "period": [
+    "2024-07-01",
+    "2025-01-01"
+  ],
+  "families": [
+    "Датчик температуры",
+    "Газовый датчик"
+  ],
+  "numeric_ranges": {
+    "Датчик температуры": [
+      -50,
+      100
+    ],
+    "Газовый датчик": [
+      0,
+      100
+    ]
+  },
+  "source_hashes": {
+    "data/processed/events-2024.parquet": "3f14829653595b6d32dd9abf6bf41f156771ae3cace5735017c1343fe5de63fd",
+    "data/processed/channels.parquet": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+    "data/processed/hourly-2024.parquet": "ca9f162e3cd0f971b70d77bfc30a294dc1ebbba76673a4a49a430a605b48de39"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_numeric_channel_support.py": "8ad23f08fdd18d153ce4e025bf3cfc5ae76cafcebc1477b03e583627cf45fd17",
+    "src/moscollector/features.py": "e60335a8be5d28248755996d6f5298ce45dde608c4f038f2eb3ed9fe6459c2bb"
+  },
+  "plan_sha256": "a8c500f7842ad6665e9e6450d375f77f66a17e6cd12bd3c021330f4c271867be",
+  "canonical": [
+    {
+      "sensor_type": "Газовый датчик",
+      "source_rows": 20550992.0,
+      "canonical_rows": 20350524,
+      "conflicting_rows": 199879.0,
+      "numeric_rows": 20107375.0,
+      "channels": 492,
+      "objects": 17
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "source_rows": 93865.0,
+      "canonical_rows": 91339,
+      "conflicting_rows": 2409.0,
+      "numeric_rows": 80474.0,
+      "channels": 589,
+      "objects": 29
+    }
+  ],
+  "valid": [
+    {
+      "sensor_type": "Газовый датчик",
+      "rows": 20107375,
+      "channels": 416,
+      "objects": 11,
+      "minimum": 0.0,
+      "maximum": 8.8,
+      "distinct_values": 241
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "rows": 80308,
+      "channels": 585,
+      "objects": 29,
+      "minimum": -50.0,
+      "maximum": 100.0,
+      "distinct_values": 148
+    }
+  ],
+  "channel_hours": [
+    {
+      "sensor_type": "Газовый датчик",
+      "observed_channel_hours": 496951,
+      "hours_with_multiple_observations": 493186.0,
+      "hours_with_changing_values": 493183.0,
+      "within_hour_span_quantiles": [
+        0.01,
+        0.03,
+        0.08
+      ]
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "observed_channel_hours": 60414,
+      "hours_with_multiple_observations": 8410.0,
+      "hours_with_changing_values": 8409.0,
+      "within_hour_span_quantiles": [
+        0.0,
+        2.0,
+        6.0
+      ]
+    }
+  ],
+  "object_hours": [
+    {
+      "sensor_type": "Газовый датчик",
+      "observed_object_hours": 42785,
+      "hours_with_multiple_channels": 35953.0,
+      "hours_with_changing_channel": 42723.0,
+      "channel_count_quantiles": [
+        7.0,
+        43.6,
+        53.0
+      ]
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "observed_object_hours": 24699,
+      "hours_with_multiple_channels": 11280.0,
+      "hours_with_changing_channel": 3233.0,
+      "channel_count_quantiles": [
+        1.0,
+        5.0,
+        17.0
+      ]
+    }
+  ],
+  "adjacent_channel_hours": [
+    {
+      "sensor_type": "Газовый датчик",
+      "consecutive_observed_hour_pairs": 415967,
+      "changed_hourly_means": 328730.0,
+      "absolute_change_quantiles": [
+        0.0003251748,
+        0.0032729343,
+        0.0125
+      ]
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "consecutive_observed_hour_pairs": 12687,
+      "changed_hourly_means": 12446.0,
+      "absolute_change_quantiles": [
+        2.0,
+        3.0,
+        6.7
+      ]
+    }
+  ],
+  "hourly_parity": [
+    {
+      "sensor_type": "Газовый датчик",
+      "compared_hours": 42785,
+      "missing_original": 0.0,
+      "max_mean_difference": 6.52256027e-16,
+      "max_maximum_difference": 0.0
+    },
+    {
+      "sensor_type": "Датчик температуры",
+      "compared_hours": 24699,
+      "missing_original": 0.0,
+      "max_mean_difference": 0.0,
+      "max_maximum_difference": 0.0
+    }
+  ],
+  "limitations": [
+    "Observed hours do not imply continuous telemetry coverage.",
+    "Sensor family does not establish shared physical units or gas species.",
+    "Variation is not evidence of predictive power or a precursor to incidents.",
+    "No incident cohort is filtered, no June data or labels are read."
+  ],
+  "models_trained": 0,
+  "event_metrics_evaluated": false,
+  "serving_changed": false,
+  "goal_achieved": false
+}
