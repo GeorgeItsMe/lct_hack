@@ -7,6 +7,7 @@ from platform import python_version
 
 import pandas as pd
 
+from moscollector.event_sequence_verification import verified_evidence as verify_event_sequence
 from moscollector.event_trigger_grid import trigger_alerts, trigger_grid
 from moscollector.fine_cadence_research import cohort, evaluator_for
 from moscollector.goal90_research import pooled, read
@@ -55,6 +56,9 @@ studies = {
     "v35": Path("artifacts/research-v35"),
     "v36": Path("artifacts/research-v36"),
 }
+event_sequence_root = Path("artifacts/research-v37-fixed")
+if (event_sequence_root / "weight-replay.json").exists():
+    studies["v37"] = event_sequence_root
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
 for source, digest in original_hashes.items():
@@ -106,6 +110,12 @@ for name in ("v15", "v16", "v17", "v18", "v19", "v23", "v30", "v33", "v35", "v36
         if sha256(weights) != meta["model_sha256"]:
             raise ValueError(f"Changed research weights: {weights}")
         new_weights[str(weights)] = meta["model_sha256"]
+for meta_path in (event_sequence_root / "fresh_controls").rglob("fit.json") if "v37" in studies else ():
+    meta = read(meta_path)
+    weights = meta_path.parent / "model.cbm"
+    if sha256(weights) != meta["model_sha256"]:
+        raise ValueError(f"Changed additional event-network count control: {weights}")
+    new_weights[str(weights)] = meta["model_sha256"]
 probability_weights = {}
 for folder in (studies["v24"], studies["v25"] / "controls"):
     for meta_path in folder.glob("*/*/binary/fit.json"):
@@ -464,6 +474,7 @@ onset_verified = verify_onset_study(studies["v33"])
 minute_cadence_verified = verify_minute_cadence(studies["v34"])
 onset_binary_verified = verify_onset_binary(studies["v35"])
 onset_pending_verified = verify_onset_pending(studies["v36"], onset_binary_verified, minute_cadence_verified)
+event_sequence_verified = verify_event_sequence(studies["v37"]) if "v37" in studies else None
 onset_binary_errors = read(studies["v35"] / "error-audit.json")
 for category in ("source_hashes", "code_hashes"):
     for source, digest in onset_binary_errors[category].items():
@@ -546,6 +557,7 @@ report = {
     "minute_cadence_v34": minute_cadence_verified,
     "onset_binary_v35": onset_binary_verified,
     "onset_pending_v36": onset_pending_verified,
+    **({"raw_onset_event_v37": event_sequence_verified} if event_sequence_verified is not None else {}),
     "onset_pending_decision": "V36 combines frozen v35 occurrence probabilities with the exact old minute-grid count capacity and delayed pending-state policy, without new trees. All six matched count controls reproduce archived forecasts, policies, complete456-option frontiers and metrics. Screening access1922/2771/2667 P.694/R.721 adds27 true and34 false alerts versus pending control; precision falls. Fire140/278/288 P.504/R.486 improves pending control but versus direct classifier adds7 true and36 false alerts, loses F1 despite a5.26% primary gain and fails the no-F1-loss guard. Fault10/27/46 P.370/R.217 removes15 false alerts at cost of1 true; recall/primary decline. All fail, so no additional periods or model fits. Motivation audit describes higher December row AP and353/404 fire episodes with some above-threshold prior opportunity versus86 direct true alerts; shared opportunities mean this is not attainable recall or evidence that cooldown alone causes misses. No activation, June reuse or90/90 claim.",
     "onset_binary_error_audit": onset_binary_errors,
     "minute_fire_precursor_v32": trigger_report,
