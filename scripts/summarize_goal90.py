@@ -15,6 +15,7 @@ from moscollector.goal90_research import pooled, read
 from moscollector.minute_cadence_verification import verify as verify_minute_cadence
 from moscollector.model_registry import active_version, load_bundle
 from moscollector.neural_optimization_verification import verify_prefix, verify_scale
+from moscollector.numeric_count_verification import verified_evidence as verify_numeric_count
 from moscollector.onset_binary_verification import verify as verify_onset_binary
 from moscollector.onset_pending_verification import verify as verify_onset_pending
 from moscollector.onset_verification import verify as verify_onset_study
@@ -68,6 +69,9 @@ if (flood_root / "weight-replay.json").exists():
 prefix_root = Path("artifacts/research-v39")
 if (prefix_root / "weight-replay.json").exists():
     studies["v39"] = prefix_root
+numeric_root = Path("artifacts/research-v40")
+if (numeric_root / "weight-replay.json").exists():
+    studies["v40"] = numeric_root
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
 for source, digest in original_hashes.items():
@@ -124,6 +128,7 @@ for name in (
     "v35",
     "v36",
     *(("v38",) if "v38" in studies else ()),
+    *(("v40",) if "v40" in studies else ()),
 ):
     for meta_path in studies[name].rglob("fit.json"):
         meta = read(meta_path)
@@ -517,6 +522,20 @@ event_optimization = read(Path("artifacts/event_sequence_optimization_audit.json
 count_scale_audit = verify_scale() if Path("artifacts/neural_count_scale_audit.json").exists() else None
 prefix_audit = verify_prefix() if Path("artifacts/event_prefix_audit.json").exists() else None
 prefix_checkpoints = verify_prefix_checkpoints(prefix_root) if "v39" in studies else None
+numeric_count = verify_numeric_count(numeric_root) if "v40" in studies else None
+numeric_audit_path = Path("artifacts/numeric_feature_audit.json")
+numeric_audit = read(numeric_audit_path) if numeric_audit_path.exists() else None
+if numeric_audit:
+    for category in ("source_hashes", "code_hashes"):
+        for source, digest in numeric_audit[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed direct numeric feature audit: {source}")
+    if (
+        numeric_audit["status"] != "direct_raw_snapshots_passed"
+        or sha256(Path("artifacts/research-v40-feature-check/direct-values.parquet"))
+        != numeric_audit["direct_values_sha256"]
+    ):
+        raise ValueError("Incomplete direct numeric feature evidence")
 for audit in (flood_support, event_optimization):
     for category in ("source_hashes", "code_hashes"):
         for source, digest in audit[category].items():
@@ -616,6 +635,8 @@ report = {
     **({"neural_count_scale_audit": count_scale_audit} if count_scale_audit else {}),
     **({"event_prefix_validation_audit": prefix_audit} if prefix_audit else {}),
     **({"prefix_checkpoint_v39": prefix_checkpoints} if prefix_checkpoints else {}),
+    **({"numeric_channel_v40": numeric_count} if numeric_count else {}),
+    **({"numeric_channel_raw_feature_audit": numeric_audit} if numeric_audit else {}),
     **(
         {
             "prefix_checkpoint_decision": "V39 completes12 one-epoch retrainings with intermediate validation. Nine selected early checkpoints beat their prior validation minima;3 old models remain. Both original numerical guard failures are retained, and trajectory equivalence or an isolated causal effect of validation frequency is not claimed. Independent selected-weight replay covers6 periods,48 forecast/frontier files,9 new inference models and3 exact archived controls. Access GRU1928/2776/2667 P.695/R.723 loses18 true and removes42 false warnings versus its old GRU; fresh CatBoost is stronger in both metrics. Fire GRU155/366/288 P.423/R.538 adds28 true and removes50 false versus old GRU but adds31 true and55 false versus old count, failing the all-reference primary improvement gate. Fault MLP7/45/46 removes124 false versus old MLP without increasing recall, and old count11/43/46 remains stronger. All kinds fail screening, so no additional-month evaluation or activation. This is retrospective evidence on known months, not a new blind test; full90/90 remains unachieved."
@@ -660,8 +681,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "197 passed, 6 skipped (optional PyTorch modules)",
-        "neural_suite": "228 passed, including weighted count-loss profiling verified against scalar optimization, within-epoch CPU/MPS resume and unchanged toy optimizer trajectories, early-checkpoint all-reference selection guards, flood three-month separation, train-only baselines, unchanged event cohorts, policy/test isolation and rejection of incomplete verification evidence",
+        "base_suite": "215 passed, 6 skipped (optional PyTorch modules)",
+        "neural_suite": "246 passed, including per-channel numeric invalidation, exact past-only time bounds, staleness, offsetting channel changes, direct raw-history comparisons, unchanged negative opportunities and all-reference gates; earlier count-loss profiling, within-epoch CPU/MPS resume, flood separation and event-cohort checks retained",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,

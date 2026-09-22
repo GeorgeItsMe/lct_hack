@@ -1,0 +1,539 @@
+{
+  "scope": "Feature-only fixed snapshots; no incident labels or predictions.",
+  "times": [
+    "2023-01-01 00:00:00",
+    "2024-07-01 00:00:00",
+    "2025-11-01 00:00:00",
+    "2026-05-01 00:00:00"
+  ],
+  "rtol": 1e-06,
+  "atol": 1e-06,
+  "source_hashes": {
+    "/Users/main/vs_projects/lct_hack/data/processed/events-2022.parquet": "07a8fd9b52ea94260c9bdd68d30c34445c23042459acf44e847d5e99e969635e",
+    "/Users/main/vs_projects/lct_hack/data/processed/events-2023.parquet": "76df9fc31144a8045072c968256d802a732a90da5732bbdf964e1803ec94809d",
+    "/Users/main/vs_projects/lct_hack/data/processed/events-2024.parquet": "3f14829653595b6d32dd9abf6bf41f156771ae3cace5735017c1343fe5de63fd",
+    "/Users/main/vs_projects/lct_hack/data/processed/events-2025.parquet": "06ce46f38efebd20e7eed39f4556fe6b5ff808c57d08bda841b501cc1fb83215",
+    "/Users/main/vs_projects/lct_hack/data/processed/events-2026.parquet": "55bbb2eb32b7d064a8b3fd1c07096490c99d5a0654fe32ff8a473f61e08aee7d",
+    "/Users/main/vs_projects/lct_hack/data/processed/channels.parquet": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+    "/Users/main/vs_projects/lct_hack/data/processed/numeric-channels-v40/context.parquet": "16b4130987d4008e4aae477b4259e8bb90fea79be108c2605a57290a799e1793",
+    "/Users/main/vs_projects/lct_hack/data/processed/numeric-channels-v40/build.json": "104a2a7e0834fa98ccb4f057365f95c23cfdbf2aac2b6c7499ec644469541c46"
+  },
+  "code_hashes": {
+    "/Users/main/vs_projects/lct_hack/scripts/audit_numeric_features.py": "524e4f96e66420482cd97dd84737cdbd247dfb5180ad329dad3f86afbb00c0ec"
+  },
+  "plan_sha256": "be2ba907017993e253780700371284bcb5788ca454fff3304947fb6766ee8e64",
+  "status": "direct_raw_snapshots_passed",
+  "queries": 304,
+  "objects": 78,
+  "feature_values_compared": 9728,
+  "max_absolute_difference": 5.493164053405053e-06,
+  "direct_values_sha256": "ac05a315284a62585a4065c4fd6d956d8790da1cdfc7e0e3841d5e0822595799",
+  "build_rows": 1614784,
+  "features": [
+    "num_temperature_seen_channels_24h",
+    "num_temperature_logged_channels_168h",
+    "num_temperature_numeric_channels_168h",
+    "num_temperature_last_mean",
+    "num_temperature_last_min",
+    "num_temperature_last_max",
+    "num_temperature_last_std",
+    "num_temperature_last_age_mean_h",
+    "num_temperature_relative_range_6h_max",
+    "num_temperature_relative_range_6h_mean",
+    "num_temperature_relative_range_24h_max",
+    "num_temperature_relative_range_24h_mean",
+    "num_temperature_relative_shift_24h_max",
+    "num_temperature_relative_shift_24h_min",
+    "num_temperature_relative_shift_24h_abs_mean",
+    "num_temperature_shift_supported_channels",
+    "num_gas_seen_channels_24h",
+    "num_gas_logged_channels_168h",
+    "num_gas_numeric_channels_168h",
+    "num_gas_last_mean",
+    "num_gas_last_min",
+    "num_gas_last_max",
+    "num_gas_last_std",
+    "num_gas_last_age_mean_h",
+    "num_gas_relative_range_6h_max",
+    "num_gas_relative_range_6h_mean",
+    "num_gas_relative_range_24h_max",
+    "num_gas_relative_range_24h_mean",
+    "num_gas_relative_shift_24h_max",
+    "num_gas_relative_shift_24h_min",
+    "num_gas_relative_shift_24h_abs_mean",
+    "num_gas_shift_supported_channels"
+  ],
+  "coverage": [
+    {
+      "object_id": 20,
+      "queries": 21152,
+      "temperature": 21104,
+      "gas": 0
+    },
+    {
+      "object_id": 28,
+      "queries": 21152,
+      "temperature": 21116,
+      "gas": 0
+    },
+    {
+      "object_id": 42,
+      "queries": 21152,
+      "temperature": 20925,
+      "gas": 0
+    },
+    {
+      "object_id": 99,
+      "queries": 21152,
+      "temperature": 20777,
+      "gas": 0
+    },
+    {
+      "object_id": 108,
+      "queries": 21152,
+      "temperature": 9496,
+      "gas": 0
+    },
+    {
+      "object_id": 111,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 165,
+      "queries": 21152,
+      "temperature": 19626,
+      "gas": 0
+    },
+    {
+      "object_id": 3215,
+      "queries": 21152,
+      "temperature": 20951,
+      "gas": 0
+    },
+    {
+      "object_id": 3216,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 3250,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 3356,
+      "queries": 21152,
+      "temperature": 21133,
+      "gas": 0
+    },
+    {
+      "object_id": 3360,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20906
+    },
+    {
+      "object_id": 3388,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 3902,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20898
+    },
+    {
+      "object_id": 3903,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 3904,
+      "queries": 21152,
+      "temperature": 21034,
+      "gas": 0
+    },
+    {
+      "object_id": 3905,
+      "queries": 21152,
+      "temperature": 21137,
+      "gas": 0
+    },
+    {
+      "object_id": 4069,
+      "queries": 21152,
+      "temperature": 19918,
+      "gas": 0
+    },
+    {
+      "object_id": 4095,
+      "queries": 21152,
+      "temperature": 20576,
+      "gas": 0
+    },
+    {
+      "object_id": 4177,
+      "queries": 21152,
+      "temperature": 9453,
+      "gas": 0
+    },
+    {
+      "object_id": 4369,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 21042
+    },
+    {
+      "object_id": 4370,
+      "queries": 21152,
+      "temperature": 19532,
+      "gas": 0
+    },
+    {
+      "object_id": 4391,
+      "queries": 21152,
+      "temperature": 20945,
+      "gas": 0
+    },
+    {
+      "object_id": 4392,
+      "queries": 21152,
+      "temperature": 6093,
+      "gas": 0
+    },
+    {
+      "object_id": 4541,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4543,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 21022
+    },
+    {
+      "object_id": 4569,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4574,
+      "queries": 21152,
+      "temperature": 13021,
+      "gas": 0
+    },
+    {
+      "object_id": 4577,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4610,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20949
+    },
+    {
+      "object_id": 4648,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4763,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4765,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4767,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4768,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 4770,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5003,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5009,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5011,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5113,
+      "queries": 21152,
+      "temperature": 21148,
+      "gas": 0
+    },
+    {
+      "object_id": 5114,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5122,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20940
+    },
+    {
+      "object_id": 5123,
+      "queries": 21152,
+      "temperature": 20284,
+      "gas": 0
+    },
+    {
+      "object_id": 5124,
+      "queries": 21152,
+      "temperature": 19997,
+      "gas": 0
+    },
+    {
+      "object_id": 5129,
+      "queries": 21152,
+      "temperature": 20613,
+      "gas": 0
+    },
+    {
+      "object_id": 5132,
+      "queries": 21152,
+      "temperature": 12036,
+      "gas": 0
+    },
+    {
+      "object_id": 5218,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5332,
+      "queries": 21152,
+      "temperature": 19752,
+      "gas": 0
+    },
+    {
+      "object_id": 5333,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20359
+    },
+    {
+      "object_id": 5336,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5338,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5339,
+      "queries": 21152,
+      "temperature": 19620,
+      "gas": 0
+    },
+    {
+      "object_id": 5340,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5343,
+      "queries": 21152,
+      "temperature": 19212,
+      "gas": 0
+    },
+    {
+      "object_id": 5537,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5539,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5540,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5567,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5574,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5578,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 21095
+    },
+    {
+      "object_id": 5579,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5580,
+      "queries": 21152,
+      "temperature": 21145,
+      "gas": 0
+    },
+    {
+      "object_id": 5581,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5582,
+      "queries": 21152,
+      "temperature": 10264,
+      "gas": 0
+    },
+    {
+      "object_id": 5583,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5591,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 19309
+    },
+    {
+      "object_id": 5593,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5594,
+      "queries": 21152,
+      "temperature": 15127,
+      "gas": 0
+    },
+    {
+      "object_id": 5657,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 20488
+    },
+    {
+      "object_id": 5674,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5675,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 19742
+    },
+    {
+      "object_id": 5676,
+      "queries": 21152,
+      "temperature": 20007,
+      "gas": 0
+    },
+    {
+      "object_id": 5677,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5678,
+      "queries": 21152,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5961,
+      "queries": 12384,
+      "temperature": 5680,
+      "gas": 0
+    },
+    {
+      "object_id": 5962,
+      "queries": 12384,
+      "temperature": 0,
+      "gas": 0
+    },
+    {
+      "object_id": 5963,
+      "queries": 12384,
+      "temperature": 0,
+      "gas": 2124
+    },
+    {
+      "object_id": 5966,
+      "queries": 12384,
+      "temperature": 0,
+      "gas": 0
+    }
+  ],
+  "limitations": "Fixed snapshots verify implementation, not all feature rows or predictive value. No episode labels read.",
+  "serving_changed": false,
+  "goal_achieved": false
+}
