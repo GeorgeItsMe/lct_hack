@@ -535,6 +535,47 @@ prefix_checkpoints = verify_prefix_checkpoints(prefix_root) if "v39" in studies 
 numeric_count = verify_numeric_count(numeric_root) if "v40" in studies else None
 channel_tag = verify_channel_tag(tag_root) if "v41" in studies else None
 temporal_count = verify_temporal_count(temporal_root) if "v42" in studies else None
+temporal_errors_path = Path("artifacts/temporal_count_error_audit.json")
+temporal_errors = read(temporal_errors_path) if temporal_errors_path.exists() else None
+if temporal_errors:
+    if temporal_count is None:
+        raise ValueError("Temporal error audit has no completed parent study")
+    for category in ("source_hashes", "code_hashes"):
+        for source, digest in temporal_errors[category].items():
+            if sha256(Path(source)) != digest:
+                raise ValueError(f"Changed temporal error audit: {source}")
+    rows = {(r["kind"], r["fold"], r["arm"]): r for r in temporal_errors["periods"]}
+    expected = {
+        (kind, r["fold"], arm): a["scores"]
+        for kind, outcome in temporal_count["report"].items()
+        for r in outcome["periods"]
+        for arm, a in r["arms"].items()
+    }
+    if len(rows) != len(temporal_errors["periods"]) or rows.keys() != expected.keys():
+        raise ValueError("Temporal error audit omitted or duplicated an arm/period")
+    for key, row in rows.items():
+        score = expected[key]
+        if (
+            any(row[k] != score[k] for k in ("true_alerts", "eligible_episodes", "missed_episodes"))
+            or row["false_empty"] + row["false_redundant"] != score["false_alerts"]
+            or row["lead_under_1h"] + row["lead_1_to_6h"] + row["lead_at_least_6h"] != score["true_alerts"]
+        ):
+            raise ValueError("Temporal error audit changed verified warning/event counts")
+    late = {(r["kind"], r["fold"], r["arm"]): r for r in temporal_errors["late_confirmation_audit"]}
+    if len(late) != len(temporal_errors["late_confirmation_audit"]) or late.keys() != expected.keys():
+        raise ValueError("Incomplete late-confirmation ownership audit")
+    for key, row in late.items():
+        totals = row["totals"]
+        if (
+            row["confirmed_prefix_ownership_verified"] is not True
+            or totals["confirmed_events"] > expected[key]["eligible_episodes"]
+            or totals["confirmed_events_with_original_owner"] > expected[key]["true_alerts"]
+            or totals["warnings_issued_while_under_reserved"]
+            != totals["under_reserved_true_warnings"] + totals["under_reserved_false_warnings"]
+            or len(row["ownership_differences"])
+            != sum(totals[k] for k in ("wrong_warning_resolutions", "lost_confirmations", "spurious_resolutions"))
+        ):
+            raise ValueError("Invalid fixed-warning confirmation audit")
 tag_audit_path = Path("artifacts/channel_tag_feature_audit.json")
 tag_audit = read(tag_audit_path) if tag_audit_path.exists() else None
 tag_support_path = Path("artifacts/channel_tag_support_audit.json")
@@ -669,6 +710,7 @@ report = {
     **({"channel_tag_feature_audit": tag_audit} if tag_audit else {}),
     **({"channel_tag_support_audit": tag_support} if tag_support else {}),
     **({"temporal_count_v42": temporal_count} if temporal_count else {}),
+    **({"temporal_count_error_audit": temporal_errors} if temporal_errors else {}),
     **(
         {
             "prefix_checkpoint_decision": "V39 completes12 one-epoch retrainings with intermediate validation. Nine selected early checkpoints beat their prior validation minima;3 old models remain. Both original numerical guard failures are retained, and trajectory equivalence or an isolated causal effect of validation frequency is not claimed. Independent selected-weight replay covers6 periods,48 forecast/frontier files,9 new inference models and3 exact archived controls. Access GRU1928/2776/2667 P.695/R.723 loses18 true and removes42 false warnings versus its old GRU; fresh CatBoost is stronger in both metrics. Fire GRU155/366/288 P.423/R.538 adds28 true and removes50 false versus old GRU but adds31 true and55 false versus old count, failing the all-reference primary improvement gate. Fault MLP7/45/46 removes124 false versus old MLP without increasing recall, and old count11/43/46 remains stronger. All kinds fail screening, so no additional-month evaluation or activation. This is retrospective evidence on known months, not a new blind test; full90/90 remains unachieved."
@@ -713,8 +755,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "253 passed, 6 skipped (optional PyTorch modules)",
-        "neural_suite": "284 passed, including exact four-bin target boundaries, preserved negative anchors and sample mass, deadline forecast allocation, full-tick parity with gaps and delayed confirmations, all456 policies checked against direct simulation, causal prefixes and all-reference gates; earlier tag, numeric, CPU/MPS resume and full event-cohort tests retained",
+        "base_suite": "263 passed, 6 skipped (optional PyTorch modules)",
+        "neural_suite": "294 passed, including exact four-bin target boundaries, preserved negative anchors and sample mass, deadline forecast allocation, full-tick parity with gaps and delayed confirmations, all456 policies checked against direct simulation, causal prefixes and all-reference gates; diagnostic tests retain duplicate starts, gained/lost events, false-warning categories strict policy lookup, late-confirmation ownership, unreleased future events and safe pruning across gaps; earlier tag, numeric, CPU/MPS resume and full event-cohort tests retained",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
