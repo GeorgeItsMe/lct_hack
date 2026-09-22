@@ -8,6 +8,7 @@ from platform import python_version
 import pandas as pd
 
 from moscollector.channel_tag_verification import verified_evidence as verify_channel_tag
+from moscollector.count_bound_verification import verified_evidence as verify_count_bound
 from moscollector.event_sequence_verification import verified_evidence as verify_event_sequence
 from moscollector.event_trigger_grid import trigger_alerts, trigger_grid
 from moscollector.fine_cadence_research import cohort, evaluator_for
@@ -88,6 +89,9 @@ if (retained_root / "policy-replay.json").exists():
 tweedie_root = Path("artifacts/research-v44")
 if (tweedie_root / "weight-replay.json").exists():
     studies["v44"] = tweedie_root
+count_bound_root = Path("artifacts/research-v45")
+if (count_bound_root / "policy-replay.json").exists():
+    studies["v45"] = count_bound_root
 plans = {}
 original_hashes = read(Path("artifacts/hourly_feature_parity.json"))["source_files_unchanged"]
 for source, digest in original_hashes.items():
@@ -546,6 +550,7 @@ channel_tag = verify_channel_tag(tag_root) if "v41" in studies else None
 temporal_count = verify_temporal_count(temporal_root) if "v42" in studies else None
 retained_pending = verify_retained_pending(retained_root) if "v43" in studies else None
 tweedie_count = verify_tweedie_count(tweedie_root) if "v44" in studies else None
+count_bound = verify_count_bound(count_bound_root) if "v45" in studies else None
 temporal_errors_path = Path("artifacts/temporal_count_error_audit.json")
 temporal_errors = read(temporal_errors_path) if temporal_errors_path.exists() else None
 if temporal_errors:
@@ -723,6 +728,7 @@ report = {
     **({"temporal_count_v42": temporal_count} if temporal_count else {}),
     **({"retained_pending_v43": retained_pending} if retained_pending else {}),
     **({"tweedie_count_v44": tweedie_count} if tweedie_count else {}),
+    **({"count_bound_v45": count_bound} if count_bound else {}),
     **({"temporal_count_error_audit": temporal_errors} if temporal_errors else {}),
     **(
         {
@@ -768,8 +774,8 @@ report = {
     "neural_compute_preflight": read(Path("artifacts/neural_compute_preflight.json")),
     "neural_count_decision": "V28 trains12 MLP/GRU count models in an optional PyTorch environment on local MPS. All six frozen CatBoost controls replay v26. Access GRU2002/2886/2667 P.694/R.751/F1.721 adds109 true and74 false warnings versus matched control; precision and primary criterion decline. Fire GRU143/376/288 P.380/R.497/F1.431 loses precision/F1. Fault GRU11/226/46 P.049/R.239/F1.081 adds152 false warnings with no true-warning gain; MLP finds5/46. Both variants fail screening for every kind, so no extra-month evaluation or activation. Current-only MLP is included, but architectures are not parameter-matched. Best fully checked access remains v20; full-scope90/90 is not reached.",
     "neural_verification": {
-        "base_suite": "293 passed, 6 skipped (optional PyTorch modules)",
-        "neural_suite": "324 passed, including exact four-bin target boundaries, preserved negative anchors and sample mass, deadline forecast allocation, full-tick parity with gaps and delayed confirmations, all456 policies checked against direct simulation, causal prefixes and all-reference gates; diagnostic tests retain duplicate starts, gained/lost events, false-warning categories strict policy lookup, late-confirmation ownership, unreleased future events and safe pruning across gaps; 17 additional retained-ledger checks cover direct unbounded-history parity for all456/120 grid rules, late owners, inactive expired reservations, duplicate starts, random gaps/objects, causal prefixes and all-reference gates; 13 additional Tweedie checks cover the native log-mean loss, complete negative rows and unchanged count mass, invalid-label refusal, target-free inputs, matched native training settings, exact CBM prediction reload and all-reference gates; earlier tag, numeric, CPU/MPS resume and full event-cohort tests retained",
+        "base_suite": "306 passed, 6 skipped (optional PyTorch modules)",
+        "neural_suite": "337 passed, including exact four-bin target boundaries, preserved negative anchors and sample mass, deadline forecast allocation, full-tick parity with gaps and delayed confirmations, all456 policies checked against direct simulation, causal prefixes and all-reference gates; diagnostic tests retain duplicate starts, gained/lost events, false-warning categories strict policy lookup, late-confirmation ownership, unreleased future events and safe pruning across gaps; 17 additional retained-ledger checks cover direct unbounded-history parity for all456/120 grid rules, late owners, inactive expired reservations, duplicate starts, random gaps/objects, causal prefixes and all-reference gates; 13 additional Tweedie checks cover the native log-mean loss, complete negative rows and unchanged count mass, invalid-label refusal, target-free inputs, matched native training settings, exact CBM prediction reload and all-reference gates; 13 additional probability-count bound checks cover all rows, source preservation, idempotence, necessary-inequality enforcement, invalid inputs, causal prefixes, complete controls and fixed candidate selection; earlier tag, numeric, CPU/MPS resume and full event-cohort tests retained",
         "scope": "Code and provenance checks, not evidence of forecast quality. Base environment unchanged; optional PyTorch dependency stays outside serving requirements.",
     },
     "object_kind_policy_diagnostic": kind_policy_diagnostic,
