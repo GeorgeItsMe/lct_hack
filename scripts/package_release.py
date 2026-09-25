@@ -77,7 +77,7 @@ for name in (
     ".gitignore",
     ".env.example",
     ".vercelignore",
-    "app.py",
+    "api/index.py",
     "vercel.json",
     "web/package.json",
     "web/package-lock.json",

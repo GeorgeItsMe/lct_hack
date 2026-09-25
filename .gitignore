@@ -33,3 +33,5 @@ output/build/
 artifacts/import-job-id.txt
 artifacts/import-5min-job-id.txt
 output/contour-source.zip
+.vercel/
+build/

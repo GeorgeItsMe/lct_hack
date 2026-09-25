@@ -1,9 +1,9 @@
 # Развёртывание на Vercel
 
-Репозиторий содержит FastAPI-приложение `app.py`, React-сборку и уменьшенный
-набор аналитических файлов в `vercel_runtime/`. Vercel автоматически определяет
-FastAPI, выполняет команду сборки из `pyproject.toml` и включает runtime-файлы в
-Python Function.
+Репозиторий содержит FastAPI-функцию `api/index.py`, React-сборку и уменьшенный
+набор аналитических файлов в `vercel_runtime/`. React собирается в статику `web/dist` и
+раздаётся CDN, запросы `/api/*` переписываются на Python Function (`vercel.json`).
+Зависимости ставятся из `uv.lock`.
 
 ## Подготовка репозитория
 
@@ -23,7 +23,8 @@ deployment не входят.
 ## Настройки проекта
 
 1. Импортируйте GitHub-репозиторий в Vercel, оставьте Root Directory равным
-   корню репозитория. Framework и Build Command вручную не переопределяйте.
+   корню репозитория. Framework, Build и Output вручную не переопределяйте —
+   они заданы в `vercel.json`.
 2. Подключите PostgreSQL через Marketplace (Neon, Supabase или другой
    совместимый сервис) и добавьте `DATABASE_URL`. Поддерживаются URL вида
    `postgres://`, `postgresql://` и `postgresql+psycopg://`.
@@ -45,9 +46,7 @@ MKL_NUM_THREADS=1
 500 МБ в распакованном виде. Linux-колёса зависимостей занимают около 870 МБ: из
 них 264 МБ приходится на `_catboost.so` и 151 МБ на PyArrow. Ещё 77 МБ занимает
 `vercel_runtime/`. Large Functions (бета, до 5 ГБ) требует Fluid compute; в
-`vercel.json` он включён. Графические зависимости CatBoost (plotly, matplotlib)
-исключены из бандла через `excludeFiles`: инференс и SHAP работают без них.
-Функции нужно примерно 470 МБ памяти, поэтому лимита тарифа Hobby (2 ГБ) хватает.
+`vercel.json` он включён. Итоговая функция около 960 МБ. Ей нужно примерно 470 МБ памяти, поэтому лимита тарифа Hobby (2 ГБ) хватает.
 
 ## Проверка
 

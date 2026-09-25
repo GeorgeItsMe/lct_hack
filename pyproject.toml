@@ -34,9 +34,6 @@ research = [
   "py7zr>=1,<2",
 ]
 
-[tool.vercel.scripts]
-build = "npm --prefix web ci && npm --prefix web run build"
-
 [tool.setuptools.packages.find]
 where = ["src"]
 

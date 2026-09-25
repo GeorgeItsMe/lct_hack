@@ -1,11 +1,25 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm --prefix web ci",
+  "buildCommand": "npm --prefix web run build",
+  "outputDirectory": "web/dist",
   "fluid": true,
   "functions": {
-    "app.py": {
-      "includeFiles": "{vercel_runtime/**,web/dist/**,src/**}",
-      "maxDuration": 300,
-      "excludeFiles": "{**/plotly/**,**/matplotlib/**,**/fontTools/**,**/PIL/**,**/pillow.libs/**,**/graphviz/**,**/narwhals/**,web/node_modules/**,web/src/**}"
+    "api/index.py": {
+      "includeFiles": "{vercel_runtime/**,src/**}",
+      "excludeFiles": "{web/**,tests/**,examples/**,deploy/**,data/**,artifacts/**,backups/**,output/**,build/**,tmp/**,docs/**,.venv/**,.venv-neural/**,*.pdf,*.docx,dataset.zip}",
+      "maxDuration": 300
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
