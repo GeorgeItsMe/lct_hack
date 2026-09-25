@@ -36,6 +36,7 @@ from moscollector.paths import ARTIFACTS, ROOT
 from moscollector.service import AnalyticsService, prediction_id
 
 DEMO_MODE = os.getenv("CONTOUR_DEMO", "true").lower() == "true"
+SERVERLESS_MODE = os.getenv("CONTOUR_SERVERLESS", "false").lower() == "true"
 engine, SessionFactory = make_database()
 analytics_lock = threading.Lock()
 _analytics = None
@@ -92,6 +93,14 @@ def stream():
 
             _stream = StreamManager(SessionFactory, importer)
     return _stream
+
+
+def require_import_runtime():
+    if SERVERLESS_MODE:
+        raise HTTPException(
+            503,
+            "Импорт телеметрии требует постоянного worker-контейнера. На Vercel доступен архивный демостенд.",
+        )
 
 
 def current_user(request: Request):
@@ -179,6 +188,8 @@ def health():
         "model_ready": (ARTIFACTS / "evaluation_report.json").exists(),
         "demo_mode": DEMO_MODE,
         "database": "postgresql" if engine.dialect.name == "postgresql" else "sqlite",
+        "persistent_database": engine.dialect.name == "postgresql",
+        "serverless_mode": SERVERLESS_MODE,
     }
 
 
@@ -566,6 +577,7 @@ def topology_wkt(user=Depends(current_user)):
 async def submit_import(
     request: Request, as_of: str, format: Literal["csv", "xlsx", "json", "xml"], user=Depends(can_edit)
 ):
+    require_import_runtime()
     # CPU parsing and filesystem work run off the HTTP event loop.
     from starlette.concurrency import run_in_threadpool
 
@@ -613,6 +625,7 @@ async def stream_events(
     format: Literal["csv", "xlsx", "json", "xml"] = "json",
     user=Depends(can_edit),
 ):
+    require_import_runtime()
     from starlette.concurrency import run_in_threadpool
 
     content = await telemetry_body(request)
@@ -621,6 +634,7 @@ async def stream_events(
 
 @app.post("/api/stream/forecast", status_code=202)
 def stream_forecast(as_of: str, user=Depends(can_edit)):
+    require_import_runtime()
     state = stream().forecast(as_of, user.id)
     audit(user.id, "stream_forecast_requested", {"job_id": state["id"], "as_of": as_of})
     return state
@@ -633,6 +647,7 @@ def stream_status(user=Depends(current_user)):
 
 @app.get("/api/integrations")
 def integrations(user=Depends(current_user)):
+    imports_enabled = not SERVERLESS_MODE
     return {
         "sources": [
             {
@@ -644,13 +659,13 @@ def integrations(user=Depends(current_user)):
             {
                 "id": "file_ingestion",
                 "label": "Импорт телеметрии",
-                "status": "available",
+                "status": "available" if imports_enabled else "requires_worker_container",
                 "access": "read_only",
             },
             {
                 "id": "stream_gateway",
                 "label": "Накопительный приём потока по API",
-                "status": "available",
+                "status": "available" if imports_enabled else "requires_worker_container",
                 "access": "read_only_source",
             },
             {
@@ -661,8 +676,16 @@ def integrations(user=Depends(current_user)):
             },
         ],
         "equipment_commands": False,
+        "serverless_mode": SERVERLESS_MODE,
+        "imports_enabled": imports_enabled,
         "import_formats": ["csv", "xlsx", "json", "xml"],
         "max_import_rows": 100000,
+        "max_import_bytes": 20 * 1024 * 1024,
+        "hosting_notice": (
+            "Архивный прогноз, объяснения и решения доступны. Импорт запускайте в Docker-версии с постоянным worker."
+            if SERVERLESS_MODE
+            else None
+        ),
     }
 
 

@@ -1,0 +1,1105 @@
+{
+  "scope": "adaptive_retrospective_not_new_blind_test",
+  "deployed_changed": true,
+  "operational_model_version": "op-da1831964fa4",
+  "external_training_data_added": false,
+  "original_report_sha256": "c02e54d60663388c79f16267982bac3077a60f94a4e898e81b7f1049b2e69656",
+  "plans": {
+    "context": {
+      "created_at": "2026-09-21T07:05:17.161500+00:00",
+      "scope": "retrospective_rolling_origin_backtest_not_new_blind_test",
+      "june": "Excluded from reads, tuning and selection; original release preserved.",
+      "configs": {
+        "reference": "Original family: base/all history for access, extended/14 months for fault and fire.",
+        "context": "Same data and hyperparameters, plus causal normalized, recurrence and neighbor context.",
+        "context_weighted": "Context variant with fixed positive training weight 3. Independent calibration unchanged."
+      },
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "protocol": "Train before test-4 months; early stopping next 2 months; calibration next month; policy next month; evaluate next month. Purge 25 hours at each boundary.",
+      "selection": "Per kind: best pooled event F1 on the two screen folds, then precision. Require >5% relative F1 gain over reference before confirmation.",
+      "promotion": "Selected candidate must also beat reference event F1 on confirmation, with >=10 eligible episodes and false alerts <=0.25/object/day. June cannot select a candidate.",
+      "limits": "All these dates existed in earlier research. Forecasts are out of time within each fold, but this is retrospective confirmation, not a newly unseen test.",
+      "source_sha256": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373"
+    },
+    "stability": {
+      "created_at": "2026-09-21T07:30:51.665554+00:00",
+      "scope": "adaptive_retrospective_not_independent_validation",
+      "reason": "Context candidate failed May confirmation; no previous candidate promoted.",
+      "variant": "Original 66/94 features and history ranges; depth=4, L2=30, learning_rate=.04, max_iterations=1000, seed=42; normalized sample weights with 180-day half-life.",
+      "second_variant": "Fixed 50/50 raw-logit ensemble of reference and regularized models; separately calibrated on the original calibration period.",
+      "folds": {
+        "screen_1": "2025-11-01",
+        "screen_2": "2026-02-01",
+        "confirmation": "2026-05-01"
+      },
+      "gate": "At least two periods gain >5% relative event F1; no period loses >5%; pooled F1 gain >5%; >=10 eligible episodes each; false alerts <=.25/object/day each.",
+      "selection": "Only candidates passing every gate can replace a head; choose highest pooled F1 among them. No extra variants or blend-weight search.",
+      "june": "Never loaded. Previous frozen models and June report remain unchanged.",
+      "source_sha256": "5fd8a067b7ee247b9c463946ec703a7173e71c23555f433cd11aa69e77e4f373"
+    }
+  },
+  "screen_selection": {
+    "selected_at": "2026-09-21T07:26:51.826097+00:00",
+    "models": {
+      "fault": {
+        "scores": {
+          "reference": {
+            "f1": 0.060836501901140684,
+            "precision": 0.03686635944700461,
+            "tp": 8,
+            "alerts": 217,
+            "events": 46
+          },
+          "context": {
+            "f1": 0.07317073170731707,
+            "precision": 0.08333333333333333,
+            "tp": 3,
+            "alerts": 36,
+            "events": 46
+          },
+          "context_weighted": {
+            "f1": 0.05235602094240838,
+            "precision": 0.034482758620689655,
+            "tp": 5,
+            "alerts": 145,
+            "events": 46
+          }
+        },
+        "candidate": "context",
+        "passes_screen": true
+      },
+      "fire": {
+        "scores": {
+          "reference": {
+            "f1": 0.16292134831460675,
+            "precision": 0.13679245283018868,
+            "tp": 58,
+            "alerts": 424,
+            "events": 288
+          },
+          "context": {
+            "f1": 0.15245009074410162,
+            "precision": 0.1596958174904943,
+            "tp": 42,
+            "alerts": 263,
+            "events": 288
+          },
+          "context_weighted": {
+            "f1": 0.16415868673050615,
+            "precision": 0.13544018058690746,
+            "tp": 60,
+            "alerts": 443,
+            "events": 288
+          }
+        },
+        "candidate": "reference",
+        "passes_screen": false
+      },
+      "access": {
+        "scores": {
+          "reference": {
+            "f1": 0.29033098775084704,
+            "precision": 0.47606837606837604,
+            "tp": 557,
+            "alerts": 1170,
+            "events": 2667
+          },
+          "context": {
+            "f1": 0.2880593063277734,
+            "precision": 0.4900900900900901,
+            "tp": 544,
+            "alerts": 1110,
+            "events": 2667
+          },
+          "context_weighted": {
+            "f1": 0.2812909997376017,
+            "precision": 0.46853146853146854,
+            "tp": 536,
+            "alerts": 1144,
+            "events": 2667
+          }
+        },
+        "candidate": "reference",
+        "passes_screen": false
+      }
+    }
+  },
+  "context_confirmation": {
+    "fault": {
+      "candidate": "context",
+      "reference": {
+        "precision": 0.18604651162790697,
+        "recall": 0.27586206896551724,
+        "f1": 0.2222222222222222,
+        "true_alerts": 8,
+        "false_alerts": 35,
+        "alerts": 43,
+        "eligible_episodes": 29,
+        "missed_episodes": 21,
+        "false_alerts_per_object_day": 0.014957264957264958,
+        "median_lead_hours": 16.428333333333335,
+        "p25_lead_hours": 2.1172916666666666,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "challenger": {
+        "precision": 0.14285714285714285,
+        "recall": 0.06896551724137931,
+        "f1": 0.09302325581395349,
+        "true_alerts": 2,
+        "false_alerts": 12,
+        "alerts": 14,
+        "eligible_episodes": 29,
+        "missed_episodes": 27,
+        "false_alerts_per_object_day": 0.005128205128205128,
+        "median_lead_hours": 0.8211111111111111,
+        "p25_lead_hours": 0.5466666666666666,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "promote": false
+    },
+    "fire": {
+      "candidate": "reference",
+      "reference": {
+        "precision": 0.34057971014492755,
+        "recall": 0.18146718146718147,
+        "f1": 0.23677581863979846,
+        "true_alerts": 47,
+        "false_alerts": 91,
+        "alerts": 138,
+        "eligible_episodes": 259,
+        "missed_episodes": 212,
+        "false_alerts_per_object_day": 0.03888888888888889,
+        "median_lead_hours": 10.232222222222223,
+        "p25_lead_hours": 2.5405555555555557,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "challenger": {
+        "precision": 0.34057971014492755,
+        "recall": 0.18146718146718147,
+        "f1": 0.23677581863979846,
+        "true_alerts": 47,
+        "false_alerts": 91,
+        "alerts": 138,
+        "eligible_episodes": 259,
+        "missed_episodes": 212,
+        "false_alerts_per_object_day": 0.03888888888888889,
+        "median_lead_hours": 10.232222222222223,
+        "p25_lead_hours": 2.5405555555555557,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "promote": false
+    },
+    "access": {
+      "candidate": "reference",
+      "reference": {
+        "precision": 0.45545977011494254,
+        "recall": 0.2568881685575365,
+        "f1": 0.3284974093264249,
+        "true_alerts": 317,
+        "false_alerts": 379,
+        "alerts": 696,
+        "eligible_episodes": 1234,
+        "missed_episodes": 917,
+        "false_alerts_per_object_day": 0.16196581196581197,
+        "median_lead_hours": 9.683333333333334,
+        "p25_lead_hours": 2.386111111111111,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "challenger": {
+        "precision": 0.45545977011494254,
+        "recall": 0.2568881685575365,
+        "f1": 0.3284974093264249,
+        "true_alerts": 317,
+        "false_alerts": 379,
+        "alerts": 696,
+        "eligible_episodes": 1234,
+        "missed_episodes": 917,
+        "false_alerts_per_object_day": 0.16196581196581197,
+        "median_lead_hours": 9.683333333333334,
+        "p25_lead_hours": 2.386111111111111,
+        "cooldown_hours": 24,
+        "matching": "one_to_one",
+        "forecast_opportunities": 18720
+      },
+      "promote": false
+    }
+  },
+  "models": {
+    "fault": {
+      "selected": "reference",
+      "rows": [
+        {
+          "period": "Ноябрь 2025",
+          "reference": 0.0,
+          "context": 0.04761904761904762,
+          "regularized": 0.0,
+          "blend": 0.0,
+          "eligible_episodes": 18
+        },
+        {
+          "period": "Февраль 2026",
+          "reference": 0.06584362139917695,
+          "context": 0.1,
+          "regularized": 0.08163265306122448,
+          "blend": 0.049792531120331954,
+          "eligible_episodes": 28
+        },
+        {
+          "period": "Май 2026",
+          "reference": 0.2222222222222222,
+          "context": 0.09302325581395349,
+          "regularized": 0.04761904761904762,
+          "blend": 0.04878048780487805,
+          "eligible_episodes": 29
+        }
+      ],
+      "variants": {
+        "regularized": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 2,
+                "alerts": 2,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.0008841732979664014,
+                "median_lead_hours": null,
+                "p25_lead_hours": null,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 16,
+                "alerts": 16,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.007073386383731211,
+                "median_lead_hours": null,
+                "p25_lead_hours": null,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.037209302325581395,
+                "recall": 0.2857142857142857,
+                "f1": 0.06584362139917695,
+                "true_alerts": 8,
+                "false_alerts": 207,
+                "alerts": 215,
+                "eligible_episodes": 28,
+                "missed_episodes": 20,
+                "false_alerts_per_object_day": 0.09829059829059829,
+                "median_lead_hours": 13.431111111111111,
+                "p25_lead_hours": 9.364652777777778,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.05714285714285714,
+                "recall": 0.14285714285714285,
+                "f1": 0.08163265306122448,
+                "true_alerts": 4,
+                "false_alerts": 66,
+                "alerts": 70,
+                "eligible_episodes": 28,
+                "missed_episodes": 24,
+                "false_alerts_per_object_day": 0.03133903133903134,
+                "median_lead_hours": 9.334722222222222,
+                "p25_lead_hours": 1.2931249999999999,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.18604651162790697,
+                "recall": 0.27586206896551724,
+                "f1": 0.2222222222222222,
+                "true_alerts": 8,
+                "false_alerts": 35,
+                "alerts": 43,
+                "eligible_episodes": 29,
+                "missed_episodes": 21,
+                "false_alerts_per_object_day": 0.014957264957264958,
+                "median_lead_hours": 16.428333333333335,
+                "p25_lead_hours": 2.1172916666666666,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.07692307692307693,
+                "recall": 0.034482758620689655,
+                "f1": 0.04761904761904762,
+                "true_alerts": 1,
+                "false_alerts": 12,
+                "alerts": 13,
+                "eligible_episodes": 29,
+                "missed_episodes": 28,
+                "false_alerts_per_object_day": 0.005128205128205128,
+                "median_lead_hours": 0.0775,
+                "p25_lead_hours": 0.0775,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.0955223880597015,
+            "precision": 0.06153846153846154,
+            "tp": 16,
+            "alerts": 260,
+            "events": 75
+          },
+          "pooled_candidate": {
+            "f1": 0.05747126436781609,
+            "precision": 0.050505050505050504,
+            "tp": 5,
+            "alerts": 99,
+            "events": 75
+          },
+          "passes_gate": false
+        },
+        "blend": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 2,
+                "alerts": 2,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.0008841732979664014,
+                "median_lead_hours": null,
+                "p25_lead_hours": null,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "true_alerts": 0,
+                "false_alerts": 16,
+                "alerts": 16,
+                "eligible_episodes": 18,
+                "missed_episodes": 18,
+                "false_alerts_per_object_day": 0.007073386383731211,
+                "median_lead_hours": null,
+                "p25_lead_hours": null,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.037209302325581395,
+                "recall": 0.2857142857142857,
+                "f1": 0.06584362139917695,
+                "true_alerts": 8,
+                "false_alerts": 207,
+                "alerts": 215,
+                "eligible_episodes": 28,
+                "missed_episodes": 20,
+                "false_alerts_per_object_day": 0.09829059829059829,
+                "median_lead_hours": 13.431111111111111,
+                "p25_lead_hours": 9.364652777777778,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.028169014084507043,
+                "recall": 0.21428571428571427,
+                "f1": 0.049792531120331954,
+                "true_alerts": 6,
+                "false_alerts": 207,
+                "alerts": 213,
+                "eligible_episodes": 28,
+                "missed_episodes": 22,
+                "false_alerts_per_object_day": 0.09829059829059829,
+                "median_lead_hours": 13.431111111111111,
+                "p25_lead_hours": 10.175625,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.18604651162790697,
+                "recall": 0.27586206896551724,
+                "f1": 0.2222222222222222,
+                "true_alerts": 8,
+                "false_alerts": 35,
+                "alerts": 43,
+                "eligible_episodes": 29,
+                "missed_episodes": 21,
+                "false_alerts_per_object_day": 0.014957264957264958,
+                "median_lead_hours": 16.428333333333335,
+                "p25_lead_hours": 2.1172916666666666,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.08333333333333333,
+                "recall": 0.034482758620689655,
+                "f1": 0.04878048780487805,
+                "true_alerts": 1,
+                "false_alerts": 11,
+                "alerts": 12,
+                "eligible_episodes": 29,
+                "missed_episodes": 28,
+                "false_alerts_per_object_day": 0.004700854700854701,
+                "median_lead_hours": 0.0775,
+                "p25_lead_hours": 0.0775,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.0955223880597015,
+            "precision": 0.06153846153846154,
+            "tp": 16,
+            "alerts": 260,
+            "events": 75
+          },
+          "pooled_candidate": {
+            "f1": 0.04430379746835443,
+            "precision": 0.029045643153526972,
+            "tp": 7,
+            "alerts": 241,
+            "events": 75
+          },
+          "passes_gate": false
+        }
+      }
+    },
+    "fire": {
+      "selected": "blend",
+      "rows": [
+        {
+          "period": "Ноябрь 2025",
+          "reference": 0.14159292035398233,
+          "context": 0.13548387096774195,
+          "regularized": 0.15584415584415584,
+          "blend": 0.18285714285714283,
+          "eligible_episodes": 101
+        },
+        {
+          "period": "Февраль 2026",
+          "reference": 0.18230563002680963,
+          "context": 0.17427385892116187,
+          "regularized": 0.20560747663551404,
+          "blend": 0.2012578616352201,
+          "eligible_episodes": 187
+        },
+        {
+          "period": "Май 2026",
+          "reference": 0.23677581863979846,
+          "context": null,
+          "regularized": 0.24752475247524752,
+          "blend": 0.24181360201511337,
+          "eligible_episodes": 259
+        }
+      ],
+      "variants": {
+        "regularized": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.10084033613445378,
+                "recall": 0.2376237623762376,
+                "f1": 0.14159292035398233,
+                "true_alerts": 24,
+                "false_alerts": 214,
+                "alerts": 238,
+                "eligible_episodes": 101,
+                "missed_episodes": 77,
+                "false_alerts_per_object_day": 0.09460654288240496,
+                "median_lead_hours": 9.740555555555556,
+                "p25_lead_hours": 2.0475,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.11594202898550725,
+                "recall": 0.2376237623762376,
+                "f1": 0.15584415584415584,
+                "true_alerts": 24,
+                "false_alerts": 183,
+                "alerts": 207,
+                "eligible_episodes": 101,
+                "missed_episodes": 77,
+                "false_alerts_per_object_day": 0.08090185676392574,
+                "median_lead_hours": 8.516388888888889,
+                "p25_lead_hours": 1.408263888888889,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.1827956989247312,
+                "recall": 0.18181818181818182,
+                "f1": 0.18230563002680963,
+                "true_alerts": 34,
+                "false_alerts": 152,
+                "alerts": 186,
+                "eligible_episodes": 187,
+                "missed_episodes": 153,
+                "false_alerts_per_object_day": 0.0721747388414055,
+                "median_lead_hours": 6.949444444444444,
+                "p25_lead_hours": 1.5056944444444444,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.2462686567164179,
+                "recall": 0.17647058823529413,
+                "f1": 0.20560747663551404,
+                "true_alerts": 33,
+                "false_alerts": 101,
+                "alerts": 134,
+                "eligible_episodes": 187,
+                "missed_episodes": 154,
+                "false_alerts_per_object_day": 0.04795821462488129,
+                "median_lead_hours": 6.446111111111111,
+                "p25_lead_hours": 1.9144444444444444,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.34057971014492755,
+                "recall": 0.18146718146718147,
+                "f1": 0.23677581863979846,
+                "true_alerts": 47,
+                "false_alerts": 91,
+                "alerts": 138,
+                "eligible_episodes": 259,
+                "missed_episodes": 212,
+                "false_alerts_per_object_day": 0.03888888888888889,
+                "median_lead_hours": 10.232222222222223,
+                "p25_lead_hours": 2.5405555555555557,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.3448275862068966,
+                "recall": 0.19305019305019305,
+                "f1": 0.24752475247524752,
+                "true_alerts": 50,
+                "false_alerts": 95,
+                "alerts": 145,
+                "eligible_episodes": 259,
+                "missed_episodes": 209,
+                "false_alerts_per_object_day": 0.0405982905982906,
+                "median_lead_hours": 11.84986111111111,
+                "p25_lead_hours": 5.852708333333333,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.18935978358881875,
+            "precision": 0.18683274021352314,
+            "tp": 105,
+            "alerts": 562,
+            "events": 547
+          },
+          "pooled_candidate": {
+            "f1": 0.20716360116166505,
+            "precision": 0.22016460905349794,
+            "tp": 107,
+            "alerts": 486,
+            "events": 547
+          },
+          "passes_gate": true
+        },
+        "blend": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.10084033613445378,
+                "recall": 0.2376237623762376,
+                "f1": 0.14159292035398233,
+                "true_alerts": 24,
+                "false_alerts": 214,
+                "alerts": 238,
+                "eligible_episodes": 101,
+                "missed_episodes": 77,
+                "false_alerts_per_object_day": 0.09460654288240496,
+                "median_lead_hours": 9.740555555555556,
+                "p25_lead_hours": 2.0475,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.21621621621621623,
+                "recall": 0.15841584158415842,
+                "f1": 0.18285714285714283,
+                "true_alerts": 16,
+                "false_alerts": 58,
+                "alerts": 74,
+                "eligible_episodes": 101,
+                "missed_episodes": 85,
+                "false_alerts_per_object_day": 0.02564102564102564,
+                "median_lead_hours": 2.5283333333333333,
+                "p25_lead_hours": 0.7786111111111111,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.1827956989247312,
+                "recall": 0.18181818181818182,
+                "f1": 0.18230563002680963,
+                "true_alerts": 34,
+                "false_alerts": 152,
+                "alerts": 186,
+                "eligible_episodes": 187,
+                "missed_episodes": 153,
+                "false_alerts_per_object_day": 0.0721747388414055,
+                "median_lead_hours": 6.949444444444444,
+                "p25_lead_hours": 1.5056944444444444,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.24427480916030533,
+                "recall": 0.1711229946524064,
+                "f1": 0.2012578616352201,
+                "true_alerts": 32,
+                "false_alerts": 99,
+                "alerts": 131,
+                "eligible_episodes": 187,
+                "missed_episodes": 155,
+                "false_alerts_per_object_day": 0.04700854700854701,
+                "median_lead_hours": 6.352499999999999,
+                "p25_lead_hours": 1.8938888888888887,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.34057971014492755,
+                "recall": 0.18146718146718147,
+                "f1": 0.23677581863979846,
+                "true_alerts": 47,
+                "false_alerts": 91,
+                "alerts": 138,
+                "eligible_episodes": 259,
+                "missed_episodes": 212,
+                "false_alerts_per_object_day": 0.03888888888888889,
+                "median_lead_hours": 10.232222222222223,
+                "p25_lead_hours": 2.5405555555555557,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.34782608695652173,
+                "recall": 0.18532818532818532,
+                "f1": 0.24181360201511337,
+                "true_alerts": 48,
+                "false_alerts": 90,
+                "alerts": 138,
+                "eligible_episodes": 259,
+                "missed_episodes": 211,
+                "false_alerts_per_object_day": 0.038461538461538464,
+                "median_lead_hours": 9.024861111111111,
+                "p25_lead_hours": 1.8940972222222223,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.18935978358881875,
+            "precision": 0.18683274021352314,
+            "tp": 105,
+            "alerts": 562,
+            "events": 547
+          },
+          "pooled_candidate": {
+            "f1": 0.2157303370786517,
+            "precision": 0.27988338192419826,
+            "tp": 96,
+            "alerts": 343,
+            "events": 547
+          },
+          "passes_gate": true
+        }
+      },
+      "uncertainty": {
+        "scope": "conditional_post_selection_sensitivity_not_new_validation",
+        "by_parent": {
+          "clusters": 16,
+          "clusters_with_episodes": 16,
+          "clusters_with_true_alerts": 10,
+          "replicates": 5000,
+          "seed": 20260921,
+          "percentile_95": {
+            "precision": {
+              "low": 0.18292355100970364,
+              "high": 0.3553309980282754,
+              "valid_replicates": 5000
+            },
+            "recall": {
+              "low": 0.09564975845410628,
+              "high": 0.2192999044509913,
+              "valid_replicates": 5000
+            },
+            "f1": {
+              "low": 0.13226612630867948,
+              "high": 0.252535128360414,
+              "valid_replicates": 5000
+            },
+            "baseline_f1": {
+              "low": 0.10840729452531205,
+              "high": 0.2311376338697201,
+              "valid_replicates": 5000
+            },
+            "f1_difference": {
+              "low": 0.0069058545031123,
+              "high": 0.04785058207789136,
+              "valid_replicates": 5000
+            }
+          },
+          "leave_one_cluster_out_f1_difference": {
+            "min": 0.021155003468409928,
+            "max": 0.0325158445852852,
+            "valid_replicates": 16
+          }
+        },
+        "notes": "Paired histories across all three periods; fixed models and thresholds. Does not account for model selection or uncertainty on future months."
+      }
+    },
+    "access": {
+      "selected": "reference",
+      "rows": [
+        {
+          "period": "Ноябрь 2025",
+          "reference": 0.2922552362396493,
+          "context": 0.29209121785541003,
+          "regularized": 0.28793774319066145,
+          "blend": 0.291970802919708,
+          "eligible_episodes": 1482
+        },
+        {
+          "period": "Февраль 2026",
+          "reference": 0.2881165919282511,
+          "context": 0.28321678321678323,
+          "regularized": 0.28924162257495595,
+          "blend": 0.2934272300469483,
+          "eligible_episodes": 1185
+        },
+        {
+          "period": "Май 2026",
+          "reference": 0.3284974093264249,
+          "context": null,
+          "regularized": 0.3351648351648352,
+          "blend": 0.32786885245901637,
+          "eligible_episodes": 1234
+        }
+      ],
+      "variants": {
+        "regularized": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.5253940455341506,
+                "recall": 0.20242914979757085,
+                "f1": 0.2922552362396493,
+                "true_alerts": 300,
+                "false_alerts": 271,
+                "alerts": 571,
+                "eligible_episodes": 1482,
+                "missed_episodes": 1182,
+                "false_alerts_per_object_day": 0.1198054818744474,
+                "median_lead_hours": 8.897083333333333,
+                "p25_lead_hours": 1.2454166666666666,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.5156794425087108,
+                "recall": 0.19973009446693657,
+                "f1": 0.28793774319066145,
+                "true_alerts": 296,
+                "false_alerts": 278,
+                "alerts": 574,
+                "eligible_episodes": 1482,
+                "missed_episodes": 1186,
+                "false_alerts_per_object_day": 0.1229000884173298,
+                "median_lead_hours": 9.1475,
+                "p25_lead_hours": 1.3769444444444445,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.4290484140233723,
+                "recall": 0.2168776371308017,
+                "f1": 0.2881165919282511,
+                "true_alerts": 257,
+                "false_alerts": 342,
+                "alerts": 599,
+                "eligible_episodes": 1185,
+                "missed_episodes": 928,
+                "false_alerts_per_object_day": 0.1623931623931624,
+                "median_lead_hours": 8.6575,
+                "p25_lead_hours": 1.4105555555555556,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.47674418604651164,
+                "recall": 0.20759493670886076,
+                "f1": 0.28924162257495595,
+                "true_alerts": 246,
+                "false_alerts": 270,
+                "alerts": 516,
+                "eligible_episodes": 1185,
+                "missed_episodes": 939,
+                "false_alerts_per_object_day": 0.1282051282051282,
+                "median_lead_hours": 8.732083333333332,
+                "p25_lead_hours": 1.196736111111111,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.45545977011494254,
+                "recall": 0.2568881685575365,
+                "f1": 0.3284974093264249,
+                "true_alerts": 317,
+                "false_alerts": 379,
+                "alerts": 696,
+                "eligible_episodes": 1234,
+                "missed_episodes": 917,
+                "false_alerts_per_object_day": 0.16196581196581197,
+                "median_lead_hours": 9.683333333333334,
+                "p25_lead_hours": 2.386111111111111,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.5204778156996587,
+                "recall": 0.24716369529983792,
+                "f1": 0.3351648351648352,
+                "true_alerts": 305,
+                "false_alerts": 281,
+                "alerts": 586,
+                "eligible_episodes": 1234,
+                "missed_episodes": 929,
+                "false_alerts_per_object_day": 0.12008547008547009,
+                "median_lead_hours": 8.828888888888889,
+                "p25_lead_hours": 1.3469444444444445,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.30310386682850704,
+            "precision": 0.4683815648445874,
+            "tp": 874,
+            "alerts": 1866,
+            "events": 3901
+          },
+          "pooled_candidate": {
+            "f1": 0.3037475345167653,
+            "precision": 0.5053699284009546,
+            "tp": 847,
+            "alerts": 1676,
+            "events": 3901
+          },
+          "passes_gate": false
+        },
+        "blend": {
+          "periods": {
+            "screen_1": {
+              "reference": {
+                "precision": 0.5253940455341506,
+                "recall": 0.20242914979757085,
+                "f1": 0.2922552362396493,
+                "true_alerts": 300,
+                "false_alerts": 271,
+                "alerts": 571,
+                "eligible_episodes": 1482,
+                "missed_episodes": 1182,
+                "false_alerts_per_object_day": 0.1198054818744474,
+                "median_lead_hours": 8.897083333333333,
+                "p25_lead_hours": 1.2454166666666666,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              },
+              "candidate": {
+                "precision": 0.5235602094240838,
+                "recall": 0.20242914979757085,
+                "f1": 0.291970802919708,
+                "true_alerts": 300,
+                "false_alerts": 273,
+                "alerts": 573,
+                "eligible_episodes": 1482,
+                "missed_episodes": 1182,
+                "false_alerts_per_object_day": 0.1206896551724138,
+                "median_lead_hours": 8.897083333333333,
+                "p25_lead_hours": 1.5521527777777777,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18096
+              }
+            },
+            "screen_2": {
+              "reference": {
+                "precision": 0.4290484140233723,
+                "recall": 0.2168776371308017,
+                "f1": 0.2881165919282511,
+                "true_alerts": 257,
+                "false_alerts": 342,
+                "alerts": 599,
+                "eligible_episodes": 1185,
+                "missed_episodes": 928,
+                "false_alerts_per_object_day": 0.1623931623931624,
+                "median_lead_hours": 8.6575,
+                "p25_lead_hours": 1.4105555555555556,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              },
+              "candidate": {
+                "precision": 0.4816955684007707,
+                "recall": 0.2109704641350211,
+                "f1": 0.2934272300469483,
+                "true_alerts": 250,
+                "false_alerts": 269,
+                "alerts": 519,
+                "eligible_episodes": 1185,
+                "missed_episodes": 935,
+                "false_alerts_per_object_day": 0.12773029439696107,
+                "median_lead_hours": 8.774305555555557,
+                "p25_lead_hours": 1.2315277777777778,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 16848
+              }
+            },
+            "confirmation": {
+              "reference": {
+                "precision": 0.45545977011494254,
+                "recall": 0.2568881685575365,
+                "f1": 0.3284974093264249,
+                "true_alerts": 317,
+                "false_alerts": 379,
+                "alerts": 696,
+                "eligible_episodes": 1234,
+                "missed_episodes": 917,
+                "false_alerts_per_object_day": 0.16196581196581197,
+                "median_lead_hours": 9.683333333333334,
+                "p25_lead_hours": 2.386111111111111,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              },
+              "candidate": {
+                "precision": 0.5420560747663551,
+                "recall": 0.23500810372771475,
+                "f1": 0.32786885245901637,
+                "true_alerts": 290,
+                "false_alerts": 245,
+                "alerts": 535,
+                "eligible_episodes": 1234,
+                "missed_episodes": 944,
+                "false_alerts_per_object_day": 0.1047008547008547,
+                "median_lead_hours": 8.479722222222222,
+                "p25_lead_hours": 1.0151388888888888,
+                "cooldown_hours": 24,
+                "matching": "one_to_one",
+                "forecast_opportunities": 18720
+              }
+            }
+          },
+          "pooled_reference": {
+            "f1": 0.30310386682850704,
+            "precision": 0.4683815648445874,
+            "tp": 874,
+            "alerts": 1866,
+            "events": 3901
+          },
+          "pooled_candidate": {
+            "f1": 0.30390738060781475,
+            "precision": 0.5162876459741856,
+            "tp": 840,
+            "alerts": 1627,
+            "events": 3901
+          },
+          "passes_gate": false
+        }
+      }
+    }
+  }
+}

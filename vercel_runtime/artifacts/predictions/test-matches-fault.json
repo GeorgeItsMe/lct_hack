@@ -1,0 +1,178 @@
+[
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.41317742830260995,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.5555744806657366,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.6584847364403085,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-13 09:00:00",
+    "probability": 0.1546333585791705,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5003,
+    "as_of": "2026-06-12 12:00:00",
+    "probability": 0.11917364285395246,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-29 12:00:00",
+    "probability": 0.5881452681316479,
+    "hit": true,
+    "episode_id": "EP-0080303",
+    "lead_hours": 0.1413888888888889
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-25 15:00:00",
+    "probability": 0.36961579163927455,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-27 00:00:00",
+    "probability": 0.3659123727523609,
+    "hit": true,
+    "episode_id": "EP-0080184",
+    "lead_hours": 2.793888888888889
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-28 00:00:00",
+    "probability": 0.8269840343539102,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-29 12:00:00",
+    "probability": 0.6149808905899353,
+    "hit": true,
+    "episode_id": "EP-0080377",
+    "lead_hours": 22.932222222222222
+  },
+  {
+    "object_id": 5657,
+    "as_of": "2026-06-13 21:00:00",
+    "probability": 0.2069927796923535,
+    "hit": true,
+    "episode_id": "EP-0079476",
+    "lead_hours": 13.153333333333334
+  },
+  {
+    "object_id": 5657,
+    "as_of": "2026-06-14 21:00:00",
+    "probability": 0.12633289226139158,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.3391982197055357,
+    "hit": true,
+    "episode_id": "EP-0079124",
+    "lead_hours": 7.293611111111111
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.5612668511394792,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.12184755270973045,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-16 03:00:00",
+    "probability": 0.19170882981398119,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-17 03:00:00",
+    "probability": 0.18350478182546792,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-18 03:00:00",
+    "probability": 0.5032362296333769,
+    "hit": true,
+    "episode_id": "EP-0079688",
+    "lead_hours": 0.7797222222222222
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-19 03:00:00",
+    "probability": 0.43094865531717147,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-21 15:00:00",
+    "probability": 0.12314490188213026,
+    "hit": true,
+    "episode_id": "EP-0079847",
+    "lead_hours": 18.355555555555554
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-22 15:00:00",
+    "probability": 0.7234702372578317,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-24 15:00:00",
+    "probability": 0.1245391524164083,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  }
+]

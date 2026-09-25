@@ -16,11 +16,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, brier_score_loss, precision_recall_curve, roc_auc_score
 
 from moscollector.features import KINDS
+from moscollector.inference import CATEGORICAL, calibrated, model_input
 from moscollector.paths import ARTIFACTS, PROCESSED
 from moscollector.prepare import write_json
 
 LOG = logging.getLogger(__name__)
-CATEGORICAL = ["object_id", "parent_id", "object_kind"]
 SPLITS = {
     "train": ("2019-01-01", "2026-03-01"),
     "validation": ("2026-03-01", "2026-05-01"),
@@ -39,23 +39,10 @@ def feature_columns(df, feature_set="extended"):
     return columns
 
 
-def model_input(df, columns):
-    x = df[columns].copy()
-    for col in CATEGORICAL:
-        x[col] = x[col].fillna("unknown").astype(str)
-    for col in set(columns) - set(CATEGORICAL):
-        x[col] = pd.to_numeric(x[col], errors="coerce").replace([np.inf, -np.inf], np.nan)
-    return x
-
-
 def split_mask(df, name):
     begin, end = map(pd.Timestamp, SPLITS[name])
     # Purge 25h so future labels and duration confirmation never enter the next split.
     return df.eligible & df.as_of.ge(begin) & (df.as_of + pd.Timedelta(hours=25)).lt(end)
-
-
-def sigmoid(x):
-    return 1 / (1 + np.exp(-np.clip(x, -35, 35)))
 
 
 def calibrate(raw, target):
@@ -68,10 +55,6 @@ def calibrate(raw, target):
         "intercept": float(regression.intercept_[0]),
         "status": "sigmoid_independent_period",
     }
-
-
-def calibrated(raw, calibration):
-    return sigmoid(np.asarray(raw) * calibration["slope"] + calibration["intercept"])
 
 
 def alert_metrics(

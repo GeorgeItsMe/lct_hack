@@ -1,0 +1,866 @@
+[
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-10 03:00:00",
+    "probability": 0.5154596901794292,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.19898732794949492,
+    "hit": true,
+    "episode_id": "EP-0079428",
+    "lead_hours": 11.005
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-20 18:00:00",
+    "probability": 0.2979532801145733,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-24 12:00:00",
+    "probability": 0.5536508672057787,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-25 12:00:00",
+    "probability": 0.1725630866423514,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 3356,
+    "as_of": "2026-06-27 21:00:00",
+    "probability": 0.1705707784320222,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 4370,
+    "as_of": "2026-06-24 21:00:00",
+    "probability": 0.34006321840084586,
+    "hit": true,
+    "episode_id": "EP-0080032",
+    "lead_hours": 0.7002777777777778
+  },
+  {
+    "object_id": 5113,
+    "as_of": "2026-06-20 03:00:00",
+    "probability": 0.42922993506737384,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5113,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.17500626429980837,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5113,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.17494623210880614,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5123,
+    "as_of": "2026-06-10 15:00:00",
+    "probability": 0.3842996514168534,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5123,
+    "as_of": "2026-06-26 12:00:00",
+    "probability": 0.2734182545994151,
+    "hit": true,
+    "episode_id": "EP-0080161",
+    "lead_hours": 0.35638888888888887
+  },
+  {
+    "object_id": 5124,
+    "as_of": "2026-06-26 12:00:00",
+    "probability": 0.2873849675102901,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.6133896246151375,
+    "hit": true,
+    "episode_id": "EP-0079171",
+    "lead_hours": 16.071944444444444
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.45331444965068723,
+    "hit": true,
+    "episode_id": "EP-0079273",
+    "lead_hours": 22.004722222222224
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.8118210097776004,
+    "hit": true,
+    "episode_id": "EP-0079276",
+    "lead_hours": 3.111111111111111
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-12 00:00:00",
+    "probability": 0.5447622669573247,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.307664010441432,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-14 00:00:00",
+    "probability": 0.3047942995878583,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-15 00:00:00",
+    "probability": 0.3080209473928917,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-16 00:00:00",
+    "probability": 0.28128000475601317,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-17 00:00:00",
+    "probability": 0.29864286862157896,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-18 00:00:00",
+    "probability": 0.2779673868593451,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-19 00:00:00",
+    "probability": 0.26262237496325774,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-20 00:00:00",
+    "probability": 0.26189284478671115,
+    "hit": true,
+    "episode_id": "EP-0079816",
+    "lead_hours": 20.61
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-21 00:00:00",
+    "probability": 0.5832952156451247,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.29379916100728404,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.3104701635489989,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-24 00:00:00",
+    "probability": 0.342886321225574,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-25 00:00:00",
+    "probability": 0.2812993235558496,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-26 00:00:00",
+    "probability": 0.20568375149847343,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-27 00:00:00",
+    "probability": 0.19625926634881385,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-28 00:00:00",
+    "probability": 0.1789370866631365,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5332,
+    "as_of": "2026-06-29 00:00:00",
+    "probability": 0.20269020873110144,
+    "hit": true,
+    "episode_id": "EP-0080250",
+    "lead_hours": 9.549722222222222
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.3599227574449671,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.37742871241413345,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.3360509715726279,
+    "hit": true,
+    "episode_id": "EP-0079341",
+    "lead_hours": 15.073333333333334
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-12 00:00:00",
+    "probability": 0.3537974058372973,
+    "hit": true,
+    "episode_id": "EP-0079368",
+    "lead_hours": 10.471111111111112
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.535633416174226,
+    "hit": true,
+    "episode_id": "EP-0079416",
+    "lead_hours": 7.750555555555556
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-14 00:00:00",
+    "probability": 0.513159974330859,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-15 00:00:00",
+    "probability": 0.22352641573842014,
+    "hit": true,
+    "episode_id": "EP-0079541",
+    "lead_hours": 16.889444444444443
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-16 00:00:00",
+    "probability": 0.252818465702257,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-17 00:00:00",
+    "probability": 0.19341238014861423,
+    "hit": true,
+    "episode_id": "EP-0079597",
+    "lead_hours": 2.2205555555555554
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-18 00:00:00",
+    "probability": 0.2819432056891272,
+    "hit": true,
+    "episode_id": "EP-0079694",
+    "lead_hours": 9.887222222222222
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-19 00:00:00",
+    "probability": 0.4108801176673501,
+    "hit": true,
+    "episode_id": "EP-0079744",
+    "lead_hours": 0.8888888888888888
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-20 00:00:00",
+    "probability": 0.2808651010669952,
+    "hit": true,
+    "episode_id": "EP-0079807",
+    "lead_hours": 14.896666666666667
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-21 00:00:00",
+    "probability": 0.4049863458592976,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.1801102088605562,
+    "hit": true,
+    "episode_id": "EP-0079866",
+    "lead_hours": 12.249166666666667
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.2417819675848136,
+    "hit": true,
+    "episode_id": "EP-0079921",
+    "lead_hours": 11.321666666666667
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-24 00:00:00",
+    "probability": 0.3201241810243541,
+    "hit": true,
+    "episode_id": "EP-0080003",
+    "lead_hours": 12.635
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-25 00:00:00",
+    "probability": 0.5542925501535242,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-26 00:00:00",
+    "probability": 0.2025236463330593,
+    "hit": true,
+    "episode_id": "EP-0080105",
+    "lead_hours": 8.413611111111111
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-27 00:00:00",
+    "probability": 0.3687434233660628,
+    "hit": true,
+    "episode_id": "EP-0080187",
+    "lead_hours": 7.626111111111111
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-28 00:00:00",
+    "probability": 0.6483193919025039,
+    "hit": true,
+    "episode_id": "EP-0080231",
+    "lead_hours": 7.252777777777778
+  },
+  {
+    "object_id": 5343,
+    "as_of": "2026-06-29 00:00:00",
+    "probability": 0.3954996140832832,
+    "hit": true,
+    "episode_id": "EP-0080252",
+    "lead_hours": 9.70138888888889
+  },
+  {
+    "object_id": 5537,
+    "as_of": "2026-06-25 15:00:00",
+    "probability": 0.8477104869466521,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.46970556740739927,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.1671972873870388,
+    "hit": true,
+    "episode_id": "EP-0079261",
+    "lead_hours": 16.752222222222223
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.2776409121117688,
+    "hit": true,
+    "episode_id": "EP-0079344",
+    "lead_hours": 15.465
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-12 00:00:00",
+    "probability": 0.32034424388948424,
+    "hit": true,
+    "episode_id": "EP-0079369",
+    "lead_hours": 11.397222222222222
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.4519909184264319,
+    "hit": true,
+    "episode_id": "EP-0079430",
+    "lead_hours": 11.373333333333333
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-14 00:00:00",
+    "probability": 0.41502272404063717,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-15 18:00:00",
+    "probability": 0.168450869358307,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-20 21:00:00",
+    "probability": 0.5332293261195582,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.18395754869511668,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.18787117590082048,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5567,
+    "as_of": "2026-06-24 00:00:00",
+    "probability": 0.16998580432536026,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.3167004489207701,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.21394566911310317,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.32555263208187685,
+    "hit": true,
+    "episode_id": "EP-0079347",
+    "lead_hours": 15.735555555555555
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-12 00:00:00",
+    "probability": 0.3244516137658942,
+    "hit": true,
+    "episode_id": "EP-0079370",
+    "lead_hours": 11.590555555555556
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.3240480227875251,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-14 00:00:00",
+    "probability": 0.2682895863266303,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-15 00:00:00",
+    "probability": 0.2921616751203776,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-16 00:00:00",
+    "probability": 0.3125100576313088,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-17 00:00:00",
+    "probability": 0.2010688110094795,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-18 00:00:00",
+    "probability": 0.21945368621189873,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-19 00:00:00",
+    "probability": 0.2284342568371263,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-20 00:00:00",
+    "probability": 0.2960216588445068,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-21 00:00:00",
+    "probability": 0.3028111084240261,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.29139618164556674,
+    "hit": true,
+    "episode_id": "EP-0079841",
+    "lead_hours": 7.955
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.3938182463815889,
+    "hit": true,
+    "episode_id": "EP-0079888",
+    "lead_hours": 3.4516666666666667
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-24 00:00:00",
+    "probability": 0.5774251938027137,
+    "hit": true,
+    "episode_id": "EP-0079954",
+    "lead_hours": 6.588888888888889
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-25 00:00:00",
+    "probability": 0.4527456226522831,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-26 00:00:00",
+    "probability": 0.23665200609772352,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-27 00:00:00",
+    "probability": 0.2242266779949124,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-28 00:00:00",
+    "probability": 0.1798808191491059,
+    "hit": true,
+    "episode_id": "EP-0080230",
+    "lead_hours": 2.971111111111111
+  },
+  {
+    "object_id": 5677,
+    "as_of": "2026-06-29 00:00:00",
+    "probability": 0.5169736665365957,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-09 00:00:00",
+    "probability": 0.3026465442490078,
+    "hit": true,
+    "episode_id": "EP-0079165",
+    "lead_hours": 14.985277777777778
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-10 00:00:00",
+    "probability": 0.6367151475055871,
+    "hit": true,
+    "episode_id": "EP-0079189",
+    "lead_hours": 4.863333333333333
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-11 00:00:00",
+    "probability": 0.6006225887247568,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-12 00:00:00",
+    "probability": 0.3890254193343096,
+    "hit": true,
+    "episode_id": "EP-0079404",
+    "lead_hours": 21.808611111111112
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-13 00:00:00",
+    "probability": 0.6514814667872084,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-14 00:00:00",
+    "probability": 0.22679020414653167,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-15 00:00:00",
+    "probability": 0.24431228222093837,
+    "hit": true,
+    "episode_id": "EP-0079526",
+    "lead_hours": 14.1525
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-16 00:00:00",
+    "probability": 0.45723383576345544,
+    "hit": true,
+    "episode_id": "EP-0079582",
+    "lead_hours": 12.95888888888889
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-17 00:00:00",
+    "probability": 0.5479415208810146,
+    "hit": true,
+    "episode_id": "EP-0079607",
+    "lead_hours": 7.724166666666667
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-18 00:00:00",
+    "probability": 0.6556747806278698,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-19 00:00:00",
+    "probability": 0.4863878048952729,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-20 00:00:00",
+    "probability": 0.30417377015756947,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-21 00:00:00",
+    "probability": 0.17776413721155515,
+    "hit": true,
+    "episode_id": "EP-0079824",
+    "lead_hours": 11.203888888888889
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-22 00:00:00",
+    "probability": 0.6233409458217308,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-23 00:00:00",
+    "probability": 0.4836086339502204,
+    "hit": true,
+    "episode_id": "EP-0079951",
+    "lead_hours": 16.603055555555557
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-24 00:00:00",
+    "probability": 0.5211090091894103,
+    "hit": true,
+    "episode_id": "EP-0080000",
+    "lead_hours": 12.463611111111112
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-25 00:00:00",
+    "probability": 0.6517004450904008,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-26 00:00:00",
+    "probability": 0.21797894214490654,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-27 00:00:00",
+    "probability": 0.1777203901552064,
+    "hit": false,
+    "episode_id": null,
+    "lead_hours": null
+  },
+  {
+    "object_id": 5962,
+    "as_of": "2026-06-29 00:00:00",
+    "probability": 0.17339147472724256,
+    "hit": true,
+    "episode_id": "EP-0080288",
+    "lead_hours": 11.459722222222222
+  }
+]

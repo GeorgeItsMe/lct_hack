@@ -61,6 +61,11 @@ type StreamStatus = {
   forecast_error: string | null;
   receipts: { id: number; inserted_rows: number; duplicate_rows: number }[];
 };
+type IntegrationStatus = {
+  imports_enabled: boolean;
+  max_import_bytes: number;
+  hosting_notice: string | null;
+};
 const statuses: Record<string, string> = {
   queued: "В очереди",
   running: "Расчёт",
@@ -76,6 +81,7 @@ export function ImportPanel({ user }: { user: User }) {
     [selected, setSelected] = useState<Batch | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [integration, setIntegration] = useState<IntegrationStatus | null>(null);
   const [mode, setMode] = useState("preview"),
     [stream, setStream] = useState<StreamStatus | null>(null),
     [receipt, setReceipt] = useState("");
@@ -103,9 +109,15 @@ export function ImportPanel({ user }: { user: User }) {
   }
   async function update() {
     try {
-      setBatches(await api<Batch[]>("/imports"));
-      const currentStream = await api<StreamStatus>("/stream");
+      const [latestBatches, currentStream, currentIntegration] =
+        await Promise.all([
+          api<Batch[]>("/imports"),
+          api<StreamStatus>("/stream"),
+          api<IntegrationStatus>("/integrations"),
+        ]);
+      setBatches(latestBatches);
       setStream(currentStream);
+      setIntegration(currentIntegration);
       if (!selected && currentStream.latest_job?.status === "complete") {
         setSelected(
           await api<Batch>(`/imports/${currentStream.latest_job.id}`),
@@ -128,8 +140,9 @@ export function ImportPanel({ user }: { user: User }) {
     setError("");
     setReceipt("");
     try {
-      if (file.size > 20 * 1024 * 1024)
-        throw Error("Размер файла превышает 20 МБ");
+      const maxBytes = integration?.max_import_bytes ?? 20 * 1024 * 1024;
+      if (file.size > maxBytes)
+        throw Error(`Размер файла превышает ${Math.floor(maxBytes / 1024 / 1024)} МБ`);
       const extension = file.name.split(".").pop()?.toLowerCase();
       const response = await fetch(
         `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}&as_of=${encodeURIComponent(asOf)}`,
@@ -185,7 +198,11 @@ export function ImportPanel({ user }: { user: User }) {
       <div className="panel-heading">
         <div>
           <h2>Приём телеметрии и расчёт</h2>
-          <span>CSV, XLSX, JSON или XML · до 20 МБ и 100 000 записей</span>
+          <span>
+            CSV, XLSX, JSON или XML · до{" "}
+            {Math.floor((integration?.max_import_bytes ?? 20 * 1024 * 1024) / 1024 / 1024)} МБ
+            и 100 000 записей
+          </span>
         </div>
         <FileUp size={21} />
       </div>
@@ -196,6 +213,9 @@ export function ImportPanel({ user }: { user: User }) {
           исключаются. Каждый расчёт создаёт отдельный снимок. Оперативная
           система мониторинга пока не подключена.
         </p>
+        {integration && !integration.imports_enabled && (
+          <ErrorNotice message={integration.hosting_notice || "Импорт на этом стенде отключён."} />
+        )}
         <details>
           <summary>Формат и требования к данным</summary>
           <p>
@@ -290,7 +310,7 @@ export function ImportPanel({ user }: { user: User }) {
                 accept=".csv,.xlsx,.json,.xml"
                 required
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
-                disabled={user.role === "analyst"}
+                disabled={user.role === "analyst" || integration?.imports_enabled === false}
               />
             </span>
           </label>
@@ -306,7 +326,7 @@ export function ImportPanel({ user }: { user: User }) {
           </label>
           <button
             className="primary-button"
-            disabled={busy || user.role === "analyst"}
+            disabled={busy || user.role === "analyst" || integration?.imports_enabled === false}
           >
             <FileUp size={17} />
             {busy ? "Проверяем пакет…" : "Рассчитать прогноз"}

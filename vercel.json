@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "fluid": true,
+  "functions": {
+    "app.py": {
+      "includeFiles": "{vercel_runtime/**,web/dist/**,src/**}",
+      "maxDuration": 300,
+      "excludeFiles": "{**/plotly/**,**/matplotlib/**,**/fontTools/**,**/PIL/**,**/pillow.libs/**,**/graphviz/**,**/narwhals/**,web/node_modules/**,web/src/**}"
+    }
+  }
+}

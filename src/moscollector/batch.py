@@ -15,10 +15,10 @@ from catboost import CatBoostClassifier
 
 from moscollector import features, prepare
 from moscollector.domain import KIND_LABELS, RECOMMENDATIONS
+from moscollector.inference import calibrated, model_input
 from moscollector.model_registry import load_bundle
 from moscollector.paths import ARTIFACTS, PROCESSED
 from moscollector.service import clean
-from moscollector.train import calibrated, model_input
 
 
 def run(directory: Path, as_of: str):

@@ -1,0 +1,1039 @@
+{
+  "kind": "fire",
+  "calibration": {
+    "slope": 1.1837185970777593,
+    "intercept": 1.117210525358544,
+    "status": "sigmoid_independent_period"
+  },
+  "threshold": 0.16684210526315787,
+  "policy_period": {
+    "threshold": 0.16684210526315787,
+    "precision": 0.2857142857142857,
+    "recall": 0.17142857142857143,
+    "f1": 0.21428571428571427,
+    "true_alerts": 24,
+    "false_alerts": 60,
+    "alerts": 84,
+    "eligible_episodes": 140,
+    "missed_episodes": 116,
+    "false_alerts_per_object_day": 0.05128205128205128,
+    "median_lead_hours": 11.538055555555555,
+    "p25_lead_hours": 7.255902777777777,
+    "cooldown_hours": 24,
+    "matching": "one_to_one",
+    "forecast_opportunities": 9360,
+    "status": "validated_policy"
+  },
+  "policy_curve": [
+    {
+      "threshold": 0.02,
+      "precision": 0.09915014164305949,
+      "recall": 0.25,
+      "f1": 0.1419878296146045,
+      "true_alerts": 35,
+      "false_alerts": 318,
+      "alerts": 353,
+      "eligible_episodes": 140,
+      "missed_episodes": 105,
+      "false_alerts_per_object_day": 0.2717948717948718,
+      "median_lead_hours": 10.899722222222222,
+      "p25_lead_hours": 7.976805555555556,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.024628209623541803,
+      "precision": 0.10967741935483871,
+      "recall": 0.24285714285714285,
+      "f1": 0.1511111111111111,
+      "true_alerts": 34,
+      "false_alerts": 276,
+      "alerts": 310,
+      "eligible_episodes": 140,
+      "missed_episodes": 106,
+      "false_alerts_per_object_day": 0.2358974358974359,
+      "median_lead_hours": 10.789861111111112,
+      "p25_lead_hours": 7.627152777777778,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.06894736842105263,
+      "precision": 0.2,
+      "recall": 0.19285714285714287,
+      "f1": 0.19636363636363635,
+      "true_alerts": 27,
+      "false_alerts": 108,
+      "alerts": 135,
+      "eligible_episodes": 140,
+      "missed_episodes": 113,
+      "false_alerts_per_object_day": 0.09230769230769231,
+      "median_lead_hours": 10.68,
+      "p25_lead_hours": 6.838888888888889,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.07737067508221526,
+      "precision": 0.21774193548387097,
+      "recall": 0.19285714285714287,
+      "f1": 0.20454545454545456,
+      "true_alerts": 27,
+      "false_alerts": 97,
+      "alerts": 124,
+      "eligible_episodes": 140,
+      "missed_episodes": 113,
+      "false_alerts_per_object_day": 0.0829059829059829,
+      "median_lead_hours": 10.923333333333334,
+      "p25_lead_hours": 7.234305555555555,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.11789473684210526,
+      "precision": 0.2358490566037736,
+      "recall": 0.17857142857142858,
+      "f1": 0.2032520325203252,
+      "true_alerts": 25,
+      "false_alerts": 81,
+      "alerts": 106,
+      "eligible_episodes": 140,
+      "missed_episodes": 115,
+      "false_alerts_per_object_day": 0.06923076923076923,
+      "median_lead_hours": 10.948055555555555,
+      "p25_lead_hours": 7.2775,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.16684210526315787,
+      "precision": 0.2857142857142857,
+      "recall": 0.17142857142857143,
+      "f1": 0.21428571428571427,
+      "true_alerts": 24,
+      "false_alerts": 60,
+      "alerts": 84,
+      "eligible_episodes": 140,
+      "missed_episodes": 116,
+      "false_alerts_per_object_day": 0.05128205128205128,
+      "median_lead_hours": 11.538055555555555,
+      "p25_lead_hours": 7.255902777777777,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360,
+      "status": "validated_policy"
+    },
+    {
+      "threshold": 0.2157894736842105,
+      "precision": 0.3235294117647059,
+      "recall": 0.15714285714285714,
+      "f1": 0.21153846153846154,
+      "true_alerts": 22,
+      "false_alerts": 46,
+      "alerts": 68,
+      "eligible_episodes": 140,
+      "missed_episodes": 118,
+      "false_alerts_per_object_day": 0.039316239316239315,
+      "median_lead_hours": 9.547916666666666,
+      "p25_lead_hours": 6.6627777777777775,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.21831214483447497,
+      "precision": 0.3235294117647059,
+      "recall": 0.15714285714285714,
+      "f1": 0.21153846153846154,
+      "true_alerts": 22,
+      "false_alerts": 46,
+      "alerts": 68,
+      "eligible_episodes": 140,
+      "missed_episodes": 118,
+      "false_alerts_per_object_day": 0.039316239316239315,
+      "median_lead_hours": 9.547916666666666,
+      "p25_lead_hours": 6.6627777777777775,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.26473684210526316,
+      "precision": 0.3333333333333333,
+      "recall": 0.14285714285714285,
+      "f1": 0.2,
+      "true_alerts": 20,
+      "false_alerts": 40,
+      "alerts": 60,
+      "eligible_episodes": 140,
+      "missed_episodes": 120,
+      "false_alerts_per_object_day": 0.03418803418803419,
+      "median_lead_hours": 7.96638888888889,
+      "p25_lead_hours": 1.8572916666666666,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.3136842105263158,
+      "precision": 0.3,
+      "recall": 0.10714285714285714,
+      "f1": 0.15789473684210525,
+      "true_alerts": 15,
+      "false_alerts": 35,
+      "alerts": 50,
+      "eligible_episodes": 140,
+      "missed_episodes": 125,
+      "false_alerts_per_object_day": 0.029914529914529916,
+      "median_lead_hours": 9.423333333333334,
+      "p25_lead_hours": 3.388333333333333,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.3604232432754126,
+      "precision": 0.4166666666666667,
+      "recall": 0.10714285714285714,
+      "f1": 0.17045454545454544,
+      "true_alerts": 15,
+      "false_alerts": 21,
+      "alerts": 36,
+      "eligible_episodes": 140,
+      "missed_episodes": 125,
+      "false_alerts_per_object_day": 0.017948717948717947,
+      "median_lead_hours": 8.864166666666666,
+      "p25_lead_hours": 2.5405555555555557,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.3626315789473684,
+      "precision": 0.4166666666666667,
+      "recall": 0.10714285714285714,
+      "f1": 0.17045454545454544,
+      "true_alerts": 15,
+      "false_alerts": 21,
+      "alerts": 36,
+      "eligible_episodes": 140,
+      "missed_episodes": 125,
+      "false_alerts_per_object_day": 0.017948717948717947,
+      "median_lead_hours": 8.864166666666666,
+      "p25_lead_hours": 2.5405555555555557,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.41157894736842104,
+      "precision": 0.48148148148148145,
+      "recall": 0.09285714285714286,
+      "f1": 0.155688622754491,
+      "true_alerts": 13,
+      "false_alerts": 14,
+      "alerts": 27,
+      "eligible_episodes": 140,
+      "missed_episodes": 127,
+      "false_alerts_per_object_day": 0.011965811965811967,
+      "median_lead_hours": 8.286111111111111,
+      "p25_lead_hours": 1.9741666666666666,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.4605263157894737,
+      "precision": 0.52,
+      "recall": 0.09285714285714286,
+      "f1": 0.15757575757575756,
+      "true_alerts": 13,
+      "false_alerts": 12,
+      "alerts": 25,
+      "eligible_episodes": 140,
+      "missed_episodes": 127,
+      "false_alerts_per_object_day": 0.010256410256410256,
+      "median_lead_hours": 3.6702777777777778,
+      "p25_lead_hours": 1.9741666666666666,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.5094736842105263,
+      "precision": 0.5217391304347826,
+      "recall": 0.08571428571428572,
+      "f1": 0.147239263803681,
+      "true_alerts": 12,
+      "false_alerts": 11,
+      "alerts": 23,
+      "eligible_episodes": 140,
+      "missed_episodes": 128,
+      "false_alerts_per_object_day": 0.009401709401709401,
+      "median_lead_hours": 3.67,
+      "p25_lead_hours": 1.3317361111111112,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.5584210526315789,
+      "precision": 0.5789473684210527,
+      "recall": 0.07857142857142857,
+      "f1": 0.13836477987421386,
+      "true_alerts": 11,
+      "false_alerts": 8,
+      "alerts": 19,
+      "eligible_episodes": 140,
+      "missed_episodes": 129,
+      "false_alerts_per_object_day": 0.006837606837606838,
+      "median_lead_hours": 3.6702777777777778,
+      "p25_lead_hours": 1.7769444444444444,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.6073684210526316,
+      "precision": 0.5555555555555556,
+      "recall": 0.07142857142857142,
+      "f1": 0.12658227848101264,
+      "true_alerts": 10,
+      "false_alerts": 8,
+      "alerts": 18,
+      "eligible_episodes": 140,
+      "missed_episodes": 130,
+      "false_alerts_per_object_day": 0.006837606837606838,
+      "median_lead_hours": 3.67,
+      "p25_lead_hours": 1.6783333333333332,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.6315729462210462,
+      "precision": 0.5882352941176471,
+      "recall": 0.07142857142857142,
+      "f1": 0.12738853503184713,
+      "true_alerts": 10,
+      "false_alerts": 7,
+      "alerts": 17,
+      "eligible_episodes": 140,
+      "missed_episodes": 130,
+      "false_alerts_per_object_day": 0.005982905982905983,
+      "median_lead_hours": 3.67,
+      "p25_lead_hours": 1.6783333333333332,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.6563157894736842,
+      "precision": 0.5625,
+      "recall": 0.06428571428571428,
+      "f1": 0.11538461538461538,
+      "true_alerts": 9,
+      "false_alerts": 7,
+      "alerts": 16,
+      "eligible_episodes": 140,
+      "missed_episodes": 131,
+      "false_alerts_per_object_day": 0.005982905982905983,
+      "median_lead_hours": 3.669722222222222,
+      "p25_lead_hours": 1.5797222222222222,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.7052631578947368,
+      "precision": 0.5714285714285714,
+      "recall": 0.05714285714285714,
+      "f1": 0.10389610389610389,
+      "true_alerts": 8,
+      "false_alerts": 6,
+      "alerts": 14,
+      "eligible_episodes": 140,
+      "missed_episodes": 132,
+      "false_alerts_per_object_day": 0.005128205128205128,
+      "median_lead_hours": 2.624722222222222,
+      "p25_lead_hours": 0.725486111111111,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.7542105263157894,
+      "precision": 0.5714285714285714,
+      "recall": 0.05714285714285714,
+      "f1": 0.10389610389610389,
+      "true_alerts": 8,
+      "false_alerts": 6,
+      "alerts": 14,
+      "eligible_episodes": 140,
+      "missed_episodes": 132,
+      "false_alerts_per_object_day": 0.005128205128205128,
+      "median_lead_hours": 2.624722222222222,
+      "p25_lead_hours": 0.725486111111111,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.8031578947368421,
+      "precision": 0.5555555555555556,
+      "recall": 0.03571428571428571,
+      "f1": 0.06711409395973154,
+      "true_alerts": 5,
+      "false_alerts": 4,
+      "alerts": 9,
+      "eligible_episodes": 140,
+      "missed_episodes": 135,
+      "false_alerts_per_object_day": 0.003418803418803419,
+      "median_lead_hours": 3.6702777777777778,
+      "p25_lead_hours": 0.1761111111111111,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.8521052631578947,
+      "precision": 0.5,
+      "recall": 0.02857142857142857,
+      "f1": 0.05405405405405405,
+      "true_alerts": 4,
+      "false_alerts": 4,
+      "alerts": 8,
+      "eligible_episodes": 140,
+      "missed_episodes": 136,
+      "false_alerts_per_object_day": 0.003418803418803419,
+      "median_lead_hours": 1.9877777777777776,
+      "p25_lead_hours": 0.2729861111111111,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.9010526315789473,
+      "precision": 0.2,
+      "recall": 0.007142857142857143,
+      "f1": 0.013793103448275862,
+      "true_alerts": 1,
+      "false_alerts": 4,
+      "alerts": 5,
+      "eligible_episodes": 140,
+      "missed_episodes": 139,
+      "false_alerts_per_object_day": 0.003418803418803419,
+      "median_lead_hours": 4.0072222222222225,
+      "p25_lead_hours": 4.0072222222222225,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 0.95,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_alerts": 0,
+      "false_alerts": 0,
+      "alerts": 0,
+      "eligible_episodes": 140,
+      "missed_episodes": 140,
+      "false_alerts_per_object_day": 0.0,
+      "median_lead_hours": null,
+      "p25_lead_hours": null,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    },
+    {
+      "threshold": 1.01,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_alerts": 0,
+      "false_alerts": 0,
+      "alerts": 0,
+      "eligible_episodes": 140,
+      "missed_episodes": 140,
+      "false_alerts_per_object_day": 0.0,
+      "median_lead_hours": null,
+      "p25_lead_hours": null,
+      "cooldown_hours": 24,
+      "matching": "one_to_one",
+      "forecast_opportunities": 9360
+    }
+  ],
+  "features": [
+    "events_1h",
+    "alarms_1h",
+    "fault_reports_1h",
+    "power_reports_1h",
+    "unknown_reports_1h",
+    "smoke_reports_1h",
+    "flood_reports_1h",
+    "access_reports_1h",
+    "pump_switches_1h",
+    "ambiguous_1h",
+    "technical_codes_1h",
+    "events_6h",
+    "alarms_6h",
+    "fault_reports_6h",
+    "power_reports_6h",
+    "unknown_reports_6h",
+    "smoke_reports_6h",
+    "flood_reports_6h",
+    "access_reports_6h",
+    "pump_switches_6h",
+    "ambiguous_6h",
+    "technical_codes_6h",
+    "events_24h",
+    "alarms_24h",
+    "fault_reports_24h",
+    "power_reports_24h",
+    "unknown_reports_24h",
+    "smoke_reports_24h",
+    "flood_reports_24h",
+    "access_reports_24h",
+    "pump_switches_24h",
+    "ambiguous_24h",
+    "technical_codes_24h",
+    "events_168h",
+    "alarms_168h",
+    "fault_reports_168h",
+    "power_reports_168h",
+    "unknown_reports_168h",
+    "smoke_reports_168h",
+    "flood_reports_168h",
+    "access_reports_168h",
+    "pump_switches_168h",
+    "ambiguous_168h",
+    "technical_codes_168h",
+    "fault_reports_recency_h",
+    "fault_reports_burst",
+    "power_reports_recency_h",
+    "power_reports_burst",
+    "unknown_reports_recency_h",
+    "unknown_reports_burst",
+    "smoke_reports_recency_h",
+    "smoke_reports_burst",
+    "flood_reports_recency_h",
+    "flood_reports_burst",
+    "access_reports_recency_h",
+    "access_reports_burst",
+    "temperature",
+    "temperature_age_h",
+    "temperature_change_24h",
+    "temperature_max",
+    "temperature_max_age_h",
+    "temperature_max_change_24h",
+    "gas",
+    "gas_age_h",
+    "gas_change_24h",
+    "reporting_channels_24h",
+    "channel_count",
+    "temperature_channels",
+    "smoke_channels",
+    "pump_channels",
+    "water_channels",
+    "hour",
+    "day_of_week",
+    "month",
+    "weekend",
+    "object_id",
+    "parent_id",
+    "object_kind",
+    "past_fault_episodes_24h",
+    "past_fault_episodes_168h",
+    "past_fault_episodes_720h",
+    "past_fault_recency_h",
+    "past_fire_episodes_24h",
+    "past_fire_episodes_168h",
+    "past_fire_episodes_720h",
+    "past_fire_recency_h",
+    "past_flood_episodes_24h",
+    "past_flood_episodes_168h",
+    "past_flood_episodes_720h",
+    "past_flood_recency_h",
+    "past_access_episodes_24h",
+    "past_access_episodes_168h",
+    "past_access_episodes_720h",
+    "past_access_recency_h"
+  ],
+  "best_iteration": 97,
+  "training_rows": 254592,
+  "training_positive_rows": 4556,
+  "calibration_rows": 8736,
+  "baseline": {
+    "global_rate": 0.017895299145299144,
+    "object_rates": {
+      "20": 0.01259375943450243,
+      "28": 0.0001089847694597999,
+      "42": 0.0001089847694597999,
+      "99": 0.0147253063285341,
+      "108": 0.01228925273535505,
+      "111": 0.0147253063285341,
+      "165": 0.019597413514892196,
+      "3215": 0.0001089847694597999,
+      "3216": 0.015029813027681482,
+      "3250": 0.0001089847694597999,
+      "3356": 0.08232579353925275,
+      "3360": 0.0001089847694597999,
+      "3388": 0.0001089847694597999,
+      "3902": 0.016247839824271006,
+      "3903": 0.0001089847694597999,
+      "3904": 0.0001089847694597999,
+      "3905": 0.0001089847694597999,
+      "4069": 0.0001089847694597999,
+      "4095": 0.0001089847694597999,
+      "4177": 0.01746586662086053,
+      "4369": 0.0001089847694597999,
+      "4370": 0.064968911687852,
+      "4391": 0.0001089847694597999,
+      "4392": 0.0147253063285341,
+      "4541": 0.0001089847694597999,
+      "4543": 0.0001089847694597999,
+      "4569": 0.0001089847694597999,
+      "4574": 0.017161359921713148,
+      "4577": 0.0001089847694597999,
+      "4610": 0.0001089847694597999,
+      "4648": 0.055529204014283184,
+      "4763": 0.0001089847694597999,
+      "4765": 0.0001089847694597999,
+      "4767": 0.0001089847694597999,
+      "4768": 0.0001089847694597999,
+      "4770": 0.0001089847694597999,
+      "5003": 0.0001089847694597999,
+      "5009": 0.0001089847694597999,
+      "5011": 0.0001089847694597999,
+      "5113": 0.15144881424570827,
+      "5114": 0.0001089847694597999,
+      "5122": 0.0001089847694597999,
+      "5123": 0.03208218817993483,
+      "5124": 0.0293416278876084,
+      "5129": 0.0147253063285341,
+      "5132": 0.0074171455489969495,
+      "5218": 0.0001089847694597999,
+      "5332": 0.1882941248425414,
+      "5333": 0.0001089847694597999,
+      "5336": 0.015334319726828862,
+      "5338": 0.0001089847694597999,
+      "5339": 0.02995064128590316,
+      "5340": 0.0001089847694597999,
+      "5343": 0.1155170237463173,
+      "5537": 0.03177768148078745,
+      "5539": 0.018988400116597436,
+      "5540": 0.0001089847694597999,
+      "5567": 0.05096160352707246,
+      "5574": 0.0001089847694597999,
+      "5578": 0.0001089847694597999,
+      "5579": 0.0001089847694597999,
+      "5580": 0.0001089847694597999,
+      "5581": 0.06435989828955724,
+      "5582": 0.0001089847694597999,
+      "5583": 0.022033467108071247,
+      "5591": 0.0001089847694597999,
+      "5593": 0.0001089847694597999,
+      "5594": 0.0001089847694597999,
+      "5657": 0.0001089847694597999,
+      "5674": 0.018074880019155293,
+      "5675": 0.0001089847694597999,
+      "5676": 0.0001089847694597999,
+      "5677": 0.19590679232122596,
+      "5678": 0.0001089847694597999,
+      "5961": 0.0001089847694597999,
+      "5962": 0.047003016438156506,
+      "5963": 0.0001089847694597999,
+      "5966": 0.0001089847694597999
+    },
+    "threshold": 0.055529204014283184
+  },
+  "feature_importance": [
+    {
+      "feature": "smoke_channels",
+      "importance": 55.48661435860477
+    },
+    {
+      "feature": "unknown_reports_recency_h",
+      "importance": 4.770297546686424
+    },
+    {
+      "feature": "power_reports_recency_h",
+      "importance": 4.232155188237815
+    },
+    {
+      "feature": "smoke_reports_recency_h",
+      "importance": 3.745970943748134
+    },
+    {
+      "feature": "channel_count",
+      "importance": 3.2745903943353527
+    },
+    {
+      "feature": "pump_switches_168h",
+      "importance": 2.1424313160305464
+    },
+    {
+      "feature": "alarms_168h",
+      "importance": 1.7760317131161008
+    },
+    {
+      "feature": "past_fire_recency_h",
+      "importance": 1.7077441417115975
+    },
+    {
+      "feature": "events_168h",
+      "importance": 1.5972865625650292
+    },
+    {
+      "feature": "access_reports_recency_h",
+      "importance": 1.5449283978654835
+    },
+    {
+      "feature": "day_of_week",
+      "importance": 1.5265959009173182
+    },
+    {
+      "feature": "past_access_episodes_720h",
+      "importance": 1.485924748496957
+    },
+    {
+      "feature": "fault_reports_recency_h",
+      "importance": 1.4769149889596118
+    },
+    {
+      "feature": "power_reports_168h",
+      "importance": 1.369819743438729
+    },
+    {
+      "feature": "events_24h",
+      "importance": 1.3099936478603247
+    },
+    {
+      "feature": "fault_reports_168h",
+      "importance": 0.8087592847424242
+    },
+    {
+      "feature": "past_fire_episodes_720h",
+      "importance": 0.7845956629983449
+    },
+    {
+      "feature": "past_fault_recency_h",
+      "importance": 0.7576896855348888
+    },
+    {
+      "feature": "past_flood_recency_h",
+      "importance": 0.7266975427593821
+    },
+    {
+      "feature": "alarms_24h",
+      "importance": 0.566125838453964
+    },
+    {
+      "feature": "reporting_channels_24h",
+      "importance": 0.5493439425246497
+    },
+    {
+      "feature": "water_channels",
+      "importance": 0.5489514298510797
+    },
+    {
+      "feature": "smoke_reports_168h",
+      "importance": 0.5314747071444336
+    },
+    {
+      "feature": "past_access_episodes_24h",
+      "importance": 0.5279524921951255
+    },
+    {
+      "feature": "temperature",
+      "importance": 0.5090959314843021
+    },
+    {
+      "feature": "past_access_recency_h",
+      "importance": 0.49615368766276496
+    },
+    {
+      "feature": "temperature_max_age_h",
+      "importance": 0.4800973815448285
+    },
+    {
+      "feature": "unknown_reports_24h",
+      "importance": 0.4677150900696458
+    },
+    {
+      "feature": "past_access_episodes_168h",
+      "importance": 0.4098907663863985
+    },
+    {
+      "feature": "month",
+      "importance": 0.35177462543153426
+    },
+    {
+      "feature": "unknown_reports_168h",
+      "importance": 0.32964483450064397
+    },
+    {
+      "feature": "ambiguous_168h",
+      "importance": 0.32514403242515477
+    },
+    {
+      "feature": "weekend",
+      "importance": 0.274615907438115
+    },
+    {
+      "feature": "events_6h",
+      "importance": 0.2704825903829118
+    },
+    {
+      "feature": "temperature_max_change_24h",
+      "importance": 0.2621031888285863
+    },
+    {
+      "feature": "past_fire_episodes_24h",
+      "importance": 0.2547561737822147
+    },
+    {
+      "feature": "pump_channels",
+      "importance": 0.24944780319600132
+    },
+    {
+      "feature": "temperature_channels",
+      "importance": 0.17881254560216378
+    },
+    {
+      "feature": "object_kind",
+      "importance": 0.17775716879138054
+    },
+    {
+      "feature": "access_reports_168h",
+      "importance": 0.16597453087701675
+    },
+    {
+      "feature": "smoke_reports_24h",
+      "importance": 0.16176426632922744
+    },
+    {
+      "feature": "fault_reports_24h",
+      "importance": 0.1596750239671931
+    },
+    {
+      "feature": "object_id",
+      "importance": 0.15713816034536637
+    },
+    {
+      "feature": "power_reports_24h",
+      "importance": 0.14581194562471816
+    },
+    {
+      "feature": "past_fire_episodes_168h",
+      "importance": 0.13975473306529035
+    },
+    {
+      "feature": "events_1h",
+      "importance": 0.11505756101118587
+    },
+    {
+      "feature": "ambiguous_24h",
+      "importance": 0.09076001758115841
+    },
+    {
+      "feature": "access_reports_24h",
+      "importance": 0.0819742797761669
+    },
+    {
+      "feature": "temperature_max",
+      "importance": 0.07561177486709472
+    },
+    {
+      "feature": "flood_reports_recency_h",
+      "importance": 0.07327358185569123
+    },
+    {
+      "feature": "past_fault_episodes_720h",
+      "importance": 0.06071780625517839
+    },
+    {
+      "feature": "smoke_reports_1h",
+      "importance": 0.04561716429115183
+    },
+    {
+      "feature": "smoke_reports_burst",
+      "importance": 0.036796906777416406
+    },
+    {
+      "feature": "fault_reports_burst",
+      "importance": 0.03221096312481082
+    },
+    {
+      "feature": "smoke_reports_6h",
+      "importance": 0.028036280262627427
+    },
+    {
+      "feature": "unknown_reports_6h",
+      "importance": 0.01975091756170366
+    },
+    {
+      "feature": "past_fault_episodes_168h",
+      "importance": 0.019609078285970732
+    },
+    {
+      "feature": "ambiguous_6h",
+      "importance": 0.01919931896223252
+    },
+    {
+      "feature": "access_reports_burst",
+      "importance": 0.018581219523394563
+    },
+    {
+      "feature": "alarms_1h",
+      "importance": 0.01215884944432679
+    },
+    {
+      "feature": "technical_codes_168h",
+      "importance": 0.008896715101685004
+    },
+    {
+      "feature": "past_flood_episodes_168h",
+      "importance": 0.007667234902543188
+    },
+    {
+      "feature": "power_reports_burst",
+      "importance": 0.007512305936487335
+    },
+    {
+      "feature": "past_fault_episodes_24h",
+      "importance": 0.006172350807890803
+    },
+    {
+      "feature": "past_flood_episodes_24h",
+      "importance": 0.005723095224867153
+    },
+    {
+      "feature": "pump_switches_1h",
+      "importance": 0.004204447386245892
+    },
+    {
+      "feature": "unknown_reports_burst",
+      "importance": 0.003687636323891591
+    },
+    {
+      "feature": "alarms_6h",
+      "importance": 0.0033448975902812934
+    },
+    {
+      "feature": "access_reports_6h",
+      "importance": 0.002377546992943603
+    },
+    {
+      "feature": "ambiguous_1h",
+      "importance": 0.0014321047695811024
+    },
+    {
+      "feature": "unknown_reports_1h",
+      "importance": 0.0013675952559317585
+    },
+    {
+      "feature": "technical_codes_24h",
+      "importance": 0.0007251844935981844
+    },
+    {
+      "feature": "pump_switches_6h",
+      "importance": 0.0004406051203700315
+    },
+    {
+      "feature": "past_flood_episodes_720h",
+      "importance": 0.0004362860049312416
+    },
+    {
+      "feature": "flood_reports_burst",
+      "importance": 0.00015570799468815443
+    },
+    {
+      "feature": "fault_reports_1h",
+      "importance": 0.0
+    },
+    {
+      "feature": "power_reports_1h",
+      "importance": 0.0
+    },
+    {
+      "feature": "flood_reports_1h",
+      "importance": 0.0
+    },
+    {
+      "feature": "access_reports_1h",
+      "importance": 0.0
+    },
+    {
+      "feature": "technical_codes_1h",
+      "importance": 0.0
+    },
+    {
+      "feature": "fault_reports_6h",
+      "importance": 0.0
+    },
+    {
+      "feature": "power_reports_6h",
+      "importance": 0.0
+    },
+    {
+      "feature": "flood_reports_6h",
+      "importance": 0.0
+    },
+    {
+      "feature": "technical_codes_6h",
+      "importance": 0.0
+    },
+    {
+      "feature": "flood_reports_24h",
+      "importance": 0.0
+    },
+    {
+      "feature": "pump_switches_24h",
+      "importance": 0.0
+    },
+    {
+      "feature": "flood_reports_168h",
+      "importance": 0.0
+    },
+    {
+      "feature": "temperature_age_h",
+      "importance": 0.0
+    },
+    {
+      "feature": "temperature_change_24h",
+      "importance": 0.0
+    },
+    {
+      "feature": "gas",
+      "importance": 0.0
+    },
+    {
+      "feature": "gas_age_h",
+      "importance": 0.0
+    },
+    {
+      "feature": "gas_change_24h",
+      "importance": 0.0
+    },
+    {
+      "feature": "hour",
+      "importance": 0.0
+    },
+    {
+      "feature": "parent_id",
+      "importance": 0.0
+    }
+  ],
+  "training_range": [
+    "2025-01-01",
+    "2026-03-01"
+  ],
+  "selected_experiment": "v3"
+}

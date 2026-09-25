@@ -13,8 +13,8 @@ import pandas as pd
 from catboost import CatBoostClassifier, Pool
 
 from moscollector.domain import KIND_LABELS, RECOMMENDATIONS, feature_label
+from moscollector.inference import CATEGORICAL, model_input
 from moscollector.paths import ARTIFACTS, PROCESSED
-from moscollector.train import CATEGORICAL, model_input
 
 
 def clean(value):

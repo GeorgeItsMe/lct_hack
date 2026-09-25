@@ -8,3 +8,4 @@ DATA = Path(os.getenv("CONTOUR_DATA_DIR", ROOT / "data"))
 ARTIFACTS = Path(os.getenv("CONTOUR_ARTIFACT_DIR", ROOT / "artifacts"))
 RAW = DATA / "raw"
 PROCESSED = DATA / "processed"
+RUNTIME = Path(os.getenv("CONTOUR_RUNTIME_DIR", DATA / "runtime"))

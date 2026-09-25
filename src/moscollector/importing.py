@@ -17,7 +17,7 @@ from datetime import UTC, datetime
 import pandas as pd
 from defusedxml import ElementTree
 
-from moscollector.paths import DATA, PROCESSED
+from moscollector.paths import PROCESSED, RUNTIME
 
 MAX_BYTES = 20 * 1024 * 1024
 MAX_ROWS = 100_000
@@ -137,7 +137,7 @@ def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
 
 class ImportManager:
     def __init__(self):
-        self.root = DATA / "runtime" / "imports"
+        self.root = RUNTIME / "imports"
         self.root.mkdir(parents=True, exist_ok=True)
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="contour-import")
         self.slots = threading.BoundedSemaphore(4)

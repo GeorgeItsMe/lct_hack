@@ -11,7 +11,7 @@ from datetime import UTC, datetime
 from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-from moscollector.paths import DATA
+from moscollector.paths import RUNTIME
 
 
 class Base(DeclarativeBase):
@@ -132,9 +132,12 @@ def verify_password(password: str, stored: str):
 
 
 def make_database(url: str | None = None):
-    runtime = DATA / "runtime"
-    runtime.mkdir(parents=True, exist_ok=True)
-    url = url or os.getenv("DATABASE_URL", f"sqlite:///{runtime / 'contour.db'}")
+    RUNTIME.mkdir(parents=True, exist_ok=True)
+    url = url or os.getenv("DATABASE_URL", f"sqlite:///{RUNTIME / 'contour.db'}")
+    if url.startswith("postgres://"):
+        url = "postgresql+psycopg://" + url.removeprefix("postgres://")
+    elif url.startswith("postgresql://"):
+        url = "postgresql+psycopg://" + url.removeprefix("postgresql://")
     kwargs = (
         {"connect_args": {"check_same_thread": False, "timeout": 30}}
         if url.startswith("sqlite")

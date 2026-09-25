@@ -8,8 +8,8 @@ from functools import lru_cache
 import numpy as np
 from catboost import CatBoostClassifier, Pool
 
+from moscollector.inference import CATEGORICAL, calibrated, model_input
 from moscollector.paths import ARTIFACTS
-from moscollector.train import CATEGORICAL, calibrated, model_input
 
 
 def manifest_version(manifest):
