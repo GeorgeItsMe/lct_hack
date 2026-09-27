@@ -1,16 +1,21 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Activity,
   ArrowDownToLine,
   ArrowRight,
   Bell,
+  BellRing,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   CircleHelp,
-  Database,
-  FlaskConical,
-  LayoutDashboard,
   ListChecks,
   LogOut,
   Map,
@@ -19,10 +24,8 @@ import {
   Radio,
   RefreshCw,
   Search,
-  Settings2,
   ShieldCheck,
   SlidersHorizontal,
-  Wrench,
 } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import { api, date, kindNames, num } from "./api";
@@ -34,54 +37,31 @@ import {
   KindIcon,
   Loading,
   NetworkMap,
+  riskNames,
 } from "./components";
+import { DecisionsPage, EvaluationPage, QualityPage } from "./pages";
 import {
-  DecisionsPage,
-  EvaluationPage,
-  QualityPage,
-  SettingsPage,
-} from "./pages";
+  AuditPage,
+  EquipmentPage,
+  ParametersPage,
+  SummaryPage,
+  ThresholdsPage,
+  UsersPage,
+  VerificationPage,
+  WorkPage,
+} from "./rolePages";
 import { ImportPanel } from "./ImportPanel";
+import {
+  DEMO_ROLES,
+  HOME,
+  NAVIGATION,
+  REPLAY_PAGES,
+  ROLE_SHORT,
+  TITLES,
+  allowedPages,
+  can,
+} from "./roles";
 import type { Forecast, Kind, Overview, Page, Topology, User } from "./types";
-
-const nav = [
-  { id: "overview", label: "Обзор", icon: LayoutDashboard },
-  { id: "map", label: "Схема объектов", icon: Map },
-  { id: "journal", label: "Журнал прогнозов", icon: ListChecks },
-  { id: "decisions", label: "Решения и ТО", icon: Wrench },
-  { id: "evaluation", label: "Проверка модели", icon: FlaskConical },
-  { id: "quality", label: "Данные", icon: Database },
-] as const;
-const titles: Record<Page, [string, string]> = {
-  overview: [
-    "Состояние инфраструктуры",
-    "Риски на ближайшие 24 часа и приоритеты для проверки",
-  ],
-  map: [
-    "Схема объектов",
-    "Иерархия инфраструктуры и распределение предупреждений",
-  ],
-  journal: [
-    "Журнал прогнозов",
-    "Вероятности, основания и результаты работы диспетчера",
-  ],
-  decisions: [
-    "Решения и обслуживание",
-    "Зафиксированные действия по прогнозам и планирование ТО",
-  ],
-  evaluation: [
-    "Проверка модели",
-    "Прогнозы сопоставлены с событиями отложенного периода",
-  ],
-  quality: [
-    "Данные и их качество",
-    "От исходных журналов к воспроизводимым эпизодам",
-  ],
-  settings: [
-    "Параметры предупреждений",
-    "Пороги риска и конфигурация рабочего места",
-  ],
-};
 
 function Login({ onLogin }: { onLogin: (user: User) => void }) {
   const [username, setUsername] = useState("dispatcher"),
@@ -100,14 +80,16 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
       })
       .catch(() => setError("Сервис недоступен. Проверьте запуск API."));
   }, []);
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  async function login(name: string, secret: string) {
     setBusy(true);
     setError("");
     try {
       const result = await api<{ user: User; demo_mode: boolean }>(
         "/auth/login",
-        { method: "POST", body: JSON.stringify({ username, password }) },
+        {
+          method: "POST",
+          body: JSON.stringify({ username: name, password: secret }),
+        },
       );
       onLogin({ ...result.user, demo_mode: result.demo_mode });
     } catch (e) {
@@ -115,6 +97,10 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
     } finally {
       setBusy(false);
     }
+  }
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    login(username, password);
   }
   return (
     <div className="login-page">
@@ -128,8 +114,9 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
             Успеть проверить.
           </h1>
           <p>
-            Рабочее место диспетчера с прогнозом состояния оборудования,
-            объяснением предупреждений и историей решений.
+            Прогноз состояния оборудования и инцидентов в коллекторах: диспетчер
+            разбирает предупреждения, технический персонал готовит работы,
+            аналитик проверяет данные, руководитель видит картину целиком.
           </p>
           <div className="login-lines" aria-hidden="true">
             <i />
@@ -151,60 +138,76 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
             КОНТУР · РАБОЧЕЕ МЕСТО
           </span>
           <h2>Вход в систему</h2>
-          <p>Выберите роль для работы с инфраструктурой.</p>
+          <p>
+            {demo
+              ? "Выберите роль. У каждой роли своё рабочее место."
+              : "Войдите с корпоративной учётной записью."}
+          </p>
           {demo && (
             <div className="demo-login-label">
               Демонстрационный стенд · реальные архивные данные
             </div>
           )}
           {error && <ErrorNotice message={error} />}
-          <form onSubmit={submit}>
-            {demo ? (
+          {demo ? (
+            <div className="role-picker">
+              {DEMO_ROLES.map((r) => (
+                <button
+                  key={r.username}
+                  disabled={busy}
+                  onClick={() => login(r.username, "contour-demo")}
+                >
+                  <span className="avatar">
+                    {ROLE_SHORT[r.username as keyof typeof ROLE_SHORT]}
+                  </span>
+                  <div>
+                    <strong>{r.label}</strong>
+                    <small>{r.hint}</small>
+                  </div>
+                  <ArrowRight size={17} />
+                </button>
+              ))}
+              <button
+                className="service-login"
+                disabled={busy}
+                onClick={() => login("admin", "contour-demo")}
+              >
+                Служебный вход: администратор
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={submit}>
               <label>
-                Роль
-                <select
+                Логин
+                <input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                >
-                  <option value="dispatcher">Диспетчер ОДС</option>
-                  <option value="analyst">Аналитик</option>
-                  <option value="admin">Администратор</option>
-                </select>
+                  autoComplete="username"
+                  required
+                />
               </label>
-            ) : (
-              <>
-                <label>
-                  Логин
-                  <input
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    autoComplete="username"
-                    required
-                  />
-                </label>
-                <label>
-                  Пароль
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                  />
-                </label>
-              </>
-            )}
-            <button className="primary-button" disabled={busy}>
-              {busy ? "Входим…" : "Открыть рабочее место"}
-              <ArrowRight size={18} />
-            </button>
-          </form>
+              <label>
+                Пароль
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                />
+              </label>
+              <button className="primary-button" disabled={busy}>
+                {busy ? "Входим…" : "Открыть рабочее место"}
+                <ArrowRight size={18} />
+              </button>
+            </form>
+          )}
           <div className="login-note">
             <ShieldCheck size={18} />
             <span>
               Прогноз помогает принять решение.
               <br />
-              Управление оборудованием остаётся у диспетчера.
+              Управление оборудованием остаётся у людей.
             </span>
           </div>
         </div>
@@ -233,17 +236,31 @@ export default function App() {
   const [refresh, setRefresh] = useState(0),
     [toast, setToast] = useState(""),
     [profileOpen, setProfileOpen] = useState(false);
+  const [alertToast, setAlertToast] = useState<{
+    title: string;
+    items: Forecast[];
+  } | null>(null);
+  const seenAlerts = useRef<Set<string> | null>(null);
   const closeDrawer = useCallback(() => setSelected(null), []);
   const searchInput = useRef<HTMLInputElement>(null);
   const [focusSearch, setFocusSearch] = useState(false);
+  const pages = useMemo(() => (user ? allowedPages(user.role) : []), [user]);
+  const go = useCallback(
+    (target: Page) => {
+      if (!user) return;
+      setPage(pages.includes(target) ? target : HOME[user.role]);
+    },
+    [user, pages],
+  );
   const openSearch = useCallback(() => {
+    if (!pages.includes("journal")) return;
     setPage("journal");
     setSelected(null);
     setPlaying(false);
     setKind("all");
     setOnlyWarnings(false);
     setFocusSearch(true);
-  }, []);
+  }, [pages]);
   useEffect(() => {
     if (focusSearch && page === "journal" && overview) {
       searchInput.current?.focus();
@@ -269,8 +286,10 @@ export default function App() {
     asOf: string | null;
     message: string;
   } | null>(null);
+  const followsStream =
+    can(user, "data.import") || can(user, "decisions.write");
   useEffect(() => {
-    if (!user) {
+    if (!user || !followsStream) {
       setStreamAlert(null);
       return;
     }
@@ -330,10 +349,13 @@ export default function App() {
       active = false;
       clearInterval(timer);
     };
-  }, [user]);
+  }, [user, followsStream]);
   useEffect(() => {
     api<User>("/auth/me")
-      .then(setUser)
+      .then((u) => {
+        setUser(u);
+        setPage(HOME[u.role]);
+      })
       .catch(() => {})
       .finally(() => setAuthReady(true));
   }, []);
@@ -346,7 +368,7 @@ export default function App() {
         setTimeIndex(Math.max(0, r.times.indexOf(r.default)));
       })
       .catch((e) => setError(e.message));
-  }, [user, refresh]);
+  }, [user, refresh, times.length]);
   useEffect(() => {
     if (!user || !asOf) return;
     let live = true;
@@ -387,6 +409,39 @@ export default function App() {
     const t = setTimeout(() => setToast(""), 4500);
     return () => clearTimeout(t);
   }, [toast]);
+  useEffect(() => {
+    if (!alertToast) return;
+    const t = setTimeout(() => setAlertToast(null), 9000);
+    return () => clearTimeout(t);
+  }, [alertToast]);
+  /* Notifications (section 10): the dispatcher is told about every new warning,
+     the unit head only about critical ones. A warning is "new" when its object
+     and risk type were not above the threshold in the previous snapshot. */
+  const notified: Forecast[] = useMemo(() => {
+    if (!overview || !user) return [];
+    if (can(user, "notifications.all"))
+      return overview.forecasts.filter((f) => f.above_threshold && !f.decision);
+    if (can(user, "notifications.critical"))
+      return overview.forecasts.filter((f) => f.risk === "critical");
+    return [];
+  }, [overview, user]);
+  useEffect(() => {
+    if (!overview || !user) return;
+    const keys = new Set(notified.map((f) => `${f.object_id}:${f.kind}`));
+    const previous = seenAlerts.current;
+    seenAlerts.current = keys;
+    if (!previous) return;
+    const fresh = notified.filter(
+      (f) => !previous.has(`${f.object_id}:${f.kind}`),
+    );
+    if (fresh.length)
+      setAlertToast({
+        title: can(user, "notifications.all")
+          ? `Новых предупреждений: ${fresh.length}`
+          : `Новых критических рисков: ${fresh.length}`,
+        items: fresh.slice(0, 3),
+      });
+  }, [notified, overview, user]);
   const filtered = useMemo(
     () =>
       overview?.forecasts.filter(
@@ -408,14 +463,18 @@ export default function App() {
     setPlaying(false);
   };
   const saved = () => {
-    setToast("Решение сохранено в журнале");
+    setToast("Сохранено в журнале");
     setRefresh((r) => r + 1);
   };
+  const changed = useCallback(() => setRefresh((r) => r + 1), []);
   async function logout() {
     await api("/auth/logout", { method: "POST" });
     setUser(null);
     setProfileOpen(false);
     setPlaying(false);
+    setOverview(null);
+    setTimes([]);
+    seenAlerts.current = null;
   }
   if (!authReady)
     return (
@@ -424,61 +483,73 @@ export default function App() {
         <Loading />
       </div>
     );
-  if (!user) return <Login onLogin={setUser} />;
-  const title = titles[page];
+  if (!user)
+    return (
+      <Login
+        onLogin={(u) => {
+          setUser(u);
+          setPage(HOME[u.role]);
+        }}
+      />
+    );
+  const title = TITLES[page];
+  const sections = NAVIGATION[user.role];
+  const navIndex = pages.indexOf(page);
+  const replay = REPLAY_PAGES.includes(page);
+  const bellTarget: Page = can(user, "notifications.all")
+    ? "journal"
+    : "summary";
   return (
     <div className="app-shell">
       <aside className="sidebar">
         <Brand />
-        <button
-          className="workspace-search"
-          onClick={openSearch}
-          aria-label="Найти объект"
-        >
-          <Search size={16} />
-          <span>Найти объект</span>
-          <kbd>⌘ K</kbd>
-        </button>
+        {pages.includes("journal") && (
+          <button
+            className="workspace-search"
+            onClick={openSearch}
+            aria-label="Найти объект"
+          >
+            <Search size={16} />
+            <span>Найти объект</span>
+            <kbd>⌘ K</kbd>
+          </button>
+        )}
         <div className="workspace-switch">
           <span className="workspace-icon">
             <Map size={17} />
           </span>
           <div>
-            <strong>Диспетчерская ОДС</strong>
-            <small>Инженерные коллекторы</small>
+            <strong>{user.role_label}</strong>
+            <small>
+              {user.scope === "district"
+                ? "Весь район · инженерные коллекторы"
+                : `Зона: ${user.scope}`}
+            </small>
           </div>
         </div>
-        <span className="nav-label">РАБОЧЕЕ ПРОСТРАНСТВО</span>
         <nav>
-          {nav.slice(0, 4).map((n) => (
-            <button
-              key={n.id}
-              aria-label={n.label}
-              title={n.label}
-              aria-current={page === n.id ? "page" : undefined}
-              className={page === n.id ? "active" : ""}
-              onClick={() => setPage(n.id)}
-            >
-              <n.icon size={18} strokeWidth={1.7} />
-              <span>{n.label}</span>
-              {n.id === "journal" && warnings.length > 0 && (
-                <b>{warnings.length}</b>
-              )}
-            </button>
-          ))}
-          <span className="nav-label second">АНАЛИТИКА</span>
-          {nav.slice(4).map((n) => (
-            <button
-              key={n.id}
-              aria-label={n.label}
-              title={n.label}
-              aria-current={page === n.id ? "page" : undefined}
-              className={page === n.id ? "active" : ""}
-              onClick={() => setPage(n.id)}
-            >
-              <n.icon size={18} strokeWidth={1.7} />
-              <span>{n.label}</span>
-            </button>
+          {sections.map((section, s) => (
+            <Fragment key={section.label}>
+              <span className={`nav-label ${s ? "second" : ""}`}>
+                {section.label}
+              </span>
+              {section.items.map((n) => (
+                <button
+                  key={n.id}
+                  aria-label={n.label}
+                  title={n.label}
+                  aria-current={page === n.id ? "page" : undefined}
+                  className={page === n.id ? "active" : ""}
+                  onClick={() => go(n.id)}
+                >
+                  <n.icon size={18} strokeWidth={1.7} />
+                  <span>{n.label}</span>
+                  {n.id === bellTarget &&
+                    (n.id === "journal" || n.id === "summary") &&
+                    notified.length > 0 && <b>{notified.length}</b>}
+                </button>
+              ))}
+            </Fragment>
           ))}
         </nav>
         <div className="sidebar-bottom">
@@ -494,28 +565,21 @@ export default function App() {
               · горизонт 24 ч
             </small>
           </div>
-          <button
-            className={page === "settings" ? "active" : ""}
-            aria-label="Параметры"
-            title="Параметры"
-            onClick={() => setPage("settings")}
-          >
-            <Settings2 size={18} />
-            <span>Параметры</span>
-          </button>
-          <button
-            aria-label="Методика работы"
-            title="Методика работы"
-            onClick={() => {
-              setPage("evaluation");
-              setToast(
-                "Методика и ограничения доступны в разделе проверки модели",
-              );
-            }}
-          >
-            <CircleHelp size={18} />
-            <span>Методика работы</span>
-          </button>
+          {pages.includes("evaluation") && (
+            <button
+              aria-label="Методика работы"
+              title="Методика работы"
+              onClick={() => {
+                go("evaluation");
+                setToast(
+                  "Методика и ограничения доступны в разделе проверки модели",
+                );
+              }}
+            >
+              <CircleHelp size={18} />
+              <span>Методика работы</span>
+            </button>
+          )}
           <div className="sidebar-credit">
             МОСКОЛЛЕКТОР <span>2026</span>
           </div>
@@ -524,48 +588,44 @@ export default function App() {
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
-            Рабочее место <ChevronRight size={13} />
-            <strong>
-              {nav.find((n) => n.id === page)?.label || "Параметры"}
-            </strong>
+            {user.role_label} <ChevronRight size={13} />
+            <strong>{title[0]}</strong>
           </div>
           <div className="topbar-actions">
             <span className="environment-label">
               <i className="dot green" />
               Архивный поток
             </span>
-            <button
-              className="notification-button"
-              aria-label={`Открыть ${warnings.length} предупреждений`}
-              onClick={() => {
-                setPage("journal");
-                setOnlyWarnings(true);
-              }}
-            >
-              <Bell size={18} />
-              {warnings.length > 0 && <i />}
-            </button>
+            {(can(user, "notifications.all") ||
+              can(user, "notifications.critical")) && (
+              <button
+                className="notification-button"
+                aria-label={`Открыть уведомления: ${notified.length}`}
+                title={
+                  can(user, "notifications.all")
+                    ? "Предупреждения без решения"
+                    : "Критические риски"
+                }
+                onClick={() => {
+                  if (can(user, "notifications.all")) {
+                    setOnlyWarnings(true);
+                    go("journal");
+                  } else go("summary");
+                }}
+              >
+                <Bell size={18} />
+                {notified.length > 0 && <i />}
+              </button>
+            )}
             <div className="profile">
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
                 aria-label="Меню пользователя"
               >
-                <span className="avatar">
-                  {user.role === "admin"
-                    ? "АД"
-                    : user.role === "analyst"
-                      ? "АН"
-                      : "ОД"}
-                </span>
+                <span className="avatar">{ROLE_SHORT[user.role]}</span>
                 <div>
                   <strong>{user.name}</strong>
-                  <small>
-                    {user.role === "admin"
-                      ? "Администратор"
-                      : user.role === "analyst"
-                        ? "Аналитик"
-                        : "Диспетчер"}
-                  </small>
+                  <small>{user.role_label}</small>
                 </div>
               </button>
               {profileOpen && (
@@ -589,51 +649,57 @@ export default function App() {
                   ? ` · ${date(streamAlert.asOf, true)}`
                   : ""} · {streamAlert.message}
               </span>
-              <button className="text-link" onClick={() => setPage("quality")}>
-                Открыть проверку
+              <button
+                className="text-link"
+                onClick={() =>
+                  go(can(user, "data.import") ? "quality" : "incoming")
+                }
+              >
+                Открыть
               </button>
             </div>
           )}
           <div className="page-heading">
             <div>
               <span className="eyebrow">
-                {String(nav.findIndex((n) => n.id === page) + 1 || 7).padStart(
-                  2,
-                  "0",
-                )}{" "}
-                / РАБОЧЕЕ ПРОСТРАНСТВО
+                {String(navIndex + 1 || 1).padStart(2, "0")} /{" "}
+                {user.role_label.toUpperCase()}
               </span>
               <h1>{title[0]}</h1>
               <p>{title[1]}</p>
             </div>
             <div className="heading-actions">
-              {page === "overview" && warnings.length > 0 && (
+              {page === "overview" &&
+                can(user, "decisions.write") &&
+                warnings.length > 0 && (
+                  <button
+                    className="primary-button review-next"
+                    onClick={() => setSelected(warnings[0])}
+                  >
+                    Начать проверку <ArrowRight size={16} />
+                  </button>
+                )}
+              {replay && (
                 <button
-                  className="primary-button review-next"
-                  onClick={() => setSelected(warnings[0])}
+                  className="secondary-button"
+                  onClick={() => setRefresh((r) => r + 1)}
+                  aria-label="Обновить данные"
                 >
-                  Начать проверку <ArrowRight size={16} />
+                  <RefreshCw size={16} className={loading ? "spin" : ""} />
                 </button>
               )}
-              <button
-                className="secondary-button"
-                onClick={() => setRefresh((r) => r + 1)}
-                aria-label="Обновить данные"
-              >
-                <RefreshCw size={16} className={loading ? "spin" : ""} />
-              </button>
-              {overview && (
+              {overview && ["overview", "journal"].includes(page) && (
                 <a
                   className="secondary-button"
                   href={`/api/export/forecasts.csv?as_of=${encodeURIComponent(asOf)}`}
                 >
                   <ArrowDownToLine size={16} />
-                  Экспорт
+                  Экспорт CSV
                 </a>
               )}
             </div>
           </div>
-          {["overview", "map", "journal"].includes(page) && (
+          {replay && (
             <div className="replay-bar">
               <div className="replay-title">
                 <span className="replay-icon">
@@ -725,6 +791,12 @@ export default function App() {
                       </strong>
                       <p>
                         {num(overview.stats.warnings)} предупреждений на 24 часа
+                        · критических{" "}
+                        {
+                          overview.forecasts.filter(
+                            (f) => f.risk === "critical",
+                          ).length
+                        }
                       </p>
                     </div>
                     <div className="metric-card">
@@ -756,8 +828,8 @@ export default function App() {
                       <button
                         className="text-link"
                         onClick={() => {
-                          setPage("journal");
                           setOnlyWarnings(true);
+                          go("journal");
                         }}
                       >
                         Перейти к проверке
@@ -784,7 +856,7 @@ export default function App() {
                       </div>
                       <button
                         className="text-link"
-                        onClick={() => setPage("journal")}
+                        onClick={() => go("journal")}
                       >
                         Весь журнал
                         <ArrowRight size={15} />
@@ -810,8 +882,8 @@ export default function App() {
                             key={k.id}
                             onClick={() => {
                               setKind(k.id);
-                              setPage("journal");
                               setOnlyWarnings(true);
+                              go("journal");
                             }}
                           >
                             <span className={`scenario-symbol ${k.id}`}>
@@ -842,16 +914,19 @@ export default function App() {
                           есть проверяемое основание
                         </strong>
                         <p>
-                          Факторы модели, исходные события и результат проверки
-                          доступны в карточке.
+                          Факторы модели, исходные события, рекомендации по
+                          сработавшим датчикам и ретроспективная проверка — в
+                          карточке.
                         </p>
-                        <button
-                          className="text-link"
-                          onClick={() => setPage("evaluation")}
-                        >
-                          Как проверяли качество
-                          <ArrowRight size={14} />
-                        </button>
+                        {pages.includes("evaluation") && (
+                          <button
+                            className="text-link"
+                            onClick={() => go("evaluation")}
+                          >
+                            Как проверяли качество
+                            <ArrowRight size={14} />
+                          </button>
+                        )}
                       </div>
                     </section>
                     <section className="panel map-panel">
@@ -864,13 +939,15 @@ export default function App() {
                             эксплуатационных узлов
                           </span>
                         </div>
-                        <button
-                          className="text-link"
-                          onClick={() => setPage("map")}
-                        >
-                          Открыть схему
-                          <ArrowRight size={15} />
-                        </button>
+                        {pages.includes("map") && (
+                          <button
+                            className="text-link"
+                            onClick={() => go("map")}
+                          >
+                            Открыть схему
+                            <ArrowRight size={15} />
+                          </button>
+                        )}
                       </div>
                       {topology && (
                         <NetworkMap
@@ -889,7 +966,7 @@ export default function App() {
                     <div>
                       <h2>Объекты и эксплуатационные узлы</h2>
                       <span>
-                        Выберите объект, чтобы открыть приоритетный прогноз
+                        Цвет и размер точки — наибольший уровень риска объекта
                       </span>
                     </div>
                     <span className="soft-chip">Схематичное представление</span>
@@ -955,22 +1032,37 @@ export default function App() {
                   }}
                 />
               )}
+              {page === "incoming" && <ImportPanel user={user} />}
+              {page === "equipment" && (
+                <EquipmentPage
+                  asOf={asOf}
+                  forecasts={overview?.forecasts || []}
+                  onSelect={setSelected}
+                  user={user}
+                />
+              )}
+              {page === "work" && <WorkPage user={user} onChanged={changed} />}
+              {page === "verification" && <VerificationPage user={user} />}
+              {page === "thresholds" && (
+                <ThresholdsPage user={user} onApplied={changed} />
+              )}
+              {page === "summary" && (
+                <SummaryPage
+                  asOf={asOf}
+                  user={user}
+                  onOpenThresholds={() => go("thresholds")}
+                />
+              )}
               {page === "evaluation" && <EvaluationPage />}
               {page === "quality" && (
                 <div className="page-stack">
-                  <ImportPanel user={user} />
+                  {can(user, "data.import") && <ImportPanel user={user} />}
                   <QualityPage />
                 </div>
               )}
-              {page === "settings" && (
-                <SettingsPage
-                  user={user}
-                  onSaved={() => {
-                    setRefresh((r) => r + 1);
-                    setToast("Пороги предупреждений сохранены");
-                  }}
-                />
-              )}
+              {page === "users" && <UsersPage user={user} />}
+              {page === "audit" && <AuditPage />}
+              {page === "settings" && <ParametersPage />}
             </>
           )}
           <footer className="main-footer">
@@ -991,7 +1083,34 @@ export default function App() {
           onClose={closeDrawer}
           onSaved={saved}
         />
-      )}{" "}
+      )}
+      {alertToast && (
+        <div className="alert-toast" role="alert">
+          <BellRing size={19} />
+          <div>
+            <strong>{alertToast.title}</strong>
+            {alertToast.items.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => {
+                  setSelected(f);
+                  setAlertToast(null);
+                }}
+              >
+                {f.object_name} · {kindNames[f.kind]} ·{" "}
+                {riskNames[f.risk].toLowerCase()}
+              </button>
+            ))}
+          </div>
+          <button
+            className="icon-button"
+            aria-label="Закрыть уведомление"
+            onClick={() => setAlertToast(null)}
+          >
+            ×
+          </button>
+        </div>
+      )}
       {toast && (
         <div className="toast">
           <ShieldCheck size={18} />

@@ -23,12 +23,21 @@ def now():
     return datetime.now(UTC).replace(tzinfo=None)
 
 
+def utc_iso(moment: datetime | None) -> str | None:
+    """Application timestamps are stored as naive UTC; say so explicitly to the client."""
+    return f"{moment.isoformat()}+00:00" if moment else None
+
+
 def order_number(order_id: int, created: datetime) -> str:
     return f"З-{created.year}-{order_id:05d}"
 
 
 def priority_for(risk: str | None) -> str:
     return {"critical": "urgent", "high": "high"}.get(risk or "", "normal")
+
+
+def percent(value: float) -> str:
+    return f"{value * 100:.1f}%".replace(".", ",")
 
 
 def draft_text(forecast: dict, action: str | None, recommendations: list[str], factors: list[dict]):
@@ -39,8 +48,8 @@ def draft_text(forecast: dict, action: str | None, recommendations: list[str], f
         f"Объект: {forecast['object_name']} (#{forecast['object_id']})",
         f"Тип риска: {KIND_LABELS[forecast['kind']]}",
         f"Прогноз на {forecast['as_of'][:16].replace('T', ' ')} МСК: "
-        f"вероятность {forecast['probability'] * 100:.1f}% на 24 часа "
-        f"(порог {min(forecast['threshold'], 1) * 100:.1f}%)",
+        f"вероятность {percent(forecast['probability'])} на 24 часа "
+        f"(порог {percent(min(forecast['threshold'], 1))})",
     ]
     if action:
         lines.append(f"Решение диспетчера: {ACTIONS[action]}")
@@ -92,10 +101,10 @@ def serialize(order, object_name: str | None = None) -> dict:
         "outcome_label": WORK_OUTCOMES.get(order.outcome) if order.outcome else None,
         "external_id": order.external_id,
         "created_by": order.created_by,
-        "created_at": order.created_at.isoformat(),
-        "updated_at": order.updated_at.isoformat(),
-        "submitted_at": order.submitted_at.isoformat() if order.submitted_at else None,
-        "synced_at": order.synced_at.isoformat() if order.synced_at else None,
+        "created_at": utc_iso(order.created_at),
+        "updated_at": utc_iso(order.updated_at),
+        "submitted_at": utc_iso(order.submitted_at),
+        "synced_at": utc_iso(order.synced_at),
     }
 
 

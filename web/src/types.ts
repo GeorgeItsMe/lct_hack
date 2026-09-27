@@ -4,20 +4,55 @@ export type Page =
   | "map"
   | "journal"
   | "decisions"
+  | "incoming"
+  | "equipment"
+  | "work"
+  | "verification"
+  | "thresholds"
+  | "summary"
   | "evaluation"
   | "quality"
+  | "users"
+  | "audit"
   | "settings";
+export type Role =
+  "dispatcher" | "technician" | "analyst" | "manager" | "admin";
+export type Permission =
+  | "forecasts.view"
+  | "decisions.view"
+  | "decisions.write"
+  | "notifications.all"
+  | "notifications.critical"
+  | "equipment.view"
+  | "work.view"
+  | "work.edit"
+  | "data.import"
+  | "labels.verify"
+  | "retrain.run"
+  | "model.view"
+  | "summary.view"
+  | "reports.export"
+  | "thresholds.propose"
+  | "thresholds.approve"
+  | "users.manage"
+  | "audit.view";
 export type User = {
   id: number;
   name: string;
-  role: "dispatcher" | "analyst" | "admin";
+  role: Role;
+  role_label: string;
+  scope: string;
+  permissions: Permission[];
   demo_mode: boolean;
 };
+export type RiskLevel = "critical" | "high" | "watch" | "low";
 export type Decision = {
   id: number;
   action: string;
   reason: string;
   comment: string;
+  work_status?: string | null;
+  work_outcome?: string | null;
 };
 export type Forecast = {
   id: string;
@@ -28,7 +63,8 @@ export type Forecast = {
   kind_label: string;
   probability: number;
   threshold: number;
-  risk: "high" | "watch" | "low";
+  risk: RiskLevel;
+  risk_label: string;
   above_threshold: boolean;
   as_of: string;
   horizon_hours: number;
@@ -68,7 +104,8 @@ export type Topology = {
     level: number;
     kind: string;
     channels: number;
-    risk: string;
+    risk: RiskLevel | "unknown";
+    warnings?: number;
     probability: number | null;
     forecast_id: string | null;
   }[];
@@ -82,6 +119,36 @@ export type Detail = Forecast & {
     contribution: number;
   }[];
   recommendations: string[];
+  recommendation_details?: {
+    text: string;
+    basis: string;
+    source: "signals" | "general";
+  }[];
+  verification?: {
+    alarm_messages: number;
+    alarm_sensors: { sensor_type: string; channels: number }[];
+    fault_channels: number;
+    related_forecasts: {
+      kind: Kind;
+      kind_label: string;
+      probability: number;
+      risk: RiskLevel;
+    }[];
+    external_sources: { id: string; label: string; status: string }[];
+    window_hours: number;
+  };
+  calendar?: {
+    weekday: string;
+    weekend: boolean;
+    month: number;
+    hour: number;
+    weekday_share: number | null;
+    weekday_ratio: number | null;
+    history_from: string | null;
+    kind_episodes: number;
+    object_episodes_30d: number;
+    object_last_episode: string | null;
+  };
   trend: { as_of: string; probability: number }[];
   signals: {
     hour: string;
@@ -240,6 +307,29 @@ export type Quality = {
   rules: { title: string; detail: string }[];
   daily_2026: { day: string; rows: number; alarms: number; channels: number }[];
 };
+export type WorkOrder = {
+  id: number;
+  number: string;
+  decision_id: number | null;
+  prediction_id: string | null;
+  object_id: number;
+  object_name: string;
+  kind: Kind;
+  forecast_at: string | null;
+  title: string;
+  description: string;
+  priority: "urgent" | "high" | "normal";
+  priority_label: string;
+  status: "draft" | "submitted" | "accepted" | "in_progress" | "done";
+  status_label: string;
+  outcome: "confirmed" | "not_confirmed" | "sensor_fault" | null;
+  outcome_label: string | null;
+  external_id: string | null;
+  created_at: string;
+  updated_at: string;
+  submitted_at: string | null;
+  synced_at: string | null;
+};
 export type DecisionRow = Decision & {
   prediction_id: string;
   object_id: number;
@@ -247,7 +337,173 @@ export type DecisionRow = Decision & {
   kind: Kind;
   forecast_at: string;
   action_label: string;
+  reason_label?: string;
   created_at: string;
   updated_at: string;
   user_id: number;
+  user_name?: string | null;
+  requires_work?: boolean;
+  work_order?: WorkOrder | null;
+  label_review?: {
+    verdict: "accepted" | "rejected";
+    label: number | null;
+  } | null;
+};
+export type LabelRow = DecisionRow & {
+  archive_occurred: boolean | null;
+  suggested_label: 0 | 1 | null;
+  label_basis: string;
+};
+export type EquipmentObject = {
+  object_id: number;
+  object_name: string;
+  parent_id: number | null;
+  forecast_id: string;
+  probability: number;
+  threshold: number;
+  risk: RiskLevel;
+  risk_label: string;
+  above_threshold: boolean;
+  faulty_now: number;
+  channels_with_faults_24h: number;
+  fault_messages_24h: number;
+  open_orders: string[];
+  channels: {
+    channel_id: number;
+    sensor_type: string;
+    sensor_name: string;
+    value: string;
+    ts: string;
+    current_fault: boolean;
+    fault_messages: number;
+  }[];
+  recommendations: { text: string; basis: string; source: string }[];
+};
+export type Equipment = {
+  as_of: string;
+  objects: EquipmentObject[];
+  totals: {
+    objects: number;
+    at_risk: number;
+    faulty_now: number;
+    objects_with_faults: number;
+  };
+  note: string;
+};
+export type PolicyMetrics = {
+  threshold: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  alerts: number;
+  true_alerts: number;
+  false_alerts: number;
+  eligible_episodes: number;
+  warnings_now: number;
+  warnings_per_day_7d: number;
+  median_lead_hours?: number | null;
+};
+export type ThresholdPreview = {
+  kind: Kind;
+  period_label: string;
+  current: PolicyMetrics;
+  proposed: PolicyMetrics;
+  model_threshold: number;
+  curve: {
+    threshold: number;
+    precision: number;
+    recall: number;
+    f1: number;
+    alerts: number;
+  }[];
+};
+export type Proposal = {
+  id: number;
+  kind: Kind;
+  kind_label: string;
+  current_value: number;
+  proposed_value: number;
+  rationale: string;
+  preview: {
+    current: PolicyMetrics;
+    proposed: PolicyMetrics;
+    period_label: string;
+  };
+  status: "pending" | "approved" | "rejected";
+  proposed_by: string | null;
+  created_at: string;
+  decided_by: string | null;
+  decided_at: string | null;
+  decision_note: string;
+};
+export type Summary = {
+  as_of: string;
+  totals: {
+    forecasts: number;
+    warnings: number;
+    critical: number;
+    objects_at_risk: number;
+  };
+  kinds: {
+    id: Kind;
+    label: string;
+    warnings: number;
+    critical: number;
+    threshold: number;
+  }[];
+  nodes: {
+    id: number;
+    name: string;
+    objects: number;
+    warnings: number;
+    critical: number;
+    levels: Record<RiskLevel, number>;
+    by_kind: Record<Kind, number>;
+    max_probability: number | null;
+  }[];
+  trend: ({ as_of: string } & Partial<Record<Kind, number>>)[];
+  seasonality: {
+    year: number;
+    month: number;
+    alarms: number;
+    quarantined: boolean;
+  }[];
+  quality: Record<
+    Kind,
+    {
+      precision: number;
+      recall: number;
+      f1: number;
+      baseline_f1: number;
+      eligible_episodes: number;
+      enabled: boolean;
+    }
+  >;
+  workload: {
+    decisions: number;
+    actions: { id: string; label: string; count: number }[];
+    false_alarm_share: number | null;
+    orders_open: number;
+    orders_done: number;
+    outcomes: Record<"confirmed" | "not_confirmed" | "sensor_fault", number>;
+    pending_proposals: boolean;
+  };
+};
+export type AdminUser = {
+  id: number;
+  username: string;
+  name: string;
+  role: Role;
+  role_label: string;
+  scope: string;
+  active: boolean;
+};
+export type AuditRow = {
+  id: number;
+  user_id: number | null;
+  user_name: string | null;
+  role: Role | null;
+  action: string;
+  detail: Record<string, unknown> | unknown[];
+  created_at: string;
 };

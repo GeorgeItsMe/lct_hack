@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDownToLine, FileUp, RefreshCw } from "lucide-react";
 import { api, date, kindNames, num, pct } from "./api";
 import { ErrorNotice, Loading } from "./components";
+import { can } from "./roles";
 import type { Kind, User } from "./types";
 type BatchForecastDetail = {
   id: string;
@@ -81,7 +82,9 @@ export function ImportPanel({ user }: { user: User }) {
     [selected, setSelected] = useState<Batch | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
-  const [integration, setIntegration] = useState<IntegrationStatus | null>(null);
+  const [integration, setIntegration] = useState<IntegrationStatus | null>(
+    null,
+  );
   const [mode, setMode] = useState("preview"),
     [stream, setStream] = useState<StreamStatus | null>(null),
     [receipt, setReceipt] = useState("");
@@ -142,7 +145,9 @@ export function ImportPanel({ user }: { user: User }) {
     try {
       const maxBytes = integration?.max_import_bytes ?? 20 * 1024 * 1024;
       if (file.size > maxBytes)
-        throw Error(`Размер файла превышает ${Math.floor(maxBytes / 1024 / 1024)} МБ`);
+        throw Error(
+          `Размер файла превышает ${Math.floor(maxBytes / 1024 / 1024)} МБ`,
+        );
       const extension = file.name.split(".").pop()?.toLowerCase();
       const response = await fetch(
         `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}&as_of=${encodeURIComponent(asOf)}`,
@@ -200,8 +205,10 @@ export function ImportPanel({ user }: { user: User }) {
           <h2>Приём телеметрии и расчёт</h2>
           <span>
             CSV, XLSX, JSON или XML · до{" "}
-            {Math.floor((integration?.max_import_bytes ?? 20 * 1024 * 1024) / 1024 / 1024)} МБ
-            и 100 000 записей
+            {Math.floor(
+              (integration?.max_import_bytes ?? 20 * 1024 * 1024) / 1024 / 1024,
+            )}{" "}
+            МБ и 100 000 записей
           </span>
         </div>
         <FileUp size={21} />
@@ -214,7 +221,11 @@ export function ImportPanel({ user }: { user: User }) {
           система мониторинга пока не подключена.
         </p>
         {integration && !integration.imports_enabled && (
-          <ErrorNotice message={integration.hosting_notice || "Импорт на этом стенде отключён."} />
+          <ErrorNotice
+            message={
+              integration.hosting_notice || "Импорт на этом стенде отключён."
+            }
+          />
         )}
         <details>
           <summary>Формат и требования к данным</summary>
@@ -280,7 +291,7 @@ export function ImportPanel({ user }: { user: User }) {
             {["failed", "accepted_unprocessed"].includes(
               stream.forecast_status,
             ) &&
-              user.role !== "analyst" && (
+              can(user, "data.import") && (
                 <button
                   className="secondary-button"
                   disabled={busy}
@@ -291,50 +302,60 @@ export function ImportPanel({ user }: { user: User }) {
               )}
           </div>
         )}
-        <form className="import-form" onSubmit={submit}>
-          <label>
-            Способ обработки
-            <select value={mode} onChange={(e) => setMode(e.target.value)}>
-              <option value="preview">Разовый расчёт</option>
-              <option value="stream">Добавить в накопленный поток</option>
-            </select>
-          </label>
-          <label>
-            Пакет телеметрии
-            <span className="file-picker">
-              <FileUp size={16} />
-              <span title={file?.name}>{file?.name || "Выбрать файл"}</span>
+        {can(user, "data.import") && (
+          <form className="import-form" onSubmit={submit}>
+            <label>
+              Способ обработки
+              <select value={mode} onChange={(e) => setMode(e.target.value)}>
+                <option value="preview">Разовый расчёт</option>
+                <option value="stream">Добавить в накопленный поток</option>
+              </select>
+            </label>
+            <label>
+              Пакет телеметрии
+              <span className="file-picker">
+                <FileUp size={16} />
+                <span title={file?.name}>{file?.name || "Выбрать файл"}</span>
+                <input
+                  type="file"
+                  aria-label="Пакет телеметрии"
+                  accept=".csv,.xlsx,.json,.xml"
+                  required
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  disabled={
+                    !can(user, "data.import") ||
+                    integration?.imports_enabled === false
+                  }
+                />
+              </span>
+            </label>
+            <label>
+              Момент прогноза · МСК
               <input
-                type="file"
-                aria-label="Пакет телеметрии"
-                accept=".csv,.xlsx,.json,.xml"
+                type="datetime-local"
+                value={asOf}
+                onChange={(e) => setAsOf(e.target.value)}
+                step={300}
                 required
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                disabled={user.role === "analyst" || integration?.imports_enabled === false}
               />
-            </span>
-          </label>
-          <label>
-            Момент прогноза · МСК
-            <input
-              type="datetime-local"
-              value={asOf}
-              onChange={(e) => setAsOf(e.target.value)}
-              step={300}
-              required
-            />
-          </label>
-          <button
-            className="primary-button"
-            disabled={busy || user.role === "analyst" || integration?.imports_enabled === false}
-          >
-            <FileUp size={17} />
-            {busy ? "Проверяем пакет…" : "Рассчитать прогноз"}
-          </button>
-        </form>
-        {user.role === "analyst" && (
+            </label>
+            <button
+              className="primary-button"
+              disabled={
+                busy ||
+                !can(user, "data.import") ||
+                integration?.imports_enabled === false
+              }
+            >
+              <FileUp size={17} />
+              {busy ? "Проверяем пакет…" : "Рассчитать прогноз"}
+            </button>
+          </form>
+        )}
+        {!can(user, "data.import") && (
           <p className="micro-note">
-            Импорт доступен диспетчеру и администратору.
+            Загрузка данных доступна аналитику. Здесь видны результаты расчётов
+            по поступившим пакетам.
           </p>
         )}
         {batches.length > 0 && (
@@ -638,7 +659,7 @@ function BatchDecision({
         ))}
       </ul>
       {error && <ErrorNotice message={error} />}
-      {options && user.role !== "analyst" && (
+      {options && can(user, "decisions.write") && (
         <form className="import-form" onSubmit={save}>
           <label>
             Решение по новому прогнозу

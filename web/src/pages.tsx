@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  ArrowRight,
   CheckCircle2,
   ChevronRight,
   CircleAlert,
@@ -9,9 +8,6 @@ import {
   FileCheck2,
   Filter,
   FlaskConical,
-  LockKeyhole,
-  Save,
-  ShieldCheck,
   Wrench,
 } from "lucide-react";
 import {
@@ -29,15 +25,15 @@ import {
   YAxis,
 } from "recharts";
 import { api, date, kindNames, num, pct } from "./api";
-import { Empty, ErrorNotice, KindIcon, KindTag, Loading } from "./components";
-import type {
-  DecisionRow,
-  Evaluation,
-  Forecast,
-  Kind,
-  Quality,
-  User,
-} from "./types";
+import {
+  Empty,
+  ErrorNotice,
+  KindIcon,
+  KindTag,
+  Loading,
+  WorkBadge,
+} from "./components";
+import type { DecisionRow, Evaluation, Forecast, Kind, Quality } from "./types";
 
 function useResource<T>(path: string, refresh = 0) {
   const [data, setData] = useState<T | null>(null),
@@ -771,29 +767,36 @@ export function DecisionsPage({
   return (
     <div className="page-stack">
       {localError && <ErrorNotice message={localError} />}
-      <div className="three-column">
+      <div className="four-column">
         <div className="data-stat">
           <span>Решений в журнале</span>
           <strong>{data.length}</strong>
           <small>С сохранением автора и времени</small>
         </div>
         <div className="data-stat">
-          <span>Запланировано ТО</span>
-          <strong>
-            {data.filter((d) => d.action === "maintenance").length}
-          </strong>
-          <small>Внутренние планы обслуживания</small>
+          <span>Требуют работ</span>
+          <strong>{data.filter((d) => d.requires_work).length}</strong>
+          <small>Выезд, проверка или ТО</small>
         </div>
         <div className="data-stat">
-          <span>Направление бригады</span>
-          <strong>{data.filter((d) => d.action === "dispatch").length}</strong>
-          <small>Решение диспетчера, без внешней отправки</small>
+          <span>Работы выполнены</span>
+          <strong>
+            {data.filter((d) => d.work_order?.status === "done").length}
+          </strong>
+          <small>Статус из системы учёта заявок</small>
+        </div>
+        <div className="data-stat">
+          <span>Ложные срабатывания</span>
+          <strong>
+            {data.filter((d) => d.action === "false_alarm").length}
+          </strong>
+          <small>По решению диспетчера</small>
         </div>
       </div>
       <section className="panel">
         <div className="panel-heading">
           <div>
-            <h2>История решений</h2>
+            <h2>Решения и результаты отработки</h2>
             <span>Открывайте запись, чтобы вернуться к исходному прогнозу</span>
           </div>
           <select
@@ -802,9 +805,10 @@ export function DecisionsPage({
             onChange={(e) => setFilter(e.target.value)}
           >
             <option value="all">Все действия</option>
+            <option value="dispatch">Выезд бригады</option>
+            <option value="inspect">Направить бригаду на проверку</option>
+            <option value="monitor">Мониторинг ситуации</option>
             <option value="maintenance">Запланировать ТО</option>
-            <option value="dispatch">Направить бригаду</option>
-            <option value="monitor">Наблюдение</option>
             <option value="false_alarm">Ложное срабатывание</option>
           </select>
         </div>
@@ -828,11 +832,20 @@ export function DecisionsPage({
                   <strong>{r.object_name}</strong>
                   <small>
                     {kindNames[r.kind]} · прогноз {date(r.forecast_at, true)}
+                    {r.user_name ? ` · ${r.user_name}` : ""}
                   </small>
-                  <p>{r.comment || "Комментарий не указан"}</p>
+                  <p>
+                    {r.reason_label ? `${r.reason_label}. ` : ""}
+                    {r.comment || "Комментарий не указан"}
+                  </p>
                 </div>
                 <div>
                   <span className="status reviewed">{r.action_label}</span>
+                  {r.work_order ? (
+                    <WorkBadge order={r.work_order} />
+                  ) : r.requires_work ? (
+                    <small>Заявка ещё не сформирована</small>
+                  ) : null}
                   <small>{date(r.updated_at, true)}</small>
                 </div>
                 <ChevronRight size={18} />
@@ -842,229 +855,5 @@ export function DecisionsPage({
         )}
       </section>
     </div>
-  );
-}
-
-type SettingsData = {
-  thresholds: Record<Kind, number>;
-  defaults: Record<Kind, number>;
-  horizon_hours: number;
-  cooldown_hours: number;
-};
-export function SettingsPage({
-  user,
-  onSaved,
-}: {
-  user: User;
-  onSaved: () => void;
-}) {
-  const { data, error } = useResource<SettingsData>("/settings"),
-    [values, setValues] = useState<Record<Kind, number> | null>(null);
-  const [saving, setSaving] = useState(false),
-    [message, setMessage] = useState(""),
-    [auditOpen, setAuditOpen] = useState(false);
-  const [audit, setAudit] = useState<
-    { id: number; action: string; created_at: string; user_id: number | null }[]
-  >([]);
-  useEffect(() => {
-    if (data) setValues(data.thresholds);
-  }, [data]);
-  async function save() {
-    setSaving(true);
-    setMessage("");
-    try {
-      await api("/settings", {
-        method: "PUT",
-        body: JSON.stringify({ thresholds: values }),
-      });
-      onSaved();
-      setMessage("Изменения применены");
-    } catch (e) {
-      setMessage((e as Error).message);
-    } finally {
-      setSaving(false);
-    }
-  }
-  async function showAudit() {
-    try {
-      setAudit(await api("/audit"));
-      setAuditOpen(true);
-    } catch (e) {
-      setMessage((e as Error).message);
-    }
-  }
-  if (error) return <ErrorNotice message={error} />;
-  if (!data || !values) return <Loading />;
-  const editable = user.role === "admin";
-  return (
-    <div className="page-stack">
-      <div className="method-banner">
-        <SettingsIcon />
-        <div>
-          <strong>Порог определяет частоту предупреждений</strong>
-          <p>
-            Изменение порога действует на рабочий интерфейс. Результаты
-            отложенного теста сохраняют исходную зафиксированную политику.
-          </p>
-        </div>
-      </div>
-      {!editable && (
-        <div className="evidence-note">
-          <LockKeyhole size={19} />
-          <p>
-            Параметры доступны для просмотра. Изменять их может администратор.
-          </p>
-        </div>
-      )}
-      <section className="panel settings-panel">
-        <div className="panel-heading">
-          <div>
-            <h2>Пороги по типам риска</h2>
-            <span>
-              Вероятность нового зарегистрированного эпизода на 24 часа
-            </span>
-          </div>
-          <button
-            className="text-link"
-            disabled={!editable}
-            onClick={() => setValues(data.defaults)}
-          >
-            Вернуть пороги модели
-          </button>
-        </div>
-        <div className="threshold-settings">
-          {(Object.keys(kindNames) as Kind[]).map((k) => (
-            <div className="threshold-row" key={k}>
-              <span className={`scenario-symbol ${k}`}>
-                <KindIcon kind={k} size={21} />
-              </span>
-              <div>
-                <strong>{kindNames[k]}</strong>
-                <small>
-                  Исходный порог:{" "}
-                  {data.defaults[k] > 1 ? "отключено" : pct(data.defaults[k])}
-                </small>
-              </div>
-              <input
-                type="range"
-                aria-label={`Порог ${kindNames[k]}`}
-                min="0.1"
-                max="101"
-                step="0.1"
-                disabled={!editable}
-                value={values[k] * 100}
-                onChange={(e) =>
-                  setValues({ ...values, [k]: Number(e.target.value) / 100 })
-                }
-              />
-              <span className="threshold-value">
-                {values[k] > 1 ? "Выкл." : pct(values[k])}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="settings-footer">
-          <span className="micro-note">
-            101% отключает автоматические предупреждения сценария.
-          </span>
-          <button
-            className="primary-button"
-            disabled={!editable || saving}
-            onClick={save}
-          >
-            <Save size={16} />
-            {saving ? "Сохраняем…" : "Сохранить параметры"}
-          </button>
-        </div>
-        {message && <div className="settings-message">{message}</div>}
-      </section>
-      <div className="two-column">
-        <section className="panel">
-          <div className="panel-heading">
-            <h2>Контур исполнения</h2>
-          </div>
-          <dl className="config-list">
-            <div>
-              <dt>Режим</dt>
-              <dd>Воспроизведение архива</dd>
-            </div>
-            <div>
-              <dt>Горизонт прогноза</dt>
-              <dd>24 часа</dd>
-            </div>
-            <div>
-              <dt>Часовой пояс источника</dt>
-              <dd>МСК · UTC+3</dd>
-            </div>
-            <div>
-              <dt>Интеграции</dt>
-              <dd>Только чтение</dd>
-            </div>
-            <div>
-              <dt>Вердикт диспетчера</dt>
-              <dd>Внутренний журнал</dd>
-            </div>
-          </dl>
-        </section>
-        <section className="panel">
-          <div className="panel-heading">
-            <h2>Доступ и история действий</h2>
-          </div>
-          <div className="security-summary">
-            <ShieldCheck size={28} />
-            <h3>Действия сохраняются</h3>
-            <p>
-              Изменения порогов и решений записываются с автором, временем и
-              предыдущим значением.
-            </p>
-            <button
-              className="secondary-button"
-              disabled={!editable}
-              onClick={showAudit}
-            >
-              Открыть журнал аудита
-              <ArrowRight size={15} />
-            </button>
-          </div>
-        </section>
-      </div>
-      {auditOpen && (
-        <section className="panel">
-          <div className="panel-heading">
-            <h2>Последние действия</h2>
-            <span>До 300 записей</span>
-          </div>
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Время UTC</th>
-                  <th>Пользователь</th>
-                  <th>Действие</th>
-                </tr>
-              </thead>
-              <tbody>
-                {audit.map((r) => (
-                  <tr key={r.id}>
-                    <td>{date(r.created_at, true)}</td>
-                    <td>{r.user_id || "—"}</td>
-                    <td>
-                      <code>{r.action}</code>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-    </div>
-  );
-}
-function SettingsIcon() {
-  return (
-    <span className="method-icon">
-      <LockKeyhole size={24} />
-    </span>
   );
 }

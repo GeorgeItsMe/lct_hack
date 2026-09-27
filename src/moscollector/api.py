@@ -40,6 +40,7 @@ from moscollector.domain import ACTIONS, KIND_LABELS, REASONS, WORK_ACTIONS
 from moscollector.paths import ARTIFACTS, ROOT, RUNTIME
 from moscollector.roles import DENIED, ROLES, allowed, permissions_for
 from moscollector.service import AnalyticsService, prediction_id
+from moscollector.workorders import utc_iso
 
 DEMO_MODE = os.getenv("CONTOUR_DEMO", "true").lower() == "true"
 SERVERLESS_MODE = os.getenv("CONTOUR_SERVERLESS", "false").lower() == "true"
@@ -502,8 +503,8 @@ def decision_rows(limit=1000):
                 "reason": d.reason,
                 "reason_label": reasons.get(d.reason, d.reason),
                 "comment": d.comment,
-                "created_at": d.created_at.isoformat(),
-                "updated_at": d.updated_at.isoformat(),
+                "created_at": utc_iso(d.created_at),
+                "updated_at": utc_iso(d.updated_at),
                 "user_id": d.user_id,
                 "user_name": users.get(d.user_id),
                 "requires_work": d.action in WORK_ACTIONS,
@@ -575,7 +576,7 @@ def audit_records(user=Depends(require("audit.view"))):
                 "role": users[r.user_id].role if r.user_id in users else None,
                 "action": r.action,
                 "detail": json.loads(r.detail),
-                "created_at": r.created_at.isoformat(),
+                "created_at": utc_iso(r.created_at),
             }
             for r in db.scalars(select(AuditLog).order_by(AuditLog.id.desc()).limit(300))
         ]
@@ -1031,7 +1032,7 @@ def labels(user=Depends(require("labels.verify"))):
         history = [
             {
                 "id": r.id,
-                "created_at": r.created_at.isoformat(),
+                "created_at": utc_iso(r.created_at),
                 "labels": r.labels,
                 "positives": r.positives,
                 "file_name": r.file_name,
@@ -1214,9 +1215,9 @@ def proposal_payload(p, users):
         "preview": json.loads(p.preview_json),
         "status": p.status,
         "proposed_by": users.get(p.proposed_by),
-        "created_at": p.created_at.isoformat(),
+        "created_at": utc_iso(p.created_at),
         "decided_by": users.get(p.decided_by) if p.decided_by else None,
-        "decided_at": p.decided_at.isoformat() if p.decided_at else None,
+        "decided_at": utc_iso(p.decided_at),
         "decision_note": p.decision_note,
     }
 

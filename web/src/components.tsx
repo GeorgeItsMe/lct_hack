@@ -4,9 +4,12 @@ import {
   ArrowDown,
   ArrowRight,
   ArrowUp,
+  CalendarClock,
+  Camera,
   Check,
   ChevronRight,
   CircleAlert,
+  ClipboardList,
   Clock3,
   Droplets,
   Flame,
@@ -30,7 +33,51 @@ import {
   YAxis,
 } from "recharts";
 import { api, clock, date, kindNames, num, pct } from "./api";
-import type { Detail, Forecast, Kind, Topology, User } from "./types";
+import { can } from "./roles";
+import type {
+  Detail,
+  Forecast,
+  Kind,
+  RiskLevel,
+  Topology,
+  User,
+  WorkOrder,
+} from "./types";
+
+export const riskNames: Record<RiskLevel, string> = {
+  critical: "Критический",
+  high: "Высокий",
+  watch: "Повышенный",
+  low: "Низкий",
+};
+export const workStatusNames: Record<string, string> = {
+  draft: "Черновик заявки",
+  submitted: "Заявка передана",
+  accepted: "Заявка принята",
+  in_progress: "Работы идут",
+  done: "Работы выполнены",
+};
+export const outcomeNames: Record<string, string> = {
+  confirmed: "Событие подтвердилось",
+  not_confirmed: "Не подтвердилось",
+  sensor_fault: "Сбой датчика или оборудования",
+};
+export function RiskBadge({ level }: { level: RiskLevel }) {
+  return (
+    <span className={`risk-badge ${level}`}>
+      <i aria-hidden="true" />
+      {riskNames[level]}
+    </span>
+  );
+}
+export function WorkBadge({ order }: { order: WorkOrder | null | undefined }) {
+  if (!order) return null;
+  return (
+    <span className={`work-badge ${order.status}`}>
+      {order.outcome_label || order.status_label}
+    </span>
+  );
+}
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
@@ -113,7 +160,9 @@ export function ErrorNotice({
 }
 export function Risk({ forecast }: { forecast: Forecast }) {
   return (
-    <div className={`probability ${forecast.above_threshold ? "high" : ""}`}>
+    <div
+      className={`probability ${forecast.above_threshold ? "high" : ""} level-${forecast.risk}`}
+    >
       <strong>{pct(forecast.probability)}</strong>
       <span className="probability-track">
         <i style={{ width: `${Math.min(100, forecast.probability * 100)}%` }} />
@@ -170,6 +219,7 @@ export function ForecastTable({
               </td>
               <td>
                 <Risk forecast={f} />
+                <RiskBadge level={f.risk} />
               </td>
               {!compact && (
                 <td className="recommendation-cell">{f.recommendation}</td>
@@ -181,7 +231,11 @@ export function ForecastTable({
                   {f.decision ? (
                     <>
                       <Check size={12} />
-                      Решение принято
+                      {f.decision.work_outcome
+                        ? outcomeNames[f.decision.work_outcome]
+                        : f.decision.work_status
+                          ? workStatusNames[f.decision.work_status]
+                          : "Решение принято"}
                     </>
                   ) : f.above_threshold ? (
                     "Требует проверки"
@@ -227,14 +281,36 @@ export function NetworkMap({
     (n) => n.level === 3 && (!group || n.parent_id === group),
   );
   const lanes = group ? roots.filter((n) => n.id === group) : roots;
-  const width = 1100,
-    height = expanded ? 610 : 410;
+  const width = 1100;
   const groupsPerRow = expanded ? 4 : 4;
+  /* Row height follows the largest node in the row, so a node with more than
+     six objects never overlaps the next row's labels. */
+  const childRows = (id: number) =>
+    Math.max(1, Math.ceil(leaves.filter((n) => n.parent_id === id).length / 6));
+  const rowCount = Math.ceil(lanes.length / groupsPerRow);
+  const tallest = (row: number) =>
+    Math.max(
+      1,
+      ...lanes
+        .slice(row * groupsPerRow, (row + 1) * groupsPerRow)
+        .map((r) => childRows(r.id)),
+    );
+  const rowTops: number[] = [];
+  for (let row = 0; row < rowCount; row++)
+    rowTops.push(
+      row === 0
+        ? 35
+        : rowTops[row - 1] +
+            (expanded ? 120 : 95) +
+            35 * (tallest(row - 1) - 1),
+    );
   const cells = lanes.map((r, i) => ({
     ...r,
     x: 50 + (i % groupsPerRow) * 268,
-    y: 35 + Math.floor(i / groupsPerRow) * (expanded ? 143 : 95),
+    y: rowTops[Math.floor(i / groupsPerRow)],
   }));
+  const contentHeight =
+    (rowTops[rowCount - 1] ?? 35) + 60 + 35 * (tallest(rowCount - 1) - 1);
   const target = (id: number) => forecasts.find((f) => f.object_id === id);
   const active = topology.nodes.find((n) => n.id === hover);
   return (
@@ -264,7 +340,7 @@ export function NetworkMap({
       </div>
       <div className="map-canvas">
         <svg
-          viewBox={`0 0 ${width} ${height}`}
+          viewBox={`0 0 ${width} ${Math.max(expanded ? 610 : 410, contentHeight)}`}
           style={{ width: `${zoom * 100}%`, minWidth: expanded ? 850 : 650 }}
           role="img"
           aria-label="Схематичная карта объектов по иерархии справочника"
@@ -282,7 +358,7 @@ export function NetworkMap({
               <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity=".08" />
             </filter>
           </defs>
-          <rect width="1500" height="900" fill="url(#map-grid)" />
+          <rect width="1500" height="1400" fill="url(#map-grid)" />
           {cells.map((r) => {
             const children = leaves.filter((n) => n.parent_id === r.id);
             return (
@@ -299,7 +375,7 @@ export function NetworkMap({
                 {children.map((n, i) => {
                   const x = r.x + 12 + (i % 6) * 40,
                     y = r.y + 25 + Math.floor(i / 6) * 35;
-                  const high = n.risk === "high",
+                  const high = n.risk === "high" || n.risk === "critical",
                     f = target(n.id);
                   return (
                     <g
@@ -312,7 +388,7 @@ export function NetworkMap({
                       onClick={() => f && onSelect(f)}
                       tabIndex={f ? 0 : -1}
                       role="button"
-                      aria-label={`${n.name}, ${high ? "требует проверки" : "наблюдение"}`}
+                      aria-label={`${n.name}, ${n.risk === "unknown" ? "нет прогноза" : riskNames[n.risk].toLowerCase() + " риск"}`}
                       onKeyDown={(e) => e.key === "Enter" && f && onSelect(f)}
                     >
                       <title>
@@ -333,23 +409,15 @@ export function NetworkMap({
                           cx={x}
                           cy={y}
                           r="14"
-                          fill="#f5f5f5"
-                          stroke="#171717"
+                          className={`map-halo ${n.risk}`}
                           strokeDasharray="2 2"
                         />
                       )}
                       <circle
                         cx={x}
                         cy={y}
-                        r={high ? 7 : 5}
-                        fill={
-                          high
-                            ? "#171717"
-                            : n.risk === "unknown"
-                              ? "#b6b6b6"
-                              : "#fff"
-                        }
-                        stroke={high ? "#fff" : "#737373"}
+                        r={high ? 7 : n.risk === "watch" ? 6 : 5}
+                        className={`map-dot ${n.risk}`}
                         strokeWidth={high ? 2 : 1.5}
                         filter="url(#node-shadow)"
                       />
@@ -371,16 +439,14 @@ export function NetworkMap({
       </div>
       <div className="map-footer">
         <div className="map-legend">
+          {(["critical", "high", "watch", "low"] as RiskLevel[]).map((l) => (
+            <span key={l}>
+              <i className={`legend-dot ${l}`} />
+              {riskNames[l]}
+            </span>
+          ))}
           <span>
-            <i className="dot orange" />
-            Требует проверки
-          </span>
-          <span>
-            <i className="dot green" />
-            Наблюдение
-          </span>
-          <span>
-            <i className="dot gray" />
+            <i className="legend-dot unknown" />
             Нет прогноза
           </span>
         </div>
@@ -411,6 +477,14 @@ export function ForecastDrawer({
     "analysis",
   );
   const [action, setAction] = useState(forecast.decision?.action || "monitor");
+  const [options, setOptions] = useState<{
+    reasons: { id: string; label: string }[];
+    actions: Record<string, string>;
+  } | null>(null);
+  const [order, setOrder] = useState<WorkOrder | null>(null),
+    [orderBusy, setOrderBusy] = useState(false);
+  const canDecide = can(user, "decisions.write"),
+    canDraft = can(user, "work.edit");
   const [reason, setReason] = useState(
     forecast.decision?.reason || "sensor_pattern",
   );
@@ -432,6 +506,12 @@ export function ForecastDrawer({
     )
       .then((d) => !cancelled && setDetail(d))
       .catch((e) => !cancelled && setError(e.message));
+    api<{
+      reasons: { id: string; label: string }[];
+      actions: Record<string, string>;
+    }>("/reasons")
+      .then((r) => !cancelled && setOptions(r))
+      .catch(() => {});
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -466,6 +546,30 @@ export function ForecastDrawer({
       setError((e as Error).message);
     } finally {
       setSaving(false);
+    }
+  }
+  async function draftOrder() {
+    setOrderBusy(true);
+    setError("");
+    try {
+      const body = forecast.decision?.id
+        ? { decision_id: forecast.decision.id }
+        : {
+            object_id: forecast.object_id,
+            kind: forecast.kind,
+            as_of: forecast.as_of,
+          };
+      setOrder(
+        await api<WorkOrder>("/work-orders", {
+          method: "POST",
+          body: JSON.stringify(body),
+        }),
+      );
+      onSaved();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setOrderBusy(false);
     }
   }
   async function reveal() {
@@ -515,6 +619,7 @@ export function ForecastDrawer({
               className={`risk-gauge ${forecast.above_threshold ? "attention" : ""}`}
             >
               <Gauge size={31} />
+              <RiskBadge level={forecast.risk} />
               <span>
                 {forecast.threshold > 1
                   ? "Исследовательский прогноз"
@@ -534,7 +639,7 @@ export function ForecastDrawer({
           {[
             ["analysis", "Обоснование"],
             ["events", "Исходные события"],
-            ["decision", "Решение"],
+            ["decision", canDraft && !canDecide ? "Работы" : "Решение"],
           ].map(([id, label]) => (
             <button
               key={id}
@@ -664,13 +769,121 @@ export function ForecastDrawer({
                     <Wrench size={15} />
                   </div>
                   <ol className="recommendation-list">
-                    {detail.recommendations.map((r, i) => (
-                      <li key={r}>
+                    {(
+                      detail.recommendation_details ||
+                      detail.recommendations.map((text) => ({
+                        text,
+                        basis: "",
+                        source: "general" as const,
+                      }))
+                    ).map((r, i) => (
+                      <li key={r.text} className={`rec-${r.source}`}>
                         <span>{i + 1}</span>
-                        {r}
+                        <div>
+                          {r.text}
+                          {r.basis && (
+                            <small>
+                              {r.source === "signals" ? "По журналу: " : ""}
+                              {r.basis}
+                            </small>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ol>
+                  {detail.verification && (
+                    <>
+                      <div className="section-label">
+                        <h3>Проверка ситуации</h3>
+                        <Camera size={15} />
+                      </div>
+                      <div className="verification-grid">
+                        <div>
+                          <span>Тревожных сообщений за сутки</span>
+                          <strong>{detail.verification.alarm_messages}</strong>
+                          <small>
+                            {detail.verification.alarm_sensors.length
+                              ? detail.verification.alarm_sensors
+                                  .map(
+                                    (s) =>
+                                      `${s.sensor_type} · ${s.channels} кан.`,
+                                  )
+                                  .join("; ")
+                              : "Сработавших датчиков нет"}
+                          </small>
+                        </div>
+                        <div>
+                          <span>Каналов в состоянии неисправности</span>
+                          <strong>{detail.verification.fault_channels}</strong>
+                          <small>
+                            Сбой датчика не равен событию на объекте
+                          </small>
+                        </div>
+                        <div>
+                          <span>Другие риски объекта</span>
+                          <strong>
+                            {
+                              detail.verification.related_forecasts.filter(
+                                (r) =>
+                                  r.risk === "high" || r.risk === "critical",
+                              ).length
+                            }
+                          </strong>
+                          <small>
+                            {detail.verification.related_forecasts
+                              .map(
+                                (r) =>
+                                  `${kindNames[r.kind]} ${pct(r.probability)}`,
+                              )
+                              .join(" · ")}
+                          </small>
+                        </div>
+                      </div>
+                      <ul className="source-status">
+                        {detail.verification.external_sources.map((s) => (
+                          <li key={s.id}>
+                            <span>{s.label}</span>
+                            <b>
+                              {s.status === "not_connected"
+                                ? "не подключено"
+                                : s.status}
+                            </b>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                  {detail.calendar && (
+                    <>
+                      <div className="section-label">
+                        <h3>Календарный контекст</h3>
+                        <CalendarClock size={15} />
+                      </div>
+                      <div className="calendar-note">
+                        <p>
+                          {detail.calendar.weekday[0].toUpperCase() +
+                            detail.calendar.weekday.slice(1)}
+                          {detail.calendar.weekend ? ", выходной" : ""},{" "}
+                          {detail.calendar.hour}:00.{" "}
+                          {detail.calendar.weekday_ratio !== null &&
+                            `В этот день недели эпизоды этого типа начинались в ${num(Math.round(detail.calendar.weekday_ratio * 100) / 100)} раза ${detail.calendar.weekday_ratio >= 1 ? "чаще" : "реже"} среднего. `}
+                          На объекте за 30 дней:{" "}
+                          {detail.calendar.object_episodes_30d} эпизодов
+                          {detail.calendar.object_last_episode
+                            ? `, последний ${date(detail.calendar.object_last_episode, true)}`
+                            : ""}
+                          .
+                        </p>
+                        <small>
+                          По эпизодам, начавшимся до момента прогноза
+                          {detail.calendar.history_from
+                            ? ` (с ${date(detail.calendar.history_from)})`
+                            : ""}
+                          .
+                        </small>
+                      </div>
+                    </>
+                  )}
                   <div className="evidence-note">
                     <ShieldCheck size={19} />
                     <div>
@@ -753,12 +966,63 @@ export function ForecastDrawer({
                     Решение сохраняется в собственном журнале сервиса. Команды
                     оборудованию не отправляются.
                   </p>
-                  {user.role === "analyst" ? (
+                  {forecast.decision && (
+                    <div className="current-decision">
+                      <span className="eyebrow">ТЕКУЩЕЕ РЕШЕНИЕ</span>
+                      <strong>
+                        {options?.actions[forecast.decision.action] ||
+                          forecast.decision.action}
+                      </strong>
+                      {forecast.decision.comment && (
+                        <p>{forecast.decision.comment}</p>
+                      )}
+                      {forecast.decision.work_status && (
+                        <small>
+                          {forecast.decision.work_outcome
+                            ? outcomeNames[forecast.decision.work_outcome]
+                            : workStatusNames[forecast.decision.work_status]}
+                        </small>
+                      )}
+                    </div>
+                  )}
+                  {canDraft && (
+                    <div className="work-order-box">
+                      <ClipboardList size={20} />
+                      <div>
+                        <strong>Заявка на работы</strong>
+                        <p>
+                          Черновик собирается из объекта, факторов прогноза и
+                          рекомендаций. Статус ведёт внешняя система учёта
+                          заявок.
+                        </p>
+                        {order ? (
+                          <p className="work-order-created">
+                            Создан черновик {order.number}. Откройте «Задачи и
+                            заявки», чтобы отредактировать и передать его.
+                          </p>
+                        ) : (
+                          <button
+                            className="primary-button"
+                            disabled={orderBusy}
+                            onClick={draftOrder}
+                          >
+                            {orderBusy ? (
+                              <LoaderCircle className="spin" size={16} />
+                            ) : (
+                              <ClipboardList size={16} />
+                            )}
+                            Сформировать черновик заявки
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {!canDecide ? (
                     <div className="evidence-note">
                       <LockKeyhole size={20} />
                       <p>
-                        У аналитика доступ к просмотру. Решение фиксирует
-                        диспетчер.
+                        Решение по прогнозу фиксирует диспетчер. Для вашей роли
+                        карточка доступна для просмотра.
                       </p>
                     </div>
                   ) : (
@@ -778,12 +1042,19 @@ export function ForecastDrawer({
                             setSaved(false);
                           }}
                         >
-                          <option value="monitor">Продолжить наблюдение</option>
-                          <option value="dispatch">Направить бригаду</option>
-                          <option value="maintenance">Запланировать ТО</option>
-                          <option value="false_alarm">
-                            Ложное срабатывание
-                          </option>
+                          {Object.entries(
+                            options?.actions || {
+                              dispatch: "Выезд бригады",
+                              inspect: "Направить бригаду на проверку",
+                              monitor: "Мониторинг ситуации",
+                              false_alarm: "Ложное срабатывание",
+                              maintenance: "Запланировать ТО",
+                            },
+                          ).map(([id, label]) => (
+                            <option key={id} value={id}>
+                              {label}
+                            </option>
+                          ))}
                         </select>
                       </label>
                       <label>
@@ -792,23 +1063,11 @@ export function ForecastDrawer({
                           value={reason}
                           onChange={(e) => setReason(e.target.value)}
                         >
-                          <option value="sensor_pattern">
-                            Повторные отклонения датчиков
-                          </option>
-                          <option value="confirmed_remotely">
-                            Подтверждено дополнительной проверкой
-                          </option>
-                          <option value="planned_work">Плановые работы</option>
-                          <option value="maintenance_test">
-                            Проверка оборудования
-                          </option>
-                          <option value="insufficient_evidence">
-                            Недостаточно данных
-                          </option>
-                          <option value="false_signal">
-                            Ложное срабатывание
-                          </option>
-                          <option value="other">Другая причина</option>
+                          {(options?.reasons || []).map((r) => (
+                            <option key={r.id} value={r.id}>
+                              {r.label}
+                            </option>
+                          ))}
                         </select>
                       </label>
                       <label>
@@ -848,12 +1107,12 @@ export function ForecastDrawer({
             <Clock3 size={14} />
             Горизонт до {date(forecast.valid_until, true)}
           </span>
-          {tab !== "decision" && (
+          {tab !== "decision" && (canDecide || canDraft) && (
             <button
               className="primary-button"
               onClick={() => setTab("decision")}
             >
-              Принять решение
+              {canDecide ? "Принять решение" : "Заявка на работы"}
               <ArrowRight size={15} />
             </button>
           )}

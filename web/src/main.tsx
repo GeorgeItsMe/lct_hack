@@ -4,6 +4,7 @@ import App from "./App";
 import "@fontsource-variable/golos-text";
 import "./styles.css";
 import "./monochrome.css";
+import "./roles.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

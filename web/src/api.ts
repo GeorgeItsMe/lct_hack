@@ -34,12 +34,17 @@ export const pct = (n: number, digits = 1) =>
     maximumFractionDigits: digits,
   }).format(n);
 export const num = (n: number) => new Intl.NumberFormat("ru-RU").format(n);
-export const date = (value: string, time = false) =>
-  new Intl.DateTimeFormat("ru-RU", {
+/* Archive moments are naive Moscow time and are shown as written. Application
+   timestamps carry an explicit UTC offset and are converted to Moscow time. */
+export const date = (value: string, time = false) => {
+  const zoned = /(Z|[+-]\d{2}:\d{2})$/.test(value);
+  return new Intl.DateTimeFormat("ru-RU", {
     day: "2-digit",
     month: "short",
     ...(time ? ({ hour: "2-digit", minute: "2-digit" } as const) : {}),
-  }).format(new Date(value.slice(0, 19)));
+    ...(zoned ? { timeZone: "Europe/Moscow" } : {}),
+  }).format(new Date(zoned ? value : value.slice(0, 19)));
+};
 export const clock = (value: string) => value.slice(11, 16);
 export const kindNames = {
   fault: "Оборудование",
