@@ -19,7 +19,7 @@ def manifest_version(manifest):
 
 def active_version():
     path = ARTIFACTS / "active_model.json"
-    return json.loads(path.read_text())["version"] if path.exists() else "legacy"
+    return json.loads(path.read_text(encoding="utf-8"))["version"] if path.exists() else "legacy"
 
 
 @lru_cache(maxsize=16)
@@ -27,7 +27,7 @@ def load_bundle(version):
     if not re.fullmatch(r"op-[a-f0-9]{12}", version):
         raise ValueError("Unknown operational model version")
     folder = ARTIFACTS / "operational" / version
-    manifest = json.loads((folder / "manifest.json").read_text())
+    manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("version") != version or manifest_version(manifest) != version:
         raise ValueError("Model manifest integrity check failed")
     heads = {}
@@ -76,5 +76,5 @@ def activate(version):
     load_bundle(version)  # Validate every model before publishing the pointer.
     path = ARTIFACTS / "active_model.json"
     temporary = path.with_suffix(".tmp")
-    temporary.write_text(json.dumps({"version": version}, indent=2))
+    temporary.write_text(json.dumps({"version": version}, indent=2), encoding="utf-8")
     temporary.replace(path)

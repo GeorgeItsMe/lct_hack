@@ -67,7 +67,7 @@ def extract(year: int, folder: Path, previous: Path | None):
     if manifest.exists():
         import json
 
-        old = json.loads(manifest.read_text())
+        old = json.loads(manifest.read_text(encoding="utf-8"))
         if old["inputs"] != hashes or old["before"] != BEFORE:
             raise ValueError("Transition cache inputs changed")
         for path in (target, seed_target):

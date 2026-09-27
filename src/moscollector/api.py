@@ -321,9 +321,9 @@ def replay(user=Depends(current_user)):
 def evaluation(user=Depends(current_user)):
     service = analytics()
     research_path = ARTIFACTS / "research_report.json"
-    research = json.loads(research_path.read_text()) if research_path.exists() else None
+    research = json.loads(research_path.read_text(encoding="utf-8")) if research_path.exists() else None
     quality_path = ARTIFACTS / "operational_quality.json"
-    quality = json.loads(quality_path.read_text()) if quality_path.exists() else None
+    quality = json.loads(quality_path.read_text(encoding="utf-8")) if quality_path.exists() else None
     return {
         **service.report,
         "uncertainty": getattr(service, "uncertainty", None),
@@ -334,7 +334,7 @@ def evaluation(user=Depends(current_user)):
 
 @app.get("/api/evaluation/matches/{kind}")
 def evaluation_matches(kind: Literal["fault", "fire", "flood", "access"], user=Depends(current_user)):
-    return json.loads((ARTIFACTS / "predictions" / f"test-matches-{kind}.json").read_text())
+    return json.loads((ARTIFACTS / "predictions" / f"test-matches-{kind}.json").read_text(encoding="utf-8"))
 
 
 @app.get("/api/quality")

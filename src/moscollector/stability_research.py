@@ -21,7 +21,7 @@ def fit_blend(frame, episodes, folder, kind, reference_folder, reference, candid
     """Fixed equal-logit blend; calibration and policy each use their own past month."""
     target = folder / f"{kind}-blend.json"
     if target.exists():
-        return json.loads(target.read_text())
+        return json.loads(target.read_text(encoding="utf-8"))
     if reference["features"] != candidate["features"] or reference["periods"] != candidate["periods"]:
         raise ValueError("Blend members must use identical features and temporal boundaries")
     models = []
@@ -89,12 +89,12 @@ def run():
         "june": "Never loaded. Previous frozen models and June report remain unchanged.",
         "source_sha256": hashlib.sha256((PROCESSED / "features.parquet").read_bytes()).hexdigest(),
     }
-    previous = json.loads((source / "plan.json").read_text())
+    previous = json.loads((source / "plan.json").read_text(encoding="utf-8"))
     if plan["source_sha256"] != previous["source_sha256"]:
         raise ValueError("Reference and candidate must use identical source features")
     plan_path = output / "plan.json"
     if plan_path.exists():
-        old = json.loads(plan_path.read_text())
+        old = json.loads(plan_path.read_text(encoding="utf-8"))
         if any(old.get(k) != plan[k] for k in plan if k != "created_at"):
             raise ValueError("Plan changed; refusing to reuse existing results")
     else:
@@ -109,7 +109,7 @@ def run():
     for kind in KINDS:
         reference, candidate, blends = [], [], []
         for fold, date in FOLDS.items():
-            reference.append(json.loads((source / fold / "reference" / f"{kind}.json").read_text()))
+            reference.append(json.loads((source / fold / "reference" / f"{kind}.json").read_text(encoding="utf-8")))
             candidate.append(fit_one(frame, episodes, output / fold, kind, "regularized", date))
             blends.append(
                 fit_blend(

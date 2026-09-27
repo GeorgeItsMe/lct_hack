@@ -66,7 +66,7 @@ def extract(year, folder):
     if meta_path.exists():
         import json
 
-        meta = json.loads(meta_path.read_text())
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
         if meta["inputs"] != hashes:
             raise ValueError("Channel-onset cache inputs changed")
         if any(sha256(Path(p)) != v for p, v in meta["outputs"].items()):

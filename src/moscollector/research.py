@@ -54,7 +54,7 @@ def mask(frame, start, end):
 def fit_one(frame, episodes, folder, kind, config, test_begin):
     target = folder / f"{kind}.json"
     if target.exists():
-        return json.loads(target.read_text())
+        return json.loads(target.read_text(encoding="utf-8"))
     folder.mkdir(parents=True, exist_ok=True)
     test_begin = pd.Timestamp(test_begin)
     train_end = test_begin - pd.DateOffset(months=4)
@@ -155,7 +155,7 @@ def run(output: Path, stage: str):
     source_hash = hashlib.sha256((PROCESSED / "features.parquet").read_bytes()).hexdigest()
     if not plan_path.exists():
         write_json(plan_path, {**PLAN, "source_sha256": source_hash})
-    elif json.loads(plan_path.read_text())["source_sha256"] != source_hash:
+    elif json.loads(plan_path.read_text(encoding="utf-8"))["source_sha256"] != source_hash:
         raise ValueError("Feature source changed; use a new research directory")
     # Physically exclude June data from this research process.
     frame = pd.read_parquet(
@@ -175,7 +175,7 @@ def run(output: Path, stage: str):
             scores = {
                 config: pooled(
                     [
-                        json.loads((output / fold / config / f"{kind}.json").read_text())
+                        json.loads((output / fold / config / f"{kind}.json").read_text(encoding="utf-8"))
                         for fold in ("screen_1", "screen_2")
                     ]
                 )
@@ -193,7 +193,7 @@ def run(output: Path, stage: str):
         )
         print(json.dumps(selection, indent=2), flush=True)
     else:
-        selection = json.loads((output / "selection.json").read_text())["models"]
+        selection = json.loads((output / "selection.json").read_text(encoding="utf-8"))["models"]
         report = {}
         for kind in KINDS:
             candidate = selection[kind]["candidate"]

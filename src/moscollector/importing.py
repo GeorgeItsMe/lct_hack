@@ -144,7 +144,7 @@ class ImportManager:
         self.lock = threading.Lock()
         self.channels = set(pd.read_parquet(PROCESSED / "channels.parquet").channel_id)
         for path in self.root.glob("*/status.json"):
-            status = json.loads(path.read_text())
+            status = json.loads(path.read_text(encoding="utf-8"))
             if status["status"] in ("running", "queued"):
                 status.update(status="failed", error="Расчёт прерван перезапуском. Загрузите пакет снова.")
                 self._save(path.parent, status)
@@ -152,7 +152,7 @@ class ImportManager:
     @staticmethod
     def _save(directory, state):
         temporary = directory / "status.tmp"
-        temporary.write_text(json.dumps(state, ensure_ascii=False, indent=2))
+        temporary.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
         temporary.replace(directory / "status.json")
 
     def submit(self, content, extension, as_of, user_id):
@@ -192,7 +192,7 @@ class ImportManager:
             return state.copy()
 
     def find(self, identity, model_version=None):
-        candidates = [json.loads(path.read_text()) for path in self.root.glob("*/status.json")]
+        candidates = [json.loads(path.read_text(encoding="utf-8")) for path in self.root.glob("*/status.json")]
         return next(
             (
                 s
@@ -207,7 +207,7 @@ class ImportManager:
         try:
             state["status"] = "running"
             self._save(directory, state)
-            with (directory / "worker.log").open("w") as log:
+            with (directory / "worker.log").open("w", encoding="utf-8") as log:
                 result = subprocess.run(
                     [sys.executable, "-m", "moscollector.batch", str(directory), state["as_of"]],
                     stdout=log,
@@ -218,7 +218,7 @@ class ImportManager:
             if result.returncode:
                 error_path = directory / "error.json"
                 raise ValueError(
-                    json.loads(error_path.read_text())["error"]
+                    json.loads(error_path.read_text(encoding="utf-8"))["error"]
                     if error_path.exists()
                     else "Ошибка расчёта; проверьте журнал worker.log"
                 )
@@ -236,9 +236,9 @@ class ImportManager:
         directory = self.root / job_id
         if not (directory / "status.json").exists():
             raise KeyError("Пакет не найден")
-        state = json.loads((directory / "status.json").read_text())
+        state = json.loads((directory / "status.json").read_text(encoding="utf-8"))
         if include_result and state["status"] == "complete":
-            state["result"] = json.loads((directory / "result.json").read_text())
+            state["result"] = json.loads((directory / "result.json").read_text(encoding="utf-8"))
         return state
 
     def list(self, mode=None):
@@ -246,7 +246,7 @@ class ImportManager:
             [
                 s
                 for p in self.root.glob("*/status.json")
-                if (s := json.loads(p.read_text())) and (mode is None or s.get("mode") == mode)
+                if (s := json.loads(p.read_text(encoding="utf-8"))) and (mode is None or s.get("mode") == mode)
             ],
             key=lambda x: x["created_at"],
             reverse=True,

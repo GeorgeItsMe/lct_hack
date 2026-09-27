@@ -117,7 +117,7 @@ def prepare_year(year: int, raw: Path = RAW, out: Path = PROCESSED, force: bool 
     audit_path = ARTIFACTS / f"audit-{year}.json"
     if target.exists() and audit_path.exists() and not force:
         LOG.info("Already prepared %s", year)
-        return json.loads(audit_path.read_text())
+        return json.loads(audit_path.read_text(encoding="utf-8"))
     source = extract_year(year, raw)
     start = time.monotonic()
     con = connection()

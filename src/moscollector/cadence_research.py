@@ -91,7 +91,7 @@ def assert_same_episode_cohort(dense, reference, episodes):
 def evaluate_one(frame, episodes, output, family, fold, kind):
     target = output / fold / family / f"{kind}.json"
     if target.exists():
-        return json.loads(target.read_text())
+        return json.loads(target.read_text(encoding="utf-8"))
     root, config = MODELS[family]
     directory = root / fold / config
     meta_path = directory / f"{kind}.json"
@@ -107,7 +107,7 @@ def evaluate_one(frame, episodes, output, family, fold, kind):
         fitted["config"] = config
         write_json(meta_path, fitted)
         del training_frame
-    meta = json.loads(meta_path.read_text())
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
     model = CatBoostClassifier()
     model.load_model(str(directory / f"{kind}.cbm"))
     old_table = pd.read_parquet(
@@ -210,7 +210,7 @@ def run(output, stage):
                 "code_sha256": sha256(Path(__file__)),
             },
         )
-    elif json.loads(plan.read_text())["source_sha256"] != checksum:
+    elif json.loads(plan.read_text(encoding="utf-8"))["source_sha256"] != checksum:
         raise ValueError("Dense feature source changed")
     frame = pd.read_parquet(source)
     if not frame.as_of.lt(pd.Timestamp("2026-06-01")).all():
@@ -232,7 +232,7 @@ def run(output, stage):
             selection[kind] = {"candidate": candidate, "scores": scores}
             write_json(output / "selection.json", selection)
     else:
-        selection = json.loads((output / "selection.json").read_text())
+        selection = json.loads((output / "selection.json").read_text(encoding="utf-8"))
         report = {}
         for kind in KINDS:
             family = selection[kind]["candidate"]

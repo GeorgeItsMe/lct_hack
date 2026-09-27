@@ -229,7 +229,7 @@ def build_dataset(
             PROCESSED / f"hourly-{year}.parquet",
             filters=[("hour", "<", pd.Timestamp(before))] if before else None,
         )
-        audit = json.loads((ARTIFACTS / f"audit-{year}.json").read_text())
+        audit = json.loads((ARTIFACTS / f"audit-{year}.json").read_text(encoding="utf-8"))
         start = pd.Timestamp(audit["summary"]["start"]).floor("h")
         end = pd.Timestamp(audit["summary"]["end"]).floor("h")
         if before:

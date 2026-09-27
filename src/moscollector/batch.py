@@ -25,7 +25,7 @@ def run(directory: Path, as_of: str):
     started = time.monotonic()
     cutoff = pd.Timestamp(as_of)
     status_file = directory / "status.json"
-    state = json.loads(status_file.read_text()) if status_file.exists() else {}
+    state = json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {}
     version = state.get("model_version", "legacy")
     heads = load_bundle(version) if version != "legacy" else {}
     aligned = cutoff.floor("h")
@@ -91,7 +91,7 @@ def run(directory: Path, as_of: str):
             probabilities = heads[kind].probability(frame)
             expected_counts = heads[kind].expected_count(frame)
         else:
-            meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+            meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text(encoding="utf-8"))
             model = CatBoostClassifier()
             model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
             probabilities = calibrated(

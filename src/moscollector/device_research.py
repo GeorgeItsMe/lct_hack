@@ -63,7 +63,7 @@ PLAN = {
 def fit_alternative(frame, episodes, folder, kind, config, test_begin):
     target = folder / f"{kind}.json"
     if target.exists():
-        return json.loads(target.read_text())
+        return json.loads(target.read_text(encoding="utf-8"))
     folder.mkdir(parents=True, exist_ok=True)
     if config == "device_catboost":
         result = fit_catboost(frame, episodes, folder, kind, "sequence", test_begin)
@@ -191,7 +191,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
                 "code_sha256": sha256(Path(__file__)),
             },
         )
-    elif json.loads(plan_path.read_text())["source_sha256"] != source_hash:
+    elif json.loads(plan_path.read_text(encoding="utf-8"))["source_sha256"] != source_hash:
         raise ValueError("Feature source changed; start a new research directory")
     frame = pd.read_parquet(feature_path, filters=[("as_of", "<", pd.Timestamp("2026-06-01"))])
     episodes = pd.read_parquet(
@@ -207,7 +207,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
             scores = {
                 c: pool(
                     [
-                        json.loads((output / f / c / f"{kind}.json").read_text())
+                        json.loads((output / f / c / f"{kind}.json").read_text(encoding="utf-8"))
                         for f in ("screen_1", "screen_2")
                     ]
                 )
@@ -215,7 +215,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
             }
             baseline = pool(
                 [
-                    json.loads((reference / f / "recent_reference" / f"{kind}.json").read_text())
+                    json.loads((reference / f / "recent_reference" / f"{kind}.json").read_text(encoding="utf-8"))
                     for f in ("screen_1", "screen_2")
                 ]
             )
@@ -228,7 +228,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
         write_json(output / "selection.json", selection)
         print(json.dumps(selection, ensure_ascii=False, indent=2), flush=True)
     else:
-        selection = json.loads((output / "selection.json").read_text())
+        selection = json.loads((output / "selection.json").read_text(encoding="utf-8"))
         report = {}
         for kind in kinds:
             item = selection[kind]
@@ -239,7 +239,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
             result = fit_alternative(
                 frame, episodes, output / "confirmation" / candidate, kind, candidate, FOLDS["confirmation"]
             )
-            base = json.loads((reference / "confirmation/recent_reference" / f"{kind}.json").read_text())[
+            base = json.loads((reference / "confirmation/recent_reference" / f"{kind}.json").read_text(encoding="utf-8"))[
                 "event"
             ]["adaptive"]
             chosen = result["event"]["adaptive"]

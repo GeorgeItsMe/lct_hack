@@ -18,13 +18,13 @@ from moscollector.train import CATEGORICAL, calibrate, calibrated, choose_policy
 
 def run():
     comparison_path = ARTIFACTS / "research-v5" / "comparison.json"
-    comparison = json.loads(comparison_path.read_text())
+    comparison = json.loads(comparison_path.read_text(encoding="utf-8"))
     if set(comparison) != {"fault", "fire", "access"}:
         raise ValueError("Finish all predeclared experiments before refitting")
     chosen = {k: v["selected"] for k, v in comparison.items() if v["selected"] != "reference"}
     if not chosen:
         raise ValueError("No candidate passed the stability gate")
-    selection = json.loads((ARTIFACTS / "model_selection.json").read_text())
+    selection = json.loads((ARTIFACTS / "model_selection.json").read_text(encoding="utf-8"))
     frame = pd.read_parquet(
         PROCESSED / "features.parquet", filters=[("as_of", "<", pd.Timestamp("2026-06-01"))]
     )
@@ -56,7 +56,7 @@ def run():
             legacy_file = ARTIFACTS / "models" / f"{kind}.cbm"
             if hashlib.sha256(legacy_file.read_bytes()).hexdigest() != selection["models"][kind]["sha256"]:
                 raise ValueError("Original model changed")
-            original = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+            original = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text(encoding="utf-8"))
             columns = original["features"]
             x, y = model_input(frame, columns), frame[f"target_{kind}"].to_numpy()
             train = split_mask(frame, "train") & frame.as_of.ge(original["training_range"][0])

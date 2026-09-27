@@ -57,21 +57,21 @@ class AnalyticsService:
         self.models = {}
         self.meta = {}
         for kind in sorted(self.predictions.kind.unique()):
-            self.meta[kind] = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+            self.meta[kind] = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text(encoding="utf-8"))
             model = CatBoostClassifier()
             model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
             self.models[kind] = model
-        self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text())
+        self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text(encoding="utf-8"))
         self.uncertainty = None
         uncertainty_path = ARTIFACTS / "uncertainty_report.json"
         if uncertainty_path.exists():
-            sensitivity = json.loads(uncertainty_path.read_text())
+            sensitivity = json.loads(uncertainty_path.read_text(encoding="utf-8"))
             report_hash = hashlib.sha256((ARTIFACTS / "evaluation_report.json").read_bytes()).hexdigest()
             if sensitivity.get("input_sha256", {}).get("evaluation_report") == report_hash:
                 self.uncertainty = sensitivity
-        self.catalog_audit = json.loads((ARTIFACTS / "catalog_audit.json").read_text())
-        self.feature_audit = json.loads((ARTIFACTS / "feature_audit.json").read_text())
-        self.audits = [json.loads(p.read_text()) for p in sorted(ARTIFACTS.glob("audit-*.json"))]
+        self.catalog_audit = json.loads((ARTIFACTS / "catalog_audit.json").read_text(encoding="utf-8"))
+        self.feature_audit = json.loads((ARTIFACTS / "feature_audit.json").read_text(encoding="utf-8"))
+        self.audits = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(ARTIFACTS.glob("audit-*.json"))]
         self.times = pd.DatetimeIndex(
             sorted(self.predictions.loc[self.predictions.eligible, "as_of"].unique())
         )
@@ -323,7 +323,7 @@ class AnalyticsService:
             y = audit["year"]
             s = audit["summary"]
             episode_path = ARTIFACTS / f"episode-audit-{y}.json"
-            episode_audit = json.loads(episode_path.read_text()) if episode_path.exists() else {}
+            episode_audit = json.loads(episode_path.read_text(encoding="utf-8")) if episode_path.exists() else {}
             yearly.append(
                 {
                     "year": y,

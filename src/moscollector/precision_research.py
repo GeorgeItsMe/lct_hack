@@ -147,7 +147,7 @@ def periods_for(test_begin, kind):
 def fit_one(frame, episodes, folder, kind, config, test_begin):
     target = folder / f"{kind}.json"
     if target.exists():
-        return json.loads(target.read_text())
+        return json.loads(target.read_text(encoding="utf-8"))
     folder.mkdir(parents=True, exist_ok=True)
     periods = periods_for(test_begin, kind)
     masks = {k: mask(frame, *v) for k, v in periods.items()}
@@ -267,7 +267,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS):
                 "code_sha256": sha256(Path(__file__)),
             },
         )
-    elif json.loads(plan_path.read_text())["source_sha256"] != source_hash:
+    elif json.loads(plan_path.read_text(encoding="utf-8"))["source_sha256"] != source_hash:
         raise ValueError("Source changed; start a new research directory")
     frame = pd.read_parquet(feature_path, filters=[("as_of", "<", pd.Timestamp("2026-06-01"))])
     episodes = pd.read_parquet(
@@ -283,7 +283,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS):
             scores = {
                 c: pool(
                     [
-                        json.loads((output / f / c / f"{kind}.json").read_text())
+                        json.loads((output / f / c / f"{kind}.json").read_text(encoding="utf-8"))
                         for f in ("screen_1", "screen_2")
                     ]
                 )
@@ -303,7 +303,7 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS):
         write_json(output / "selection.json", selection)
         print(json.dumps(selection, ensure_ascii=False, indent=2), flush=True)
     else:
-        selection = json.loads((output / "selection.json").read_text())
+        selection = json.loads((output / "selection.json").read_text(encoding="utf-8"))
         report = {}
         for kind in kinds:
             candidate = selection[kind]["candidate"]

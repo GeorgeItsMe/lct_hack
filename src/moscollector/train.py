@@ -293,12 +293,12 @@ def evaluate(kinds):
     df = pd.read_parquet(PROCESSED / "features.parquet")
     eps = pd.read_parquet(PROCESSED / "episodes.parquet")
     test = split_mask(df, "test")
-    report = json.loads((ARTIFACTS / "validation_report.json").read_text())
+    report = json.loads((ARTIFACTS / "validation_report.json").read_text(encoding="utf-8"))
     report["test_opened"] = True
     report["test_opened_at"] = datetime.now(UTC).isoformat()
     predictions = []
     for kind in kinds:
-        meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+        meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text(encoding="utf-8"))
         model = CatBoostClassifier()
         model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
         start = time.monotonic()

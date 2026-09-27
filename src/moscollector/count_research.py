@@ -114,7 +114,7 @@ def fit_one(
     }
     meta_path = directory / f"{kind}.json"
     if meta_path.exists():
-        saved = json.loads(meta_path.read_text())
+        saved = json.loads(meta_path.read_text(encoding="utf-8"))
         default = {
             "feature_config": "recent_reference",
             "depth": 6,
@@ -262,7 +262,7 @@ def run(output, stage):
                 "code_sha256": sha256(Path(__file__)),
             },
         )
-    elif json.loads(plan.read_text())["source_sha256"] != checksum:
+    elif json.loads(plan.read_text(encoding="utf-8"))["source_sha256"] != checksum:
         raise ValueError("Source changed")
     cutoff = pd.Timestamp("2026-06-01")
     frame = pd.read_parquet(source, filters=[("as_of", "<", cutoff)])
@@ -273,7 +273,7 @@ def run(output, stage):
     )
     episodes = pd.read_parquet(PROCESSED / "episodes.parquet", filters=[("start_ts", "<", cutoff)])
     if stage == "screen":
-        baseline = json.loads(Path("artifacts/research-v8/selection.json").read_text())
+        baseline = json.loads(Path("artifacts/research-v8/selection.json").read_text(encoding="utf-8"))
         selection = {}
         for kind in KINDS:
             results = [
@@ -292,8 +292,8 @@ def run(output, stage):
             }
             write_json(output / "selection.json", selection)
     else:
-        selection = json.loads((output / "selection.json").read_text())
-        baseline = json.loads(Path("artifacts/research-v8/confirmation.json").read_text())
+        selection = json.loads((output / "selection.json").read_text(encoding="utf-8"))
+        baseline = json.loads(Path("artifacts/research-v8/confirmation.json").read_text(encoding="utf-8"))
         confirmation = {}
         for kind, selected in selection.items():
             if not selected["passes"]:

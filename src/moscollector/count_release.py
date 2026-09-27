@@ -24,7 +24,7 @@ from moscollector.train import CATEGORICAL, calibrate, calibrated, model_input
 def run():
     research = ARTIFACTS / "research-v9"
     selection, confirmation = (
-        json.loads((research / f"{name}.json").read_text()) for name in ("selection", "confirmation")
+        json.loads((research / f"{name}.json").read_text(encoding="utf-8")) for name in ("selection", "confirmation")
     )
     if set(selection) != {"fault", "fire", "access"} or set(confirmation) != set(selection):
         raise ValueError("Finish all count experiments before preparing a release")
@@ -34,7 +34,7 @@ def run():
     parent = active_version()
     load_bundle(parent)
     parent_folder = ARTIFACTS / "operational" / parent
-    parent_manifest = json.loads((parent_folder / "manifest.json").read_text())
+    parent_manifest = json.loads((parent_folder / "manifest.json").read_text(encoding="utf-8"))
     cutoff = pd.Timestamp("2026-06-01")
     frame = pd.read_parquet(PROCESSED / "features.parquet", filters=[("as_of", "<", cutoff)])
     dense = pd.read_parquet(

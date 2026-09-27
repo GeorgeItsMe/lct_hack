@@ -48,7 +48,7 @@ PLAN = {
 
 
 def read(path):
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def improvement(candidate, reference, relative=1.0):

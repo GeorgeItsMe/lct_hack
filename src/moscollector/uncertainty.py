@@ -121,8 +121,8 @@ def verify_totals(counts, frozen):
 def run(replicates=5000, seed=20260921):
     predictions_path = ARTIFACTS / "predictions/all.parquet"
     report_path = ARTIFACTS / "evaluation_report.json"
-    report = json.loads(report_path.read_text())
-    selection = json.loads((ARTIFACTS / "model_selection.json").read_text())
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    selection = json.loads((ARTIFACTS / "model_selection.json").read_text(encoding="utf-8"))
     predictions = pd.read_parquet(predictions_path, filters=[("split", "=", "test")])
     episodes = pd.read_parquet(PROCESSED / "episodes.parquet")
     objects = pd.read_parquet(PROCESSED / "objects.parquet")
@@ -155,7 +155,7 @@ def run(replicates=5000, seed=20260921):
         model_file = ARTIFACTS / "models" / f"{kind}.cbm"
         if hashlib.sha256(model_file.read_bytes()).hexdigest() != selection["models"][kind]["sha256"]:
             raise ValueError(f"Frozen model hash differs for {kind}")
-        meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text())
+        meta = json.loads((ARTIFACTS / "models" / f"{kind}.json").read_text(encoding="utf-8"))
         frozen = report["models"][kind]
         if meta["threshold"] != frozen["threshold"]:
             raise ValueError(f"Frozen threshold differs for {kind}")
