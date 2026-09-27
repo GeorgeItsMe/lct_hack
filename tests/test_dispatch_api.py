@@ -89,9 +89,12 @@ def test_dispatcher_decision_is_idempotent_audited_and_survives_read(client):
     assert c.post("/api/decisions", json={**body, "prediction_id": "forged"}).status_code == 422
 
 
-def test_admin_thresholds_validate_and_persist(client):
+def test_manager_thresholds_validate_and_persist(client):
     c, _, _ = client
     login(c, "admin")
+    # The administrator manages accounts, not operational thresholds.
+    assert c.put("/api/settings", json={"thresholds": {"fault": 0.15}}).status_code == 403
+    login(c, "manager")
     assert c.put("/api/settings", json={"thresholds": {"fault": -1}}).status_code == 422
     assert c.put("/api/settings", json={"thresholds": {"invented": 0.5}}).status_code == 422
     assert c.put("/api/settings", json={"thresholds": {"fault": 0.15}}).status_code == 200
@@ -114,10 +117,11 @@ def test_stream_requires_authorized_writer_and_exposes_durable_receipt(client, m
     monkeypatch.setattr(api, "stream", lambda: mock)
     endpoint = "/api/stream/events?as_of=2026-06-15T12:00&format=json"
     assert c.post(endpoint, content="[]").status_code == 401
-    login(c, "analyst")
+    login(c, "dispatcher")
+    # Data loading belongs to the analyst; the dispatcher only reads the stream state.
     assert c.post(endpoint, content="[]").status_code == 403
     assert c.get("/api/stream").json()["events"] == 1
-    login(c, "dispatcher")
+    login(c, "analyst")
     result = c.post(endpoint, content="[]")
     assert result.status_code == 202 and result.json()["receipt"]["id"] == 1
 

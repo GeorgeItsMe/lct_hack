@@ -109,7 +109,9 @@ def run():
     for kind in KINDS:
         reference, candidate, blends = [], [], []
         for fold, date in FOLDS.items():
-            reference.append(json.loads((source / fold / "reference" / f"{kind}.json").read_text(encoding="utf-8")))
+            reference.append(
+                json.loads((source / fold / "reference" / f"{kind}.json").read_text(encoding="utf-8"))
+            )
             candidate.append(fit_one(frame, episodes, output / fold, kind, "regularized", date))
             blends.append(
                 fit_blend(

@@ -47,6 +47,15 @@ def test_invalid_rows_never_enter_inference(change):
         normalize_events(pd.DataFrame([sample(**change)]), {1}, "2026-06-15T12:00")
 
 
+def test_unknown_channels_are_skipped_and_reported_not_fatal():
+    rows = [sample(), sample(channel_id=77), sample(channel_id=77, value="Неисправен"), sample(channel_id=78)]
+    result, _, quality = normalize_events(pd.DataFrame(rows), {1}, "2026-06-15T12:00")
+    assert result.channel_id.tolist() == [1]
+    assert quality["input_rows"] == 4 and quality["accepted_rows"] == 1
+    assert quality["unknown_channel_rows"] == 3
+    assert quality["unknown_channels"] == [77, 78] and quality["unknown_channel_count"] == 2
+
+
 def test_timezone_and_duplicate_normalization():
     row = sample(ts="2026-06-15T08:59:00Z")
     result, _, quality = normalize_events(pd.DataFrame([row, row]), {1}, "2026-06-15T12:00")

@@ -114,10 +114,14 @@ def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
             f"Невалидных строк: {int(invalid.sum())}. Первые номера: {(frame.index[invalid][:5] + 2).tolist()}"
         )
     unknown = ~channel.isin(known_channels)
-    if unknown.any():
-        raise ValueError(
-            f"Неизвестных каналов: {int(channel[unknown].nunique())}. Обновите справочник перед импортом"
-        )
+    if unknown.all():
+        raise ValueError("Ни один канал пакета не найден в справочнике. Обновите справочник перед импортом")
+    # Channels missing from the catalog (e.g. dismantled equipment) cannot be placed on an object.
+    # They are skipped and reported instead of rejecting the whole batch.
+    skipped_channels = sorted(int(c) for c in channel[unknown].unique())
+    skipped_rows = int(unknown.sum())
+    keep = ~unknown
+    frame, channel, ts, alarms, value = frame[keep], channel[keep], ts[keep], alarms[keep], value[keep]
     if ts.ge(cutoff).any() or not ts.dt.year.eq(cutoff.year).all():
         raise ValueError("Все записи должны предшествовать моменту прогноза и принадлежать тому же году")
     result = pd.DataFrame(
@@ -131,7 +135,14 @@ def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
     return (
         result,
         cutoff,
-        {"input_rows": len(frame), "accepted_rows": len(result), "exact_duplicates": duplicates},
+        {
+            "input_rows": len(frame) + skipped_rows,
+            "accepted_rows": len(result),
+            "exact_duplicates": duplicates,
+            "unknown_channel_rows": skipped_rows,
+            "unknown_channels": skipped_channels[:20],
+            "unknown_channel_count": len(skipped_channels),
+        },
     )
 
 
@@ -192,7 +203,9 @@ class ImportManager:
             return state.copy()
 
     def find(self, identity, model_version=None):
-        candidates = [json.loads(path.read_text(encoding="utf-8")) for path in self.root.glob("*/status.json")]
+        candidates = [
+            json.loads(path.read_text(encoding="utf-8")) for path in self.root.glob("*/status.json")
+        ]
         return next(
             (
                 s
@@ -246,7 +259,8 @@ class ImportManager:
             [
                 s
                 for p in self.root.glob("*/status.json")
-                if (s := json.loads(p.read_text(encoding="utf-8"))) and (mode is None or s.get("mode") == mode)
+                if (s := json.loads(p.read_text(encoding="utf-8")))
+                and (mode is None or s.get("mode") == mode)
             ],
             key=lambda x: x["created_at"],
             reverse=True,

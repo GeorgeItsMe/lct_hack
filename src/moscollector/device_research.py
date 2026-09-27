@@ -215,7 +215,9 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
             }
             baseline = pool(
                 [
-                    json.loads((reference / f / "recent_reference" / f"{kind}.json").read_text(encoding="utf-8"))
+                    json.loads(
+                        (reference / f / "recent_reference" / f"{kind}.json").read_text(encoding="utf-8")
+                    )
                     for f in ("screen_1", "screen_2")
                 ]
             )
@@ -239,9 +241,9 @@ def run(output: Path, stage: str, kinds=KINDS, configs=CONFIGS, reference=Path("
             result = fit_alternative(
                 frame, episodes, output / "confirmation" / candidate, kind, candidate, FOLDS["confirmation"]
             )
-            base = json.loads((reference / "confirmation/recent_reference" / f"{kind}.json").read_text(encoding="utf-8"))[
-                "event"
-            ]["adaptive"]
+            base = json.loads(
+                (reference / "confirmation/recent_reference" / f"{kind}.json").read_text(encoding="utf-8")
+            )["event"]["adaptive"]
             chosen = result["event"]["adaptive"]
             report[kind] = {
                 "candidate": candidate,

@@ -12,7 +12,15 @@ import numpy as np
 import pandas as pd
 from catboost import CatBoostClassifier, Pool
 
-from moscollector.domain import KIND_LABELS, RECOMMENDATIONS, feature_label
+from moscollector.domain import (
+    KIND_LABELS,
+    RECOMMENDATIONS,
+    RISK_LEVELS,
+    data_recommendations,
+    feature_label,
+    is_fault_state,
+    risk_level,
+)
 from moscollector.inference import CATEGORICAL, model_input
 from moscollector.paths import ARTIFACTS, PROCESSED
 
@@ -33,6 +41,9 @@ def clean(value):
     if value is pd.NaT:
         return None
     return value
+
+
+LEVEL_ORDER = ["low", "watch", "high", "critical"]
 
 
 def prediction_id(obj, kind, as_of):
@@ -71,7 +82,9 @@ class AnalyticsService:
                 self.uncertainty = sensitivity
         self.catalog_audit = json.loads((ARTIFACTS / "catalog_audit.json").read_text(encoding="utf-8"))
         self.feature_audit = json.loads((ARTIFACTS / "feature_audit.json").read_text(encoding="utf-8"))
-        self.audits = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(ARTIFACTS.glob("audit-*.json"))]
+        self.audits = [
+            json.loads(p.read_text(encoding="utf-8")) for p in sorted(ARTIFACTS.glob("audit-*.json"))
+        ]
         self.times = pd.DatetimeIndex(
             sorted(self.predictions.loc[self.predictions.eligible, "as_of"].unique())
         )
@@ -103,6 +116,7 @@ class AnalyticsService:
             p = float(r.probability)
             cut = threshold[r.kind]
             above = p >= cut
+            level = risk_level(p, cut)
             rows.append(
                 {
                     "id": prediction_id(r.object_id, r.kind, t),
@@ -113,7 +127,8 @@ class AnalyticsService:
                     "kind_label": KIND_LABELS[r.kind],
                     "probability": p,
                     "threshold": cut,
-                    "risk": "high" if above else "watch" if p >= cut * 0.5 else "low",
+                    "risk": level,
+                    "risk_label": RISK_LEVELS[level],
                     "above_threshold": above,
                     "as_of": t.isoformat(),
                     "horizon_hours": 24,
@@ -191,11 +206,8 @@ class AnalyticsService:
                     "level": int(r.level),
                     "kind": r.object_kind,
                     "channels": int(self.channels.object_id.eq(r.object_id).sum()),
-                    "risk": "high"
-                    if any(x["above_threshold"] for x in risks)
-                    else "low"
-                    if risks
-                    else "unknown",
+                    "risk": max((x["risk"] for x in risks), key=LEVEL_ORDER.index) if risks else "unknown",
+                    "warnings": sum(x["above_threshold"] for x in risks),
                     "probability": max((x["probability"] for x in risks), default=None),
                     "forecast_id": risks[0]["id"] if risks else None,
                 }
@@ -256,12 +268,17 @@ class AnalyticsService:
             & self.hourly.hour.ge(t - pd.Timedelta(hours=72))
         ]
         catalog = self.channels[self.channels.object_id.eq(obj)]
+        source_events = self.source_events(obj, t)
+        details = data_recommendations(kind, source_events)
         return clean(
             {
                 **row,
                 "explanation": contributions[:8],
                 "explanation_unit": "log_odds",
-                "recommendations": RECOMMENDATIONS[kind],
+                "recommendations": [d["text"] for d in details],
+                "recommendation_details": details,
+                "verification": self.verification(obj, kind, t, forecasts, source_events),
+                "calendar": self.calendar(obj, kind, t),
                 "trend": past[["as_of", "probability"]].to_dict("records"),
                 "signals": measurements[
                     [
@@ -278,8 +295,289 @@ class AnalyticsService:
                 ].to_dict("records"),
                 "channels": catalog.head(200).to_dict("records"),
                 "channel_count": len(catalog),
-                "source_events": self.source_events(obj, t),
+                "source_events": source_events,
                 "calibration_status": meta["calibration"]["status"],
+            }
+        )
+
+    def verification(self, obj, kind, t, forecasts, source_events):
+        """What the dispatcher can check before deciding (step 4 of the section 12 scenario)."""
+        alarms = [e for e in source_events if e["alarm"]]
+        by_sensor = {}
+        for e in alarms:
+            by_sensor.setdefault(e["sensor_type"], set()).add(e["channel_id"])
+        faults = {e["channel_id"] for e in source_events if is_fault_state(e["value"])}
+        related = [
+            {
+                "kind": r["kind"],
+                "kind_label": r["kind_label"],
+                "probability": r["probability"],
+                "risk": r["risk"],
+            }
+            for r in forecasts
+            if r["object_id"] == obj and r["kind"] != kind
+        ]
+        return {
+            "alarm_messages": len(alarms),
+            "alarm_sensors": [
+                {"sensor_type": k, "channels": len(v)}
+                for k, v in sorted(by_sensor.items(), key=lambda item: -len(item[1]))
+            ][:6],
+            "fault_channels": len(faults),
+            "related_forecasts": related,
+            "external_sources": [
+                {"id": "cameras", "label": "Видеонаблюдение", "status": "not_connected"},
+                {"id": "planned_works", "label": "Реестр плановых работ", "status": "not_connected"},
+                {"id": "access_permits", "label": "Допуски в коллектор", "status": "not_connected"},
+            ],
+            "window_hours": 24,
+        }
+
+    def calendar(self, obj, kind, t):
+        """Calendar context from episodes that started strictly before the forecast moment."""
+        past = self.episodes[self.episodes.kind.eq(kind) & self.episodes.start_ts.lt(t)]
+        weekday_names = ["понедельник", "вторник", "среда", "четверг", "пятница", "суббота", "воскресенье"]
+        weekday = int(t.dayofweek)
+        share = None
+        if len(past) >= 30:
+            share = float(past.start_ts.dt.dayofweek.eq(weekday).mean())
+        own = past[past.object_id.eq(obj)]
+        return clean(
+            {
+                "weekday": weekday_names[weekday],
+                "weekend": weekday >= 5,
+                "month": int(t.month),
+                "hour": int(t.hour),
+                "weekday_share": share,
+                "weekday_ratio": share * 7 if share is not None else None,
+                "history_from": past.start_ts.min() if len(past) else None,
+                "kind_episodes": len(past),
+                "object_episodes_30d": int(own.start_ts.ge(t - pd.Timedelta(days=30)).sum()),
+                "object_last_episode": own.start_ts.max() if len(own) else None,
+            }
+        )
+
+    @lru_cache(maxsize=64)  # noqa: B019 — one service singleton, bounded lifetime cache
+    def channel_states(self, as_of):
+        """Latest state of every channel in the 24 hours before the moment, fault-like only."""
+        t = pd.Timestamp(as_of)
+        con = duckdb.connect()
+        con.execute("SET threads=2")
+        con.read_parquet(str(PROCESSED / "events-2026.parquet")).create_view("e")
+        con.read_parquet(str(PROCESSED / "channels.parquet")).create_view("c")
+        frame = con.execute(
+            """WITH w AS (
+                 SELECT e.channel_id, e.ts, e.value, e.alarm, e.event_id,
+                        row_number() OVER (PARTITION BY e.channel_id ORDER BY e.ts DESC, e.event_id DESC) AS rn,
+                        count(*) FILTER (WHERE e.value IN ('Неисправен','Обесточен','Отключено устройство',
+                            'Питание от батарей','Батарея разряжена') OR starts_with(e.value,'01.01.1970'))
+                            OVER (PARTITION BY e.channel_id) AS fault_messages
+                 FROM e WHERE e.ts < ? AND e.ts >= ?)
+               SELECT w.channel_id, w.ts, w.value, w.alarm, w.fault_messages,
+                      c.object_id, c.sensor_type, c.sensor_name
+               FROM w JOIN c USING(channel_id)
+               WHERE w.rn = 1 AND w.fault_messages > 0""",
+            [t.to_pydatetime(), (t - pd.Timedelta(hours=24)).to_pydatetime()],
+        ).df()
+        con.close()
+        frame["current_fault"] = frame.value.map(is_fault_state)
+        return frame
+
+    def equipment(self, as_of=None, overrides=None):
+        """Equipment condition per object for technical staff: fault forecast plus recorded faults."""
+        t = self.resolve_time(as_of)
+        forecasts = {r["object_id"]: r for r in self.forecast_rows(t, overrides) if r["kind"] == "fault"}
+        states = self.channel_states(t.isoformat())
+        rows = []
+        for obj, forecast in forecasts.items():
+            own = states[states.object_id.eq(obj)].sort_values(["current_fault", "ts"], ascending=False)
+            channels = [
+                {
+                    "channel_id": int(c.channel_id),
+                    "sensor_type": c.sensor_type,
+                    "sensor_name": c.sensor_name,
+                    "value": c.value,
+                    "ts": c.ts,
+                    "current_fault": bool(c.current_fault),
+                    "fault_messages": int(c.fault_messages),
+                }
+                for c in own.head(12).itertuples()
+            ]
+            events = [{**c, "alarm": True} for c in channels if c["current_fault"]]
+            rows.append(
+                {
+                    "object_id": obj,
+                    "object_name": forecast["object_name"],
+                    "parent_id": forecast["parent_id"],
+                    "forecast_id": forecast["id"],
+                    "probability": forecast["probability"],
+                    "threshold": forecast["threshold"],
+                    "risk": forecast["risk"],
+                    "risk_label": forecast["risk_label"],
+                    "above_threshold": forecast["above_threshold"],
+                    "faulty_now": int(own.current_fault.sum()),
+                    "channels_with_faults_24h": len(own),
+                    "fault_messages_24h": int(own.fault_messages.sum()),
+                    "channels": channels,
+                    "recommendations": [
+                        r for r in data_recommendations("fault", events) if r["source"] == "signals"
+                    ],
+                }
+            )
+        rows.sort(key=lambda r: (-LEVEL_ORDER.index(r["risk"]), -r["faulty_now"], -r["probability"]))
+        return clean(
+            {
+                "as_of": t,
+                "objects": rows,
+                "totals": {
+                    "objects": len(rows),
+                    "at_risk": sum(r["above_threshold"] for r in rows),
+                    "faulty_now": sum(r["faulty_now"] for r in rows),
+                    "objects_with_faults": sum(r["channels_with_faults_24h"] > 0 for r in rows),
+                },
+                "note": "Состояние каналов — по журналу датчиков за 24 часа до момента прогноза.",
+            }
+        )
+
+    def threshold_preview(self, kind, threshold, as_of=None, overrides=None):
+        """Effect of a threshold on the policy period (16–31 May), never on the final test."""
+        from moscollector.alert_policy import alert_metrics
+
+        if kind not in self.meta:
+            raise KeyError("Тип риска не найден")
+        policy = self.predictions[self.predictions.kind.eq(kind) & self.predictions.split.eq("policy")][
+            ["object_id", "as_of", "probability"]
+        ]
+        episodes = self.episodes[self.episodes.kind.eq(kind)]
+        current = self.thresholds(overrides)[kind]
+        t = self.resolve_time(as_of)
+        window = self.predictions[
+            self.predictions.kind.eq(kind)
+            & self.predictions.eligible
+            & self.predictions.as_of.gt(t - pd.Timedelta(days=7))
+            & self.predictions.as_of.le(t)
+        ]
+        days = max(1, window.as_of.nunique() * 3 / 24)
+
+        def load(value):
+            # Same 24h per-object pause as the warning policy, so this is dispatcher workload.
+            issued = alert_metrics(window[["object_id", "as_of", "probability"]], episodes, value)["alerts"]
+            return {
+                "warnings_now": int(window[window.as_of.eq(t)].probability.ge(value).sum()),
+                "warnings_per_day_7d": float(issued / days),
+            }
+
+        return clean(
+            {
+                "kind": kind,
+                "period": "policy",
+                "period_label": "Период настройки порогов 16–31 мая 2026 (не финальный тест)",
+                "current": {
+                    "threshold": current,
+                    **alert_metrics(policy, episodes, current),
+                    **load(current),
+                },
+                "proposed": {
+                    "threshold": threshold,
+                    **alert_metrics(policy, episodes, threshold),
+                    **load(threshold),
+                },
+                "model_threshold": self.meta[kind]["threshold"],
+                "curve": [
+                    {k: c[k] for k in ("threshold", "precision", "recall", "f1", "alerts")}
+                    for c in self.meta[kind].get("policy_curve", [])
+                ],
+                "as_of": t,
+            }
+        )
+
+    def summary(self, as_of=None, overrides=None, parent=None):
+        """Unit head overview: risk by operational node and type, warning dynamics, seasonality."""
+        t = self.resolve_time(as_of)
+        forecasts = self.forecast_rows(t, overrides)
+        if parent is not None:
+            forecasts = [r for r in forecasts if r["parent_id"] == parent]
+        nodes = []
+        for node in self.objects[self.objects.level.eq(2)].itertuples():
+            rows = [r for r in forecasts if r["parent_id"] == int(node.object_id)]
+            if parent is not None and int(node.object_id) != parent:
+                continue
+            nodes.append(
+                {
+                    "id": int(node.object_id),
+                    "name": node.object_name,
+                    "objects": len({r["object_id"] for r in rows}),
+                    "warnings": sum(r["above_threshold"] for r in rows),
+                    "critical": sum(r["risk"] == "critical" for r in rows),
+                    "levels": {level: sum(r["risk"] == level for r in rows) for level in LEVEL_ORDER},
+                    "by_kind": {
+                        k: sum(r["above_threshold"] and r["kind"] == k for r in rows) for k in self.meta
+                    },
+                    "max_probability": max((r["probability"] for r in rows), default=None),
+                }
+            )
+        nodes.sort(key=lambda n: (-n["critical"], -n["warnings"], n["name"]))
+        threshold = self.thresholds(overrides)
+        recent = self.predictions[
+            self.predictions.eligible
+            & self.predictions.as_of.gt(t - pd.Timedelta(days=7))
+            & self.predictions.as_of.le(t)
+        ].copy()
+        if parent is not None:
+            children = set(self.objects[self.objects.parent_id.eq(parent)].object_id)
+            recent = recent[recent.object_id.isin(children)]
+        recent["warning"] = recent.probability.ge(recent.kind.map(threshold))
+        trend = (
+            recent.pivot_table(index="as_of", columns="kind", values="warning", aggfunc="sum", fill_value=0)
+            .reset_index()
+            .to_dict("records")
+        )
+        seasonality = []
+        for audit in self.audits:
+            monthly = {}
+            for day in audit.get("daily", []):
+                if not day.get("day"):
+                    continue
+                month = int(str(day["day"])[5:7])
+                monthly[month] = monthly.get(month, 0) + int(day.get("alarms") or 0)
+            seasonality.extend(
+                {"year": audit["year"], "month": m, "alarms": v, "quarantined": audit["quarantined"]}
+                for m, v in sorted(monthly.items())
+            )
+        quality = {
+            kind: {
+                "precision": m["test"]["alerts"]["precision"],
+                "recall": m["test"]["alerts"]["recall"],
+                "f1": m["test"]["alerts"]["f1"],
+                "baseline_f1": m["test"]["baseline_alerts"]["f1"],
+                "eligible_episodes": m["test"]["alerts"]["eligible_episodes"],
+                "enabled": threshold[kind] <= 1,
+            }
+            for kind, m in self.report["models"].items()
+        }
+        return clean(
+            {
+                "as_of": t,
+                "totals": {
+                    "forecasts": len(forecasts),
+                    "warnings": sum(r["above_threshold"] for r in forecasts),
+                    "critical": sum(r["risk"] == "critical" for r in forecasts),
+                    "objects_at_risk": len({r["object_id"] for r in forecasts if r["above_threshold"]}),
+                },
+                "kinds": [
+                    {
+                        "id": k,
+                        "label": KIND_LABELS[k],
+                        "warnings": sum(r["above_threshold"] and r["kind"] == k for r in forecasts),
+                        "critical": sum(r["risk"] == "critical" and r["kind"] == k for r in forecasts),
+                        "threshold": threshold[k],
+                    }
+                    for k in self.meta
+                ],
+                "nodes": nodes,
+                "trend": trend,
+                "seasonality": seasonality,
+                "quality": quality,
             }
         )
 
@@ -323,7 +621,9 @@ class AnalyticsService:
             y = audit["year"]
             s = audit["summary"]
             episode_path = ARTIFACTS / f"episode-audit-{y}.json"
-            episode_audit = json.loads(episode_path.read_text(encoding="utf-8")) if episode_path.exists() else {}
+            episode_audit = (
+                json.loads(episode_path.read_text(encoding="utf-8")) if episode_path.exists() else {}
+            )
             yearly.append(
                 {
                     "year": y,

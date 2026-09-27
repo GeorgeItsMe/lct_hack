@@ -24,7 +24,8 @@ from moscollector.train import CATEGORICAL, calibrate, calibrated, model_input
 def run():
     research = ARTIFACTS / "research-v9"
     selection, confirmation = (
-        json.loads((research / f"{name}.json").read_text(encoding="utf-8")) for name in ("selection", "confirmation")
+        json.loads((research / f"{name}.json").read_text(encoding="utf-8"))
+        for name in ("selection", "confirmation")
     )
     if set(selection) != {"fault", "fire", "access"} or set(confirmation) != set(selection):
         raise ValueError("Finish all count experiments before preparing a release")

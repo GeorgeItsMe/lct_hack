@@ -34,16 +34,149 @@ REASONS = [
     {"id": "confirmed_remotely", "label": "Подтверждено дополнительной проверкой"},
     {"id": "planned_work", "label": "Плановые работы"},
     {"id": "maintenance_test", "label": "Проверка оборудования"},
+    {"id": "sensor_fault", "label": "Сбой датчика"},
     {"id": "insufficient_evidence", "label": "Недостаточно данных"},
     {"id": "false_signal", "label": "Ложное срабатывание"},
     {"id": "other", "label": "Другая причина"},
 ]
+# Wording follows the dispatcher scenarios in section 12 of the task.
 ACTIONS = {
-    "dispatch": "Направить бригаду",
-    "monitor": "Продолжить наблюдение",
+    "dispatch": "Выезд бригады",
+    "inspect": "Направить бригаду на проверку",
+    "monitor": "Мониторинг ситуации",
     "false_alarm": "Ложное срабатывание",
     "maintenance": "Запланировать ТО",
 }
+# Decisions that create work for technical staff.
+WORK_ACTIONS = ("dispatch", "inspect", "maintenance")
+WORK_STATUSES = {
+    "draft": "Черновик",
+    "submitted": "Передана в систему заявок",
+    "accepted": "Принята",
+    "in_progress": "В работе",
+    "done": "Выполнена",
+}
+WORK_OUTCOMES = {
+    "confirmed": "Событие подтвердилось",
+    "not_confirmed": "Не подтвердилось",
+    "sensor_fault": "Сбой датчика или оборудования",
+}
+# Levels are defined relative to the kind's warning threshold, so they stay meaningful
+# when an approved threshold changes.
+RISK_LEVELS = {
+    "critical": "Критический",
+    "high": "Высокий",
+    "watch": "Повышенный",
+    "low": "Низкий",
+}
+
+
+def risk_level(probability: float, threshold: float) -> str:
+    if threshold > 1:
+        return "low" if probability < 0.5 else "watch"
+    if probability >= threshold:
+        return "critical" if probability >= min(0.95, 2 * threshold) else "high"
+    return "watch" if probability >= 0.5 * threshold else "low"
+
+
+FAULT_STATES = {"Неисправен", "Обесточен", "Отключено устройство", "Питание от батарей", "Батарея разряжена"}
+SENTINEL_PREFIX = "01.01.1970"
+
+
+def is_fault_state(value) -> bool:
+    text = str(value or "")
+    return text in FAULT_STATES or text.startswith(SENTINEL_PREFIX)
+
+
+def data_recommendations(kind: str, events: list[dict]) -> list[dict]:
+    """Recommendations derived from the object's recorded signals before the forecast.
+
+    Rules only restate what the journal shows and which check follows from it; generic
+    guidance for the risk type is appended so a card is never empty.
+    """
+    rules = []
+    seen = set()
+
+    def add(key, text, basis):
+        if key not in seen:
+            seen.add(key)
+            rules.append({"text": text, "basis": basis, "source": "signals"})
+
+    fault_channels = {e["channel_id"] for e in events if is_fault_state(e.get("value"))}
+    if len(fault_channels) >= 5:
+        add(
+            "cascade",
+            f"Сбой одновременно на {len(fault_channels)} каналах: в первую очередь проверить шлейф "
+            "и контроллер участка.",
+            "Неисправность сразу многих каналов обычно указывает на общую линию, а не на датчики.",
+        )
+    for e in events:
+        value = str(e.get("value") or "")
+        sensor = e.get("sensor_type") or e.get("sensor_name") or "датчик"
+        if value in ("Питание от батарей", "Батарея разряжена"):
+            add(
+                "battery",
+                "ИБП работает от батарей: проверить внешнее питание и заряд АКБ, при разряде заменить батарею.",
+                f"Сообщение «{value}» ({sensor}).",
+            )
+        elif value == "Обесточен":
+            add(
+                f"power:{sensor}",
+                f"Канал «{sensor}» обесточен: проверить питание и автоматы на участке.",
+                f"Сообщение «{value}».",
+            )
+        elif value == "Неисправен":
+            add(
+                f"fault:{sensor}",
+                f"«{sensor}» сообщает о неисправности: проверить датчик и линию связи, при повторе заменить.",
+                f"Сообщение «{value}».",
+            )
+        elif value == "Отключено устройство":
+            add(
+                f"off:{sensor}",
+                f"«{sensor}»: устройство отключено. Уточнить, идут ли работы; если нет, восстановить подключение.",
+                f"Сообщение «{value}».",
+            )
+        elif value.startswith(SENTINEL_PREFIX):
+            add(
+                "sentinel",
+                "В показаниях служебные коды даты 1970 года: проверить часы и прошивку контроллера.",
+                f"Значение «{value}» ({sensor}) — технический код, не измерение.",
+            )
+        elif value == "Обнаружен дым":
+            add(
+                "smoke",
+                "Зафиксирован дым: сверить с тепловыми датчиками и газоанализатором; при подтверждении "
+                "действовать по регламенту ОДС.",
+                f"Сообщение «{value}» ({sensor}).",
+            )
+        elif value == "Обнаружен газ":
+            add(
+                "gas",
+                "Сработал газоанализатор: проверить концентрацию и вентиляцию; допуск в коллектор только "
+                "после замера.",
+                f"Сообщение «{value}» ({sensor}).",
+            )
+        elif value in ("Затоплен", "Работают все насосы в АНС"):
+            add(
+                "water",
+                "Признаки воды: проверить насосную станцию, приямки и работу всех насосов.",
+                f"Сообщение «{value}» ({sensor}).",
+            )
+        elif value in ("Не замкнут", "Обнаружено движение", "Рычаг сдернут") and e.get("alarm"):
+            add(
+                f"access:{sensor}",
+                f"Сработал «{sensor}»: сверить с допуском и разрешёнными работами; без допуска нужна "
+                "проверка на месте.",
+                f"Тревожное сообщение «{value}».",
+            )
+    generic = [
+        {"text": text, "basis": "Общий порядок проверки для этого типа риска.", "source": "general"}
+        for text in RECOMMENDATIONS[kind]
+    ]
+    return rules[:4] + generic
+
+
 FEATURE_LABELS = {
     "events": "Изменения показаний",
     "alarms": "Тревожные сообщения",

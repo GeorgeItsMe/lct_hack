@@ -7,13 +7,15 @@ import secrets
 from sqlalchemy import select
 
 from moscollector.database import AuditLog, User, hash_password, make_database
+from moscollector.roles import ROLES
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("username")
     parser.add_argument("--name", required=True)
-    parser.add_argument("--role", choices=["dispatcher", "analyst", "admin"], required=True)
+    parser.add_argument("--role", choices=list(ROLES), required=True)
+    parser.add_argument("--scope", default="district", help='"district" or "node:<object_id>"')
     parser.add_argument("--ldap", action="store_true")
     args = parser.parse_args()
     password = (
@@ -31,6 +33,7 @@ def main():
                 display_name=args.name,
                 role=args.role,
                 password_hash=hash_password(password),
+                scope=args.scope,
             )
         )
         db.add(

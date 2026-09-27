@@ -26,6 +26,8 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(30))
     password_hash: Mapped[str] = mapped_column(String(256))
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # "district" or "node:<object_id>"; the provided catalog has one district.
+    scope: Mapped[str | None] = mapped_column(String(40), nullable=True, default="district")
 
 
 class LoginSession(Base):
@@ -97,6 +99,84 @@ class StreamBatch(Base):
     )
 
 
+class WorkOrder(Base):
+    """Draft repair request. The work-management system itself is external (section 6):
+    the service only submits drafts and reads statuses back."""
+
+    __tablename__ = "work_orders"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    number: Mapped[str] = mapped_column(String(40), unique=True)
+    decision_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    prediction_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    object_id: Mapped[int] = mapped_column(Integer, index=True)
+    kind: Mapped[str] = mapped_column(String(20))
+    forecast_at: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    title: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str] = mapped_column(Text, default="")
+    priority: Mapped[str] = mapped_column(String(20), default="normal")
+    status: Mapped[str] = mapped_column(String(20), default="draft")
+    outcome: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    external_id: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    created_by: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    synced_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class LabelReview(Base):
+    """Analyst verdict on whether a dispatcher decision may become a training label."""
+
+    __tablename__ = "label_reviews"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    decision_id: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    verdict: Mapped[str] = mapped_column(String(20))
+    label: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    note: Mapped[str] = mapped_column(Text, default="")
+    user_id: Mapped[int] = mapped_column(Integer)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
+
+
+class ThresholdProposal(Base):
+    """Analyst proposes a warning threshold, the unit head approves or rejects it."""
+
+    __tablename__ = "threshold_proposals"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    kind: Mapped[str] = mapped_column(String(20))
+    current_value: Mapped[float] = mapped_column(Float)
+    proposed_value: Mapped[float] = mapped_column(Float)
+    rationale: Mapped[str] = mapped_column(Text)
+    preview_json: Mapped[str] = mapped_column(Text, default="{}")
+    status: Mapped[str] = mapped_column(String(20), default="pending")
+    proposed_by: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
+    decided_by: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    decision_note: Mapped[str] = mapped_column(Text, default="")
+
+
+class RetrainRequest(Base):
+    __tablename__ = "retrain_requests"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_by: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(UTC).replace(tzinfo=None)
+    )
+    labels: Mapped[int] = mapped_column(Integer)
+    positives: Mapped[int] = mapped_column(Integer)
+    file_name: Mapped[str] = mapped_column(String(200))
+    status: Mapped[str] = mapped_column(String(20), default="prepared")
+    note: Mapped[str] = mapped_column(Text, default="")
+
+
 class WarningLock(Base):
     __tablename__ = "warning_lock"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -152,10 +232,25 @@ def make_database(url: str | None = None):
             conn.execute("PRAGMA foreign_keys=ON")
 
     Base.metadata.create_all(engine)
+    add_missing_columns(engine)
     return engine, sessionmaker(engine, expire_on_commit=False)
 
 
+def add_missing_columns(engine):
+    """create_all() never alters existing tables; add nullable columns introduced later."""
+    from sqlalchemy import inspect, text
+
+    added = {("users", "scope"): "VARCHAR(40)"}
+    inspector = inspect(engine)
+    with engine.begin() as connection:
+        for (table, column), sql_type in added.items():
+            if column not in {c["name"] for c in inspector.get_columns(table)}:
+                connection.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {sql_type}"))
+
+
 def seed_users(factory, demo_mode: bool):
+    from moscollector.roles import DEMO_ACCOUNTS
+
     with factory() as db:
         from sqlalchemy import select
 
@@ -164,13 +259,24 @@ def seed_users(factory, demo_mode: bool):
                 verify_password("contour-demo", u.password_hash) for u in db.scalars(select(User))
             ):
                 raise RuntimeError("Demo accounts found. Use a new production database and provision users.")
+            if demo_mode:
+                # Demo databases created before new roles existed receive the missing accounts.
+                existing = set(db.scalars(select(User.username)))
+                for username, name, role in DEMO_ACCOUNTS:
+                    if username not in existing:
+                        db.add(
+                            User(
+                                username=username,
+                                display_name=name,
+                                role=role,
+                                password_hash=hash_password("contour-demo"),
+                                scope="district",
+                            )
+                        )
+                db.commit()
             return
         if demo_mode:
-            accounts = [
-                ("dispatcher", "Диспетчер ОДС", "dispatcher", "contour-demo"),
-                ("analyst", "Аналитик", "analyst", "contour-demo"),
-                ("admin", "Администратор", "admin", "contour-demo"),
-            ]
+            accounts = [(u, n, r, "contour-demo") for u, n, r in DEMO_ACCOUNTS]
         else:
             password = os.getenv("CONTOUR_ADMIN_PASSWORD", "")
             if len(password) < 12:
@@ -178,6 +284,12 @@ def seed_users(factory, demo_mode: bool):
             accounts = [("admin", "Администратор", "admin", password)]
         for username, name, role, password in accounts:
             db.add(
-                User(username=username, display_name=name, role=role, password_hash=hash_password(password))
+                User(
+                    username=username,
+                    display_name=name,
+                    role=role,
+                    password_hash=hash_password(password),
+                    scope="district",
+                )
             )
         db.commit()
