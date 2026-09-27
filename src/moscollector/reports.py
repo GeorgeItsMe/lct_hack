@@ -16,7 +16,11 @@ MONTHS = ["янв", "фев", "мар", "апр", "май", "июн", "июл", 
 
 
 def _pct(value):
-    return "—" if value is None else f"{value * 100:.1f}%"
+    return "—" if value is None else f"{value * 100:.1f}%".replace(".", ",")
+
+
+def _num(value):
+    return f"{value:.3f}".replace(".", ",")
 
 
 def _moment(value: str):
@@ -268,13 +272,9 @@ def to_pdf(report: dict) -> bytes:
     table(
         ["Тип", "Precision", "Recall", "F1", "F1 базы"],
         [
-            [
-                KIND_LABELS[k],
-                _pct(q["precision"]),
-                _pct(q["recall"]),
-                f"{q['f1']:.3f}",
-                f"{q['baseline_f1']:.3f}",
-            ]
+            [KIND_LABELS[k], _pct(q["precision"]), _pct(q["recall"]), _num(q["f1"]), _num(q["baseline_f1"])]
+            if q["enabled"]
+            else [KIND_LABELS[k], "предупреждения отключены", "—", "—", "—"]
             for k, q in report["quality"].items()
         ],
         (2, 1, 1, 1, 1),

@@ -56,3 +56,31 @@ def test_card_context_uses_only_the_past(service):
         "access_permits",
     }
     assert detail["recommendation_details"][-1]["source"] == "general"
+
+
+def test_management_reports_render_in_both_formats(service):
+    from io import BytesIO
+
+    from openpyxl import load_workbook
+
+    from moscollector.reports import build_report, to_pdf, to_xlsx
+
+    summary = service.summary(None)
+    forecasts = service.forecast_rows(None)
+    decision = {
+        "object_name": "объект Йота",
+        "kind": "access",
+        "forecast_at": summary["as_of"],
+        "action": "false_alarm",
+        "action_label": "Ложное срабатывание",
+        "reason": "false_signal",
+        "comment": "Проверено по камерам",
+        "work_order": None,
+    }
+    report = build_report(summary, forecasts, [decision], [])
+    assert report["workload"]["false_alarm_share"] == 1
+    book = load_workbook(BytesIO(to_xlsx(report)))
+    assert book.sheetnames[:3] == ["Сводка", "По узлам", "Предупреждения"]
+    assert book["Предупреждения"].max_row - 1 == summary["totals"]["warnings"]
+    pdf = to_pdf(report)
+    assert pdf.startswith(b"%PDF") and len(pdf) > 5000
