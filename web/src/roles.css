@@ -909,3 +909,32 @@ tr.inactive td {
 .panel > .bar-list {
   margin-top: 16px;
 }
+
+.source-chip {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 1px 7px;
+  border: 1px solid #171717;
+  border-radius: 5px;
+  color: #171717;
+  font-size: 11px;
+  font-weight: 520;
+  white-space: nowrap;
+}
+
+/* Narrow desktops: the recommendation is in the card; two-column pages stack. */
+@media (max-width: 1200px) {
+  .forecast-table .recommendation-head,
+  .forecast-table .recommendation-cell {
+    display: none;
+  }
+  .page-stack > .two-column {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.factors + .section-label,
+.recommendation-list + .section-label,
+.drawer-chart + .section-label {
+  margin-top: 24px;
+}

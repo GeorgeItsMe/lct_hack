@@ -4,7 +4,6 @@ export type Page =
   | "map"
   | "journal"
   | "decisions"
-  | "incoming"
   | "equipment"
   | "work"
   | "verification"
@@ -72,6 +71,8 @@ export type Forecast = {
   recommendation: string;
   model_version: string;
   split: string;
+  source?: "archive" | "stream" | "import";
+  batch_id?: string;
   decision?: Decision | null;
 };
 export type Overview = {
@@ -95,6 +96,7 @@ export type Overview = {
     unknown_reports: number;
   }[];
   kinds: { id: Kind; label: string; count: number; threshold: number }[];
+  stream?: { job_id: string; as_of: string; forecasts: Forecast[] } | null;
 };
 export type Topology = {
   nodes: {
@@ -149,7 +151,7 @@ export type Detail = Forecast & {
     object_episodes_30d: number;
     object_last_episode: string | null;
   };
-  trend: { as_of: string; probability: number }[];
+  trend?: { as_of: string; probability: number }[];
   signals: {
     hour: string;
     alarms: number;

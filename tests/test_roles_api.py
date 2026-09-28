@@ -266,3 +266,46 @@ def test_model_diagnostics_belong_to_the_analyst_only(client):
         login(c, username)
         for path in ("/api/evaluation", "/api/quality", "/api/evaluation/matches/fire"):
             assert c.get(path).status_code == 403, (username, path)
+
+
+def test_stream_forecasts_join_the_queue_with_their_source(monkeypatch):
+    from moscollector import api
+
+    job = "b" * 32
+    rows = [
+        {
+            "object_id": 1,
+            "object_name": "Объект Альфа",
+            "kind": "access",
+            "kind_label": "Охранный сигнал",
+            "probability": 0.8,
+            "threshold": 0.3,
+            "above_threshold": True,
+            "recommendation": "Проверить режим охраны",
+        },
+        {
+            "object_id": 1,
+            "object_name": "Объект Альфа",
+            "kind": "fire",
+            "kind_label": "Пожарный сигнал",
+            "probability": 0.5,
+            "threshold": 0.3,
+            "above_threshold": False,
+            "recommendation": "Проверить датчики",
+        },
+    ]
+    manager = SimpleNamespace(
+        list=lambda mode=None: [{"id": job, "status": "complete", "mode": mode}],
+        get=lambda _: {"result": {"as_of": "2026-06-15T12:05:00", "forecasts": rows}},
+    )
+    monkeypatch.setattr(api, "imports", lambda: manager)
+    monkeypatch.setattr(api, "analytics", lambda: SimpleNamespace(object_map={1: {"parent_id": 7}}))
+    monkeypatch.setattr(api, "SERVERLESS_MODE", False)
+    snapshot = api.stream_snapshot()
+    first, second = snapshot["forecasts"]
+    assert snapshot["as_of"] == "2026-06-15T12:05:00"
+    assert first["id"] == f"batch:{job}:1:access" and first["batch_id"] == job
+    assert first["source"] == "stream" and first["parent_id"] == 7 and first["risk"] == "critical"
+    assert first["valid_until"] == "2026-06-16T12:05:00"
+    # Above the probability threshold but not confirmed by the warning policy: not a warning level.
+    assert second["risk"] == "watch" and not second["above_threshold"]

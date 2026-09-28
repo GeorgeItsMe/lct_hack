@@ -36,7 +36,7 @@ from moscollector.database import (
     make_database,
     seed_users,
 )
-from moscollector.domain import ACTIONS, KIND_LABELS, REASONS, WORK_ACTIONS
+from moscollector.domain import ACTIONS, KIND_LABELS, REASONS, RISK_LEVELS, WORK_ACTIONS, risk_level
 from moscollector.paths import ARTIFACTS, ROOT, RUNTIME
 from moscollector.roles import DENIED, ROLES, allowed, permissions_for
 from moscollector.service import AnalyticsService, prediction_id
@@ -297,9 +297,16 @@ def logout(request: Request, response: Response, user=Depends(current_user)):
 @app.get("/api/overview")
 def overview(as_of: str | None = None, user=Depends(require("forecasts.view"))):
     result = analytics().overview(as_of, thresholds())
+    for row in result["forecasts"]:
+        row["source"] = "archive"
+    result["stream"] = stream_snapshot()
     parent = scope_parent(user)
     if parent is not None:
         result["forecasts"] = [r for r in result["forecasts"] if r.get("parent_id") == parent]
+        if result["stream"]:
+            result["stream"]["forecasts"] = [
+                r for r in result["stream"]["forecasts"] if r.get("parent_id") == parent
+            ]
     with SessionFactory() as db:
         decisions = db.scalars(select(Decision)).all()
         orders = latest_orders(db)
@@ -314,9 +321,63 @@ def overview(as_of: str | None = None, user=Depends(require("forecasts.view"))):
             }
             for d in decisions
         }
-        for row in result["forecasts"]:
+        for row in result["forecasts"] + (result["stream"] or {}).get("forecasts", []):
             row["decision"] = by_id.get(row["id"])
     return result
+
+
+def stream_snapshot():
+    """Latest completed forecast over the monitoring stream, shaped like archive forecasts.
+
+    Stream data arrive from the monitoring system over the API without a person in the
+    loop, so their warnings belong in the dispatcher's queue next to archive forecasts.
+    """
+    if SERVERLESS_MODE:
+        return None
+    try:
+        manager = imports()
+        job = next(
+            (j for j in manager.list(mode="accumulated_stream") if j.get("status") == "complete"), None
+        )
+        if job is None:
+            return None
+        result = manager.get(job["id"])["result"]
+    except (KeyError, OSError, ValueError):
+        return None
+    import pandas as pd
+
+    service = analytics()
+    moment = pd.Timestamp(result["as_of"])
+    rows = []
+    for r in result["forecasts"]:
+        level = risk_level(r["probability"], r["threshold"])
+        if not r["above_threshold"] and level in ("high", "critical"):
+            level = "watch"  # the count-based warning policy did not confirm this one
+        parent = service.object_map.get(r["object_id"], {}).get("parent_id")
+        rows.append(
+            {
+                "id": f"batch:{job['id']}:{r['object_id']}:{r['kind']}",
+                "object_id": r["object_id"],
+                "object_name": r["object_name"],
+                "parent_id": int(parent) if parent is not None and parent == parent else None,
+                "kind": r["kind"],
+                "kind_label": r["kind_label"],
+                "probability": r["probability"],
+                "threshold": r["threshold"],
+                "risk": level,
+                "risk_label": RISK_LEVELS[level],
+                "above_threshold": r["above_threshold"],
+                "as_of": result["as_of"],
+                "horizon_hours": 24,
+                "valid_until": (moment + pd.Timedelta(hours=24)).isoformat(),
+                "recommendation": r["recommendation"],
+                "model_version": result.get("model_version", "legacy"),
+                "split": "stream",
+                "source": "stream",
+                "batch_id": job["id"],
+            }
+        )
+    return {"job_id": job["id"], "as_of": result["as_of"], "forecasts": rows}
 
 
 def latest_orders(db):
@@ -867,16 +928,10 @@ def create_work_order(body: WorkOrderInput, user=Depends(require("work.edit"))):
                 raise HTTPException(422, "Укажите решение диспетчера или объект и тип риска")
             object_id, kind, as_of, prediction = body.object_id, body.kind, body.as_of, None
         if prediction and prediction.startswith("batch:"):
-            forecast = {
-                "object_id": object_id,
-                "object_name": object_name(object_id),
-                "kind": kind,
-                "as_of": as_of,
-                "probability": 0.0,
-                "threshold": 1.01,
-                "risk": None,
-            }
-            recommendations, factors = [], []
+            # Stream forecast: the snapshot keeps its own probability and explanation.
+            forecast = imports().detail(prediction.split(":")[1], object_id, kind, service)
+            forecast["risk"] = risk_level(forecast["probability"], forecast["threshold"])
+            recommendations, factors = forecast["recommendations"], forecast["explanation"]
         else:
             forecast = service.detail(object_id, kind, as_of, thresholds())
             recommendations, factors = forecast["recommendations"], forecast["explanation"]

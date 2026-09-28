@@ -85,7 +85,7 @@ export function ImportPanel({ user }: { user: User }) {
   const [integration, setIntegration] = useState<IntegrationStatus | null>(
     null,
   );
-  const [mode, setMode] = useState("preview"),
+  const mode: string = "preview",
     [stream, setStream] = useState<StreamStatus | null>(null),
     [receipt, setReceipt] = useState("");
   const [detail, setDetail] = useState<BatchForecastDetail | null>(null);
@@ -202,7 +202,7 @@ export function ImportPanel({ user }: { user: User }) {
     <section className="panel import-panel">
       <div className="panel-heading">
         <div>
-          <h2>Приём телеметрии и расчёт</h2>
+          <h2>Импорт исторических данных</h2>
           <span>
             CSV, XLSX, JSON или XML · до{" "}
             {Math.floor(
@@ -214,12 +214,6 @@ export function ImportPanel({ user }: { user: User }) {
         <FileUp size={21} />
       </div>
       <div className="import-content">
-        <p>
-          Добавьте показания к доступной предыстории и получите прогноз на 24
-          часа. В режиме потока пакеты накапливаются в собственной БД, повторы
-          исключаются. Каждый расчёт создаёт отдельный снимок. Оперативная
-          система мониторинга пока не подключена.
-        </p>
         {integration && !integration.imports_enabled && (
           <ErrorNotice
             message={
@@ -304,13 +298,6 @@ export function ImportPanel({ user }: { user: User }) {
         )}
         {can(user, "data.import") && (
           <form className="import-form" onSubmit={submit}>
-            <label>
-              Способ обработки
-              <select value={mode} onChange={(e) => setMode(e.target.value)}>
-                <option value="preview">Разовый расчёт</option>
-                <option value="stream">Добавить в накопленный поток</option>
-              </select>
-            </label>
             <label>
               Пакет телеметрии
               <span className="file-picker">

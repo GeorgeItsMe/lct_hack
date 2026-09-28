@@ -1,7 +1,6 @@
 import {
   ClipboardCheck,
   Database,
-  Inbox,
   FlaskConical,
   Gauge,
   History,
@@ -42,7 +41,6 @@ export const NAVIGATION: Record<Role, NavSection[]> = {
         item("map", "Схема объектов", Map),
         item("journal", "Журнал прогнозов", ListChecks),
         item("decisions", "Журнал отработки", History),
-        item("incoming", "Поступившие данные", Inbox),
       ],
     },
   ],
@@ -131,7 +129,6 @@ export const TITLES: Record<Page, [string, string]> = {
   ],
   journal: ["Журнал прогнозов", "Прогнозы по объектам и типам риска"],
   decisions: ["Журнал отработки", "Решения, статусы работ и итоги"],
-  incoming: ["Поступившие данные", "Прогнозы по новым пакетам телеметрии"],
   equipment: ["Состояние оборудования", "Прогноз отказов и неисправные каналы"],
   work: ["Задачи и заявки", "Работы по решениям диспетчера"],
   verification: ["Верификация данных", "Метки для обучения модели"],

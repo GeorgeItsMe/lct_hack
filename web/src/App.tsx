@@ -206,6 +206,7 @@ export default function App() {
     [times, setTimes] = useState<string[]>([]),
     [timeIndex, setTimeIndex] = useState(0),
     [playing, setPlaying] = useState(false);
+  const [source, setSource] = useState<"all" | "archive" | "stream">("all");
   const [kind, setKind] = useState<Kind | "all">("all"),
     [query, setQuery] = useState(""),
     [onlyWarnings, setOnlyWarnings] = useState(false);
@@ -295,14 +296,7 @@ export default function App() {
               }[];
             };
           }>(`/imports/${state.latest_job.id}`);
-          message = `Прогноз готов · выше порога: ${result.result.forecasts.filter((f) => f.above_threshold).length}`;
-          if (
-            result.result.forecasts.some(
-              (f) => f.notification_due !== undefined,
-            )
-          ) {
-            message += ` · новых предупреждений по охране: ${result.result.forecasts.filter((f) => f.notification_due).length}`;
-          }
+          message = `Новые данные мониторинга · выше порога: ${result.result.forecasts.filter((f) => f.above_threshold).length}`;
         } else if (state.forecast_status === "failed")
           message = `Расчёт не выполнен: ${state.forecast_error || "проверьте журнал"}`;
         else if (state.forecast_status === "accepted_unprocessed")
@@ -396,14 +390,26 @@ export default function App() {
   /* Notifications (section 10): the dispatcher is told about every new warning,
      the unit head only about critical ones. A warning is "new" when its object
      and risk type were not above the threshold in the previous snapshot. */
+  const allForecasts: Forecast[] = useMemo(() => {
+    const rows = [
+      ...(overview?.stream?.forecasts || []),
+      ...(overview?.forecasts || []),
+    ];
+    return rows.sort(
+      (a, b) =>
+        Number(b.above_threshold) - Number(a.above_threshold) ||
+        b.probability / Math.max(b.threshold, 0.001) -
+          a.probability / Math.max(a.threshold, 0.001),
+    );
+  }, [overview]);
   const notified: Forecast[] = useMemo(() => {
     if (!overview || !user) return [];
     if (can(user, "notifications.all"))
-      return overview.forecasts.filter((f) => f.above_threshold && !f.decision);
+      return allForecasts.filter((f) => f.above_threshold && !f.decision);
     if (can(user, "notifications.critical"))
-      return overview.forecasts.filter((f) => f.risk === "critical");
+      return allForecasts.filter((f) => f.risk === "critical");
     return [];
-  }, [overview, user]);
+  }, [overview, user, allForecasts]);
   useEffect(() => {
     if (!overview || !user) return;
     const keys = new Set(notified.map((f) => `${f.object_id}:${f.kind}`));
@@ -423,18 +429,18 @@ export default function App() {
   }, [notified, overview, user]);
   const filtered = useMemo(
     () =>
-      overview?.forecasts.filter(
+      allForecasts.filter(
         (f) =>
+          (source === "all" || (f.source || "archive") === source) &&
           (kind === "all" || f.kind === kind) &&
           (!onlyWarnings || f.above_threshold) &&
           `${f.object_name} ${f.object_id} ${f.kind_label}`
             .toLowerCase()
             .includes(query.toLowerCase()),
       ) || [],
-    [overview, kind, query, onlyWarnings],
+    [allForecasts, source, kind, query, onlyWarnings],
   );
-  const warnings =
-    overview?.forecasts.filter((f) => f.above_threshold && !f.decision) || [];
+  const warnings = allForecasts.filter((f) => f.above_threshold && !f.decision);
   const jump = (i: number) => {
     const n = Math.max(0, Math.min(times.length - 1, i));
     setTimeIndex(n);
@@ -620,7 +626,7 @@ export default function App() {
             <div className="stream-notification" role="status">
               <Bell size={18} />
               <span>
-                Поступивший поток
+                Поток СМВУ
                 {streamAlert.asOf
                   ? ` · ${date(streamAlert.asOf, true)}`
                   : ""} · {streamAlert.message}
@@ -628,7 +634,7 @@ export default function App() {
               <button
                 className="text-link"
                 onClick={() =>
-                  go(can(user, "data.import") ? "quality" : "incoming")
+                  go(can(user, "data.import") ? "quality" : "overview")
                 }
               >
                 Открыть
@@ -820,9 +826,8 @@ export default function App() {
                           Очередь проверки{" "}
                           <span className="count-badge">
                             {
-                              overview.forecasts.filter(
-                                (f) => f.above_threshold,
-                              ).length
+                              allForecasts.filter((f) => f.above_threshold)
+                                .length
                             }
                           </span>
                         </h2>
@@ -839,7 +844,7 @@ export default function App() {
                       </button>
                     </div>
                     <ForecastTable
-                      forecasts={overview.forecasts.slice(0, 6)}
+                      forecasts={allForecasts.slice(0, 6)}
                       onSelect={setSelected}
                     />
                   </section>
@@ -955,6 +960,19 @@ export default function App() {
                         </option>
                       ))}
                     </select>
+                    {overview.stream && (
+                      <select
+                        aria-label="Источник данных"
+                        value={source}
+                        onChange={(e) =>
+                          setSource(e.target.value as typeof source)
+                        }
+                      >
+                        <option value="all">Все источники</option>
+                        <option value="stream">Поток СМВУ</option>
+                        <option value="archive">Архив</option>
+                      </select>
+                    )}
                     <label className="checkbox-label">
                       <input
                         type="checkbox"
@@ -979,7 +997,6 @@ export default function App() {
                   }}
                 />
               )}
-              {page === "incoming" && <ImportPanel user={user} />}
               {page === "equipment" && (
                 <EquipmentPage
                   asOf={asOf}

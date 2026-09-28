@@ -171,7 +171,7 @@ def data_recommendations(kind: str, events: list[dict]) -> list[dict]:
                 f"Тревожное сообщение «{value}».",
             )
     generic = [
-        {"text": text, "basis": "Общий порядок проверки для этого типа риска.", "source": "general"}
+        {"text": text, "basis": "", "source": "general"}
         for text in RECOMMENDATIONS[kind]
     ]
     return rules[:4] + generic

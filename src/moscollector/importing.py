@@ -267,7 +267,7 @@ class ImportManager:
         )[:100]
 
     def detail(self, job_id, object_id, kind, service):
-        from moscollector.domain import RECOMMENDATIONS
+        from moscollector.domain import data_recommendations
         from moscollector.service import clean
 
         state = self.get(job_id)
@@ -306,6 +306,8 @@ class ImportManager:
             ).df()
         finally:
             con.close()
+        records = source.to_dict("records")
+        details = data_recommendations(kind, records)
         return clean(
             {
                 **forecast,
@@ -318,6 +320,8 @@ class ImportManager:
                 ),
                 "explanation_unit": "log_odds",
                 "source_events": source.to_dict("records"),
-                "recommendations": RECOMMENDATIONS[kind],
+                "recommendations": [r["text"] for r in details],
+                "recommendation_details": details,
+                "source": "stream" if state.get("mode") == "accumulated_stream" else "import",
             }
         )

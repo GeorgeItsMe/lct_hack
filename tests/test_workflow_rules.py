@@ -36,7 +36,7 @@ def test_recommendations_follow_recorded_signals_then_generic_guidance():
     # Six faulty smoke channels plus the UPS on battery: seven channels in fault state.
     assert "7 каналах" in signals[0]["text"] and "шлейф" in signals[0]["text"]
     assert any("АКБ" in r["text"] for r in signals)
-    assert all(r["basis"] for r in result)
+    assert all(r["basis"] for r in result if r["source"] == "signals")
     assert result[-1]["source"] == "general"
 
 

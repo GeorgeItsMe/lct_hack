@@ -187,7 +187,7 @@ export function ForecastTable({
           <tr>
             <th>Объект / тип риска</th>
             <th>Вероятность · 24 ч</th>
-            {!compact && <th>Рекомендация</th>}
+            {!compact && <th className="recommendation-head">Рекомендация</th>}
             <th>Статус</th>
             <th />
           </tr>
@@ -214,6 +214,11 @@ export function ForecastTable({
                       {kindNames[f.kind]}{" "}
                       <span className="muted">· #{f.object_id}</span>
                     </small>
+                    {f.source === "stream" && (
+                      <span className="source-chip">
+                        Поток СМВУ · {date(f.as_of, true)}
+                      </span>
+                    )}
                   </div>
                 </div>
               </td>
@@ -500,7 +505,9 @@ export function ForecastDrawer({
   useEffect(() => {
     let cancelled = false;
     api<Detail>(
-      `/forecast/${forecast.object_id}/${forecast.kind}?as_of=${encodeURIComponent(forecast.as_of)}`,
+      forecast.batch_id
+        ? `/imports/${forecast.batch_id}/forecast/${forecast.object_id}/${forecast.kind}`
+        : `/forecast/${forecast.object_id}/${forecast.kind}?as_of=${encodeURIComponent(forecast.as_of)}`,
     )
       .then((d) => !cancelled && setDetail(d))
       .catch((e) => !cancelled && setError(e.message));
@@ -536,6 +543,7 @@ export function ForecastDrawer({
           action,
           reason,
           comment,
+          ...(forecast.batch_id ? { batch_id: forecast.batch_id } : {}),
         }),
       });
       setSaved(true);
@@ -591,7 +599,11 @@ export function ForecastDrawer({
         aria-labelledby="drawer-title"
       >
         <header className="drawer-header">
-          <span className="eyebrow">ПРОГНОЗ {forecast.id.slice(3, 11)}</span>
+          <span className="eyebrow">
+            {forecast.batch_id
+              ? `ПОТОК СМВУ · ${forecast.batch_id.slice(0, 8).toUpperCase()}`
+              : `ПРОГНОЗ ${forecast.id.slice(3, 11)}`}
+          </span>
           <button
             className="icon-button"
             onClick={onClose}
@@ -658,69 +670,73 @@ export function ForecastDrawer({
             <>
               {tab === "analysis" && (
                 <>
-                  <div className="section-label">
-                    <h3>Как менялся риск</h3>
-                    <span>Последние 72 часа</span>
-                  </div>
-                  <div className="drawer-chart">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={detail.trend}>
-                        <defs>
-                          <linearGradient
-                            id="risk-fill"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="0%"
-                              stopColor="#171717"
-                              stopOpacity={0.2}
+                  {detail.trend?.length ? (
+                    <>
+                      <div className="section-label">
+                        <h3>Как менялся риск</h3>
+                        <span>Последние 72 часа</span>
+                      </div>
+                      <div className="drawer-chart">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={detail.trend}>
+                            <defs>
+                              <linearGradient
+                                id="risk-fill"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="0%"
+                                  stopColor="#171717"
+                                  stopOpacity={0.2}
+                                />
+                                <stop
+                                  offset="100%"
+                                  stopColor="#171717"
+                                  stopOpacity={0}
+                                />
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid vertical={false} stroke="#ebebeb" />
+                            <XAxis
+                              dataKey="as_of"
+                              tickFormatter={(v) => clock(v)}
+                              minTickGap={38}
+                              tick={{ fontSize: 11 }}
+                              axisLine={false}
+                              tickLine={false}
                             />
-                            <stop
-                              offset="100%"
-                              stopColor="#171717"
-                              stopOpacity={0}
+                            <YAxis
+                              tickFormatter={(v) => pct(v, 0)}
+                              tick={{ fontSize: 10 }}
+                              width={42}
+                              axisLine={false}
+                              tickLine={false}
                             />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid vertical={false} stroke="#ebebeb" />
-                        <XAxis
-                          dataKey="as_of"
-                          tickFormatter={(v) => clock(v)}
-                          minTickGap={38}
-                          tick={{ fontSize: 11 }}
-                          axisLine={false}
-                          tickLine={false}
-                        />
-                        <YAxis
-                          tickFormatter={(v) => pct(v, 0)}
-                          tick={{ fontSize: 10 }}
-                          width={42}
-                          axisLine={false}
-                          tickLine={false}
-                        />
-                        <Tooltip
-                          formatter={(v) => pct(Number(v))}
-                          labelFormatter={(v) => date(String(v), true)}
-                        />
-                        <ReferenceLine
-                          y={forecast.threshold}
-                          stroke="#737373"
-                          strokeDasharray="4 4"
-                        />
-                        <Area
-                          type="stepAfter"
-                          dataKey="probability"
-                          name="Вероятность"
-                          stroke="#171717"
-                          strokeWidth={2}
-                          fill="url(#risk-fill)"
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
+                            <Tooltip
+                              formatter={(v) => pct(Number(v))}
+                              labelFormatter={(v) => date(String(v), true)}
+                            />
+                            <ReferenceLine
+                              y={forecast.threshold}
+                              stroke="#737373"
+                              strokeDasharray="4 4"
+                            />
+                            <Area
+                              type="stepAfter"
+                              dataKey="probability"
+                              name="Вероятность"
+                              stroke="#171717"
+                              strokeWidth={2}
+                              fill="url(#risk-fill)"
+                            />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </>
+                  ) : null}
                   <div className="section-label">
                     <h3>Факторы прогноза</h3>
                     <span>Вклад модели</span>
@@ -878,7 +894,7 @@ export function ForecastDrawer({
                       </div>
                     </>
                   )}
-                  {can(user, "model.view") && (
+                  {can(user, "model.view") && !forecast.batch_id && (
                     <div className="retrospective">
                       <button onClick={reveal}>
                         <Clock3 size={15} />
