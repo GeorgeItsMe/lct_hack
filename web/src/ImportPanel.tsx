@@ -61,6 +61,7 @@ type Batch = {
       kind_label: string;
       kind: Kind;
       probability: number;
+      threshold: number;
       above_threshold: boolean;
       expected_episodes?: number;
       notification_due?: boolean;
@@ -84,6 +85,9 @@ type IntegrationStatus = {
   max_import_rows: number;
   hosting_notice: string | null;
 };
+// How far the probability is from the warning threshold: 1,0× is the threshold itself.
+const ratio = (f: { probability: number; threshold: number }) =>
+  `${(f.probability / f.threshold).toFixed(1).replace(".", ",")}×`;
 const statuses: Record<string, string> = {
   queued: "В очереди",
   running: "Расчёт",
@@ -478,6 +482,23 @@ export function ImportPanel({ user }: { user: User }) {
                       Данных меньше недели: недельные показатели неполные,
                       вероятности могут быть занижены. Для точного прогноза
                       загрузите журнал за 7 суток до момента прогноза.
+                      <strong>Наибольший относительный риск</strong>
+                      <ol>
+                        {[...selected.result.forecasts]
+                          .filter((f) => f.threshold <= 1)
+                          .sort(
+                            (a, b) =>
+                              b.probability / b.threshold -
+                              a.probability / a.threshold,
+                          )
+                          .slice(0, 5)
+                          .map((f) => (
+                            <li key={`${f.object_id}-${f.kind}`}>
+                              {f.object_name} · {f.kind_label} ·{" "}
+                              {pct(f.probability)} ({ratio(f)} порога)
+                            </li>
+                          ))}
+                      </ol>
                     </div>
                   )}
                 {(() => {
@@ -545,6 +566,7 @@ export function ImportPanel({ user }: { user: User }) {
                         <th>Объект</th>
                         <th>Тип</th>
                         <th>Вероятность · 24 ч</th>
+                        <th>От порога</th>
                         <th>Рекомендация</th>
                         <th>Проверка</th>
                       </tr>
@@ -572,6 +594,7 @@ export function ImportPanel({ user }: { user: User }) {
                               </div>
                             )}
                           </td>
+                          <td>{f.threshold > 1 ? "выкл." : ratio(f)}</td>
                           <td>{f.recommendation}</td>
                           <td>
                             <button

@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm 
 COPY requirements.lock pyproject.toml ./
 RUN pip install -r requirements.lock
 COPY src/ ./src/
+COPY scripts/emulate_smvu.py ./scripts/emulate_smvu.py
 RUN pip install --no-deps . && useradd --uid 10001 --create-home contour
 COPY --from=web /web/dist ./web/dist/
 RUN mkdir -p /app/data/runtime /app/artifacts && chown -R contour:contour /app

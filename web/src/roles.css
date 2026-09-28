@@ -1003,3 +1003,12 @@ tr.inactive td {
 .import-facts dd small {
   flex-basis: 100%;
 }
+
+.import-warning strong {
+  display: block;
+  margin-top: 8px;
+}
+.import-warning ol {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}

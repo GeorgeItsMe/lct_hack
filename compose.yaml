@@ -26,8 +26,10 @@ services:
     ports:
       - "127.0.0.1:${CONTOUR_PORT:-8000}:8000"
     volumes:
-      - ./data/processed:/app/data/processed:ro
-      - ./artifacts:/app/artifacts:ro
+      # A fresh clone runs on the committed bundle; point these at data/processed and
+      # artifacts/ after preparing the full dataset.
+      - ${CONTOUR_PROCESSED_DIR:-./vercel_runtime/data/processed}:/app/data/processed:ro
+      - ${CONTOUR_ARTIFACTS_DIR:-./vercel_runtime/artifacts}:/app/artifacts:ro
       - runtime_data:/app/data/runtime
       - ./deploy/certs:/certs:ro
     depends_on:
