@@ -719,6 +719,7 @@ async def submit_import(
     request: Request,
     format: Literal["csv", "xlsx", "json", "xml", "zip"],
     as_of: str | None = None,
+    name: str | None = None,
     user=Depends(require("data.import")),
 ):
     require_import_runtime()
@@ -726,7 +727,7 @@ async def submit_import(
     from starlette.concurrency import run_in_threadpool
 
     content = await telemetry_body(request)
-    state = await run_in_threadpool(imports().submit, content, format, as_of, user.id)
+    state = await run_in_threadpool(imports().submit, content, format, as_of, user.id, name)
     audit(user.id, "telemetry_import", {k: v for k, v in state.items() if k != "result"})
     return state
 

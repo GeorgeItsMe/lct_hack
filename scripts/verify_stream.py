@@ -15,6 +15,8 @@ import duckdb
 import httpx
 import pandas as pd
 
+from moscollector.paths import PROCESSED
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--url", default="http://127.0.0.1:8000")
 parser.add_argument("--report", default="artifacts/stream_report.json")
@@ -24,13 +26,21 @@ if urlparse(args.url).hostname not in {"localhost", "127.0.0.1", "::1"}:
 
 con = duckdb.connect()
 con.execute("SET threads=2")
-con.read_parquet("data/processed/events-2026.parquet").create_view("events")
-con.read_parquet("data/processed/channels.parquet").create_view("channels")
+con.read_parquet(str(PROCESSED / "events-2026.parquet")).create_view("events")
+con.read_parquet(str(PROCESSED / "channels.parquet")).create_view("channels")
 report = {"base_url": args.url, "source": "provided_archive_replay", "batches": []}
-source_path = Path("data/processed/events-2026.parquet")
+source_path = PROCESSED / "events-2026.parquet"
 original_digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
-with httpx.Client(base_url=args.url, timeout=120) as client:
+# The monitoring gateway loads data with the analyst's import permission;
+# the decision on the resulting forecast is the dispatcher's.
+with (
+    httpx.Client(base_url=args.url, timeout=120) as client,
+    httpx.Client(base_url=args.url, timeout=120) as dispatcher,
+):
     client.post(
+        "/api/auth/login", json={"username": "analyst", "password": "contour-demo"}
+    ).raise_for_status()
+    dispatcher.post(
         "/api/auth/login", json={"username": "dispatcher", "password": "contour-demo"}
     ).raise_for_status()
     for cutoff in [pd.Timestamp("2026-06-15T12:00"), pd.Timestamp("2026-06-15T12:05")]:
@@ -67,7 +77,7 @@ with httpx.Client(base_url=args.url, timeout=120) as client:
         assert len(detail["explanation"]) == 8
         assert all(pd.Timestamp(e["ts"]) < cutoff for e in detail["source_events"])
         decision = (
-            client.post(
+            dispatcher.post(
                 "/api/decisions",
                 json={
                     "prediction_id": detail["id"],
@@ -113,6 +123,7 @@ with httpx.Client(base_url=args.url, timeout=120) as client:
         report["batches"].append(item)
         print(json.dumps(item), flush=True)
     client.post("/api/auth/logout").raise_for_status()
+    dispatcher.post("/api/auth/logout").raise_for_status()
 assert hashlib.sha256(source_path.read_bytes()).hexdigest() == original_digest
 report["source_unchanged"] = True
 report["scope"] = "Local replay; real customer source and network SLA not tested."

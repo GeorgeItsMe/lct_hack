@@ -32,6 +32,7 @@ type Batch = {
   status: string;
   as_of: string;
   input_rows?: number;
+  file_name?: string;
   accepted_rows: number;
   exact_duplicates: number;
   invalid_rows?: number;
@@ -106,9 +107,7 @@ export function ImportPanel({ user }: { user: User }) {
   const [integration, setIntegration] = useState<IntegrationStatus | null>(
     null,
   );
-  const mode: string = "preview",
-    [stream, setStream] = useState<StreamStatus | null>(null),
-    [receipt, setReceipt] = useState("");
+  const [stream, setStream] = useState<StreamStatus | null>(null);
   const [detail, setDetail] = useState<BatchForecastDetail | null>(null);
   const [batchKind, setBatchKind] = useState<Kind | "all">("all");
   const [visibleCount, setVisibleCount] = useState(12);
@@ -162,7 +161,6 @@ export function ImportPanel({ user }: { user: User }) {
     if (!file) return;
     setBusy(true);
     setError("");
-    setReceipt("");
     try {
       const maxBytes = integration?.max_import_bytes ?? 300 * 1024 * 1024;
       if (file.size > maxBytes)
@@ -174,7 +172,7 @@ export function ImportPanel({ user }: { user: User }) {
         throw Error("Выберите файл CSV, XLSX, JSON, XML или ZIP");
       const moment = asOf ? `&as_of=${encodeURIComponent(asOf)}` : "";
       const response = await fetch(
-        `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}${moment}`,
+        `/api/imports?format=${extension}&name=${encodeURIComponent(file.name)}${moment}`,
         {
           method: "POST",
           credentials: "same-origin",
@@ -189,14 +187,7 @@ export function ImportPanel({ user }: { user: User }) {
             ? result.detail
             : "Проверьте формат файла",
         );
-      if (mode === "stream") {
-        setSelected(result.job);
-        setReceipt(
-          `Пакет №${result.receipt.id}: добавлено ${result.receipt.inserted_rows}, повторов ${result.receipt.duplicate_rows}. Данные сохранены.`,
-        );
-        if (result.forecast_error) setError(result.forecast_error);
-        setStream(await api<StreamStatus>("/stream"));
-      } else setSelected(result);
+      setSelected(result);
       setBatches(await api<Batch[]>("/imports"));
     } catch (e) {
       setError((e as Error).message);
@@ -306,7 +297,6 @@ export function ImportPanel({ user }: { user: User }) {
             </div>
           </div>
         )}
-        {receipt && <p role="status">{receipt}</p>}
         {stream && stream.forecast_status !== "waiting" && (
           <div role="status">
             {stream.forecast_error && (
@@ -402,8 +392,10 @@ export function ImportPanel({ user }: { user: User }) {
               >
                 <strong>{date(b.as_of, true)}</strong>
                 <span>
-                  {b.mode === "accumulated_stream" ? "Поток · " : ""}
-                  {b.accepted_rows} записей
+                  {b.mode === "accumulated_stream"
+                    ? "Поток СМВУ"
+                    : b.file_name || "Файл"}{" "}
+                  · {num(b.accepted_rows)} записей
                 </span>
                 <span>{statuses[b.status] || b.status}</span>
               </button>

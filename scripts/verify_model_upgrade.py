@@ -21,7 +21,7 @@ version = active_version()
 changed = set(load_bundle(version))
 with httpx.Client(base_url=args.url, timeout=90) as client:
     client.post(
-        "/api/auth/login", json={"username": "dispatcher", "password": "contour-demo"}
+        "/api/auth/login", json={"username": "analyst", "password": "contour-demo"}
     ).raise_for_status()
     ready = client.get("/api/ready").raise_for_status().json()
     assert ready["operational_model_version"] == version

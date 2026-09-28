@@ -11,6 +11,7 @@ import httpx
 import numpy as np
 import pandas as pd
 
+from moscollector.paths import PROCESSED
 from moscollector.prepare import sha256, write_json
 
 p = argparse.ArgumentParser()
@@ -20,11 +21,11 @@ p.add_argument("--resume", action="store_true")
 args = p.parse_args()
 if urlparse(args.url).hostname not in ("127.0.0.1", "localhost", "::1"):
     raise SystemExit("Only local demo APIs are supported")
-source = Path("data/processed/events-2026.parquet")
+source = PROCESSED / "events-2026.parquet"
 checksum = sha256(source)
 with httpx.Client(base_url=args.url, timeout=120) as client:
     client.post(
-        "/api/auth/login", json={"username": "dispatcher", "password": "contour-demo"}
+        "/api/auth/login", json={"username": "analyst", "password": "contour-demo"}
     ).raise_for_status()
     if args.resume:
         report = json.loads(args.report.read_text())
@@ -46,7 +47,7 @@ with httpx.Client(base_url=args.url, timeout=120) as client:
         con = duckdb.connect()
         con.execute("SET threads=2")
         con.read_parquet(str(source)).create_view("events")
-        con.read_parquet("data/processed/channels.parquet").create_view("channels")
+        con.read_parquet(str(PROCESSED / "channels.parquet")).create_view("channels")
         for cutoff in (hour, hour + pd.Timedelta(minutes=5)):
             raw = con.execute(
                 "SELECT e.channel_id,e.ts,e.value,e.alarm FROM events e JOIN channels c USING(channel_id) WHERE e.ts>=? AND e.ts<? ORDER BY e.ts,e.channel_id LIMIT 100000",

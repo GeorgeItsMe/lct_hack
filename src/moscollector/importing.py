@@ -412,12 +412,13 @@ class ImportManager:
         temporary.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
         temporary.replace(directory / "status.json")
 
-    def submit(self, content, extension, as_of, user_id):
+    def submit(self, content, extension, as_of, user_id, file_name=None):
         frame, cutoff, counts = normalize_events(
             read_events(content, extension), self.channels, as_of, self.alarms
         )
         identity = hashlib.sha256(content + cutoff.isoformat().encode()).hexdigest()
-        return self.submit_frame(frame, cutoff, counts, identity, extension, user_id)
+        metadata = {"file_name": os.path.basename(file_name)[:200]} if file_name else None
+        return self.submit_frame(frame, cutoff, counts, identity, extension, user_id, metadata)
 
     def submit_frame(self, frame, cutoff, counts, identity, extension, user_id, metadata=None):
         """Queue an immutable snapshot, also used by the accumulated stream."""
