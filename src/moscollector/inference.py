@@ -17,9 +17,7 @@ def model_input(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     for column in CATEGORICAL:
         result[column] = result[column].fillna("unknown").astype(str)
     for column in set(columns) - set(CATEGORICAL):
-        result[column] = pd.to_numeric(result[column], errors="coerce").replace(
-            [np.inf, -np.inf], np.nan
-        )
+        result[column] = pd.to_numeric(result[column], errors="coerce").replace([np.inf, -np.inf], np.nan)
     return result
 
 

@@ -99,10 +99,7 @@ for result_path in paths:
             }
         )
 totals = (
-    pd.DataFrame(rows)
-    .drop(columns="fold")
-    .groupby(["kind", "arm"], as_index=False)
-    .sum(numeric_only=True)
+    pd.DataFrame(rows).drop(columns="fold").groupby(["kind", "arm"], as_index=False).sum(numeric_only=True)
 )
 audit = {
     "scope": "Descriptive completed historical audit, not independent validation or policy selection. All original episode denominators and false warnings remain. Empty means no eligible episode within24h; redundant means future episodes already matched. Lead bands do not redefine the target. Paired lead comparisons use only identical events found by both arms, and report every newly found and lost event separately.",

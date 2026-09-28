@@ -84,7 +84,9 @@ def test_interrupted_epoch_checkpoint_resumes_same_training(tmp_path, monkeypatc
 
     monkeypatch.setattr(study, "save_torch", interrupt_after_atomic_checkpoint)
     with pytest.raises(RuntimeError, match="Simulated"):
-        study.fit_network(tmp_path / f"resumed/models/{variant}", variant, sets, history, codec, {}, device, "toy")
+        study.fit_network(
+            tmp_path / f"resumed/models/{variant}", variant, sets, history, codec, {}, device, "toy"
+        )
     monkeypatch.setattr(study, "save_torch", original_save)
     resumed, meta = study.fit_network(
         tmp_path / f"resumed/models/{variant}", variant, sets, history, codec, {}, device, "toy"

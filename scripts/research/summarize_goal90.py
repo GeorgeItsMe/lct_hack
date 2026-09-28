@@ -593,7 +593,9 @@ if temporal_errors:
             or totals["warnings_issued_while_under_reserved"]
             != totals["under_reserved_true_warnings"] + totals["under_reserved_false_warnings"]
             or len(row["ownership_differences"])
-            != sum(totals[k] for k in ("wrong_warning_resolutions", "lost_confirmations", "spurious_resolutions"))
+            != sum(
+                totals[k] for k in ("wrong_warning_resolutions", "lost_confirmations", "spurious_resolutions")
+            )
         ):
             raise ValueError("Invalid fixed-warning confirmation audit")
 tag_audit_path = Path("artifacts/channel_tag_feature_audit.json")

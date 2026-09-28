@@ -36,7 +36,9 @@ def check(condition, message):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8000")
-    parser.add_argument("--wait", type=float, default=75, help="Seconds to wait for the emulated order to close")
+    parser.add_argument(
+        "--wait", type=float, default=75, help="Seconds to wait for the emulated order to close"
+    )
     args = parser.parse_args()
 
     clients = {}
@@ -52,7 +54,9 @@ def main():
         None,
     ) or next(f for f in overview["forecasts"] if not f["decision"])
     check(target["risk"] in ("critical", "high", "watch", "low"), f"уровень риска: {target['risk_label']}")
-    detail = dispatcher.get(f"/api/forecast/{target['object_id']}/{target['kind']}", params={"as_of": moment}).json()
+    detail = dispatcher.get(
+        f"/api/forecast/{target['object_id']}/{target['kind']}", params={"as_of": moment}
+    ).json()
     check(len(detail["recommendation_details"]) > 0, "рекомендации с основаниями в карточке")
     check(
         {s["id"] for s in detail["verification"]["external_sources"]} >= {"cameras"},
@@ -88,14 +92,18 @@ def main():
     while time.monotonic() < deadline and status != "done":
         time.sleep(5)
         technician.post("/api/work-orders/sync")
-        status = next(o for o in technician.get("/api/work-orders").json() if o["id"] == order["id"])["status"]
+        status = next(o for o in technician.get("/api/work-orders").json() if o["id"] == order["id"])[
+            "status"
+        ]
     closed = next(o for o in technician.get("/api/work-orders").json() if o["id"] == order["id"])
     check(closed["status"] == "done", f"эмулятор закрыл заявку, итог: {closed['outcome_label']}")
 
     analyst = clients["analyst"]
     labels = analyst.get("/api/labels").json()["rows"]
     row = next(r for r in labels if r["prediction_id"] == target["id"])
-    check(row["suggested_label"] is not None, f"предложена метка {row['suggested_label']}: {row['label_basis']}")
+    check(
+        row["suggested_label"] is not None, f"предложена метка {row['suggested_label']}: {row['label_basis']}"
+    )
     check(
         analyst.put(
             f"/api/labels/{row['id']}",
@@ -125,7 +133,9 @@ def main():
     )
 
     manager = clients["manager"]
-    approved = manager.post(f"/api/thresholds/proposals/{proposal['id']}/approve", json={"note": "Согласовано"})
+    approved = manager.post(
+        f"/api/thresholds/proposals/{proposal['id']}/approve", json={"note": "Согласовано"}
+    )
     check(approved.status_code == 200, "руководитель утвердил порог")
     check(manager.get("/api/settings").json()["thresholds"]["fire"] == proposed, "порог применён")
     summary = manager.get("/api/summary", params={"as_of": moment}).json()
@@ -141,7 +151,10 @@ def main():
 
     admin = clients["admin"]
     check(admin.get("/api/users").status_code == 200, "администратор видит пользователей")
-    check(admin.put("/api/settings", json={"thresholds": {"fire": 0.5}}).status_code == 403, "администратор не меняет пороги")
+    check(
+        admin.put("/api/settings", json={"thresholds": {"fire": 0.5}}).status_code == 403,
+        "администратор не меняет пороги",
+    )
     actions = {r["action"] for r in admin.get("/api/audit").json()}
     expected = {
         "decision_saved",

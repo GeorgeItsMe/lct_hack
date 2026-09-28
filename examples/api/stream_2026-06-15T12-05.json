@@ -1,0 +1,3916 @@
+{
+ "events": [
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:00:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:00:00",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:00",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:00:01",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:00:01",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:00:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:00:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:00:02",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:02",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:00:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:00:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:04",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:00:04",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 147207,
+   "ts": "2026-06-15T12:00:04",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:00:04",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196732,
+   "ts": "2026-06-15T12:00:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:07",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:00:07",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:00:07",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267353,
+   "ts": "2026-06-15T12:00:08",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:08",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 213358,
+   "ts": "2026-06-15T12:00:09",
+   "value": "0.16",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:00:09",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:00:09",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:11",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:00:11",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:00:12",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:12",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 147184,
+   "ts": "2026-06-15T12:00:14",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:00:14",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:15",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:00:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196796,
+   "ts": "2026-06-15T12:00:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:00:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:19",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 290855,
+   "ts": "2026-06-15T12:00:19",
+   "value": "Обесточен",
+   "alarm": false
+  },
+  {
+   "channel_id": 96419,
+   "ts": "2026-06-15T12:00:19",
+   "value": "Есть питание",
+   "alarm": false
+  },
+  {
+   "channel_id": 196736,
+   "ts": "2026-06-15T12:00:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:21",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 116072,
+   "ts": "2026-06-15T12:00:22",
+   "value": "0.19",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:00:22",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196750,
+   "ts": "2026-06-15T12:00:22",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:00:23",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:23",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104045,
+   "ts": "2026-06-15T12:00:23",
+   "value": "0.07",
+   "alarm": false
+  },
+  {
+   "channel_id": 213780,
+   "ts": "2026-06-15T12:00:25",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:00:25",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:00:25",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:00:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:00:26",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:00:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:00:27",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:00:28",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:00:30",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:00:30",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 147192,
+   "ts": "2026-06-15T12:00:30",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:00:31",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196733,
+   "ts": "2026-06-15T12:00:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196733,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:00:35",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:35",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:00:36",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:36",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:00:37",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:00:37",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 93685,
+   "ts": "2026-06-15T12:00:38",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:00:38",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:00:39",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:00:42",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:43",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:00:43",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:00:43",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:00:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:00:44",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196785,
+   "ts": "2026-06-15T12:00:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:00:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:00:46",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:00:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 77712,
+   "ts": "2026-06-15T12:00:46",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:47",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 77712,
+   "ts": "2026-06-15T12:00:47",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:48",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:00:49",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:49",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:49",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 93685,
+   "ts": "2026-06-15T12:00:50",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:00:51",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:51",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:00:52",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:00:52",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196736,
+   "ts": "2026-06-15T12:00:52",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:00:52",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 116072,
+   "ts": "2026-06-15T12:00:53",
+   "value": "0.20",
+   "alarm": false
+  },
+  {
+   "channel_id": 196734,
+   "ts": "2026-06-15T12:00:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:00:53",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:00:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:00:54",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 278326,
+   "ts": "2026-06-15T12:00:54",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:00:55",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:00:55",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:00:56",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:00:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:00:56",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:00:57",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 213780,
+   "ts": "2026-06-15T12:00:57",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 213790,
+   "ts": "2026-06-15T12:00:57",
+   "value": "0.11",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:00:57",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:00:58",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:00:59",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:00:59",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:00:59",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:00:59",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:01:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:01:00",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:01:00",
+   "value": "0.04",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:01:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:01:01",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:01",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:01:02",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:01:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:01:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:01:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:01:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:01:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:03",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:01:03",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 266626,
+   "ts": "2026-06-15T12:01:04",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196479,
+   "ts": "2026-06-15T12:01:05",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:01:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:06",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:01:06",
+   "value": "0.04",
+   "alarm": false
+  },
+  {
+   "channel_id": 278326,
+   "ts": "2026-06-15T12:01:06",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:07",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 266626,
+   "ts": "2026-06-15T12:01:08",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:08",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:01:08",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:01:09",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:09",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:12",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:12",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:13",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:01:13",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:13",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196480,
+   "ts": "2026-06-15T12:01:13",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196491,
+   "ts": "2026-06-15T12:01:13",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 330223,
+   "ts": "2026-06-15T12:01:14",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:15",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:15",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 144795,
+   "ts": "2026-06-15T12:01:16",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 144852,
+   "ts": "2026-06-15T12:01:16",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 330222,
+   "ts": "2026-06-15T12:01:16",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:01:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:01:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:01:16",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:17",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196491,
+   "ts": "2026-06-15T12:01:17",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:01:18",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 330223,
+   "ts": "2026-06-15T12:01:19",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 330222,
+   "ts": "2026-06-15T12:01:19",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 144795,
+   "ts": "2026-06-15T12:01:19",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 144795,
+   "ts": "2026-06-15T12:01:21",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 144852,
+   "ts": "2026-06-15T12:01:21",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:21",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196499,
+   "ts": "2026-06-15T12:01:21",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 144795,
+   "ts": "2026-06-15T12:01:22",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:22",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196499,
+   "ts": "2026-06-15T12:01:23",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:23",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:24",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:25",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104028,
+   "ts": "2026-06-15T12:01:25",
+   "value": "0.11",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:01:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:27",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:30",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:32",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:01:33",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196732,
+   "ts": "2026-06-15T12:01:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:34",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 193226,
+   "ts": "2026-06-15T12:01:34",
+   "value": "12",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:01:35",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:36",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:36",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:37",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:01:37",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:01:37",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 330221,
+   "ts": "2026-06-15T12:01:37",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:37",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:38",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:01:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196732,
+   "ts": "2026-06-15T12:01:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:01:38",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:01:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196734,
+   "ts": "2026-06-15T12:01:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:39",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:40",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196732,
+   "ts": "2026-06-15T12:01:40",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196755,
+   "ts": "2026-06-15T12:01:40",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:01:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:42",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:01:42",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 330221,
+   "ts": "2026-06-15T12:01:42",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196503,
+   "ts": "2026-06-15T12:01:43",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:01:43",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196499,
+   "ts": "2026-06-15T12:01:43",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:01:44",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:01:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:44",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196499,
+   "ts": "2026-06-15T12:01:45",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:45",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:45",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196732,
+   "ts": "2026-06-15T12:01:46",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:47",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:01:47",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:01:48",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:01:48",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:48",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196498,
+   "ts": "2026-06-15T12:01:49",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 120270,
+   "ts": "2026-06-15T12:01:49",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:49",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:50",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:01:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:01:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:01:51",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:01:51",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:01:51",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:52",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:01:52",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:01:53",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196498,
+   "ts": "2026-06-15T12:01:53",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 120270,
+   "ts": "2026-06-15T12:01:53",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:01:54",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:01:54",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:01:55",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:01:55",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:01:55",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:01:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:01:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:01:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 116069,
+   "ts": "2026-06-15T12:01:57",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:57",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:01:58",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196790,
+   "ts": "2026-06-15T12:01:58",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:01:58",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267423,
+   "ts": "2026-06-15T12:01:58",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:01:59",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:01:59",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196723,
+   "ts": "2026-06-15T12:01:59",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267423,
+   "ts": "2026-06-15T12:02:00",
+   "value": "0.05",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:02:00",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:02:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:02:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:02:01",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:02:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:02",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 330219,
+   "ts": "2026-06-15T12:02:03",
+   "value": "Не замкнут",
+   "alarm": true
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267423,
+   "ts": "2026-06-15T12:02:04",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:02:04",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:04",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:04",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:02:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:02:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:05",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:02:06",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196790,
+   "ts": "2026-06-15T12:02:06",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:02:07",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:02:07",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196741,
+   "ts": "2026-06-15T12:02:09",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196790,
+   "ts": "2026-06-15T12:02:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:02:10",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:02:11",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:02:11",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:12",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:02:13",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 144853,
+   "ts": "2026-06-15T12:02:13",
+   "value": "Не замкнут",
+   "alarm": true
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:02:15",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:16",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:02:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:16",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:02:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:02:18",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:02:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:02:19",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:20",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:02:20",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:02:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:02:22",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:02:23",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:23",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196736,
+   "ts": "2026-06-15T12:02:23",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196733,
+   "ts": "2026-06-15T12:02:24",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:02:24",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196736,
+   "ts": "2026-06-15T12:02:25",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196733,
+   "ts": "2026-06-15T12:02:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:27",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:02:27",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:28",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 104045,
+   "ts": "2026-06-15T12:02:28",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 116072,
+   "ts": "2026-06-15T12:02:29",
+   "value": "0.19",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:02:30",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 286939,
+   "ts": "2026-06-15T12:02:30",
+   "value": "Не замкнут",
+   "alarm": true
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:02:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:02:31",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278311,
+   "ts": "2026-06-15T12:02:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 278311,
+   "ts": "2026-06-15T12:02:32",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278311,
+   "ts": "2026-06-15T12:02:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:34",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:02:35",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:02:35",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:36",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 286939,
+   "ts": "2026-06-15T12:02:36",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:02:37",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:02:37",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278311,
+   "ts": "2026-06-15T12:02:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:02:39",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 2892,
+   "ts": "2026-06-15T12:02:39",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:40",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:02:41",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 2892,
+   "ts": "2026-06-15T12:02:41",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:42",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196738,
+   "ts": "2026-06-15T12:02:42",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196759,
+   "ts": "2026-06-15T12:02:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:02:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:46",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:02:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:46",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:02:48",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:48",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:48",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196790,
+   "ts": "2026-06-15T12:02:49",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:02:49",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267353,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:02:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104061,
+   "ts": "2026-06-15T12:02:51",
+   "value": "0.04",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:02:51",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:52",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:02:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:02:54",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:02:54",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:54",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 330219,
+   "ts": "2026-06-15T12:02:55",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:02:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:02:56",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:02:56",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:02:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196729,
+   "ts": "2026-06-15T12:02:57",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196783,
+   "ts": "2026-06-15T12:02:58",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:02:58",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:02:58",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:03:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:03:00",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 104045,
+   "ts": "2026-06-15T12:03:00",
+   "value": "0.07",
+   "alarm": false
+  },
+  {
+   "channel_id": 330632,
+   "ts": "2026-06-15T12:03:00",
+   "value": "14",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:03:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196786,
+   "ts": "2026-06-15T12:03:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:03:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:03:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 213780,
+   "ts": "2026-06-15T12:03:03",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:03:03",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:03:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:03",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:03",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:03:04",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:03:04",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196729,
+   "ts": "2026-06-15T12:03:05",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:05",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288201,
+   "ts": "2026-06-15T12:03:06",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196725,
+   "ts": "2026-06-15T12:03:06",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:06",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:03:06",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196742,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:08",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:03:09",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:10",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:03:11",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 147207,
+   "ts": "2026-06-15T12:03:12",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:12",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:12",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196745,
+   "ts": "2026-06-15T12:03:13",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278331,
+   "ts": "2026-06-15T12:03:14",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196793,
+   "ts": "2026-06-15T12:03:14",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:14",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:03:14",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:03:15",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:15",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196785,
+   "ts": "2026-06-15T12:03:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:03:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:03:18",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196742,
+   "ts": "2026-06-15T12:03:18",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196729,
+   "ts": "2026-06-15T12:03:18",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:03:20",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:03:20",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:03:22",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 104054,
+   "ts": "2026-06-15T12:03:23",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:03:24",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:24",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:25",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196785,
+   "ts": "2026-06-15T12:03:25",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:03:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:03:26",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288201,
+   "ts": "2026-06-15T12:03:27",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:27",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:03:27",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 267353,
+   "ts": "2026-06-15T12:03:28",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:03:28",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196768,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196793,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:03:29",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196742,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 116137,
+   "ts": "2026-06-15T12:03:31",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:03:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 116072,
+   "ts": "2026-06-15T12:03:32",
+   "value": "0.20",
+   "alarm": false
+  },
+  {
+   "channel_id": 116069,
+   "ts": "2026-06-15T12:03:32",
+   "value": "0.05",
+   "alarm": false
+  },
+  {
+   "channel_id": 116068,
+   "ts": "2026-06-15T12:03:32",
+   "value": "0.04",
+   "alarm": false
+  },
+  {
+   "channel_id": 213790,
+   "ts": "2026-06-15T12:03:33",
+   "value": "0.09",
+   "alarm": false
+  },
+  {
+   "channel_id": 196775,
+   "ts": "2026-06-15T12:03:33",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 286826,
+   "ts": "2026-06-15T12:03:33",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 213780,
+   "ts": "2026-06-15T12:03:33",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:03:34",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:03:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:03:35",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:03:36",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 147192,
+   "ts": "2026-06-15T12:03:36",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:03:36",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:03:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:03:38",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196742,
+   "ts": "2026-06-15T12:03:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:03:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196734,
+   "ts": "2026-06-15T12:03:39",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:03:40",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196771,
+   "ts": "2026-06-15T12:03:40",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:40",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196785,
+   "ts": "2026-06-15T12:03:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:03:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:03:42",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:03:42",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196779,
+   "ts": "2026-06-15T12:03:43",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196785,
+   "ts": "2026-06-15T12:03:43",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196729,
+   "ts": "2026-06-15T12:03:44",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196734,
+   "ts": "2026-06-15T12:03:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:03:45",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:03:45",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 278326,
+   "ts": "2026-06-15T12:03:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:03:47",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:03:48",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:03:49",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:03:52",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:03:52",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:03:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:53",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288246,
+   "ts": "2026-06-15T12:03:53",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 286829,
+   "ts": "2026-06-15T12:03:53",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:03:55",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:55",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104061,
+   "ts": "2026-06-15T12:03:55",
+   "value": "0.05",
+   "alarm": false
+  },
+  {
+   "channel_id": 196765,
+   "ts": "2026-06-15T12:03:57",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:03:57",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:03:57",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 286826,
+   "ts": "2026-06-15T12:03:57",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:03:58",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:03:58",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 286826,
+   "ts": "2026-06-15T12:03:59",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:04:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:00",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:01",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:04:01",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:02",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 104039,
+   "ts": "2026-06-15T12:04:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:04:02",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 116137,
+   "ts": "2026-06-15T12:04:02",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 116068,
+   "ts": "2026-06-15T12:04:03",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:04:05",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 213790,
+   "ts": "2026-06-15T12:04:05",
+   "value": "0.11",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:04:06",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 286829,
+   "ts": "2026-06-15T12:04:06",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:09",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:04:10",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:04:10",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:04:10",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196774,
+   "ts": "2026-06-15T12:04:10",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:04:10",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 147192,
+   "ts": "2026-06-15T12:04:11",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:04:12",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:04:12",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 278326,
+   "ts": "2026-06-15T12:04:12",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 267348,
+   "ts": "2026-06-15T12:04:12",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 286826,
+   "ts": "2026-06-15T12:04:13",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:13",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 268158,
+   "ts": "2026-06-15T12:04:14",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196746,
+   "ts": "2026-06-15T12:04:14",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:15",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:04:15",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:16",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:04:16",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196727,
+   "ts": "2026-06-15T12:04:16",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 147207,
+   "ts": "2026-06-15T12:04:16",
+   "value": "0.03",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:04:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:17",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:17",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:04:18",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:18",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 3006,
+   "ts": "2026-06-15T12:04:19",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196756,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:19",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:04:20",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:20",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:21",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:22",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:04:23",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196764,
+   "ts": "2026-06-15T12:04:24",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:04:24",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:24",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:04:24",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:04:24",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196731,
+   "ts": "2026-06-15T12:04:25",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 104054,
+   "ts": "2026-06-15T12:04:25",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196752,
+   "ts": "2026-06-15T12:04:26",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 104061,
+   "ts": "2026-06-15T12:04:26",
+   "value": "0.04",
+   "alarm": false
+  },
+  {
+   "channel_id": 120270,
+   "ts": "2026-06-15T12:04:26",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196731,
+   "ts": "2026-06-15T12:04:27",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:04:27",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:28",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196789,
+   "ts": "2026-06-15T12:04:28",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:04:28",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 3006,
+   "ts": "2026-06-15T12:04:28",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 267423,
+   "ts": "2026-06-15T12:04:28",
+   "value": "0.05",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:29",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 288276,
+   "ts": "2026-06-15T12:04:29",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:30",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:30",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 120270,
+   "ts": "2026-06-15T12:04:31",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:04:31",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:32",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 230543,
+   "ts": "2026-06-15T12:04:32",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:04:32",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 209989,
+   "ts": "2026-06-15T12:04:33",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:34",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 116069,
+   "ts": "2026-06-15T12:04:35",
+   "value": "0.06",
+   "alarm": false
+  },
+  {
+   "channel_id": 213790,
+   "ts": "2026-06-15T12:04:36",
+   "value": "0.09",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:04:37",
+   "value": "Не замкнут",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:37",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:37",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 96418,
+   "ts": "2026-06-15T12:04:38",
+   "value": "Есть питание",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:38",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:04:38",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196784,
+   "ts": "2026-06-15T12:04:38",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:39",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196762,
+   "ts": "2026-06-15T12:04:40",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:04:40",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196743,
+   "ts": "2026-06-15T12:04:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196780,
+   "ts": "2026-06-15T12:04:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:04:41",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196753,
+   "ts": "2026-06-15T12:04:42",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196777,
+   "ts": "2026-06-15T12:04:42",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196728,
+   "ts": "2026-06-15T12:04:43",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:04:43",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 120281,
+   "ts": "2026-06-15T12:04:43",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:04:45",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:04:46",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 147207,
+   "ts": "2026-06-15T12:04:47",
+   "value": "0.02",
+   "alarm": false
+  },
+  {
+   "channel_id": 196726,
+   "ts": "2026-06-15T12:04:48",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196730,
+   "ts": "2026-06-15T12:04:49",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196729,
+   "ts": "2026-06-15T12:04:50",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 286938,
+   "ts": "2026-06-15T12:04:51",
+   "value": "Обнаружено движение",
+   "alarm": false
+  },
+  {
+   "channel_id": 196767,
+   "ts": "2026-06-15T12:04:51",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 286939,
+   "ts": "2026-06-15T12:04:51",
+   "value": "Не замкнут",
+   "alarm": true
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:04:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196761,
+   "ts": "2026-06-15T12:04:53",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196772,
+   "ts": "2026-06-15T12:04:55",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 196733,
+   "ts": "2026-06-15T12:04:55",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 286938,
+   "ts": "2026-06-15T12:04:55",
+   "value": "Движения нет",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:04:56",
+   "value": "0.01",
+   "alarm": false
+  },
+  {
+   "channel_id": 196739,
+   "ts": "2026-06-15T12:04:57",
+   "value": "0.00",
+   "alarm": false
+  },
+  {
+   "channel_id": 286939,
+   "ts": "2026-06-15T12:04:57",
+   "value": "Норма",
+   "alarm": false
+  },
+  {
+   "channel_id": 196760,
+   "ts": "2026-06-15T12:04:58",
+   "value": "0.00",
+   "alarm": false
+  }
+ ]
+}

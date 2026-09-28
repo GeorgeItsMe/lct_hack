@@ -66,7 +66,7 @@ for directory in ("src", "tests", "scripts", "docs", "examples", "deploy", "web/
     )
 for name in (
     "README.md",
-    "TASK_ANALYSIS.md",
+    "docs/TASK_ANALYSIS.md",
     "pyproject.toml",
     "requirements.lock",
     "requirements-neural.txt",

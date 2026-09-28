@@ -38,7 +38,7 @@ OPENBLAS_NUM_THREADS=1
 MKL_NUM_THREADS=1
 ```
 
-`CONTOUR_DEMO=true` создаёт три демонстрационные роли с паролем
+`CONTOUR_DEMO=true` создаёт пять демонстрационных учётных записей (по одной на роль) с паролем
 `contour-demo`. Для закрытого стенда задайте `CONTOUR_DEMO=false` и
 `CONTOUR_ADMIN_PASSWORD` длиной не менее 12 символов в новой пустой базе.
 
