@@ -938,3 +938,68 @@ tr.inactive td {
 .drawer-chart + .section-label {
   margin-top: 24px;
 }
+
+/* Import result. */
+.import-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.import-facts > div {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+}
+.import-facts dt {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+.import-facts dd {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0 0;
+  font-size: 17px;
+  font-weight: 560;
+}
+.import-facts dd small {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+.import-warning {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid #f3dfa8;
+  border-left: 3px solid var(--risk-watch);
+  border-radius: 8px;
+  background: var(--risk-watch-bg);
+  color: #5c4000;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.field-hint {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+@media (max-width: 760px) {
+  .import-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.import-form {
+  align-items: flex-start;
+}
+.import-form > .primary-button {
+  margin-top: 24px;
+}
+.import-facts dd {
+  flex-wrap: wrap;
+}
+.import-facts dd small {
+  flex-basis: 100%;
+}

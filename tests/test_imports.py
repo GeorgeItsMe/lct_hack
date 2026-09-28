@@ -93,3 +93,64 @@ def test_many_previews_do_not_hide_the_latest_stream_job(tmp_path):
     manager.root = tmp_path
     assert len(manager.list()) == 100
     assert manager.list(mode="accumulated_stream")[0]["id"] == "0"
+
+
+def test_journal_as_delivered_with_separate_date_and_time():
+    content = (
+        "ид_события,ид_канала_данных,дата,время,значение_датчика,тревожное\n"
+        "10,1,2026-06-15,11:58:00,Норма,f\n"
+        "11,1,2026-06-15,11:59:30,Неисправен,t\n"
+    ).encode()
+    result, cutoff, quality = normalize_events(read_events(content, "csv"), {1})
+    assert cutoff == pd.Timestamp("2026-06-15T12:00")
+    assert quality["as_of_auto"] and quality["accepted_rows"] == 2
+    assert result.alarm.tolist() == [False, True]
+
+
+def test_appendix_layout_semicolon_cp1251_without_alarm_flag():
+    content = (
+        "ИД записи журнала;ИД канала данных;ИД типа канала данных;Текущее значение;Дата записи\n"
+        "1;1;12;25,40;19.10.2026 12:15\n"
+        "2;1;4;Обнаружен дым;19.10.2026 12:16\n"
+    ).encode("cp1251")
+    result, cutoff, quality = normalize_events(read_events(content, "csv"), {1})
+    assert cutoff == pd.Timestamp("2026-10-19T12:20")
+    assert result.ts.tolist() == [pd.Timestamp("2026-10-19T12:15"), pd.Timestamp("2026-10-19T12:16")]
+    assert quality["alarm_inferred"] and result.alarm.tolist() == [False, True]
+    assert result.numeric_value.iloc[0] == 25.4
+
+
+def test_zip_with_one_journal_is_accepted():
+    import zipfile
+
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        archive.writestr("journal.csv", "channel_id,ts,value,alarm\n1,2026-06-15T11:59:00,Норма,false\n")
+    result, _, _ = normalize_events(read_events(buffer.getvalue(), "zip"), {1}, "2026-06-15T12:00")
+    assert len(result) == 1
+
+
+def test_a_few_bad_lines_are_skipped_but_a_broken_file_is_refused():
+    rows = [sample(ts=f"2026-06-15T11:{m:02d}:00") for m in range(40)] + [sample(ts="сломано")]
+    result, _, quality = normalize_events(pd.DataFrame(rows), {1}, "2026-06-15T12:00")
+    assert len(result) == 40 and quality["invalid_rows"] == 1
+    broken = [sample(ts="сломано")] * 10 + [sample()]
+    with pytest.raises(ValueError, match="Невалидных строк: 10 из 11"):
+        normalize_events(pd.DataFrame(broken), {1}, "2026-06-15T12:00")
+
+
+def test_rows_after_an_explicit_moment_are_reported_not_fatal():
+    rows = [sample(), sample(ts="2026-06-15T12:30:00")]
+    result, _, quality = normalize_events(pd.DataFrame(rows), {1}, "2026-06-15T12:00")
+    assert len(result) == 1 and quality["late_rows"] == 1
+
+
+def test_missing_columns_are_named_in_russian():
+    with pytest.raises(ValueError, match="значение"):
+        read_events("ид_канала_данных,дата,время\n1,2026-06-15,11:00:00\n".encode(), "csv")
+
+
+def test_stream_still_refuses_future_rows_whole():
+    rows = [sample(), sample(ts="2026-06-15T12:30:00")]
+    with pytest.raises(ValueError, match="предшествовать"):
+        normalize_events(pd.DataFrame(rows), {1}, "2026-06-15T12:00", strict_time=True)

@@ -20,6 +20,8 @@ from moscollector.model_registry import load_bundle
 from moscollector.paths import ARTIFACTS, PROCESSED
 from moscollector.service import clean
 
+MIN_HISTORY_HOURS = 24
+
 
 def run(directory: Path, as_of: str):
     started = time.monotonic()
@@ -52,10 +54,16 @@ def run(directory: Path, as_of: str):
     else:
         con.execute("CREATE TABLE combined AS SELECT * FROM incoming")
     begin, end, rows = con.execute("SELECT min(ts),max(ts),count(*) FROM combined").fetchone()
-    if not begin or (cutoff - pd.Timestamp(begin)).total_seconds() < 168 * 3600:
-        raise ValueError("Для прогноза нужна как минимум неделя истории. Загрузите предысторию")
+    if not begin or (cutoff - pd.Timestamp(begin)).total_seconds() < MIN_HISTORY_HOURS * 3600:
+        raise ValueError(
+            f"Для прогноза нужны данные хотя бы за {MIN_HISTORY_HOURS} часа до момента прогноза. "
+            "Загрузите журнал за более длинный период"
+        )
     if (cutoff - pd.Timestamp(end)).total_seconds() > 3600:
-        raise ValueError("Последние события старше часа. Уточните момент прогноза или источник")
+        raise ValueError(
+            f"Последняя запись ({pd.Timestamp(end):%d.%m.%Y %H:%M}) раньше момента прогноза больше чем на час. "
+            "Оставьте момент пустым, чтобы взять его по последней записи"
+        )
     # Rebase the clock so aggregation uses trailing [t-h,t) windows at any
     # five-minute watermark, without introducing a second feature encoder.
     con.execute("UPDATE combined SET ts = ts - ? * INTERVAL '1 second'", [offset.total_seconds()])
@@ -78,10 +86,20 @@ def run(directory: Path, as_of: str):
     hourly = pd.read_parquet(processed / f"hourly-{year}.parquet")
     hours = pd.date_range(aligned - pd.Timedelta(hours=168), aligned - pd.Timedelta(hours=1), freq="h")
     covered = hourly.groupby("hour").events.sum().reindex(hours, fill_value=0).gt(0)
-    if not covered.all():
+    covered_hours = int(covered.sum())
+    if covered_hours < MIN_HISTORY_HOURS:
         raise ValueError(
-            f"В предыдущей неделе отсутствуют {int((~covered).sum())} часов общего потока. Прогноз не выдан"
+            f"За неделю до момента прогноза есть данные только за {covered_hours} ч из 168. "
+            f"Нужно хотя бы {MIN_HISTORY_HOURS} ч: загрузите журнал за более длинный период"
         )
+    # Models were trained on a full week of history. A shorter one still gives a forecast,
+    # flagged in the result: weekly counters are then lower than in training.
+    history = {
+        "covered_hours": covered_hours,
+        "required_hours": 168,
+        "complete": covered_hours == 168,
+        "first_covered_hour": covered[covered].index.min().isoformat() if covered_hours else None,
+    }
     names = pd.read_parquet(processed / "objects.parquet").set_index("object_id").object_name.to_dict()
     forecasts = []
     for kind in ("fault", "fire", "flood", "access"):
@@ -155,6 +173,7 @@ def run(directory: Path, as_of: str):
         "mode": state.get("mode", "import_preview"),
         "stream_revision": state.get("stream_revision"),
         "history_rows": rows,
+        "history": history,
         "history_start": str(begin),
         "last_observation": str(end),
         "source_cutoff": "strictly_before_as_of",

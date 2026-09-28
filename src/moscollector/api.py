@@ -717,8 +717,8 @@ def topology_wkt(user=Depends(current_user)):
 @app.post("/api/imports", status_code=202)
 async def submit_import(
     request: Request,
-    as_of: str,
-    format: Literal["csv", "xlsx", "json", "xml"],
+    format: Literal["csv", "xlsx", "json", "xml", "zip"],
+    as_of: str | None = None,
     user=Depends(require("data.import")),
 ):
     require_import_runtime()
@@ -758,7 +758,7 @@ async def telemetry_body(request):
     async for chunk in request.stream():
         content.extend(chunk)
         if len(content) > MAX_BYTES:
-            raise HTTPException(413, "Файл превышает 20 МБ")
+            raise HTTPException(413, f"Файл превышает {MAX_BYTES // 1024 // 1024} МБ")
     return bytes(content)
 
 
@@ -766,7 +766,7 @@ async def telemetry_body(request):
 async def stream_events(
     request: Request,
     as_of: str,
-    format: Literal["csv", "xlsx", "json", "xml"] = "json",
+    format: Literal["csv", "xlsx", "json", "xml", "zip"] = "json",
     user=Depends(require("data.import")),
 ):
     require_import_runtime()
@@ -787,6 +787,12 @@ def stream_forecast(as_of: str, user=Depends(require("data.import"))):
 @app.get("/api/stream")
 def stream_status(user=Depends(current_user)):
     return stream().status()
+
+
+def import_limits():
+    from moscollector.importing import MAX_BYTES, MAX_ROWS
+
+    return MAX_ROWS, MAX_BYTES
 
 
 @app.get("/api/integrations")
@@ -834,9 +840,9 @@ def integrations(user=Depends(current_user)):
         "equipment_commands": False,
         "serverless_mode": SERVERLESS_MODE,
         "imports_enabled": imports_enabled,
-        "import_formats": ["csv", "xlsx", "json", "xml"],
-        "max_import_rows": 100000,
-        "max_import_bytes": 20 * 1024 * 1024,
+        "import_formats": ["csv", "xlsx", "json", "xml", "zip"],
+        "max_import_rows": import_limits()[0],
+        "max_import_bytes": import_limits()[1],
         "hosting_notice": (
             "Архивный прогноз, объяснения и решения доступны. Импорт запускайте в Docker-версии с постоянным worker."
             if SERVERLESS_MODE

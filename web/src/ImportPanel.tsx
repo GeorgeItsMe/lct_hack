@@ -31,14 +31,30 @@ type Batch = {
   id: string;
   status: string;
   as_of: string;
+  input_rows?: number;
   accepted_rows: number;
   exact_duplicates: number;
+  invalid_rows?: number;
+  unknown_channel_rows?: number;
+  unknown_channel_count?: number;
+  late_rows?: number;
+  other_year_rows?: number;
+  alarm_inferred?: boolean;
+  inferred_alarm_rows?: number;
+  as_of_auto?: boolean;
+  first_record?: string;
+  last_record?: string;
   error?: string;
   mode?: string;
   result?: {
     model_version?: string;
     elapsed_seconds: number;
     history_rows: number;
+    history?: {
+      covered_hours: number;
+      required_hours: number;
+      complete: boolean;
+    };
     forecasts: {
       object_id: number;
       object_name: string;
@@ -65,6 +81,7 @@ type StreamStatus = {
 type IntegrationStatus = {
   imports_enabled: boolean;
   max_import_bytes: number;
+  max_import_rows: number;
   hosting_notice: string | null;
 };
 const statuses: Record<string, string> = {
@@ -77,7 +94,7 @@ const statuses: Record<string, string> = {
 };
 export function ImportPanel({ user }: { user: User }) {
   const [file, setFile] = useState<File | null>(null),
-    [asOf, setAsOf] = useState("2026-06-15T12:00"),
+    [asOf, setAsOf] = useState(""),
     [batches, setBatches] = useState<Batch[]>([]),
     [selected, setSelected] = useState<Batch | null>(null),
     [error, setError] = useState(""),
@@ -143,14 +160,17 @@ export function ImportPanel({ user }: { user: User }) {
     setError("");
     setReceipt("");
     try {
-      const maxBytes = integration?.max_import_bytes ?? 20 * 1024 * 1024;
+      const maxBytes = integration?.max_import_bytes ?? 300 * 1024 * 1024;
       if (file.size > maxBytes)
         throw Error(
           `Размер файла превышает ${Math.floor(maxBytes / 1024 / 1024)} МБ`,
         );
-      const extension = file.name.split(".").pop()?.toLowerCase();
+      const extension = file.name.split(".").pop()?.toLowerCase() || "";
+      if (!["csv", "xlsx", "json", "xml", "zip"].includes(extension))
+        throw Error("Выберите файл CSV, XLSX, JSON, XML или ZIP");
+      const moment = asOf ? `&as_of=${encodeURIComponent(asOf)}` : "";
       const response = await fetch(
-        `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}&as_of=${encodeURIComponent(asOf)}`,
+        `/api/${mode === "stream" ? "stream/events" : "imports"}?format=${extension}${moment}`,
         {
           method: "POST",
           credentials: "same-origin",
@@ -204,11 +224,13 @@ export function ImportPanel({ user }: { user: User }) {
         <div>
           <h2>Импорт исторических данных</h2>
           <span>
-            CSV, XLSX, JSON или XML · до{" "}
+            CSV, XLSX, JSON, XML или ZIP · до{" "}
             {Math.floor(
-              (integration?.max_import_bytes ?? 20 * 1024 * 1024) / 1024 / 1024,
+              (integration?.max_import_bytes ?? 300 * 1024 * 1024) /
+                1024 /
+                1024,
             )}{" "}
-            МБ и 100 000 записей
+            МБ и {num(integration?.max_import_rows ?? 2000000)} записей
           </span>
         </div>
         <FileUp size={21} />
@@ -222,19 +244,23 @@ export function ImportPanel({ user }: { user: User }) {
           />
         )}
         <details>
-          <summary>Формат и требования к данным</summary>
+          <summary>Формат файла</summary>
           <p>
-            Поля: channel_id, ts, value, alarm. Время без часового пояса
-            трактуется как МСК. Все события должны предшествовать моменту
-            прогноза. Нужна неделя непрерывной истории общего потока. Новые
-            каналы сначала добавляют в справочник.
+            Журнал СМВУ в формате выгрузки: ид_канала_данных, дата, время,
+            значение_датчика, тревожное. Также принимаются «ИД канала данных,
+            Текущее значение, Дата записи» и channel_id, ts, value, alarm.
+            Разделитель — запятая, точка с запятой или табуляция; кодировка
+            UTF-8 или Windows-1251. Время — МСК.
+          </p>
+          <p>
+            Прогноз строится на момент сразу после последней записи. Для полного
+            расчёта нужна неделя данных до этого момента, минимум — сутки.
           </p>
           <pre>
-            {"channel_id,ts,value,alarm\n5122,2026-06-15T11:59:00,Норма,false"}
+            {
+              "ид_события,ид_канала_данных,дата,время,значение_датчика,тревожное\n3404741043,77836,2026-06-15,11:27:04,Не замкнут,t"
+            }
           </pre>
-          <a href="/api/integrations" target="_blank" rel="noreferrer">
-            Статус источников и контракт API
-          </a>
         </details>
         {error && <ErrorNotice message={error} />}
         {stream && (
@@ -306,7 +332,7 @@ export function ImportPanel({ user }: { user: User }) {
                 <input
                   type="file"
                   aria-label="Пакет телеметрии"
-                  accept=".csv,.xlsx,.json,.xml"
+                  accept=".csv,.xlsx,.json,.xml,.zip"
                   required
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
                   disabled={
@@ -323,8 +349,20 @@ export function ImportPanel({ user }: { user: User }) {
                 value={asOf}
                 onChange={(e) => setAsOf(e.target.value)}
                 step={300}
-                required
               />
+              <small className="field-hint">
+                {asOf ? (
+                  <button
+                    type="button"
+                    className="text-link"
+                    onClick={() => setAsOf("")}
+                  >
+                    Взять по последней записи
+                  </button>
+                ) : (
+                  "Пусто — сразу после последней записи"
+                )}
+              </small>
             </label>
             <button
               className="primary-button"
@@ -335,7 +373,7 @@ export function ImportPanel({ user }: { user: User }) {
               }
             >
               <FileUp size={17} />
-              {busy ? "Проверяем пакет…" : "Рассчитать прогноз"}
+              {busy ? "Загружаем файл…" : "Загрузить и рассчитать"}
             </button>
           </form>
         )}
@@ -371,7 +409,7 @@ export function ImportPanel({ user }: { user: User }) {
         {selected && (
           <div className="batch-result">
             {["running", "queued"].includes(selected.status) && (
-              <Loading text="Обрабатываем историю и вычисляем признаки…" />
+              <Loading text="Считаем признаки и прогноз, обычно до минуты…" />
             )}
             {selected.error && <ErrorNotice message={selected.error} />}{" "}
             {selected.result && (
@@ -392,22 +430,92 @@ export function ImportPanel({ user }: { user: User }) {
                     Результат JSON
                   </a>
                 </div>
-                <p>
-                  {
-                    selected.result.forecasts.filter((f) => f.above_threshold)
-                      .length
-                  }{" "}
-                  прогнозов выше порога · расчёт{" "}
-                  {selected.result.elapsed_seconds} с.
-                </p>
-                <p className="batch-model-version">
-                  Версия расчёта:{" "}
-                  {selected.result.model_version &&
-                  selected.result.model_version !== "legacy"
-                    ? selected.result.model_version
-                    : "исходная архивная модель"}
-                  . Сохранённые прогнозы не меняются при обновлении модели.
-                </p>
+                <dl className="import-facts">
+                  <div>
+                    <dt>Прогноз на</dt>
+                    <dd>
+                      {date(selected.as_of, true)}
+                      {selected.as_of_auto && (
+                        <small>по последней записи</small>
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Принято записей</dt>
+                    <dd>
+                      {num(selected.accepted_rows)}
+                      {selected.input_rows !== undefined && (
+                        <small>из {num(selected.input_rows)}</small>
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Выше порога</dt>
+                    <dd>
+                      {
+                        selected.result.forecasts.filter(
+                          (f) => f.above_threshold,
+                        ).length
+                      }
+                      <small>из {selected.result.forecasts.length}</small>
+                    </dd>
+                  </div>
+                  {selected.result.history && (
+                    <div>
+                      <dt>Предыстория</dt>
+                      <dd>
+                        {selected.result.history.covered_hours} ч
+                        <small>
+                          из {selected.result.history.required_hours}
+                        </small>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                {selected.result.history &&
+                  !selected.result.history.complete && (
+                    <div className="import-warning">
+                      Данных меньше недели: недельные показатели неполные,
+                      вероятности могут быть занижены. Для точного прогноза
+                      загрузите журнал за 7 суток до момента прогноза.
+                    </div>
+                  )}
+                {(() => {
+                  const notes = [
+                    selected.unknown_channel_rows
+                      ? `${num(selected.unknown_channel_rows)} записей каналов вне справочника (${selected.unknown_channel_count} кан.)`
+                      : "",
+                    selected.invalid_rows
+                      ? `${num(selected.invalid_rows)} нераспознанных строк`
+                      : "",
+                    selected.late_rows
+                      ? `${num(selected.late_rows)} записей позже момента прогноза`
+                      : "",
+                    selected.other_year_rows
+                      ? `${num(selected.other_year_rows)} записей другого года`
+                      : "",
+                    selected.exact_duplicates
+                      ? `${num(selected.exact_duplicates)} точных повторов`
+                      : "",
+                  ].filter(Boolean);
+                  return (
+                    <>
+                      {notes.length > 0 && (
+                        <p className="micro-note">
+                          Пропущено: {notes.join("; ")}.
+                        </p>
+                      )}
+                      {selected.alarm_inferred && (
+                        <p className="micro-note">
+                          В файле нет флага тревоги: он восстановлен по
+                          значениям датчиков (
+                          {num(selected.inferred_alarm_rows ?? 0)} тревожных
+                          записей).
+                        </p>
+                      )}
+                    </>
+                  );
+                })()}
                 <div className="batch-result-tools">
                   <select
                     aria-label="Тип прогноза в пакете"
@@ -489,9 +597,6 @@ export function ImportPanel({ user }: { user: User }) {
                 {detail && (
                   <BatchDecision key={detail.id} detail={detail} user={user} />
                 )}
-                <p className="micro-note">
-                  Решение сохраняется с привязкой к снимку расчёта.
-                </p>
               </>
             )}
           </div>
@@ -564,10 +669,7 @@ function BatchDecision({
       <h3>
         {detail.object_name} · {detail.kind_label} · {pct(detail.probability)}
       </h3>
-      <p>
-        Снимок на {date(detail.as_of, true)} · горизонт 24 часа. Факторы
-        показывают вклад в логарифм шансов, а не физическую причину инцидента.
-      </p>
+      <p>Прогноз на {date(detail.as_of, true)} · горизонт 24 часа</p>
       <div className="table-scroll">
         <table>
           <thead>

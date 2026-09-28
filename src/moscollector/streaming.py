@@ -48,7 +48,11 @@ class StreamManager:
 
     def ingest(self, content, extension, as_of, user_id):
         frame, cutoff, counts = normalize_events(
-            read_events(content, extension), self.importer.channels, as_of
+            read_events(content, extension),
+            self.importer.channels,
+            as_of,
+            getattr(self.importer, "alarms", None),
+            strict_time=True,
         )
         records = []
         for row in frame.itertuples():

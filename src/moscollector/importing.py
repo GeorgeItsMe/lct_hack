@@ -1,11 +1,23 @@
-"""Bounded file ingestion. Each batch is isolated from the frozen research data."""
+"""Bounded file ingestion. Each batch is isolated from the frozen research data.
+
+Accepted layouts, matched by column name regardless of case and spacing:
+- the monitoring journal as delivered to the teams: ид_события, ид_канала_данных,
+  дата, время, значение_датчика, тревожное (f/t or false/true);
+- the conditional schema of Appendix 1 of the task: ИД канала данных, Текущее значение,
+  Дата записи (no alarm flag);
+- the service's own layout: channel_id, ts, value, alarm.
+CSV (comma, semicolon or tab; UTF-8 or Windows-1251), XLSX, JSON, XML, or a ZIP with one
+such file.
+"""
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import threading
@@ -17,102 +29,240 @@ from datetime import UTC, datetime
 import pandas as pd
 from defusedxml import ElementTree
 
-from moscollector.paths import PROCESSED, RUNTIME
+from moscollector.paths import ARTIFACTS, PROCESSED, RUNTIME
 
-MAX_BYTES = 20 * 1024 * 1024
-MAX_ROWS = 100_000
+MAX_BYTES = 300 * 1024 * 1024
+MAX_ROWS = 2_000_000
+# Share of malformed rows that is skipped with a report; above it the file is rejected.
+MAX_INVALID_SHARE = 0.05
+FORMATS = ("csv", "xlsx", "json", "xml", "zip")
 ALIASES = {
+    "channel_id": "channel_id",
+    "channel": "channel_id",
     "ид_канала_данных": "channel_id",
-    "дата_время": "ts",
-    "значение": "value",
-    "тревога": "alarm",
+    "ид_канала": "channel_id",
+    "канал": "channel_id",
+    "ts": "ts",
     "timestamp": "ts",
+    "datetime": "ts",
+    "date_time": "ts",
+    "дата_время": "ts",
+    "дата_и_время": "ts",
+    "дата_записи": "ts",
+    "дата": "date",
+    "date": "date",
+    "время": "time",
+    "time": "time",
+    "value": "value",
+    "значение": "value",
+    "значение_датчика": "value",
+    "текущее_значение": "value",
+    "alarm": "alarm",
+    "тревога": "alarm",
+    "тревожное": "alarm",
+    "тревожный": "alarm",
+    "признак_тревоги": "alarm",
     "id": "event_id",
-    "time": "ts",
+    "event_id": "event_id",
+    "ид_события": "event_id",
+    "ид_записи_журнала": "event_id",
 }
+ALARM_WORDS = {
+    "true": True,
+    "false": False,
+    "t": True,
+    "f": False,
+    "1": True,
+    "0": False,
+    "да": True,
+    "нет": False,
+    "yes": True,
+    "no": False,
+}
+# Values that are alarms whatever the channel; used only when the file has no alarm flag
+# and the archive has no statistics for the channel.
+ALARM_VALUES = {
+    "Неисправен",
+    "Обесточен",
+    "Отключено устройство",
+    "Питание от батарей",
+    "Батарея разряжена",
+    "Обнаружен дым",
+    "Обнаружен газ",
+    "Затоплен",
+    "Рычаг сдернут",
+}
+
+
+def canonical(name) -> str:
+    text = str(name).replace("﻿", "").strip().strip('"').strip().lower().replace("ё", "е")
+    return re.sub(r"[\s\-.]+", "_", text)
+
+
+def _read_csv(content: bytes) -> pd.DataFrame:
+    for encoding in ("utf-8-sig", "cp1251"):
+        try:
+            head = content[:65536].decode(encoding)
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        raise ValueError("Кодировка файла не распознана: сохраните CSV в UTF-8")
+    first = head.splitlines()[0] if head else ""
+    try:
+        delimiter = csv.Sniffer().sniff(first, delimiters=",;\t|").delimiter
+    except csv.Error:
+        delimiter = ","
+    return pd.read_csv(
+        io.BytesIO(content),
+        sep=delimiter,
+        nrows=MAX_ROWS + 1,
+        dtype=str,
+        encoding=encoding,
+        keep_default_na=False,
+        skipinitialspace=True,
+    )
+
+
+def _unzip(content: bytes):
+    with zipfile.ZipFile(io.BytesIO(content)) as archive:
+        members = [
+            m
+            for m in archive.infolist()
+            if not m.is_dir()
+            and not m.filename.startswith("__MACOSX")
+            and m.filename.rsplit(".", 1)[-1].lower() in ("csv", "xlsx", "json", "xml")
+        ]
+        if len(members) != 1:
+            raise ValueError("В ZIP должен быть ровно один файл CSV, XLSX, JSON или XML")
+        if members[0].file_size > MAX_BYTES:
+            raise ValueError(f"Распакованный файл превышает {MAX_BYTES // 1024 // 1024} МБ")
+        return archive.read(members[0]), members[0].filename.rsplit(".", 1)[-1].lower()
 
 
 def read_events(content: bytes, extension: str) -> pd.DataFrame:
     if not content or len(content) > MAX_BYTES:
-        raise ValueError("Размер файла должен быть от 1 байта до 20 МБ")
+        raise ValueError(f"Размер файла должен быть от 1 байта до {MAX_BYTES // 1024 // 1024} МБ")
+    extension = (extension or "").lower()
+    if extension == "zip":
+        content, extension = _unzip(content)
     try:
         if extension == "json":
             rows = json.loads(content)
-            frame = pd.DataFrame(rows.get("events", []) if isinstance(rows, dict) else rows)
+            frame = pd.DataFrame(rows.get("events", []) if isinstance(rows, dict) else rows, dtype=str)
         elif extension == "xml":
             root = ElementTree.fromstring(content)
             frame = pd.DataFrame(
-                [{child.tag: child.text for child in node} for node in root.findall("event")]
+                [{child.tag: child.text for child in node} for node in root.iter("event")], dtype=str
             )
         elif extension == "csv":
-            frame = pd.read_csv(
-                io.BytesIO(content),
-                sep=None,
-                engine="python",
-                nrows=MAX_ROWS + 1,
-                dtype=str,
-                encoding="utf-8-sig",
-                keep_default_na=False,
-            )
+            frame = _read_csv(content)
         elif extension == "xlsx":
             with zipfile.ZipFile(io.BytesIO(content)) as archive:
-                if sum(x.file_size for x in archive.infolist()) > 100 * 1024 * 1024:
-                    raise ValueError("Распакованный XLSX превышает 100 МБ")
+                if sum(x.file_size for x in archive.infolist()) > MAX_BYTES:
+                    raise ValueError("Распакованный XLSX слишком большой")
             frame = pd.read_excel(io.BytesIO(content), nrows=MAX_ROWS + 1, dtype=str, engine="openpyxl")
         else:
-            raise ValueError("Поддерживаются CSV, XLSX, JSON и XML")
+            raise ValueError("Поддерживаются CSV, XLSX, JSON, XML и ZIP")
+    except ValueError as error:
+        if "Поддерживаются" in str(error) or "слишком большой" in str(error) or "Кодировка" in str(error):
+            raise
+        raise ValueError(f"Не удалось прочитать {extension.upper()}: проверьте формат файла") from error
     except Exception as error:
-        raise ValueError(
-            f"Не удалось прочитать {extension.upper()}: проверьте формат и кодировку UTF-8"
-        ) from error
+        raise ValueError(f"Не удалось прочитать {extension.upper()}: проверьте формат файла") from error
     if not 1 <= len(frame) <= MAX_ROWS:
-        raise ValueError("В одном импорте должно быть от 1 до 100 000 записей")
-    frame = frame.rename(columns=ALIASES)
+        raise ValueError(f"В одном импорте должно быть от 1 до {MAX_ROWS:,} записей".replace(",", " "))
+    renamed = {c: ALIASES.get(canonical(c), canonical(c)) for c in frame.columns}
+    frame = frame.rename(columns=renamed)
     if frame.columns.duplicated().any():
-        raise ValueError("Неоднозначные имена столбцов")
-    required = {"channel_id", "ts", "value", "alarm"}
-    if not required.issubset(frame.columns):
-        raise ValueError("Обязательные поля: channel_id, ts, value, alarm")
+        duplicated = sorted(set(frame.columns[frame.columns.duplicated()]))
+        raise ValueError(f"Неоднозначные столбцы: {', '.join(duplicated)}")
+    if "ts" not in frame.columns and "date" in frame.columns:
+        date = frame["date"].fillna("").astype(str).str.strip()
+        time = frame["time"].fillna("").astype(str).str.strip() if "time" in frame.columns else ""
+        frame["ts"] = (date + " " + time).str.strip() if "time" in frame.columns else date
+    elif "ts" not in frame.columns and "time" in frame.columns:
+        frame["ts"] = frame["time"]
+    missing = [
+        label
+        for field, label in (
+            ("channel_id", "идентификатор канала (ид_канала_данных / channel_id)"),
+            ("ts", "время записи (дата и время / Дата записи / ts)"),
+            ("value", "значение (значение_датчика / Текущее значение / value)"),
+        )
+        if field not in frame.columns
+    ]
+    if missing:
+        raise ValueError("Не найдены столбцы: " + "; ".join(missing))
     return frame
 
 
-def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
-    cutoff = pd.Timestamp(as_of)
-    if cutoff.tzinfo is not None:
-        cutoff = cutoff.tz_convert("Europe/Moscow").tz_localize(None)
-    if pd.isna(cutoff) or cutoff != cutoff.floor("5min"):
-        raise ValueError("Момент прогноза должен соответствовать пятиминутной сетке по МСК")
+def parse_moments(raw: pd.Series) -> pd.Series:
+    """Naive times are Moscow time; values with an offset are converted to it."""
+    text = raw.fillna("").astype(str).str.strip()
+    result = pd.Series(pd.NaT, index=text.index, dtype="datetime64[ns]")
+    zoned = text.str.contains(r"(?:Z|[+-]\d{2}:?\d{2})$", regex=True)
+    if zoned.any():
+        parsed = pd.to_datetime(text[zoned], utc=True, errors="coerce", format="ISO8601")
+        result[zoned] = parsed.dt.tz_convert("Europe/Moscow").dt.tz_localize(None)
+    naive = ~zoned & text.ne("")
+    if naive.any():
+        iso = pd.to_datetime(text[naive], errors="coerce", format="ISO8601")
+        result[naive] = iso
+        rest = naive & result.isna()
+        if rest.any():
+            result[rest] = pd.to_datetime(text[rest], errors="coerce", dayfirst=True, format="mixed")
+    return result
+
+
+def normalize_events(
+    frame: pd.DataFrame,
+    known_channels: set[int],
+    as_of: str | None = None,
+    alarm_lookup=None,
+    strict_time: bool = False,
+):
+    """Validate, clean and date one batch.
+
+    Malformed rows, rows of channels missing from the catalog, rows at or after the forecast
+    moment and rows of another year are skipped and counted, so a large journal is not
+    rejected for a few bad lines. Without ``as_of`` the moment follows the last record.
+    """
     frame = frame.copy()
+    total = len(frame)
     channel = pd.to_numeric(frame.channel_id, errors="coerce")
-    timestamps = []
-    for value in frame.ts:
-        try:
-            t = pd.Timestamp(value)
-            if t.tzinfo is not None:
-                t = t.tz_convert("Europe/Moscow").tz_localize(None)
-            timestamps.append(t)
-        except (ValueError, TypeError):
-            timestamps.append(pd.NaT)
-    ts = pd.Series(timestamps, index=frame.index, dtype="datetime64[ns]")
-    alarms = (
-        frame.alarm.astype(str)
-        .str.strip()
-        .str.lower()
-        .map({"true": True, "false": False, "t": True, "f": False, "1": True, "0": False})
-    )
+    ts = parse_moments(frame.ts)
     value = frame.value.fillna("").astype(str).str.strip()
+    alarm_inferred = "alarm" not in frame.columns
+    if alarm_inferred:
+        alarms = pd.Series(pd.NA, index=frame.index, dtype="object")
+    else:
+        alarms = frame.alarm.fillna("").astype(str).str.strip().str.lower().map(ALARM_WORDS)
     invalid = (
         channel.isna()
         | (channel % 1 != 0)
         | ts.isna()
-        | alarms.isna()
+        | (alarms.isna() if not alarm_inferred else False)
         | value.eq("")
         | value.str.len().gt(500)
     )
-    if invalid.any():
+    invalid_rows = int(invalid.sum())
+    if invalid_rows and invalid_rows > MAX_INVALID_SHARE * total:
+        reasons = []
+        if channel.isna().any() or (channel % 1 != 0).any():
+            reasons.append("идентификатор канала не число")
+        if ts.isna().any():
+            reasons.append("время не распознано")
+        if not alarm_inferred and alarms.isna().any():
+            reasons.append("флаг тревоги не t/f, true/false или 1/0")
+        if value.eq("").any():
+            reasons.append("пустое значение")
         raise ValueError(
-            f"Невалидных строк: {int(invalid.sum())}. Первые номера: {(frame.index[invalid][:5] + 2).tolist()}"
+            f"Невалидных строк: {invalid_rows} из {total} ({'; '.join(reasons)}). "
+            f"Первые номера строк: {(frame.index[invalid][:5] + 2).tolist()}"
         )
+    keep = ~invalid
+    frame, channel, ts, value, alarms = frame[keep], channel[keep], ts[keep], value[keep], alarms[keep]
     unknown = ~channel.isin(known_channels)
     if unknown.all():
         raise ValueError("Ни один канал пакета не найден в справочнике. Обновите справочник перед импортом")
@@ -121,9 +271,39 @@ def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
     skipped_channels = sorted(int(c) for c in channel[unknown].unique())
     skipped_rows = int(unknown.sum())
     keep = ~unknown
-    frame, channel, ts, alarms, value = frame[keep], channel[keep], ts[keep], alarms[keep], value[keep]
-    if ts.ge(cutoff).any() or not ts.dt.year.eq(cutoff.year).all():
+    channel, ts, value, alarms = channel[keep], ts[keep], value[keep], alarms[keep]
+    if as_of:
+        cutoff = pd.Timestamp(as_of)
+        if cutoff.tzinfo is not None:
+            cutoff = cutoff.tz_convert("Europe/Moscow").tz_localize(None)
+        if pd.isna(cutoff) or cutoff != cutoff.floor("5min"):
+            raise ValueError("Момент прогноза должен соответствовать пятиминутной сетке по МСК")
+        auto = False
+    else:
+        # Right after the last record, on the five-minute grid the models use.
+        cutoff = (ts.max() + pd.Timedelta(seconds=1)).ceil("5min")
+        auto = True
+    late = ts.ge(cutoff)
+    other_year = ~late & ts.dt.year.ne(cutoff.year)
+    if strict_time and (late.any() or other_year.any()):
+        # The stream keeps a monotonic watermark: a batch with future rows is refused whole.
         raise ValueError("Все записи должны предшествовать моменту прогноза и принадлежать тому же году")
+    usable = ~late & ~other_year
+    if not usable.any():
+        raise ValueError(
+            "Все записи позже момента прогноза или относятся к другому году. "
+            "Оставьте момент пустым, чтобы взять его по последней записи"
+        )
+    channel, ts, value, alarms = channel[usable], ts[usable], value[usable], alarms[usable]
+    inferred_alarms = 0
+    if alarm_inferred:
+        guessed = (
+            alarm_lookup(channel.astype("int64"), value)
+            if alarm_lookup is not None
+            else value.isin(ALARM_VALUES)
+        )
+        alarms = guessed
+        inferred_alarms = int(guessed.sum())
     result = pd.DataFrame(
         {"channel_id": channel.astype("int64"), "ts": ts, "value": value, "alarm": alarms.astype(bool)}
     )
@@ -136,14 +316,63 @@ def normalize_events(frame: pd.DataFrame, known_channels: set[int], as_of: str):
         result,
         cutoff,
         {
-            "input_rows": len(frame) + skipped_rows,
+            "input_rows": total,
             "accepted_rows": len(result),
             "exact_duplicates": duplicates,
+            "invalid_rows": invalid_rows,
             "unknown_channel_rows": skipped_rows,
             "unknown_channels": skipped_channels[:20],
             "unknown_channel_count": len(skipped_channels),
+            "late_rows": int(late.sum()),
+            "other_year_rows": int(other_year.sum()),
+            "alarm_inferred": alarm_inferred,
+            "inferred_alarm_rows": inferred_alarms,
+            "as_of_auto": auto,
+            "first_record": ts.min().isoformat(),
+            "last_record": ts.max().isoformat(),
         },
     )
+
+
+class AlarmVocabulary:
+    """Alarm flag for files that have none: what this channel reported for this value in the
+    archive, else what the value usually meant across all channels."""
+
+    def __init__(self):
+        self.by_channel = None
+        self.by_value = None
+        self.lock = threading.Lock()
+
+    def _load(self):
+        import duckdb
+
+        by_value = {}
+        for path in sorted(ARTIFACTS.glob("audit-*.json")):
+            for state in json.loads(path.read_text(encoding="utf-8")).get("states", []):
+                rows, alarms = by_value.get(state["value"], (0, 0))
+                by_value[state["value"]] = (rows + state["rows"], alarms + state["alarms"])
+        self.by_value = {v: a * 2 > r for v, (r, a) in by_value.items() if r}
+        self.by_value.update({v: True for v in ALARM_VALUES})
+        archives = sorted(PROCESSED.glob("events-*.parquet"))
+        if archives:
+            con = duckdb.connect()
+            frame = con.execute(
+                "SELECT channel_id, value, avg(alarm::INT) > 0.5 AS alarm FROM read_parquet(?) GROUP BY 1, 2",
+                [str(archives[-1])],
+            ).df()
+            con.close()
+            self.by_channel = {(int(c), v): bool(a) for c, v, a in frame.itertuples(index=False)}
+        else:
+            self.by_channel = {}
+
+    def __call__(self, channel: pd.Series, value: pd.Series) -> pd.Series:
+        with self.lock:
+            if self.by_channel is None:
+                self._load()
+        keys = list(zip(channel.tolist(), value.tolist(), strict=True))
+        return pd.Series(
+            [self.by_channel.get(k, self.by_value.get(k[1], False)) for k in keys], index=channel.index
+        )
 
 
 class ImportManager:
@@ -154,6 +383,7 @@ class ImportManager:
         self.slots = threading.BoundedSemaphore(4)
         self.lock = threading.Lock()
         self.channels = set(pd.read_parquet(PROCESSED / "channels.parquet").channel_id)
+        self.alarms = AlarmVocabulary()
         for path in self.root.glob("*/status.json"):
             status = json.loads(path.read_text(encoding="utf-8"))
             if status["status"] in ("running", "queued"):
@@ -167,7 +397,9 @@ class ImportManager:
         temporary.replace(directory / "status.json")
 
     def submit(self, content, extension, as_of, user_id):
-        frame, cutoff, counts = normalize_events(read_events(content, extension), self.channels, as_of)
+        frame, cutoff, counts = normalize_events(
+            read_events(content, extension), self.channels, as_of, self.alarms
+        )
         identity = hashlib.sha256(content + cutoff.isoformat().encode()).hexdigest()
         return self.submit_frame(frame, cutoff, counts, identity, extension, user_id)
 
