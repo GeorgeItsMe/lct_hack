@@ -52,6 +52,7 @@
     "data/processed/events-2026.parquet": "925bcd94d95af5593bced023de8a78d259e5ce17cc0f8c5b903cd5eeb5481519",
     "data/processed/features.parquet": "978f49c751511dc8c4f9ae144819a140c0104e1b703ae0c457a4eca3656d78df",
     "data/processed/hourly-2026.parquet": "2630dbe5cb921e63106c86f8064a8ef478244ae9637695e232f035891d69061b",
-    "data/processed/objects.parquet": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce"
+    "data/processed/objects.parquet": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce",
+    "data/processed/sensor_states.csv": "b968f3652ed33fd6e0d2dccee334275436dada67f4549763cfb4b2072108b5cc"
   }
 }

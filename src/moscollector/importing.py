@@ -100,9 +100,14 @@ def canonical(name) -> str:
 
 
 def _read_csv(content: bytes) -> pd.DataFrame:
+    # Decode whole lines only: a cut inside a multi-byte letter must not look like cp1251.
+    sample = content[:65536]
+    newline = b"\n"
+    if len(content) > len(sample) and newline in sample:
+        sample = sample[: sample.rindex(newline)]
     for encoding in ("utf-8-sig", "cp1251"):
         try:
-            head = content[:65536].decode(encoding)
+            head = sample.decode(encoding)
             break
         except UnicodeDecodeError:
             continue
@@ -335,8 +340,12 @@ def normalize_events(
 
 
 class AlarmVocabulary:
-    """Alarm flag for files that have none: what this channel reported for this value in the
-    archive, else what the value usually meant across all channels."""
+    """Alarm flag for files that have none, in order of evidence: what this channel reported for
+    this value in the archive; what the value usually meant in the journal (the models learned
+    from these flags); the organizers' state catalog for states the journal never showed.
+
+    The catalog is not used first: it marks "Обнаружено движение" or "Не замкнут" as alarms,
+    while the journal flags them only when the object is armed (0.2% and 12% of records)."""
 
     def __init__(self):
         self.by_channel = None
@@ -346,13 +355,20 @@ class AlarmVocabulary:
     def _load(self):
         import duckdb
 
-        by_value = {}
+        self.by_value = {v: True for v in ALARM_VALUES}
+        states = PROCESSED / "sensor_states.csv"
+        if states.exists():
+            catalog = pd.read_csv(states, dtype=str, encoding="utf-8-sig")
+            flags = catalog["тревожное"].str.strip().str.lower().map(ALARM_WORDS)
+            for name, flag in zip(catalog["название_состояния"].str.strip(), flags, strict=True):
+                if pd.notna(flag):
+                    self.by_value[name] = self.by_value.get(name, False) or bool(flag)
+        journal = {}
         for path in sorted(ARTIFACTS.glob("audit-*.json")):
             for state in json.loads(path.read_text(encoding="utf-8")).get("states", []):
-                rows, alarms = by_value.get(state["value"], (0, 0))
-                by_value[state["value"]] = (rows + state["rows"], alarms + state["alarms"])
-        self.by_value = {v: a * 2 > r for v, (r, a) in by_value.items() if r}
-        self.by_value.update({v: True for v in ALARM_VALUES})
+                rows, alarms = journal.get(state["value"], (0, 0))
+                journal[state["value"]] = (rows + state["rows"], alarms + state["alarms"])
+        self.by_value.update({v: a * 2 > r for v, (r, a) in journal.items() if r})
         archives = sorted(PROCESSED.glob("events-*.parquet"))
         if archives:
             con = duckdb.connect()

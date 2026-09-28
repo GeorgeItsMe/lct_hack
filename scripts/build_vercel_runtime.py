@@ -55,6 +55,12 @@ def build(target: Path = DEFAULT_TARGET):
 
     for name in ("channels.parquet", "objects.parquet", "hourly-2026.parquet"):
         copy(processed / name, target_processed / name)
+    # Organizers' state catalog (справочник_состояний.csv): restores alarm flags on import.
+    states = processed / "sensor_states.csv"
+    if not states.exists():
+        states = ROOT / "data" / "raw" / "справочник_состояний.csv"
+    if states.exists():
+        copy(states, target_processed / "sensor_states.csv")
 
     rows = {
         "events_2026": write_filtered(

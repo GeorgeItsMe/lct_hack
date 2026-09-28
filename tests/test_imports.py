@@ -154,3 +154,18 @@ def test_stream_still_refuses_future_rows_whole():
     rows = [sample(), sample(ts="2026-06-15T12:30:00")]
     with pytest.raises(ValueError, match="предшествовать"):
         normalize_events(pd.DataFrame(rows), {1}, "2026-06-15T12:00", strict_time=True)
+
+
+def test_utf8_letter_cut_at_the_sniffing_boundary_is_not_mistaken_for_cp1251():
+    header = "ид_канала_данных,дата,время,значение_датчика,тревожное\n".encode()
+    filler = b"1,2026-06-15,11:58:00,0,f\n"
+    prefix = b"1,2026-06-15,11:58:00,"
+    body = header + filler * ((65535 - len(header) - len(prefix)) // len(filler))
+    body += prefix + b"0" * (65535 - len(body) - len(prefix))
+    assert len(body) == 65535
+    content = body + "Я,f\n".encode() + "1,2026-06-15,11:59:00,Обнаружено движение,f\n".encode() * 10
+    # The two bytes of «Я» sit at offsets 65535 and 65536: a naive 64 KiB decode fails as UTF-8.
+    with pytest.raises(UnicodeDecodeError):
+        content[:65536].decode("utf-8")
+    frame = read_events(content, "csv")
+    assert list(frame.columns[:2]) == ["channel_id", "date"] and frame.value.iloc[-1] == "Обнаружено движение"
