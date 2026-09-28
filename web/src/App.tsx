@@ -395,13 +395,29 @@ export default function App() {
       ...(overview?.stream?.forecasts || []),
       ...(overview?.forecasts || []),
     ];
+    // Warnings first; among them fresh monitoring-stream data before the archive moment.
     return rows.sort(
       (a, b) =>
         Number(b.above_threshold) - Number(a.above_threshold) ||
+        Number(b.source === "stream") - Number(a.source === "stream") ||
         b.probability / Math.max(b.threshold, 0.001) -
           a.probability / Math.max(a.threshold, 0.001),
     );
   }, [overview]);
+  const queueStats = useMemo(() => {
+    const above = allForecasts.filter((f) => f.above_threshold);
+    return {
+      warnings: above.length,
+      objects: new Set(above.map((f) => f.object_id)).size,
+      critical: allForecasts.filter((f) => f.risk === "critical").length,
+      byKind: Object.fromEntries(
+        (["fault", "fire", "flood", "access"] as Kind[]).map((k) => [
+          k,
+          above.filter((f) => f.kind === k).length,
+        ]),
+      ) as Record<Kind, number>,
+    };
+  }, [allForecasts]);
   const notified: Forecast[] = useMemo(() => {
     if (!overview || !user) return [];
     if (can(user, "notifications.all"))
@@ -768,17 +784,12 @@ export default function App() {
                         <Bell size={17} />
                       </div>
                       <strong>
-                        {num(overview.stats.objects_at_risk)}
+                        {num(queueStats.objects)}
                         <small> объектов</small>
                       </strong>
                       <p>
-                        {num(overview.stats.warnings)} предупреждений на 24 часа
-                        · критических{" "}
-                        {
-                          overview.forecasts.filter(
-                            (f) => f.risk === "critical",
-                          ).length
-                        }
+                        {num(queueStats.warnings)} предупреждений на 24 часа ·
+                        критических {queueStats.critical}
                       </p>
                     </div>
                     <div className="metric-card">
@@ -875,13 +886,17 @@ export default function App() {
                               <small>
                                 {k.threshold > 1
                                   ? "Предупреждения отключены"
-                                  : k.count
+                                  : queueStats.byKind[k.id]
                                     ? "Есть предупреждения"
                                     : "Выше порога нет"}
                               </small>
                             </div>
-                            <b className={k.count ? "has-risk" : ""}>
-                              {k.count}
+                            <b
+                              className={
+                                queueStats.byKind[k.id] ? "has-risk" : ""
+                              }
+                            >
+                              {queueStats.byKind[k.id]}
                             </b>
                             <ChevronRight size={14} />
                           </button>
