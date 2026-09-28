@@ -83,15 +83,8 @@ export const NAVIGATION: Record<Role, NavSection[]> = {
         item("summary", "Сводка и отчёты", PieChart),
         item("thresholds", "Пороги предупреждений", SlidersHorizontal),
         item("decisions", "Журнал отработки", History),
-        item("map", "Схема объектов", Map),
-      ],
-    },
-    {
-      label: "АНАЛИТИКА",
-      items: [
-        item("evaluation", "Проверка модели", FlaskConical),
-        item("quality", "Качество данных", Database),
         item("journal", "Журнал прогнозов", ListChecks),
+        item("map", "Схема объектов", Map),
       ],
     },
   ],
@@ -168,25 +161,21 @@ export const ROLE_SHORT: Record<Role, string> = {
   admin: "АД",
 };
 
-export const DEMO_ROLES: { username: string; label: string; hint: string }[] = [
+export const DEMO_ROLES: { username: string; label: string }[] = [
   {
     username: "dispatcher",
     label: "Диспетчер ОДС",
-    hint: "Разбирает предупреждения и принимает решения",
   },
   {
     username: "technician",
     label: "Технический персонал",
-    hint: "Состояние оборудования, задачи и заявки",
   },
   {
     username: "analyst",
     label: "Аналитик",
-    hint: "Верификация данных, загрузка, модель и пороги",
   },
   {
     username: "manager",
     label: "Руководитель подразделения",
-    hint: "Сводка, отчёты и утверждение порогов",
   },
 ];

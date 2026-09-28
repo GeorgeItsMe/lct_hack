@@ -151,7 +151,6 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
                   </span>
                   <div>
                     <strong>{r.label}</strong>
-                    <small>{r.hint}</small>
                   </div>
                   <ArrowRight size={17} />
                 </button>

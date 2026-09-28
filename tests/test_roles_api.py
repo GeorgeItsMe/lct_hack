@@ -258,3 +258,11 @@ def test_demo_database_from_previous_release_gains_new_roles(tmp_path):
     with factory() as db:
         assert set(db.scalars(select(User.username))) == {u for u, _, _ in DEMO_ACCOUNTS}
     engine.dispose()
+
+
+def test_model_diagnostics_belong_to_the_analyst_only(client):
+    c, _, _ = client
+    for username in ("dispatcher", "technician", "manager", "admin"):
+        login(c, username)
+        for path in ("/api/evaluation", "/api/quality", "/api/evaluation/matches/fire"):
+            assert c.get(path).status_code == 403, (username, path)
