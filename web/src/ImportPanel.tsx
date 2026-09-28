@@ -352,12 +352,6 @@ export function ImportPanel({ user }: { user: User }) {
             </button>
           </form>
         )}
-        {!can(user, "data.import") && (
-          <p className="micro-note">
-            Загрузка данных доступна аналитику. Здесь видны результаты расчётов
-            по поступившим пакетам.
-          </p>
-        )}
         {batches.length > 0 && (
           <div className="import-jobs">
             <div className="section-label">
@@ -509,10 +503,7 @@ export function ImportPanel({ user }: { user: User }) {
                   <BatchDecision key={detail.id} detail={detail} user={user} />
                 )}
                 <p className="micro-note">
-                  Расчёт по новым данным использует зафиксированные модели и
-                  пороги. Вероятности относятся к сигналам датчиков. Импорт не
-                  меняет отложенный тест. Решение сохраняется с привязкой к
-                  снимку расчёта.
+                  Решение сохраняется с привязкой к снимку расчёта.
                 </p>
               </>
             )}

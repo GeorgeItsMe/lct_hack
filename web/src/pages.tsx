@@ -7,7 +7,6 @@ import {
   Database,
   FileCheck2,
   Filter,
-  FlaskConical,
   Wrench,
 } from "lucide-react";
 import {
@@ -89,20 +88,6 @@ export function EvaluationPage() {
   ];
   return (
     <div className="page-stack">
-      <div className="method-banner">
-        <span className="method-icon">
-          <FlaskConical size={25} />
-        </span>
-        <div>
-          <strong>Будущее отделено от обучения</strong>
-          <p>
-            Тест исходной архивной версии: июнь 2026. Разрывы выгрузки и окна
-            без полного будущего исключены. Одна тревога сопоставляется с одним
-            эпизодом.
-          </p>
-        </div>
-        <span className="soft-chip">Горизонт 24 часа</span>
-      </div>
       <div className="kind-tabs">
         {(Object.keys(kindNames) as Kind[]).map((k) => (
           <button
@@ -118,11 +103,7 @@ export function EvaluationPage() {
       {data.operational_quality?.kind === kind && (
         <section className="panel research-panel">
           <div className="research-body">
-            <h3>Новая модель охранных эпизодов</h3>
-            <p>
-              Прогноз числа эпизодов и учёт незавершённых предупреждений. Одна
-              тревога сопоставляется с одним эпизодом.
-            </p>
+            <h3>Модель охранных эпизодов на прошлых периодах</h3>
             <div className="table-scroll">
               <table>
                 <thead>
@@ -149,44 +130,18 @@ export function EvaluationPage() {
             </div>
             <p>
               {data.operational_quality.target_summary ||
-                "Цель 75% / 50% выполнена суммарно на трёх исходных периодах."}{" "}
-              {data.operational_quality.below_target}. Оценены сигналы датчиков,
-              а не подтверждённые физические инциденты.
+                "Цель 75% / 50% выполнена суммарно на исходных периодах."}{" "}
+              {data.operational_quality.below_target}.
             </p>
-            <p>
-              Условный диапазон прироста F1 по узлам в прежнем сравнении на
-              ноябре, феврале и мае:{" "}
-              {rangeText(data.operational_quality.f1_gain_interval)}. Прирост
-              относится к модели вместе с правилом повторных предупреждений.
-            </p>
-            {data.operational_quality.additional_periods && (
-              <p>
-                Декабрь и март добавлены после выбора семейства модели. Для
-                каждого периода модель обучалась на более ранней истории;
-                конфигурация по результатам этих месяцев не менялась.
-              </p>
-            )}
-            <small>
-              Повторно использованные исторические периоды; это не новый слепой
-              тест. Окончательные переобученные веса ещё не проверены на новом
-              периоде. Версия новых расчётов:{" "}
-              {data.operational_quality.model_version}. Июньская оценка исходной
-              версии ниже сохранена.
-            </small>
           </div>
         </section>
       )}
       {data.research?.models[kind] && (
         <details className="panel research-panel">
           <summary>
-            Предыдущий цикл экспериментов <span>3 временных периода</span>
+            Сравнение вариантов модели <span>3 временных периода</span>
           </summary>
           <div className="research-body">
-            <p>
-              Сравнение семейств моделей на прошлых периодах. Каждая модель
-              обучена только на более ранних данных. Указан событийный F1;
-              больше — лучше.
-            </p>
             <div className="table-scroll">
               <table>
                 <thead>
@@ -217,10 +172,10 @@ export function EvaluationPage() {
             </div>
             <p>
               {data.research.models[kind]!.selected === "reference"
-                ? "В этом цикле новые варианты не прошли заранее заданные условия улучшения. Его результаты не описывают последующие обновления модели."
+                ? "Новые варианты не прошли условия улучшения."
                 : data.research.deployed_changed
-                  ? "Новый вариант используется в новых пакетных расчётах. Он прошёл ретроспективное сравнение; для независимого подтверждения нужен новый период. Архивные прогнозы сохранены."
-                  : "Кандидат прошёл ретроспективное сравнение. Для независимого подтверждения нужен новый период."}
+                  ? "Новый вариант используется в расчётах по новым данным."
+                  : "Кандидат прошёл сравнение на прошлых периодах."}
             </p>
             {data.research.models[kind]!.uncertainty && (
               <p>
@@ -229,15 +184,9 @@ export function EvaluationPage() {
                   data.research.models[kind]!.uncertainty!.by_parent
                     .percentile_95.f1_difference,
                 )}
-                . Диапазон условен для уже выбранной модели и не учитывает сам
-                отбор вариантов.
+                .
               </p>
             )}
-            <small>
-              Эти даты уже рассматривались в исследовании. Это дополнительная
-              ретроспективная проверка; июньский тест исходной версии ниже не
-              пересчитывался. Прочерк — вариант не выводился на подтверждение.
-            </small>
           </div>
         </details>
       )}
@@ -246,11 +195,7 @@ export function EvaluationPage() {
           <CircleAlert size={20} />
           <div>
             <strong>Автоматические предупреждения отключены</strong>
-            <p>
-              В периоде настройки недостаточно независимых событий для выбора
-              устойчивого порога. Вероятности доступны для исследовательского
-              просмотра.
-            </p>
+            <p>Недостаточно событий для выбора порога.</p>
           </div>
         </div>
       )}
@@ -501,9 +446,7 @@ export function EvaluationPage() {
           </div>
         </div>
         <div className="panel-footnote">
-          Оцениваются прокси-эпизоды по журналам датчиков. Истинные пожары,
-          проникновения и подтверждённые отказы отдельно не размечены.
-          Вероятность относится к зарегистрированному событию.
+          Событийные метрики по эпизодам журнала датчиков.
         </div>
       </section>
       <section className="panel">
@@ -636,10 +579,7 @@ export function QualityPage() {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <div className="panel-footnote">
-          Ноль означает отсутствие записей в выгрузке, а не исправность
-          оборудования. Окна рядом с разрывами исключены из оценки.
-        </div>
+        <div className="panel-footnote">0 — нет записей в выгрузке.</div>
       </section>
       <section className="panel">
         <div className="panel-heading">

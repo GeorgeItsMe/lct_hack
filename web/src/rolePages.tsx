@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Ban,
   Check,
-  ClipboardCheck,
   ClipboardList,
   Download,
   FileSpreadsheet,
@@ -157,9 +156,7 @@ export function EquipmentPage({
           as_of: asOf,
         }),
       });
-      setMessage(
-        `Создан черновик ${order.number}. Он в разделе «Задачи и заявки».`,
-      );
+      setMessage(`Черновик ${order.number} создан`);
       setRefresh((r) => r + 1);
     } catch (e) {
       setMessage((e as Error).message);
@@ -173,11 +170,7 @@ export function EquipmentPage({
           value={data.totals.objects}
           hint="Прогноз отказа на 24 часа"
         />
-        <Stat
-          label="С риском отказа выше порога"
-          value={data.totals.at_risk}
-          hint="Требуют внимания в первую очередь"
-        />
+        <Stat label="С риском отказа выше порога" value={data.totals.at_risk} />
         <Stat
           label="Каналов неисправно сейчас"
           value={data.totals.faulty_now}
@@ -297,8 +290,7 @@ export function EquipmentPage({
                         </div>
                       ) : (
                         <p className="micro-note">
-                          Сообщений о неисправности за сутки нет; риск
-                          определяется историей объекта.
+                          Неисправностей за сутки нет.
                         </p>
                       )}
                       <div className="row-actions">
@@ -395,28 +387,6 @@ export function WorkPage({
   const waiting = tasks.data.filter((t) => !t.work_order);
   return (
     <div className="page-stack">
-      <div className="method-banner">
-        <span className="method-icon">
-          <ClipboardList size={24} />
-        </span>
-        <div>
-          <strong>Заявки ведёт внешняя система учёта работ</strong>
-          <p>
-            Сервис формирует черновик и передаёт его, а статус получает обратно
-            только на чтение. В демонстрации внешняя система эмулируется: статус
-            меняется со временем, итог берётся из архива — был ли эпизод на
-            объекте в течение суток.
-          </p>
-        </div>
-        <button
-          className="secondary-button"
-          onClick={() => sync(false)}
-          disabled={syncing}
-        >
-          <RefreshCw size={15} className={syncing ? "spin" : ""} />
-          Обновить статусы
-        </button>
-      </div>
       {message && <div className="settings-message">{message}</div>}
       <section className="panel">
         <div className="panel-heading">
@@ -425,16 +395,11 @@ export function WorkPage({
               Задачи от диспетчера{" "}
               <span className="count-badge">{waiting.length}</span>
             </h2>
-            <span>
-              Решения «выезд», «проверка» и «ТО», по которым ещё нет заявки
-            </span>
+            <span>Решения диспетчера без заявки</span>
           </div>
         </div>
         {!waiting.length ? (
-          <Empty title="Новых задач нет">
-            Когда диспетчер направит бригаду или запланирует ТО, задача появится
-            здесь.
-          </Empty>
+          <Empty title="Новых задач нет" />
         ) : (
           <div className="decision-cards">
             {waiting.map((t) => (
@@ -471,8 +436,15 @@ export function WorkPage({
         <div className="panel-heading">
           <div>
             <h2>Заявки</h2>
-            <span>Черновики можно править до передачи в систему учёта</span>
           </div>
+          <button
+            className="secondary-button"
+            onClick={() => sync(false)}
+            disabled={syncing}
+          >
+            <RefreshCw size={15} className={syncing ? "spin" : ""} />
+            Обновить статусы
+          </button>
         </div>
         {!orders.data.length ? (
           <Empty title="Заявок пока нет" />
@@ -683,7 +655,7 @@ export function VerificationPage({ user }: { user: User }) {
         "/retraining",
         { method: "POST" },
       );
-      setMessage(`Зафиксировано меток: ${result.labels}. ${result.note}`);
+      setMessage(`Набор из ${result.labels} меток сохранён`);
       setRefresh((r) => r + 1);
     } catch (e) {
       setMessage((e as Error).message);
@@ -691,20 +663,6 @@ export function VerificationPage({ user }: { user: User }) {
   }
   return (
     <div className="page-stack">
-      <div className="method-banner">
-        <span className="method-icon">
-          <ClipboardCheck size={24} />
-        </span>
-        <div>
-          <strong>Прежде чем решение станет обучающей меткой</strong>
-          <p>
-            Для каждого решения диспетчера видно, чем закончились работы и что
-            показал журнал в следующие 24 часа. Предложенная метка следует
-            самому сильному доказательству: итогу заявки, затем отметке «ложное
-            срабатывание», затем архиву.
-          </p>
-        </div>
-      </div>
       <div className="four-column">
         <Stat label="Решений в журнале" value={data.rows.length} />
         <Stat
@@ -737,9 +695,7 @@ export function VerificationPage({ user }: { user: User }) {
           </div>
         </div>
         {!rows.length ? (
-          <Empty title="Нет решений для проверки">
-            Решения появляются, когда диспетчер разбирает предупреждения.
-          </Empty>
+          <Empty title="Нет решений для проверки" />
         ) : (
           <div className="label-list">
             {rows.map((r) => (
@@ -756,10 +712,7 @@ export function VerificationPage({ user }: { user: User }) {
         <div className="panel-heading">
           <div>
             <h2>Дообучение модели</h2>
-            <span>
-              Принятые метки фиксируются набором; новые веса активируются только
-              после проверки на отложенном периоде
-            </span>
+            <span>Наборы проверенных меток</span>
           </div>
           {can(user, "retrain.run") && (
             <button className="primary-button" onClick={retrain}>
@@ -792,9 +745,7 @@ export function VerificationPage({ user }: { user: User }) {
                       <code>{r.file_name}</code>
                     </td>
                     <td>
-                      {r.status === "prepared"
-                        ? "Набор готов, обучение — на полном датасете"
-                        : r.status}
+                      {r.status === "prepared" ? "Готов к обучению" : r.status}
                     </td>
                   </tr>
                 ))}
@@ -967,8 +918,16 @@ export function ThresholdsPage({
     return () => clearTimeout(handle);
   }, [kind, value]);
   async function propose() {
-    setBusy(true);
     setMessage("");
+    if (value === null || Math.abs(value - (current || 0)) < 1e-9) {
+      setMessage("Сдвиньте порог: новое значение совпадает с действующим");
+      return;
+    }
+    if (rationale.trim().length < 5) {
+      setMessage("Укажите обоснование изменения");
+      return;
+    }
+    setBusy(true);
     try {
       await api("/thresholds/proposals", {
         method: "POST",
@@ -1004,25 +963,10 @@ export function ThresholdsPage({
     return <ErrorNotice message={settings.error || proposals.error} />;
   if (!settings.data || !proposals.data || value === null) return <Loading />;
   const pending = proposals.data.filter((p) => p.status === "pending");
+  const pendingForKind = pending.find((p) => p.kind === kind);
   const disabled = value > 1;
   return (
     <div className="page-stack">
-      <div className="method-banner">
-        <span className="method-icon">
-          <SlidersHorizontal size={24} />
-        </span>
-        <div>
-          <strong>
-            Порог определяет, сколько предупреждений получит диспетчер
-          </strong>
-          <p>
-            Эффект считается на периоде настройки порогов (16–31 мая 2026) той
-            же процедурой, что и при обучении: одно предупреждение на объект в
-            сутки, одно предупреждение сопоставляется с одним эпизодом. Июньский
-            тест для подбора порога не используется.
-          </p>
-        </div>
-      </div>
       {canApprove && pending.length > 0 && (
         <section className="panel">
           <div className="panel-heading">
@@ -1031,7 +975,6 @@ export function ThresholdsPage({
                 На утверждении{" "}
                 <span className="count-badge">{pending.length}</span>
               </h2>
-              <span>Предложения аналитика с расчётом эффекта</span>
             </div>
           </div>
           <div className="proposal-list">
@@ -1058,7 +1001,6 @@ export function ThresholdsPage({
                   ? "Изменить порог"
                   : "Действующие пороги"}
             </h2>
-            <span>Выберите тип риска и посмотрите, как изменится работа</span>
           </div>
         </div>
         <div className="kind-tabs">
@@ -1094,34 +1036,38 @@ export function ThresholdsPage({
           <small>
             Действует{" "}
             {current !== undefined && current > 1 ? "выкл." : pct(current || 0)}
-            {" · "}порог модели{" "}
+            {" · "}по умолчанию{" "}
             {settings.data.defaults[kind] > 1
               ? "выкл."
               : pct(settings.data.defaults[kind])}
-            {" · "}101% выключает предупреждения
           </small>
         </div>
         {preview && preview.kind === kind && <PreviewBlock preview={preview} />}
         {message && <div className="settings-message">{message}</div>}
+        {canPropose && pendingForKind && (
+          <div className="settings-message">
+            На утверждении: {pct(Math.min(pendingForKind.current_value, 1))} →{" "}
+            {pendingForKind.proposed_value > 1
+              ? "выкл."
+              : pct(pendingForKind.proposed_value)}{" "}
+            · {date(pendingForKind.created_at, true)}
+          </div>
+        )}
         {canPropose && (
           <div className="decision-form proposal-form">
             <label>
-              Обоснование для руководителя
+              Обоснование
               <textarea
                 rows={3}
                 value={rationale}
                 maxLength={2000}
-                placeholder="Например: снизить нагрузку на смену при сохранении полноты"
+                placeholder="Причина изменения"
                 onChange={(e) => setRationale(e.target.value)}
               />
             </label>
             <button
               className="primary-button"
-              disabled={
-                busy ||
-                rationale.trim().length < 10 ||
-                Math.abs(value - (current || 0)) < 1e-9
-              }
+              disabled={busy || !!pendingForKind}
               onClick={propose}
             >
               <Send size={16} />
@@ -1146,7 +1092,6 @@ export function ThresholdsPage({
         <div className="panel-heading">
           <div>
             <h2>История предложений</h2>
-            <span>Все изменения порогов также записаны в журнал аудита</span>
           </div>
         </div>
         {!proposals.data.length ? (
@@ -1256,10 +1201,7 @@ function PreviewBlock({ preview }: { preview: ThresholdPreview }) {
       <div>
         <h3>Эффект на периоде настройки</h3>
         <MetricsTable current={preview.current} proposed={preview.proposed} />
-        <p className="micro-note">
-          {preview.period_label}. Нагрузка — за 7 суток до выбранного момента
-          архива, с паузой 24 часа по объекту.
-        </p>
+        <p className="micro-note">{preview.period_label}</p>
       </div>
       <div>
         <h3>Precision и Recall в зависимости от порога</h3>
@@ -1318,10 +1260,6 @@ function PreviewBlock({ preview }: { preview: ThresholdPreview }) {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <p className="micro-note">
-          Точки — сетка порогов, рассчитанная при обучении. Пунктир —
-          действующий и предложенный порог.
-        </p>
       </div>
     </div>
   );
@@ -1440,11 +1378,7 @@ export function SummaryPage({
           value={data.totals.warnings}
           hint={`${data.totals.objects_at_risk} объектов`}
         />
-        <Stat
-          label="Критических"
-          value={data.totals.critical}
-          hint="Вероятность вдвое выше порога"
-        />
+        <Stat label="Критических" value={data.totals.critical} />
         <Stat
           label="Доля ложных срабатываний"
           value={
@@ -1464,10 +1398,7 @@ export function SummaryPage({
         <section className="panel report-panel">
           <div>
             <h2>Отчёт для руководства</h2>
-            <span>
-              Риски, узлы, отработка, заявки, качество модели и сезонность на
-              момент {date(data.as_of, true)}
-            </span>
+            <span>На {date(data.as_of, true)}</span>
           </div>
           <div className="row-actions">
             <a
@@ -1552,9 +1483,7 @@ export function SummaryPage({
         <div className="panel-heading">
           <div>
             <h2>Динамика предупреждений за 7 суток</h2>
-            <span>
-              Число объектов выше порога в каждом трёхчасовом снимке архива
-            </span>
+            <span>Объекты выше порога</span>
           </div>
         </div>
         <div className="chart-box">
@@ -1592,7 +1521,6 @@ export function SummaryPage({
         <div className="panel-heading">
           <div>
             <h2>Эксплуатационные узлы</h2>
-            <span>Сначала узлы с критическими предупреждениями</span>
           </div>
         </div>
         <div className="table-scroll">
@@ -1656,10 +1584,7 @@ export function SummaryPage({
           <div className="panel-heading">
             <div>
               <h2>Сезонность тревожных сообщений</h2>
-              <span>
-                Сумма тревог по месяцам, 2022–2026. 2021 исключён: миграция
-                мониторинга
-              </span>
+              <span>Тревожные сообщения по месяцам</span>
             </div>
           </div>
           <div className="chart-box">
@@ -1692,16 +1617,12 @@ export function SummaryPage({
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <p className="micro-note">
-            Тревоги — все сообщения с флагом тревоги, не число инцидентов. 2026
-            год — январь–июнь.
-          </p>
         </section>
         <section className="panel">
           <div className="panel-heading">
             <div>
               <h2>Качество прогноза</h2>
-              <span>Отложенный тест, июнь 2026, событийные метрики</span>
+              <span>Отложенный тест, июнь 2026</span>
             </div>
           </div>
           <div className="table-scroll">
@@ -1737,10 +1658,6 @@ export function SummaryPage({
               </tbody>
             </table>
           </div>
-          <p className="micro-note">
-            Эпизоды журнала датчиков, а не подтверждённые инциденты: разметки
-            реальных аварий в данных нет.
-          </p>
         </section>
       </div>
     </div>
@@ -1839,8 +1756,8 @@ export function UsersPage({ user }: { user: User }) {
             <h2>Учётные записи</h2>
             <span>
               {data.ldap_configured
-                ? "Вход сотрудников через LDAPS; локальный admin — аварийный"
-                : "LDAP/AD не настроен: используются локальные учётные записи"}
+                ? "Вход через LDAPS"
+                : "Локальные учётные записи"}
             </span>
           </div>
         </div>
@@ -1911,17 +1828,12 @@ export function UsersPage({ user }: { user: User }) {
             </tbody>
           </table>
         </div>
-        <p className="micro-note">
-          В справочнике один район, поэтому в демо у всех «Весь район». Зона
-          «узел» ограничивает прогнозы, сводку и оборудование объектами узла.
-        </p>
       </section>
       <div className="two-column">
         <section className="panel">
           <div className="panel-heading">
             <div>
               <h2>Новый пользователь</h2>
-              <span>Действие записывается в журнал аудита</span>
             </div>
             <UserPlus size={18} />
           </div>
@@ -2004,7 +1916,6 @@ export function UsersPage({ user }: { user: User }) {
           <div className="panel-heading">
             <div>
               <h2>Роли и права</h2>
-              <span>Проверяются на сервере для каждого запроса</span>
             </div>
           </div>
           <div className="role-matrix">
@@ -2119,7 +2030,7 @@ type Integrations = {
 const SOURCE_STATUS: Record<string, string> = {
   available: "Работает",
   not_connected: "Не подключено",
-  emulated: "Эмуляция",
+  emulated: "Тестовый адаптер",
   configured: "Настроено",
   not_configured: "Не настроено",
   requires_worker_container: "Нужен worker-контейнер",
@@ -2141,7 +2052,6 @@ export function ParametersPage() {
         <div className="panel-heading">
           <div>
             <h2>Интеграции</h2>
-            <span>Системы заказчика подключаются только на чтение</span>
           </div>
         </div>
         <ul className="source-status wide">
@@ -2160,7 +2070,6 @@ export function ParametersPage() {
         <div className="panel-heading">
           <div>
             <h2>Параметры прогноза</h2>
-            <span>Пороги меняет руководитель подразделения</span>
           </div>
         </div>
         <dl className="config-list">

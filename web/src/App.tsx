@@ -114,9 +114,7 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
             Успеть проверить.
           </h1>
           <p>
-            Прогноз состояния оборудования и инцидентов в коллекторах: диспетчер
-            разбирает предупреждения, технический персонал готовит работы,
-            аналитик проверяет данные, руководитель видит картину целиком.
+            Прогноз отказов и инцидентов в инженерных коллекторах на 24 часа.
           </p>
           <div className="login-lines" aria-hidden="true">
             <i />
@@ -138,16 +136,7 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
             КОНТУР · РАБОЧЕЕ МЕСТО
           </span>
           <h2>Вход в систему</h2>
-          <p>
-            {demo
-              ? "Выберите роль. У каждой роли своё рабочее место."
-              : "Войдите с корпоративной учётной записью."}
-          </p>
-          {demo && (
-            <div className="demo-login-label">
-              Демонстрационный стенд · реальные архивные данные
-            </div>
-          )}
+          <p>{demo ? "Выберите роль" : "Корпоративная учётная запись"}</p>
           {error && <ErrorNotice message={error} />}
           {demo ? (
             <div className="role-picker">
@@ -202,16 +191,7 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
               </button>
             </form>
           )}
-          <div className="login-note">
-            <ShieldCheck size={18} />
-            <span>
-              Прогноз помогает принять решение.
-              <br />
-              Управление оборудованием остаётся у людей.
-            </span>
-          </div>
         </div>
-        <small>Задача №8 · Лидеры цифровой трансформации · 2026</small>
       </div>
     </div>
   );
@@ -571,9 +551,6 @@ export default function App() {
               title="Методика работы"
               onClick={() => {
                 go("evaluation");
-                setToast(
-                  "Методика и ограничения доступны в разделе проверки модели",
-                );
               }}
             >
               <CircleHelp size={18} />
@@ -594,7 +571,7 @@ export default function App() {
           <div className="topbar-actions">
             <span className="environment-label">
               <i className="dot green" />
-              Архивный поток
+              Архив
             </span>
             {(can(user, "notifications.all") ||
               can(user, "notifications.critical")) && (
@@ -706,8 +683,8 @@ export default function App() {
                   <Radio size={17} />
                 </span>
                 <div>
-                  <strong>Воспроизведение истории</strong>
-                  <small>Данные до выбранного момента · МСК</small>
+                  <strong>Момент прогноза</strong>
+                  <small>МСК</small>
                 </div>
               </div>
               <div className="replay-controls">
@@ -906,28 +883,6 @@ export default function App() {
                           </button>
                         ))}
                       </div>
-                      <div className="focus-note">
-                        <ShieldCheck size={22} />
-                        <strong>
-                          У каждого прогноза
-                          <br />
-                          есть проверяемое основание
-                        </strong>
-                        <p>
-                          Факторы модели, исходные события, рекомендации по
-                          сработавшим датчикам и ретроспективная проверка — в
-                          карточке.
-                        </p>
-                        {pages.includes("evaluation") && (
-                          <button
-                            className="text-link"
-                            onClick={() => go("evaluation")}
-                          >
-                            Как проверяли качество
-                            <ArrowRight size={14} />
-                          </button>
-                        )}
-                      </div>
                     </section>
                     <section className="panel map-panel">
                       <div className="panel-heading">
@@ -965,11 +920,8 @@ export default function App() {
                   <div className="panel-heading">
                     <div>
                       <h2>Объекты и эксплуатационные узлы</h2>
-                      <span>
-                        Цвет и размер точки — наибольший уровень риска объекта
-                      </span>
+                      <span>Наибольший уровень риска по объекту</span>
                     </div>
-                    <span className="soft-chip">Схематичное представление</span>
                   </div>
                   <NetworkMap
                     topology={topology}
@@ -977,10 +929,6 @@ export default function App() {
                     onSelect={setSelected}
                     expanded
                   />
-                  <div className="panel-footnote">
-                    Расположение условное. Связи построены по иерархии
-                    справочника заказчика.
-                  </div>
                 </section>
               )}
               {page === "journal" && overview && (
@@ -1065,15 +1013,6 @@ export default function App() {
               {page === "settings" && <ParametersPage />}
             </>
           )}
-          <footer className="main-footer">
-            <span>
-              <i className="dot green" />
-              Контур · поддержка решений диспетчера
-            </span>
-            <span>
-              Внешние источники — только чтение <ShieldCheck size={13} />
-            </span>
-          </footer>
         </main>
       </div>
       {selected && (

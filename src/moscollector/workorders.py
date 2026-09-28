@@ -59,7 +59,6 @@ def draft_text(forecast: dict, action: str | None, recommendations: list[str], f
     if recommendations:
         lines.append("Рекомендуемые работы:")
         lines += [f"  {i}. {text}" for i, text in enumerate(recommendations[:5], 1)]
-    lines.append("Черновик сформирован сервисом прогнозирования; решение о работах принимает исполнитель.")
     return title[:200], "\n".join(lines)
 
 

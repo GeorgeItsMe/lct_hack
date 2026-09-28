@@ -435,7 +435,7 @@ class AnalyticsService:
                     "faulty_now": sum(r["faulty_now"] for r in rows),
                     "objects_with_faults": sum(r["channels_with_faults_24h"] > 0 for r in rows),
                 },
-                "note": "Состояние каналов — по журналу датчиков за 24 часа до момента прогноза.",
+                "note": "За 24 часа до момента прогноза",
             }
         )
 
@@ -471,7 +471,7 @@ class AnalyticsService:
             {
                 "kind": kind,
                 "period": "policy",
-                "period_label": "Период настройки порогов 16–31 мая 2026 (не финальный тест)",
+                "period_label": "Период настройки: 16–31 мая 2026",
                 "current": {
                     "threshold": current,
                     **alert_metrics(policy, episodes, current),

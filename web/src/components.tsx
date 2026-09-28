@@ -451,9 +451,7 @@ export function NetworkMap({
           </span>
         </div>
         <span>
-          {active
-            ? `${active.name} · ${active.channels} каналов`
-            : "Условная схема · без географических координат"}
+          {active ? `${active.name} · ${active.channels} каналов` : ""}
         </span>
       </div>
     </div>
@@ -622,7 +620,7 @@ export function ForecastDrawer({
               <RiskBadge level={forecast.risk} />
               <span>
                 {forecast.threshold > 1
-                  ? "Исследовательский прогноз"
+                  ? "Без предупреждений"
                   : forecast.above_threshold
                     ? "Требует проверки"
                     : "Наблюдение"}
@@ -760,10 +758,6 @@ export function ForecastDrawer({
                       </div>
                     ))}
                   </div>
-                  <p className="micro-note">
-                    Вклады объясняют расчёт модели и не устанавливают физическую
-                    причину события.
-                  </p>
                   <div className="section-label">
                     <h3>Рекомендуемые действия</h3>
                     <Wrench size={15} />
@@ -884,44 +878,31 @@ export function ForecastDrawer({
                       </div>
                     </>
                   )}
-                  <div className="evidence-note">
-                    <ShieldCheck size={19} />
-                    <div>
-                      <strong>Прогноз по журналу датчиков</strong>
-                      <p>
-                        Цель — новый зарегистрированный эпизод. Подтверждённого
-                        вердикта о физическом инциденте в исходных данных нет.
-                      </p>
+                  {can(user, "model.view") && (
+                    <div className="retrospective">
+                      <button onClick={reveal}>
+                        <Clock3 size={15} />
+                        Что произошло за следующие 24 часа
+                        <ArrowRight size={15} />
+                      </button>
+                      {retrospective && (
+                        <div className="retrospective-result">
+                          <span className="eyebrow">ФАКТ ПО ЖУРНАЛУ</span>
+                          <strong>
+                            {retrospective.occurred
+                              ? "Зарегистрирован эпизод"
+                              : "Эпизод не зарегистрирован"}
+                          </strong>
+                          {retrospective.episodes.slice(0, 4).map((e, i) => (
+                            <p key={i}>
+                              {date(e.start_ts, true)} · {e.channel_count}{" "}
+                              каналов
+                            </p>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div className="retrospective">
-                    <button onClick={reveal}>
-                      <Clock3 size={15} />
-                      Проверить по будущим событиям архива
-                      <ArrowRight size={15} />
-                    </button>
-                    {retrospective && (
-                      <div className="retrospective-result">
-                        <span className="eyebrow">
-                          РЕТРОСПЕКТИВНАЯ ПРОВЕРКА
-                        </span>
-                        <strong>
-                          {retrospective.occurred
-                            ? "В следующие 24 часа зарегистрирован эпизод"
-                            : "В следующие 24 часа целевой эпизод не зарегистрирован"}
-                        </strong>
-                        {retrospective.episodes.slice(0, 4).map((e, i) => (
-                          <p key={i}>
-                            {date(e.start_ts, true)} · {e.channel_count} каналов
-                          </p>
-                        ))}
-                        <small>
-                          Эта информация не использовалась при формировании
-                          прогноза.
-                        </small>
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </>
               )}
               {tab === "events" && (
@@ -930,10 +911,6 @@ export function ForecastDrawer({
                     <h3>Наблюдения до прогноза</h3>
                     <span>За 24 часа</span>
                   </div>
-                  <p className="micro-note">
-                    До 40 записей: сначала тревожные, затем последние по
-                    времени. Все события предшествуют моменту прогноза.
-                  </p>
                   <div className="source-events">
                     {detail.source_events.map((e, i) => (
                       <div key={`${e.event_id}-${i}`} className="source-event">
@@ -961,11 +938,7 @@ export function ForecastDrawer({
               )}
               {tab === "decision" && (
                 <>
-                  <h3>Зафиксировать решение</h3>
-                  <p className="muted">
-                    Решение сохраняется в собственном журнале сервиса. Команды
-                    оборудованию не отправляются.
-                  </p>
+                  {canDecide && <h3>Зафиксировать решение</h3>}
                   {forecast.decision && (
                     <div className="current-decision">
                       <span className="eyebrow">ТЕКУЩЕЕ РЕШЕНИЕ</span>
@@ -990,15 +963,10 @@ export function ForecastDrawer({
                       <ClipboardList size={20} />
                       <div>
                         <strong>Заявка на работы</strong>
-                        <p>
-                          Черновик собирается из объекта, факторов прогноза и
-                          рекомендаций. Статус ведёт внешняя система учёта
-                          заявок.
-                        </p>
+
                         {order ? (
                           <p className="work-order-created">
-                            Создан черновик {order.number}. Откройте «Задачи и
-                            заявки», чтобы отредактировать и передать его.
+                            Черновик {order.number} создан
                           </p>
                         ) : (
                           <button
@@ -1018,13 +986,8 @@ export function ForecastDrawer({
                     </div>
                   )}
                   {!canDecide ? (
-                    <div className="evidence-note">
-                      <LockKeyhole size={20} />
-                      <p>
-                        Решение по прогнозу фиксирует диспетчер. Для вашей роли
-                        карточка доступна для просмотра.
-                      </p>
-                    </div>
+                    !forecast.decision &&
+                    !canDraft && <p className="muted">Решение ещё не принято</p>
                   ) : (
                     <form
                       onSubmit={(e) => {
