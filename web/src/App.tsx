@@ -268,12 +268,14 @@ export default function App() {
   } | null>(null);
   const followsStream =
     can(user, "data.import") || can(user, "decisions.write");
+  const lastStreamJob = useRef<string | null | undefined>(undefined);
   useEffect(() => {
     if (!user || !followsStream) {
       setStreamAlert(null);
       return;
     }
     let active = true;
+    lastStreamJob.current = undefined;
     async function pollStream() {
       try {
         const state = await api<{
@@ -282,37 +284,33 @@ export default function App() {
           forecast_error: string | null;
           latest_job: { id: string; status: string; as_of: string } | null;
         }>("/stream");
-        let message = "";
-        if (state.forecast_status === "waiting") {
-          if (active) setStreamAlert(null);
-          return;
-        }
-        if (state.forecast_status === "complete" && state.latest_job) {
-          const result = await api<{
-            result: {
-              forecasts: {
-                above_threshold: boolean;
-                notification_due?: boolean;
-              }[];
-            };
-          }>(`/imports/${state.latest_job.id}`);
-          message = `Новые данные мониторинга · выше порога: ${result.result.forecasts.filter((f) => f.above_threshold).length}`;
-        } else if (state.forecast_status === "failed")
-          message = `Расчёт не выполнен: ${state.forecast_error || "проверьте журнал"}`;
-        else if (state.forecast_status === "accepted_unprocessed")
-          message = "Данные сохранены, актуальный прогноз ещё не рассчитан";
-        else
-          message =
-            state.forecast_status === "running"
-              ? "Расчёт нового прогноза выполняется"
-              : "Новый прогноз ожидает расчёта";
-        if (active) setStreamAlert({ asOf: state.as_of, message });
+        if (!active) return;
+        // The bar reports only problems with the monitoring stream.
+        const message =
+          state.forecast_status === "failed"
+            ? `Расчёт по данным мониторинга не выполнен: ${state.forecast_error || "проверьте журнал"}`
+            : state.forecast_status === "accepted_unprocessed"
+              ? "Данные мониторинга приняты, прогноз по ним ещё не рассчитан"
+              : "";
+        setStreamAlert(message ? { asOf: state.as_of, message } : null);
+        // A new completed snapshot reloads the queue; its new warnings then pop up as usual.
+        const done =
+          state.forecast_status === "complete"
+            ? (state.latest_job?.id ?? null)
+            : null;
+        if (
+          done &&
+          lastStreamJob.current !== undefined &&
+          done !== lastStreamJob.current
+        )
+          setRefresh((r) => r + 1);
+        if (done || lastStreamJob.current === undefined)
+          lastStreamJob.current = done;
       } catch {
         if (active)
           setStreamAlert({
             asOf: null,
-            message:
-              "Не удалось обновить состояние потока. Проверьте соединение.",
+            message: "Нет связи с сервером. Состояние потока не обновляется.",
           });
       }
     }
@@ -428,12 +426,14 @@ export default function App() {
   }, [overview, user, allForecasts]);
   useEffect(() => {
     if (!overview || !user) return;
-    const keys = new Set(notified.map((f) => `${f.object_id}:${f.kind}`));
+    const keys = new Set(
+      notified.map((f) => `${f.source || "archive"}:${f.object_id}:${f.kind}`),
+    );
     const previous = seenAlerts.current;
     seenAlerts.current = keys;
     if (!previous) return;
     const fresh = notified.filter(
-      (f) => !previous.has(`${f.object_id}:${f.kind}`),
+      (f) => !previous.has(`${f.source || "archive"}:${f.object_id}:${f.kind}`),
     );
     if (fresh.length)
       setAlertToast({

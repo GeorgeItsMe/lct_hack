@@ -711,18 +711,18 @@ export function VerificationPage({ user }: { user: User }) {
       <section className="panel">
         <div className="panel-heading">
           <div>
-            <h2>Дообучение модели</h2>
-            <span>Наборы проверенных меток</span>
+            <h2>Наборы меток</h2>
+            <span>Проверенные пары «прогноз → итог» для будущего обучения</span>
           </div>
           {can(user, "retrain.run") && (
             <button className="primary-button" onClick={retrain}>
               <ShieldCheck size={16} />
-              Зафиксировать метки для дообучения
+              Сохранить набор меток
             </button>
           )}
         </div>
         {!data.retraining.length ? (
-          <p className="micro-note">Наборов для дообучения ещё не было.</p>
+          <p className="micro-note">Наборов ещё нет.</p>
         ) : (
           <div className="table-scroll">
             <table>
@@ -744,9 +744,7 @@ export function VerificationPage({ user }: { user: User }) {
                     <td>
                       <code>{r.file_name}</code>
                     </td>
-                    <td>
-                      {r.status === "prepared" ? "Готов к обучению" : r.status}
-                    </td>
+                    <td>{r.status === "prepared" ? "Сохранён" : r.status}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1685,7 +1683,7 @@ const PERMISSION_NAMES: Record<string, string> = {
   "work.edit": "Черновики заявок",
   "data.import": "Загрузка данных",
   "labels.verify": "Верификация данных",
-  "retrain.run": "Дообучение",
+  "retrain.run": "Наборы меток",
   "model.view": "Проверка модели",
   "summary.view": "Сводка",
   "reports.export": "Отчёты PDF/XLSX",
@@ -1949,7 +1947,7 @@ const AUDIT_NAMES: Record<string, string> = {
   work_order_submitted: "Заявка передана",
   work_orders_synced: "Статусы заявок обновлены",
   label_reviewed: "Верификация метки",
-  retraining_requested: "Набор для дообучения",
+  retraining_requested: "Сохранён набор меток",
   report_exported: "Выгрузка отчёта",
   user_created: "Создан пользователь",
   user_updated: "Изменён пользователь",

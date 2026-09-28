@@ -1194,11 +1194,10 @@ def export_labels(user=Depends(require("labels.verify"))):
 
 @app.post("/api/retraining", status_code=201)
 def request_retraining(user=Depends(require("retrain.run"))):
-    """Freeze verified labels for retraining.
+    """Save the analyst-verified labels as an immutable set.
 
-    Fitting new weights needs the full prepared dataset (features for 2022–2026), which the
-    demo runtime does not contain. The request stores the verified labels and the exact
-    command; a new model is activated only after the temporal validation in train.py.
+    The training pipeline (train.py) learns from sensor-journal episodes and does not read
+    these sets yet; they are kept so that verified outcomes accumulate for a future model.
     """
     content, rows, reviews = verified_labels_csv()
     if not rows:
@@ -1209,11 +1208,7 @@ def request_retraining(user=Depends(require("retrain.run"))):
     name = f"labels-{stamp}.csv"
     (folder / name).write_text(content, encoding="utf-8")
     positives = sum(reviews[r["id"]].label == 1 for r in rows)
-    note = (
-        "Метки сохранены. Обучение запускается на полном наборе данных: "
-        "CONTOUR_ARTIFACT_DIR=artifacts/retrain python -m moscollector.train --evaluate-test; "
-        "новые веса активируются только после проверки на отложенном периоде."
-    )
+    note = f"Сохранено меток: {len(rows)}, из них «событие было»: {positives}."
     with SessionFactory() as db:
         request = RetrainRequest(
             created_by=user.id,
