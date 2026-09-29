@@ -59,7 +59,7 @@ curl -fsS https://<preview-domain>/api/ready
 
 `/api/health` должен показать `model_ready: true`, `serverless_mode: true` и
 `persistent_database: true`. `/api/ready` должен вернуть активную модель
-`op-d87946a7b7fd` и 95 объектов.
+`op-087f59f54c7b` и 95 объектов.
 
 ## Ограничения Vercel-стенда
 
