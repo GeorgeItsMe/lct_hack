@@ -1,7 +1,7 @@
 {
   "scope": "vercel_archive_demo_runtime",
   "raw_event_begin": "2026-04-30T00:00:00",
-  "active_model": "op-087f59f54c7b",
+  "active_model": "op-7f225ca12c58",
   "rows": {
     "events_2026": 10787350,
     "features": 112944,
@@ -9,7 +9,7 @@
     "predictions": 451776
   },
   "files": {
-    "artifacts/active_model.json": "1c79615228adf82a06016e8ef9633abcc6f4d09ca3dc292267e79d6e43e85131",
+    "artifacts/active_model.json": "7e1eb5a27e5fb3031b23cd7b20c50ce46f82e216bfaa0eabf78a593776b7044d",
     "artifacts/audit-2019.json": "b0c3ed87beb79c8830df3a7c11dce339878930c70af7a1d4f5cc7019a4198be0",
     "artifacts/audit-2020.json": "f58a8dc8898943972778016371d27204ae16407f53b438fd94588998e12e86e4",
     "artifacts/audit-2021.json": "6cb1db4892f5b9aa13d0df2cf4a8d1d38920695def4485f979d32c2a91895c9b",
@@ -54,9 +54,9 @@
     "data/processed/hourly-2026.parquet": "2630dbe5cb921e63106c86f8064a8ef478244ae9637695e232f035891d69061b",
     "data/processed/objects.parquet": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce",
     "data/processed/sensor_states.csv": "ceac8e7ca13abea0800f6e173e37c2587e6b5bf2fc675478e92e99874cfe0d48",
-    "artifacts/operational/op-087f59f54c7b/access_count.cbm": "7b5d0dff18e9ccad564c518379534058ebb239959e627111f35e159f13600c4d",
-    "artifacts/operational/op-087f59f54c7b/fire_count.cbm": "157410184a72de4d92d264850b42b6a9466e3258d81cf754fb0abfd902138423",
-    "artifacts/operational/op-087f59f54c7b/fire_policy.parquet": "24cf81ab8f56baa2721b70997ea3680946fd8e0bfce69db16aa274372aa84f53",
-    "artifacts/operational/op-087f59f54c7b/manifest.json": "0840138868dc8e31d0141976bb968e1550455c98d38e372c5247847430b9065a"
+    "artifacts/operational/op-7f225ca12c58/access_count.cbm": "7b5d0dff18e9ccad564c518379534058ebb239959e627111f35e159f13600c4d",
+    "artifacts/operational/op-7f225ca12c58/fire_count.cbm": "157410184a72de4d92d264850b42b6a9466e3258d81cf754fb0abfd902138423",
+    "artifacts/operational/op-7f225ca12c58/fire_policy.parquet": "24cf81ab8f56baa2721b70997ea3680946fd8e0bfce69db16aa274372aa84f53",
+    "artifacts/operational/op-7f225ca12c58/manifest.json": "3631682fe651ce765e0c7c3fc58ca3352034d9ae04654c334d23c86f15feeed0"
   }
 }

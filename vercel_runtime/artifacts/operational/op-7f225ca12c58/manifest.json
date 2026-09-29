@@ -110,7 +110,7 @@
         "status": "sigmoid_independent_period"
       },
       "rate_scale": 1.2528912518919428,
-      "threshold": 0,
+      "threshold": 0.40645895295942325,
       "alert_policy": {
         "type": "pending_count",
         "margin": 1.5,
@@ -161,7 +161,8 @@
           "weight": 1.0,
           "sha256": "157410184a72de4d92d264850b42b6a9466e3258d81cf754fb0abfd902138423"
         }
-      ]
+      ],
+      "threshold_note": "Probability equivalent of expected episodes >= margin; one-off decisions are unchanged, risk levels are relative to it."
     },
     "access": {
       "variant": "poisson_pending",
@@ -293,5 +294,5 @@
       ]
     }
   },
-  "version": "op-087f59f54c7b"
+  "version": "op-7f225ca12c58"
 }

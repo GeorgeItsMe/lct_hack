@@ -66,8 +66,10 @@ def emulated_status(submitted_at: datetime | None, at: datetime | None = None) -
     """Status the external system reports for an order submitted at the given time."""
     if submitted_at is None:
         return "draft"
+    if EMULATOR_STEP_SECONDS <= 0:  # zero step: the emulated system closes orders instantly
+        return EMULATOR_FLOW[-1]
     elapsed = ((at or now()) - submitted_at).total_seconds()
-    step = min(len(EMULATOR_FLOW) - 1, int(max(0.0, elapsed) // max(EMULATOR_STEP_SECONDS, 0.001)))
+    step = min(len(EMULATOR_FLOW) - 1, int(max(0.0, elapsed) // EMULATOR_STEP_SECONDS))
     return EMULATOR_FLOW[step]
 
 
