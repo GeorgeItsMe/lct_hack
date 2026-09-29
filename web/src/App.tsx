@@ -984,7 +984,9 @@ export default function App() {
                         }
                       >
                         <option value="all">Все источники</option>
-                        <option value="stream">Поток СМВУ</option>
+                        <option value="stream">
+                          {overview.stream.label || "Поток СМВУ"}
+                        </option>
                         <option value="archive">Архив</option>
                       </select>
                     )}

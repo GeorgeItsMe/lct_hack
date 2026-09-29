@@ -327,23 +327,23 @@ def overview(as_of: str | None = None, user=Depends(require("forecasts.view"))):
 
 
 def stream_snapshot():
-    """Latest completed forecast over the monitoring stream, shaped like archive forecasts.
+    """Latest completed forecast over new data, shaped like archive forecasts.
 
-    Stream data arrive from the monitoring system over the API without a person in the
-    loop, so their warnings belong in the dispatcher's queue next to archive forecasts.
+    New data arrive either from the monitoring stream over the API or as a journal the
+    analyst uploads. Both are computed once and belong in the dispatcher's queue next to
+    archive forecasts, so the result stays with the other roles after the analyst logs out.
     """
     if SERVERLESS_MODE:
         return None
     try:
         manager = imports()
-        job = next(
-            (j for j in manager.list(mode="accumulated_stream") if j.get("status") == "complete"), None
-        )
+        job = next((j for j in manager.list() if j.get("status") == "complete"), None)
         if job is None:
             return None
         result = manager.get(job["id"])["result"]
     except (KeyError, OSError, ValueError):
         return None
+    label = "Поток СМВУ" if job.get("mode") == "accumulated_stream" else "Загрузка аналитика"
     import pandas as pd
 
     service = analytics()
@@ -374,10 +374,11 @@ def stream_snapshot():
                 "model_version": result.get("model_version", "legacy"),
                 "split": "stream",
                 "source": "stream",
+                "source_label": label,
                 "batch_id": job["id"],
             }
         )
-    return {"job_id": job["id"], "as_of": result["as_of"], "forecasts": rows}
+    return {"job_id": job["id"], "as_of": result["as_of"], "label": label, "forecasts": rows}
 
 
 def latest_orders(db):

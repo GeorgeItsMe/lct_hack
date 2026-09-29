@@ -216,7 +216,7 @@ export function ForecastTable({
                     </small>
                     {f.source === "stream" && (
                       <span className="source-chip">
-                        Поток СМВУ · {date(f.as_of, true)}
+                        {f.source_label || "Поток СМВУ"} · {date(f.as_of, true)}
                       </span>
                     )}
                   </div>

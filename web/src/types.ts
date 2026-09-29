@@ -72,6 +72,7 @@ export type Forecast = {
   model_version: string;
   split: string;
   source?: "archive" | "stream" | "import";
+  source_label?: string;
   batch_id?: string;
   decision?: Decision | null;
 };
@@ -96,7 +97,12 @@ export type Overview = {
     unknown_reports: number;
   }[];
   kinds: { id: Kind; label: string; count: number; threshold: number }[];
-  stream?: { job_id: string; as_of: string; forecasts: Forecast[] } | null;
+  stream?: {
+    job_id: string;
+    as_of: string;
+    label?: string;
+    forecasts: Forecast[];
+  } | null;
 };
 export type Topology = {
   nodes: {

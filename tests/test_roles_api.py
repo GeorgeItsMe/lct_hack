@@ -295,7 +295,7 @@ def test_stream_forecasts_join_the_queue_with_their_source(monkeypatch):
         },
     ]
     manager = SimpleNamespace(
-        list=lambda mode=None: [{"id": job, "status": "complete", "mode": mode}],
+        list=lambda mode=None: [{"id": job, "status": "complete", "mode": "accumulated_stream"}],
         get=lambda _: {"result": {"as_of": "2026-06-15T12:05:00", "forecasts": rows}},
     )
     monkeypatch.setattr(api, "imports", lambda: manager)
@@ -306,6 +306,43 @@ def test_stream_forecasts_join_the_queue_with_their_source(monkeypatch):
     assert snapshot["as_of"] == "2026-06-15T12:05:00"
     assert first["id"] == f"batch:{job}:1:access" and first["batch_id"] == job
     assert first["source"] == "stream" and first["parent_id"] == 7 and first["risk"] == "critical"
+    assert snapshot["label"] == first["source_label"] == "Поток СМВУ"
     assert first["valid_until"] == "2026-06-16T12:05:00"
     # Above the probability threshold but not confirmed by the warning policy: not a warning level.
     assert second["risk"] == "watch" and not second["above_threshold"]
+
+
+def test_analyst_upload_reaches_the_dispatcher_queue(monkeypatch):
+    """A journal uploaded by the analyst stays with the other roles after logout."""
+    from moscollector import api
+
+    upload, stream = "c" * 32, "d" * 32
+    row = {
+        "object_id": 1,
+        "object_name": "Объект Альфа",
+        "kind": "fault",
+        "kind_label": "Неисправность",
+        "probability": 0.9,
+        "threshold": 0.3,
+        "above_threshold": True,
+        "recommendation": "Проверить датчики",
+    }
+    jobs = [
+        {"id": upload, "status": "complete", "created_at": "2026-09-29T20:00:00"},
+        {
+            "id": stream,
+            "status": "complete",
+            "mode": "accumulated_stream",
+            "created_at": "2026-09-29T19:00:00",
+        },
+    ]
+    manager = SimpleNamespace(
+        list=lambda mode=None: [j for j in jobs if mode is None or j.get("mode") == mode],
+        get=lambda _: {"result": {"as_of": "2026-06-15T12:00:00", "forecasts": [row]}},
+    )
+    monkeypatch.setattr(api, "imports", lambda: manager)
+    monkeypatch.setattr(api, "analytics", lambda: SimpleNamespace(object_map={1: {"parent_id": 7}}))
+    monkeypatch.setattr(api, "SERVERLESS_MODE", False)
+    snapshot = api.stream_snapshot()
+    assert snapshot["job_id"] == upload and snapshot["label"] == "Загрузка аналитика"
+    assert snapshot["forecasts"][0]["id"] == f"batch:{upload}:1:fault"
