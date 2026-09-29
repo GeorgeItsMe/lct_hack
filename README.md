@@ -11,7 +11,7 @@ http://contour-lct.81.26.178.170.nip.io — Docker Compose (FastAPI + PostgreSQL
 Нужны Python 3.12 и Node.js 24. Модели и срез архива 2026 года лежат в репозитории (`vercel_runtime/`), отдельно ничего скачивать не нужно.
 
 ```bash
-git clone -b roles-rework https://github.com/GeorgeItsMe/lct_hack.git && cd lct_hack
+git clone https://github.com/GeorgeItsMe/lct_hack.git && cd lct_hack
 ./scripts/run_local.sh
 ```
 
