@@ -572,5 +572,6 @@ class ImportManager:
                 "recommendations": [r["text"] for r in details],
                 "recommendation_details": details,
                 "source": "stream" if state.get("mode") == "accumulated_stream" else "import",
+                "confidence": service.confidence(kind, forecast["probability"], forecast["threshold"]),
             }
         )

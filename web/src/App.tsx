@@ -40,6 +40,7 @@ import {
   riskNames,
 } from "./components";
 import { DecisionsPage, EvaluationPage, QualityPage } from "./pages";
+import { PolygonPage } from "./PolygonPage";
 import {
   AuditPage,
   EquipmentPage,
@@ -1044,6 +1045,7 @@ export default function App() {
               {page === "users" && <UsersPage user={user} />}
               {page === "audit" && <AuditPage />}
               {page === "settings" && <ParametersPage />}
+              {page === "polygon" && <PolygonPage />}
             </>
           )}
         </main>

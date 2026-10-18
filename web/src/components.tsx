@@ -35,6 +35,7 @@ import {
 import { api, clock, date, kindNames, num, pct } from "./api";
 import { can } from "./roles";
 import type {
+  Confidence,
   Detail,
   Forecast,
   Kind,
@@ -158,6 +159,23 @@ export function ErrorNotice({
     </div>
   );
 }
+/* How often warnings like this one came true when the threshold was chosen. */
+function ConfidenceLine({ value }: { value: Confidence }) {
+  const own = value.level_warnings > 0;
+  const total = own ? value.level_warnings : value.warnings;
+  const confirmed = own ? value.level_confirmed : value.confirmed;
+  if (!total) return null;
+  return (
+    <p className="confidence-line">
+      {own
+        ? `Предупреждения уровня «${value.level_label.toLowerCase()}»`
+        : "Предупреждения этого типа"}{" "}
+      за {value.period_label} подтвердились в {num(confirmed)} случаях из{" "}
+      {num(total)} ({pct(confirmed / total, 0)})
+    </p>
+  );
+}
+
 export function Risk({ forecast }: { forecast: Forecast }) {
   return (
     <div
@@ -644,6 +662,7 @@ export function ForecastDrawer({
               </small>
             </div>
           </div>
+          {detail?.confidence && <ConfidenceLine value={detail.confidence} />}
         </div>
         <div className="drawer-tabs" role="tablist">
           {[

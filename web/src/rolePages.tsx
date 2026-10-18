@@ -42,6 +42,7 @@ import type {
   AdminUser,
   AuditRow,
   DecisionRow,
+  DispatcherLoad,
   Equipment,
   Forecast,
   Kind,
@@ -1325,6 +1326,61 @@ function ProposalCard({
 /* Unit head summary                                                   */
 /* ------------------------------------------------------------------ */
 
+/* The 24-hour rule: warnings a day on held-out June before and after it. */
+function LoadPanel({ load }: { load: DispatcherLoad }) {
+  const perDay = (n: number) => n.toFixed(1).replace(".", ",");
+  return (
+    <section className="panel">
+      <div className="panel-heading">
+        <div>
+          <h2>Нагрузка на диспетчера</h2>
+          <span>
+            Не больше одного предупреждения на объект и тип в сутки ·{" "}
+            {load.period}: {perDay(load.before_per_day)} →{" "}
+            {perDay(load.after_per_day)} в сутки
+          </span>
+        </div>
+      </div>
+      <div className="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Тип</th>
+              <th>Было в сутки</th>
+              <th>Стало в сутки</th>
+              <th>Из них ложных</th>
+              <th>Precision</th>
+              <th>Recall (неспокойные сутки)</th>
+              <th>Заранее, медиана</th>
+            </tr>
+          </thead>
+          <tbody>
+            {load.rows.map((r) => (
+              <tr key={r.kind}>
+                <td>{kindNames[r.kind]}</td>
+                <td>
+                  {r.changed ? perDay(r.before_per_day) : "без изменений"}
+                </td>
+                <td>
+                  <b>{perDay(r.after_per_day)}</b>
+                </td>
+                <td>{perDay(r.false_per_day)}</td>
+                <td>{pct(r.after_precision)}</td>
+                <td>{pct(r.after_recall)}</td>
+                <td>
+                  {r.lead_hours == null
+                    ? "—"
+                    : `${r.lead_hours.toFixed(1).replace(".", ",")} ч`}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 export function SummaryPage({
   asOf,
   user,
@@ -1392,6 +1448,7 @@ export function SummaryPage({
           hint={`Выполнено: ${workload.orders_done}`}
         />
       </div>
+      {data.load && <LoadPanel load={data.load} />}
       {exportable && (
         <section className="panel report-panel">
           <div>

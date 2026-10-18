@@ -1,0 +1,460 @@
+{
+  "scenarios": {
+    "fire_triage": {
+      "threshold": 0.879452958097055,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.95,
+        "recall": 0.3958333333333333,
+        "flagged": 20,
+        "positives": 48
+      },
+      "incidents": 17,
+      "caught": 13,
+      "recall": 0.7647058823529411,
+      "escalated": 15,
+      "false_escalations": 0,
+      "precision": 1.0,
+      "alarms_per_day": 20.033333333333335,
+      "escalated_per_day": 0.05,
+      "false_per_day": 0.0,
+      "importance": {
+        "groups_7d": 24.107530759155324,
+        "first_seconds": 16.358727469261186,
+        "still_active": 11.062298591542858,
+        "channels_10m": 8.66056102587259,
+        "hour": 7.803964418789313,
+        "permit": 6.45346503442323
+      },
+      "hot_work_alarms_per_day": 1.4066666666666667,
+      "hot_work_escalated": 0,
+      "hot_work_with_permit": 1.0
+    },
+    "access_triage": {
+      "threshold": 0.17203811900273405,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.7580645161290323,
+        "recall": 0.8703703703703703,
+        "flagged": 62,
+        "positives": 54
+      },
+      "incidents": 64,
+      "caught": 61,
+      "recall": 0.953125,
+      "escalated": 88,
+      "false_escalations": 31,
+      "precision": 0.6477272727272727,
+      "alarms_per_day": 45.306666666666665,
+      "escalated_per_day": 0.29333333333333333,
+      "false_per_day": 0.10333333333333333,
+      "importance": {
+        "permit": 30.116834320500246,
+        "channels_5m": 17.35158968016845,
+        "activity_1h": 15.766945943942101,
+        "groups_7d": 9.496668416048195,
+        "off_hours_groups_24h": 8.47121850293563,
+        "guard_armed": 7.84522492889237
+      },
+      "permitted_per_day": 40.21333333333333,
+      "no_permit_per_day": 4.763333333333334
+    },
+    "fire_forecast": {
+      "threshold": 0.05996537376315693,
+      "precision": 0.2,
+      "recall": 0.47058823529411764,
+      "alerts": 40,
+      "true_alerts": 8,
+      "incident_days": 17,
+      "caught_incident_days": 8,
+      "median_lead_hours": 4.061166869646667,
+      "alerts_per_day": 0.13333333333333333,
+      "false_alerts_per_day": 0.10666666666666667,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.05747126436781609,
+        "recall": 0.29411764705882354,
+        "alerts": 87
+      },
+      "importance": {
+        "temp_max": 31.271578575318724,
+        "rise24": 18.57776199750421,
+        "rise12": 11.04799039909774,
+        "rise3": 10.720400913931384,
+        "smoke_24h": 6.797996904595128,
+        "rise6": 6.705922904556759
+      },
+      "with_visible_heating": {
+        "incident_days": 9,
+        "caught_incident_days": 8,
+        "recall": 0.8888888888888888,
+        "median_lead_hours": 4.061166869646667
+      }
+    },
+    "pump_forecast": {
+      "threshold": 0.05513699132753026,
+      "precision": 0.2345679012345679,
+      "recall": 1.0,
+      "alerts": 81,
+      "true_alerts": 19,
+      "incident_days": 19,
+      "caught_incident_days": 19,
+      "median_lead_hours": 11.774722222222222,
+      "alerts_per_day": 0.27,
+      "false_alerts_per_day": 0.20666666666666667,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.2857142857142857,
+        "recall": 1.0,
+        "alerts": 49
+      },
+      "importance": {
+        "run_ratio": 33.72123878226195,
+        "run_24h": 11.326130573478537,
+        "on_ratio": 8.880015762922495,
+        "age_years": 7.64766747459633,
+        "on_24h": 7.579793671335432,
+        "faults_24h": 5.741929786380266
+      }
+    },
+    "fan_forecast": {
+      "threshold": 0.4683870980780796,
+      "precision": 0.04700854700854701,
+      "recall": 0.8461538461538461,
+      "alerts": 234,
+      "true_alerts": 11,
+      "incident_days": 13,
+      "caught_incident_days": 11,
+      "median_lead_hours": 9.339444444444444,
+      "alerts_per_day": 0.78,
+      "false_alerts_per_day": 0.7433333333333333,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.08461538461538462,
+        "recall": 0.7333333333333333,
+        "alerts": 130
+      },
+      "importance": {
+        "run_24h": 31.65649787179383,
+        "run_ratio": 27.382189499125648,
+        "age_years": 10.706835324227045,
+        "days_since_service": 9.218271251592348,
+        "on_72h": 5.459460775957443,
+        "short_share_change": 3.829332439562873
+      }
+    },
+    "gas_forecast": {
+      "threshold": 0.9456836495796493,
+      "precision": 0.7692307692307693,
+      "recall": 0.12195121951219512,
+      "alerts": 13,
+      "true_alerts": 10,
+      "incident_days": 82,
+      "caught_incident_days": 10,
+      "median_lead_hours": 4.5,
+      "alerts_per_day": 0.043333333333333335,
+      "false_alerts_per_day": 0.01,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.75,
+        "recall": 0.11009174311926606,
+        "alerts": 16
+      },
+      "importance": {
+        "gas_rise24": 22.892693653546985,
+        "gas_now": 22.828110609759523,
+        "gas_3h": 16.456745948114516,
+        "gas_rise6": 13.712189667579324,
+        "fan_faults_24h": 13.400601781541145,
+        "fans_failed": 8.895594782591873
+      },
+      "fan_caused": {
+        "incident_days": 12,
+        "caught_incident_days": 10,
+        "recall": 0.8333333333333334,
+        "median_lead_hours": 5.092715121968611
+      }
+    },
+    "cascades": {
+      "incidents": 78,
+      "caught": 77,
+      "detections_per_day": 4.72,
+      "background_detections_per_day": 4.463333333333333
+    }
+  },
+  "hard": {
+    "fire_triage": {
+      "threshold": 0.879452958097055,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.95,
+        "recall": 0.3958333333333333,
+        "flagged": 20,
+        "positives": 48
+      },
+      "incidents": 21,
+      "caught": 20,
+      "recall": 0.9523809523809523,
+      "escalated": 29,
+      "false_escalations": 0,
+      "precision": 1.0,
+      "alarms_per_day": 20.153333333333332,
+      "escalated_per_day": 0.09666666666666666,
+      "false_per_day": 0.0,
+      "importance": {
+        "groups_7d": 24.107530759155324,
+        "first_seconds": 16.358727469261186,
+        "still_active": 11.062298591542858,
+        "channels_10m": 8.66056102587259,
+        "hour": 7.803964418789313,
+        "permit": 6.45346503442323
+      },
+      "hot_work_alarms_per_day": 1.4166666666666667,
+      "hot_work_escalated": 0,
+      "hot_work_with_permit": 0.6564705882352941
+    },
+    "access_triage": {
+      "threshold": 0.17203811900273405,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.7580645161290323,
+        "recall": 0.8703703703703703,
+        "flagged": 62,
+        "positives": 54
+      },
+      "incidents": 71,
+      "caught": 64,
+      "recall": 0.9014084507042254,
+      "escalated": 106,
+      "false_escalations": 54,
+      "precision": 0.49056603773584906,
+      "alarms_per_day": 45.34,
+      "escalated_per_day": 0.35333333333333333,
+      "false_per_day": 0.18,
+      "importance": {
+        "permit": 30.116834320500246,
+        "channels_5m": 17.35158968016845,
+        "activity_1h": 15.766945943942101,
+        "groups_7d": 9.496668416048195,
+        "off_hours_groups_24h": 8.47121850293563,
+        "guard_armed": 7.84522492889237
+      },
+      "permitted_per_day": 34.986666666666665,
+      "no_permit_per_day": 9.926666666666666
+    },
+    "fire_forecast": {
+      "threshold": 0.05996537376315693,
+      "precision": 0.29545454545454547,
+      "recall": 0.6190476190476191,
+      "alerts": 44,
+      "true_alerts": 13,
+      "incident_days": 21,
+      "caught_incident_days": 13,
+      "median_lead_hours": 4.479025004144167,
+      "alerts_per_day": 0.14666666666666667,
+      "false_alerts_per_day": 0.10333333333333333,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.05747126436781609,
+        "recall": 0.29411764705882354,
+        "alerts": 87
+      },
+      "importance": {
+        "temp_max": 31.271578575318724,
+        "rise24": 18.57776199750421,
+        "rise12": 11.04799039909774,
+        "rise3": 10.720400913931384,
+        "smoke_24h": 6.797996904595128,
+        "rise6": 6.705922904556759
+      },
+      "with_visible_heating": {
+        "incident_days": 15,
+        "caught_incident_days": 13,
+        "recall": 0.8666666666666667,
+        "median_lead_hours": 4.479025004144167
+      }
+    },
+    "pump_forecast": {
+      "threshold": 0.05513699132753026,
+      "precision": 0.2727272727272727,
+      "recall": 1.0,
+      "alerts": 66,
+      "true_alerts": 18,
+      "incident_days": 18,
+      "caught_incident_days": 18,
+      "median_lead_hours": 9.249027777777778,
+      "alerts_per_day": 0.22,
+      "false_alerts_per_day": 0.16,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.2857142857142857,
+        "recall": 1.0,
+        "alerts": 49
+      },
+      "importance": {
+        "run_ratio": 33.72123878226195,
+        "run_24h": 11.326130573478537,
+        "on_ratio": 8.880015762922495,
+        "age_years": 7.64766747459633,
+        "on_24h": 7.579793671335432,
+        "faults_24h": 5.741929786380266
+      }
+    },
+    "fan_forecast": {
+      "threshold": 0.4683870980780796,
+      "precision": 0.08133971291866028,
+      "recall": 1.0,
+      "alerts": 209,
+      "true_alerts": 17,
+      "incident_days": 17,
+      "caught_incident_days": 17,
+      "median_lead_hours": 9.219166666666666,
+      "alerts_per_day": 0.6966666666666667,
+      "false_alerts_per_day": 0.64,
+      "selection": {
+        "rule": "best_f1_precision_0.7_unreachable",
+        "precision": 0.08461538461538462,
+        "recall": 0.7333333333333333,
+        "alerts": 130
+      },
+      "importance": {
+        "run_24h": 31.65649787179383,
+        "run_ratio": 27.382189499125648,
+        "age_years": 10.706835324227045,
+        "days_since_service": 9.218271251592348,
+        "on_72h": 5.459460775957443,
+        "short_share_change": 3.829332439562873
+      }
+    },
+    "gas_forecast": {
+      "threshold": 0.9456836495796493,
+      "precision": 1.0,
+      "recall": 0.1839080459770115,
+      "alerts": 16,
+      "true_alerts": 16,
+      "incident_days": 87,
+      "caught_incident_days": 16,
+      "median_lead_hours": 5.0,
+      "alerts_per_day": 0.05333333333333334,
+      "false_alerts_per_day": 0.0,
+      "selection": {
+        "rule": "max_recall_at_precision_0.7",
+        "precision": 0.75,
+        "recall": 0.11009174311926606,
+        "alerts": 16
+      },
+      "importance": {
+        "gas_rise24": 22.892693653546985,
+        "gas_now": 22.828110609759523,
+        "gas_3h": 16.456745948114516,
+        "gas_rise6": 13.712189667579324,
+        "fan_faults_24h": 13.400601781541145,
+        "fans_failed": 8.895594782591873
+      },
+      "fan_caused": {
+        "incident_days": 17,
+        "caught_incident_days": 16,
+        "recall": 0.9411764705882353,
+        "median_lead_hours": 5.709414474644722
+      }
+    },
+    "cascades": {
+      "incidents": 72,
+      "caught": 71,
+      "detections_per_day": 4.663333333333333,
+      "background_detections_per_day": 4.423333333333333
+    }
+  },
+  "effect": {
+    "fire": {
+      "alarms_per_day": 20.033333333333335,
+      "raised_per_day": 0.05,
+      "hot_work_per_day": 1.4066666666666667,
+      "low_priority_per_day": 18.576666666666668
+    },
+    "access": {
+      "alarms_per_day": 45.306666666666665,
+      "trips_per_day": 0.29333333333333333,
+      "permitted_per_day": 40.21333333333333,
+      "calls_per_day": 4.763333333333334
+    },
+    "forecasts_per_day": {
+      "fire_forecast": 0.13333333333333333,
+      "pump_forecast": 0.27,
+      "fan_forecast": 0.78,
+      "gas_forecast": 0.043333333333333335
+    }
+  },
+  "design": {
+    "train_worlds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "test_worlds": [
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110
+    ],
+    "hard_worlds": [
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210
+    ],
+    "train": [
+      "2026-01-08 00:00:00",
+      "2026-05-01 00:00:00"
+    ],
+    "select": [
+      "2026-05-01 00:00:00",
+      "2026-06-01 00:00:00"
+    ],
+    "test": [
+      "2026-06-01 00:00:00",
+      "2026-07-01 00:00:00"
+    ],
+    "feed_world": 101,
+    "rates": {
+      "intrusions_per_week": 1.5,
+      "intrusion_probe_share": 0.3,
+      "intrusion_off_hours_share": 0.7,
+      "real_fires_per_week": 0.5,
+      "fire_during_hot_work_share": 0.2,
+      "hot_works_per_week": 4,
+      "permit_missing_share": 0.1,
+      "pump_failures_per_half_year": 10,
+      "fan_failures_per_half_year": 10,
+      "cascades_per_week": 2,
+      "smoulder_share": 0.3,
+      "heavy_hot_work_share": 0.2,
+      "hot_work_unregistered_share": 0.0
+    },
+    "hard_rates": {
+      "intrusion_off_hours_share": 0.4,
+      "permit_missing_share": 0.2,
+      "hot_work_unregistered_share": 0.3,
+      "fire_during_hot_work_share": 0.35,
+      "smoulder_share": 0.5,
+      "heavy_hot_work_share": 0.4
+    }
+  }
+}

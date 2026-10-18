@@ -87,6 +87,7 @@ class AnalyticsService:
                     if scores.exists():
                         self.rule_scores[kind] = pd.read_parquet(scores)
         self._schedules = {}
+        self._confidence = {}
         self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text(encoding="utf-8"))
         self.uncertainty = None
         uncertainty_path = ARTIFACTS / "uncertainty_report.json"
@@ -131,6 +132,63 @@ class AnalyticsService:
             rows = self.predictions[self.predictions.kind.eq(kind)][["object_id", "as_of", "probability"]]
             self._schedules[key] = daily_rule.schedule(rows, threshold)
         return self._schedules[key]
+
+    def dispatcher_load(self):
+        """Warnings a day on held-out June before and after the 24-hour rule."""
+        path = ARTIFACTS / "daily_rule_evaluation.json"
+        if not path.exists():
+            return None
+        report = json.loads(path.read_text(encoding="utf-8"))
+        rows = []
+        for kind, item in report["kinds"].items():
+            june, before = item["june"], item.get("previous_rule_june")
+            rows.append(
+                {
+                    "kind": kind,
+                    "label": KIND_LABELS[kind],
+                    # Faults already used a 24-hour pause, so their rule did not change.
+                    "before_per_day": before["alerts_per_day"] if before else june["alerts_per_day"],
+                    "before_precision": before["precision"] if before else june["precision"],
+                    "after_per_day": june["alerts_per_day"],
+                    "after_precision": june["precision"],
+                    "after_recall": june["recall"],
+                    "false_per_day": june["false_alerts_per_day"],
+                    "lead_hours": june["median_lead_hours"],
+                    "changed": before is not None,
+                }
+            )
+        return {
+            "period": "июнь 2026",
+            "rows": rows,
+            "before_per_day": sum(r["before_per_day"] for r in rows),
+            "after_per_day": sum(r["after_per_day"] for r in rows),
+        }
+
+    def confidence(self, kind, probability, threshold):
+        """How often warnings of this kind, and of this risk level, came true when the
+        threshold was chosen (second half of May, one warning per object a day)."""
+        scores = self.rule_scores.get(kind)
+        if scores is None or threshold > 1:
+            return None
+        key = (kind, float(threshold))
+        if key not in self._confidence:
+            evaluator = daily_rule.Evaluator(scores, self.episodes[self.episodes.kind.eq(kind)])
+            warnings = evaluator.warnings(threshold)
+            warnings["level"] = [risk_level(p, threshold) for p in warnings.probability]
+            self._confidence[key] = warnings
+        warnings = self._confidence[key]
+        level = risk_level(probability, threshold)
+        same = warnings[warnings.level.eq(level)]
+        begin, end = (pd.Timestamp(x) for x in self.rule[kind]["periods"]["selection"])
+        return {
+            "period_label": f"{begin:%d.%m}–{end - pd.Timedelta(days=1):%d.%m.%Y}",
+            "warnings": len(warnings),
+            "confirmed": int(warnings.hit.sum()),
+            "level": level,
+            "level_label": RISK_LEVELS[level],
+            "level_warnings": len(same),
+            "level_confirmed": int(same.hit.sum()),
+        }
 
     def warning_at(self, obj, kind, threshold, t):
         """Issue time of the warning that covers moment t, or None."""
@@ -342,6 +400,7 @@ class AnalyticsService:
                 "channel_count": len(catalog),
                 "source_events": source_events,
                 "calibration_status": meta["calibration"]["status"],
+                "confidence": self.confidence(kind, row["probability"], row["threshold"]),
             }
         )
 
@@ -649,6 +708,7 @@ class AnalyticsService:
                 "trend": trend,
                 "seasonality": seasonality,
                 "quality": quality,
+                "load": self.dispatcher_load(),
             }
         )
 

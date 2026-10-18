@@ -8,6 +8,7 @@ import {
   ListChecks,
   Map,
   PieChart,
+  Radar,
   ScrollText,
   SlidersHorizontal,
   Users,
@@ -69,6 +70,7 @@ export const NAVIGATION: Record<Role, NavSection[]> = {
       label: "ОБЗОР",
       items: [
         item("summary", "Сводка подразделения", PieChart),
+        item("polygon", "Полигон", Radar),
         item("journal", "Журнал прогнозов", ListChecks),
         item("decisions", "Журнал отработки", History),
       ],
@@ -79,6 +81,7 @@ export const NAVIGATION: Record<Role, NavSection[]> = {
       label: "УПРАВЛЕНИЕ ПОДРАЗДЕЛЕНИЕМ",
       items: [
         item("summary", "Сводка и отчёты", PieChart),
+        item("polygon", "Полигон", Radar),
         item("thresholds", "Пороги предупреждений", SlidersHorizontal),
         item("decisions", "Журнал отработки", History),
         item("journal", "Журнал прогнозов", ListChecks),
@@ -139,6 +142,10 @@ export const TITLES: Record<Page, [string, string]> = {
   users: ["Пользователи и роли", "Учётные записи, роли и зоны ответственности"],
   audit: ["Журнал аудита", "Действия пользователей"],
   settings: ["Интеграции и параметры", "Источники данных и параметры прогноза"],
+  polygon: [
+    "Полигон",
+    "Реальный журнал и инциденты с известной правдой: что система распознаёт",
+  ],
 };
 
 /* Pages that follow the archive replay moment. */

@@ -31,13 +31,18 @@ def _ns(values) -> np.ndarray:
 
 
 def issue_times(times_ns: np.ndarray, above: np.ndarray, cooldown_hours: int = COOLDOWN_HOURS) -> np.ndarray:
-    """Warnings for one object and kind; ``times_ns`` must be sorted."""
+    """Warnings for one object and kind; ``times_ns`` must be sorted.
+
+    Jumps from one warning to the first candidate at least ``cooldown_hours`` later, so the
+    cost grows with the number of warnings, not with the number of hours.
+    """
+    candidates = times_ns[above]
+    step = cooldown_hours * HOUR_NS
     issued = []
-    last = None
-    for t in times_ns[above]:
-        if last is None or t - last >= cooldown_hours * HOUR_NS:
-            issued.append(t)
-            last = t
+    i = 0
+    while i < len(candidates):
+        issued.append(candidates[i])
+        i = int(np.searchsorted(candidates, candidates[i] + step, side="left"))
     return np.array(issued, dtype=np.int64)
 
 
@@ -50,64 +55,95 @@ def schedule(predictions: pd.DataFrame, threshold: float) -> dict[int, np.ndarra
     return result
 
 
-def metrics(predictions: pd.DataFrame, episodes: pd.DataFrame, threshold: float) -> dict:
-    """Warnings and incident days for one kind over a scored period.
+class Evaluator:
+    """Warnings and incident days for one kind over a scored period, for many thresholds.
 
     Only episodes with a forecast opportunity in the preceding 24 hours are counted,
     as in the event evaluator used for model selection.
     """
-    alerts = correct = strict = caught = cases = events = 0
-    leads = []
-    for obj, part in predictions.groupby("object_id", sort=False):
-        part = part.sort_values("as_of")
-        times = _ns(part.as_of)
-        ev = np.sort(_ns(episodes.loc[episodes.object_id.eq(int(obj)), "start_ts"]))
-        previous = np.searchsorted(times, ev, side="right") - 1
-        ev = ev[(previous >= 0) & ((ev - times[np.maximum(previous, 0)]) < HORIZON_HOURS * HOUR_NS)]
-        events += len(ev)
-        starts = []
-        for e in ev:
-            if not starts or e - starts[-1] >= HORIZON_HOURS * HOUR_NS:
-                starts.append(e)
-        cases += len(starts)
-        issued = issue_times(times, part.probability.to_numpy() >= threshold)
-        alerts += len(issued)
-        pointer = 0
-        for t in issued:
-            k = int(np.searchsorted(ev, t))
-            if k < len(ev) and ev[k] - t < HORIZON_HOURS * HOUR_NS:
-                correct += 1
-                leads.append((ev[k] - t) / HOUR_NS)
-            pointer = max(pointer, k)
-            if pointer < len(ev) and ev[pointer] - t < HORIZON_HOURS * HOUR_NS:
-                strict += 1
-                pointer += 1
-        for s in starts:
-            j = int(np.searchsorted(issued, s, side="right")) - 1
-            if j >= 0 and s - issued[j] < HORIZON_HOURS * HOUR_NS:
-                caught += 1
-    days = max(1, pd.to_datetime(predictions.as_of).dt.normalize().nunique())
-    precision = correct / alerts if alerts else 0.0
-    recall = caught / cases if cases else 0.0
-    return {
-        "threshold": float(threshold),
-        "precision": precision,
-        "recall": recall,
-        "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0.0,
-        "recall_strict": strict / events if events else 0.0,
-        "alerts": alerts,
-        "true_alerts": correct,
-        "false_alerts": alerts - correct,
-        "incident_days": cases,
-        "caught_incident_days": caught,
-        "eligible_episodes": events,
-        "days": int(days),
-        "alerts_per_day": alerts / days,
-        "false_alerts_per_day": (alerts - correct) / days,
-        "median_lead_hours": float(np.median(leads)) if leads else None,
-        "cooldown_hours": COOLDOWN_HOURS,
-        "recall_unit": "incident_days",
-    }
+
+    def __init__(self, predictions: pd.DataFrame, episodes: pd.DataFrame):
+        by_object = {int(k): np.sort(_ns(g.start_ts)) for k, g in episodes.groupby("object_id")}
+        empty = np.array([], dtype=np.int64)
+        self.groups = []
+        self.events = self.cases = 0
+        for obj, part in predictions.groupby("object_id", sort=False):
+            part = part.sort_values("as_of")
+            times = _ns(part.as_of)
+            ev = by_object.get(int(obj), empty)
+            previous = np.searchsorted(times, ev, side="right") - 1
+            ev = ev[(previous >= 0) & ((ev - times[np.maximum(previous, 0)]) < HORIZON_HOURS * HOUR_NS)]
+            starts = []
+            for e in ev:
+                if not starts or e - starts[-1] >= HORIZON_HOURS * HOUR_NS:
+                    starts.append(e)
+            self.groups.append((times, part.probability.to_numpy(), ev, np.array(starts, dtype=np.int64)))
+            self.events += len(ev)
+            self.cases += len(starts)
+        self.days = max(1, pd.to_datetime(predictions.as_of).dt.normalize().nunique())
+
+    def warnings(self, threshold: float) -> pd.DataFrame:
+        """Every warning at this threshold: probability when issued and whether it came true."""
+        rows = []
+        for times, probability, ev, _ in self.groups:
+            issued = issue_times(times, probability >= threshold)
+            at = np.searchsorted(times, issued)
+            k = np.searchsorted(ev, issued)
+            hit = (
+                (k < len(ev)) & (ev[np.minimum(k, max(len(ev) - 1, 0))] - issued < HORIZON_HOURS * HOUR_NS)
+                if len(ev)
+                else np.zeros(len(issued), dtype=bool)
+            )
+            rows.append(pd.DataFrame({"probability": probability[at], "hit": hit}))
+        return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=["probability", "hit"])
+
+    def evaluate(self, threshold: float) -> dict:
+        alerts = correct = strict = caught = 0
+        leads = []
+        for times, probability, ev, starts in self.groups:
+            issued = issue_times(times, probability >= threshold)
+            alerts += len(issued)
+            pointer = 0
+            for t in issued:
+                k = int(np.searchsorted(ev, t))
+                if k < len(ev) and ev[k] - t < HORIZON_HOURS * HOUR_NS:
+                    correct += 1
+                    leads.append((ev[k] - t) / HOUR_NS)
+                pointer = max(pointer, k)
+                if pointer < len(ev) and ev[pointer] - t < HORIZON_HOURS * HOUR_NS:
+                    strict += 1
+                    pointer += 1
+            if len(starts) and len(issued):
+                j = np.searchsorted(issued, starts, side="right") - 1
+                caught += int(
+                    ((j >= 0) & (starts - issued[np.maximum(j, 0)] < HORIZON_HOURS * HOUR_NS)).sum()
+                )
+        precision = correct / alerts if alerts else 0.0
+        recall = caught / self.cases if self.cases else 0.0
+        return {
+            "threshold": float(threshold),
+            "precision": precision,
+            "recall": recall,
+            "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0.0,
+            "recall_strict": strict / self.events if self.events else 0.0,
+            "alerts": alerts,
+            "true_alerts": correct,
+            "false_alerts": alerts - correct,
+            "incident_days": self.cases,
+            "caught_incident_days": caught,
+            "eligible_episodes": self.events,
+            "days": int(self.days),
+            "alerts_per_day": alerts / self.days,
+            "false_alerts_per_day": (alerts - correct) / self.days,
+            "median_lead_hours": float(np.median(leads)) if leads else None,
+            "cooldown_hours": COOLDOWN_HOURS,
+            "recall_unit": "incident_days",
+        }
+
+
+def metrics(predictions: pd.DataFrame, episodes: pd.DataFrame, threshold: float) -> dict:
+    """Warnings and incident days for one kind at one threshold."""
+    return Evaluator(predictions, episodes).evaluate(threshold)
 
 
 def select_threshold(predictions: pd.DataFrame, episodes: pd.DataFrame, points: int = 400) -> dict:
@@ -116,7 +152,8 @@ def select_threshold(predictions: pd.DataFrame, episodes: pd.DataFrame, points: 
     Candidate thresholds are quantiles of the period's own probabilities.
     """
     grid = np.unique(np.quantile(predictions.probability, np.linspace(0.5, 0.9995, points)))
-    results = [metrics(predictions, episodes, t) for t in grid]
+    evaluator = Evaluator(predictions, episodes)
+    results = [evaluator.evaluate(t) for t in grid]
     results = [r for r in results if r["alerts"] >= MIN_ALERTS]
     if not results:
         raise ValueError("No threshold gives enough warnings on the selection period")

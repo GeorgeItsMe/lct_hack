@@ -13,6 +13,7 @@ dataset.zip
 data/raw/
 data/processed/
 data/runtime/
+data/polygon/
 artifacts/cache/
 artifacts/models/
 artifacts/operational/

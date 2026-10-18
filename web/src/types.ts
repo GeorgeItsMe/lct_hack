@@ -13,7 +13,8 @@ export type Page =
   | "quality"
   | "users"
   | "audit"
-  | "settings";
+  | "settings"
+  | "polygon";
 export type Role =
   "dispatcher" | "technician" | "analyst" | "manager" | "admin";
 export type Permission =
@@ -182,6 +183,124 @@ export type Detail = Forecast & {
     sensor_name: string;
   }[];
   calibration_status: string;
+  confidence?: Confidence | null;
+};
+export type Confidence = {
+  period_label: string;
+  warnings: number;
+  confirmed: number;
+  level: RiskLevel;
+  level_label: string;
+  level_warnings: number;
+  level_confirmed: number;
+};
+export type DispatcherLoad = {
+  period: string;
+  before_per_day: number;
+  after_per_day: number;
+  rows: {
+    kind: Kind;
+    label: string;
+    before_per_day: number;
+    before_precision: number;
+    after_per_day: number;
+    after_precision: number;
+    after_recall: number;
+    false_per_day: number;
+    lead_hours: number | null;
+    changed: boolean;
+  }[];
+};
+export type PolygonFeedRow = {
+  time: string;
+  object_id: number;
+  object_name: string;
+  scenario: string;
+  scenario_label: string;
+  truth: string;
+  system: string;
+  outcome: string;
+  lead_hours: number | null;
+  incident_id: string | null;
+  kind: "incident" | "false";
+};
+export type PolygonTriage = {
+  incidents: number;
+  caught: number;
+  recall: number | null;
+  precision: number;
+  escalated: number;
+  false_escalations: number;
+  alarms_per_day: number;
+  escalated_per_day: number;
+  false_per_day: number;
+  hot_work_alarms_per_day?: number;
+  hot_work_escalated?: number;
+  hot_work_with_permit?: number | null;
+  permitted_per_day?: number;
+  no_permit_per_day?: number;
+};
+export type PolygonForecast = {
+  precision: number;
+  recall: number;
+  alerts: number;
+  true_alerts: number;
+  incident_days: number;
+  caught_incident_days: number;
+  alerts_per_day: number;
+  false_alerts_per_day: number;
+  median_lead_hours: number | null;
+  with_visible_heating?: {
+    incident_days: number;
+    caught_incident_days: number;
+  };
+  fan_caused?: {
+    incident_days: number;
+    caught_incident_days: number;
+    median_lead_hours: number | null;
+  };
+};
+export type PolygonCascades = {
+  incidents: number;
+  caught: number;
+  detections_per_day: number;
+  background_detections_per_day: number;
+};
+export type PolygonResults = {
+  fire_triage: PolygonTriage;
+  access_triage: PolygonTriage;
+  fire_forecast: PolygonForecast;
+  pump_forecast: PolygonForecast;
+  fan_forecast: PolygonForecast;
+  gas_forecast: PolygonForecast;
+  cascades: PolygonCascades;
+};
+export type PolygonReport = {
+  scenarios: PolygonResults;
+  hard: PolygonResults;
+  effect: {
+    fire: {
+      alarms_per_day: number;
+      raised_per_day: number;
+      hot_work_per_day: number;
+      low_priority_per_day: number;
+    };
+    access: {
+      alarms_per_day: number;
+      trips_per_day: number;
+      permitted_per_day: number;
+      calls_per_day: number;
+    };
+    forecasts_per_day: Record<string, number>;
+  };
+  design: {
+    train_worlds: number[];
+    test_worlds: number[];
+    hard_worlds: number[];
+    feed_world: number;
+    rates: Record<string, number>;
+    hard_rates: Record<string, number>;
+  };
 };
 export type AlertMetrics = {
   precision: number;
@@ -447,6 +566,7 @@ export type Proposal = {
 };
 export type Summary = {
   as_of: string;
+  load?: DispatcherLoad | null;
   totals: {
     forecasts: number;
     warnings: number;

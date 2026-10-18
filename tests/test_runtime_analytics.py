@@ -108,3 +108,23 @@ def test_management_reports_render_in_both_formats(service):
     assert book["Предупреждения"].max_row - 1 == summary["totals"]["warnings"]
     pdf = to_pdf(report)
     assert pdf.startswith(b"%PDF") and len(pdf) > 5000
+
+
+@pytest.mark.parametrize("kind", ["fault", "fire", "access"])
+def test_card_confidence_reproduces_the_selection_precision(service, kind):
+    threshold = service.thresholds()[kind]
+    value = service.confidence(kind, threshold, threshold)
+    assert value["warnings"] > 0
+    assert value["confirmed"] / value["warnings"] == pytest.approx(
+        service.rule[kind]["selection"]["precision"]
+    )
+    assert value["level"] in ("high", "critical")
+    assert value["level_confirmed"] <= value["level_warnings"] <= value["warnings"]
+
+
+def test_dispatcher_load_shows_the_24_hour_rule_effect(service):
+    load = service.summary(None)["load"]
+    assert load["after_per_day"] < load["before_per_day"]
+    rows = {r["kind"]: r for r in load["rows"]}
+    assert not rows["fault"]["changed"] and rows["fault"]["before_per_day"] == rows["fault"]["after_per_day"]
+    assert rows["access"]["after_per_day"] < rows["access"]["before_per_day"]

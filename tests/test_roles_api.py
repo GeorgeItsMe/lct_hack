@@ -401,3 +401,14 @@ def test_stream_decision_follows_its_warning_into_the_next_snapshot(client, monk
     assert row["id"] == f"batch:{second}:1:fire"
     assert row["valid_until"] == "2026-06-16T12:00:00"
     assert row["decision"] and row["decision"]["action"] == "monitor"
+
+
+def test_polygon_results_belong_to_analyst_and_manager(client):
+    c, _, _ = client
+    login(c, "dispatcher")
+    assert c.get("/api/polygon").status_code == 403
+    c.post("/api/auth/logout")
+    for role in ("analyst", "manager"):
+        login(c, role)
+        assert c.get("/api/polygon").status_code in (200, 404)
+        c.post("/api/auth/logout")

@@ -458,6 +458,53 @@ def evaluation_matches(
     return json.loads((ARTIFACTS / "predictions" / f"test-matches-{kind}.json").read_text(encoding="utf-8"))
 
 
+@app.get("/api/polygon")
+def polygon(user=Depends(require("summary.view"))):
+    """Polygon results: recognition of incidents with known truth, effect, robustness."""
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены: запустите scripts/polygon_run.py")
+    return polygon_view.report()
+
+
+@app.get("/api/polygon/feed")
+def polygon_feed(user=Depends(require("summary.view"))):
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены")
+    return polygon_view.feed()
+
+
+@app.get("/api/polygon/dataset.zip")
+def polygon_dataset(user=Depends(require("summary.view"))):
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены")
+    audit(user.id, "polygon_dataset_downloaded")
+    return Response(
+        polygon_view.dataset_zip(),
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="polygon_dataset.zip"'},
+    )
+
+
+@app.get("/api/polygon/journal.csv")
+def polygon_journal(day: str = "2026-06-15", user=Depends(require("summary.view"))):
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены")
+    audit(user.id, "polygon_journal_downloaded", {"day": day})
+    return Response(
+        polygon_view.journal_day(day),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="polygon_journal_{day}.csv"'},
+    )
+
+
 @app.get("/api/quality")
 def quality(user=Depends(require("model.view"))):
     return analytics().quality()
