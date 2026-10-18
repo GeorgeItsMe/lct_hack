@@ -119,7 +119,9 @@ def run(directory: Path, as_of: str):
         for i, (obj, p) in enumerate(zip(frame.object_id, probabilities, strict=True)):
             policy = meta.get("alert_policy")
             count = float(expected_counts[i]) if expected_counts is not None else None
-            above = bool(p >= meta["threshold"] and (policy is None or count >= policy["margin"]))
+            # A single snapshot warns at the threshold; the stream applies the 24-hour rule below.
+            margin = policy["margin"] if policy and policy["type"] == "pending_count" else None
+            above = bool(p >= meta["threshold"] and (margin is None or count >= margin))
             forecasts.append(
                 {
                     "object_id": int(obj),
@@ -161,7 +163,11 @@ def run(directory: Path, as_of: str):
             )
             lookup = {(d["object_id"], d["kind"]): d for d in decisions}
             for row in forecasts:
-                row.update(lookup.get((row["object_id"], row["kind"]), {}))
+                decision = lookup.get((row["object_id"], row["kind"]), {})
+                row.update(decision)
+                if "warning_active" in decision:
+                    # 24-hour rule: the warning, not the momentary probability, goes to the queue.
+                    row["above_threshold"] = decision["warning_active"]
         finally:
             engine.dispose()
     result = {

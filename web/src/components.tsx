@@ -1084,7 +1084,9 @@ export function ForecastDrawer({
         <footer className="drawer-bottom">
           <span>
             <Clock3 size={14} />
-            Горизонт до {date(forecast.valid_until, true)}
+            {forecast.warning_issued_at
+              ? `Предупреждение с ${date(forecast.warning_issued_at, true)} до ${date(forecast.valid_until, true)}`
+              : `Горизонт до ${date(forecast.valid_until, true)}`}
           </span>
           {tab !== "decision" && (canDecide || canDraft) && (
             <button

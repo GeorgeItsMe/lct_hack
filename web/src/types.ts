@@ -65,6 +65,7 @@ export type Forecast = {
   risk: RiskLevel;
   risk_label: string;
   above_threshold: boolean;
+  warning_issued_at?: string | null;
   as_of: string;
   horizon_hours: number;
   valid_until: string;
@@ -482,8 +483,9 @@ export type Summary = {
       precision: number;
       recall: number;
       f1: number;
-      baseline_f1: number;
-      eligible_episodes: number;
+      baseline_f1: number | null;
+      eligible_episodes: number | null;
+      alerts_per_day?: number;
       enabled: boolean;
     }
   >;

@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from catboost import CatBoostClassifier, Pool
 
+from moscollector import daily_rule
 from moscollector.domain import (
     KIND_LABELS,
     RECOMMENDATIONS,
@@ -22,6 +23,7 @@ from moscollector.domain import (
     risk_level,
 )
 from moscollector.inference import CATEGORICAL, model_input
+from moscollector.model_registry import active_version, load_bundle
 from moscollector.paths import ARTIFACTS, PROCESSED
 
 
@@ -72,6 +74,19 @@ class AnalyticsService:
             model = CatBoostClassifier()
             model.load_model(str(ARTIFACTS / "models" / f"{kind}.cbm"))
             self.models[kind] = model
+        # Thresholds of the active bundle released under the 24-hour rule, and the
+        # selection-period scores that reproduce its metrics in the threshold preview.
+        self.rule = {}
+        self.rule_scores = {}
+        self.rule_version = active_version()
+        if self.rule_version != "legacy":
+            for kind, head in load_bundle(self.rule_version).items():
+                if head.meta.get("alert_policy", {}).get("type") == "daily":
+                    self.rule[kind] = head.meta
+                    scores = ARTIFACTS / "operational" / self.rule_version / f"{kind}_policy.parquet"
+                    if scores.exists():
+                        self.rule_scores[kind] = pd.read_parquet(scores)
+        self._schedules = {}
         self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text(encoding="utf-8"))
         self.uncertainty = None
         uncertainty_path = ARTIFACTS / "uncertainty_report.json"
@@ -103,10 +118,38 @@ class AnalyticsService:
         return self.times[max(0, index)]
 
     def thresholds(self, overrides=None):
-        defaults = {kind: m["threshold"] for kind, m in self.meta.items()}
+        defaults = {
+            kind: self.rule[kind]["threshold"] if kind in self.rule else m["threshold"]
+            for kind, m in self.meta.items()
+        }
         return {**defaults, **(overrides or {})}
 
+    def warning_schedule(self, kind, threshold):
+        """Archive warnings of one kind under the 24-hour rule: issue times per object."""
+        key = (kind, float(threshold))
+        if key not in self._schedules:
+            rows = self.predictions[self.predictions.kind.eq(kind)][["object_id", "as_of", "probability"]]
+            self._schedules[key] = daily_rule.schedule(rows, threshold)
+        return self._schedules[key]
+
+    def warning_at(self, obj, kind, threshold, t):
+        """Issue time of the warning that covers moment t, or None."""
+        issued = self.warning_schedule(kind, threshold).get(int(obj))
+        if issued is None or not len(issued):
+            return None
+        now = pd.Timestamp(t).value
+        j = int(np.searchsorted(issued, now, side="right")) - 1
+        if j >= 0 and now - issued[j] < daily_rule.COOLDOWN_HOURS * daily_rule.HOUR_NS:
+            return pd.Timestamp(int(issued[j]))
+        return None
+
     def forecast_rows(self, as_of=None, overrides=None):
+        """Every object's forecast at t. ``above_threshold`` marks an active warning.
+
+        A warning is issued when the probability reaches the threshold and none was issued
+        for the same object and kind in the previous 24 hours; it stays active for 24 hours.
+        Its id is fixed at the issue time, so the dispatcher's decision stays with it.
+        """
         t = self.resolve_time(as_of)
         data = self.predictions[self.predictions.as_of.eq(t)].copy()
         threshold = self.thresholds(overrides)
@@ -115,11 +158,12 @@ class AnalyticsService:
             obj = self.object_map[int(r.object_id)]
             p = float(r.probability)
             cut = threshold[r.kind]
-            above = p >= cut
+            issued = self.warning_at(r.object_id, r.kind, cut, t)
+            above = issued is not None
             level = risk_level(p, cut)
             rows.append(
                 {
-                    "id": prediction_id(r.object_id, r.kind, t),
+                    "id": prediction_id(r.object_id, r.kind, issued if above else t),
                     "object_id": int(r.object_id),
                     "object_name": obj["object_name"],
                     "parent_id": int(obj["parent_id"]) if pd.notna(obj["parent_id"]) else None,
@@ -130,9 +174,10 @@ class AnalyticsService:
                     "risk": level,
                     "risk_label": RISK_LEVELS[level],
                     "above_threshold": above,
+                    "warning_issued_at": issued.isoformat() if above else None,
                     "as_of": t.isoformat(),
                     "horizon_hours": 24,
-                    "valid_until": (t + pd.Timedelta(hours=24)).isoformat(),
+                    "valid_until": ((issued if above else t) + pd.Timedelta(hours=24)).isoformat(),
                     "label_type": "proxy_sensor_episode",
                     "split": r.split,
                     "recommendation": RECOMMENDATIONS[r.kind][0],
@@ -440,52 +485,60 @@ class AnalyticsService:
         )
 
     def threshold_preview(self, kind, threshold, as_of=None, overrides=None):
-        """Effect of a threshold on the policy period (16–31 May), never on the final test."""
-        from moscollector.alert_policy import alert_metrics
+        """Effect of a threshold on the selection period, never on the final test.
 
+        Uses the 24-hour rule and the hourly scores the active bundle was selected on, so
+        the current threshold reproduces the released metrics exactly. Kinds outside the
+        bundle fall back to the archive's 3-hour policy split.
+        """
         if kind not in self.meta:
             raise KeyError("Тип риска не найден")
-        policy = self.predictions[self.predictions.kind.eq(kind) & self.predictions.split.eq("policy")][
-            ["object_id", "as_of", "probability"]
-        ]
+        if kind in self.rule_scores:
+            policy = self.rule_scores[kind]
+            begin, end = (pd.Timestamp(x) for x in self.rule[kind]["periods"]["selection"])
+            label = (
+                f"Период настройки: {begin:%d.%m}–{end - pd.Timedelta(days=1):%d.%m.%Y}, расчёт каждый час"
+            )
+        else:
+            policy = self.predictions[self.predictions.kind.eq(kind) & self.predictions.split.eq("policy")][
+                ["object_id", "as_of", "probability"]
+            ]
+            label = "Период настройки: 16–31 мая 2026"
         episodes = self.episodes[self.episodes.kind.eq(kind)]
         current = self.thresholds(overrides)[kind]
         t = self.resolve_time(as_of)
+        week = t - pd.Timedelta(days=7)
+        # One extra day so a warning issued just before the week still suppresses repeats.
         window = self.predictions[
             self.predictions.kind.eq(kind)
-            & self.predictions.eligible
-            & self.predictions.as_of.gt(t - pd.Timedelta(days=7))
+            & self.predictions.as_of.gt(week - pd.Timedelta(days=1))
             & self.predictions.as_of.le(t)
-        ]
-        days = max(1, window.as_of.nunique() * 3 / 24)
+        ][["object_id", "as_of", "probability"]]
 
-        def load(value):
-            # Same 24h per-object pause as the warning policy, so this is dispatcher workload.
-            issued = alert_metrics(window[["object_id", "as_of", "probability"]], episodes, value)["alerts"]
+        def effect(value):
+            # Dispatcher workload over the last week of the archive, one warning per object a day.
+            issued = sum(
+                int((times > week.value).sum()) for times in daily_rule.schedule(window, value).values()
+            )
             return {
+                **daily_rule.metrics(policy, episodes, value),
                 "warnings_now": int(window[window.as_of.eq(t)].probability.ge(value).sum()),
-                "warnings_per_day_7d": float(issued / days),
+                "warnings_per_day_7d": float(issued / 7),
             }
 
+        grid = np.unique(np.round(np.quantile(policy.probability, np.linspace(0.5, 0.995, 24)), 4))
         return clean(
             {
                 "kind": kind,
                 "period": "policy",
-                "period_label": "Период настройки: 16–31 мая 2026",
-                "current": {
-                    "threshold": current,
-                    **alert_metrics(policy, episodes, current),
-                    **load(current),
-                },
-                "proposed": {
-                    "threshold": threshold,
-                    **alert_metrics(policy, episodes, threshold),
-                    **load(threshold),
-                },
-                "model_threshold": self.meta[kind]["threshold"],
+                "period_label": label,
+                "rule": "Не больше одного предупреждения на объект и тип в сутки",
+                "current": effect(current),
+                "proposed": effect(threshold),
+                "model_threshold": self.thresholds()[kind],
                 "curve": [
                     {k: c[k] for k in ("threshold", "precision", "recall", "f1", "alerts")}
-                    for c in self.meta[kind].get("policy_curve", [])
+                    for c in (daily_rule.metrics(policy, episodes, float(v)) for v in grid)
                 ],
                 "as_of": t,
             }
@@ -526,7 +579,11 @@ class AnalyticsService:
         if parent is not None:
             children = set(self.objects[self.objects.parent_id.eq(parent)].object_id)
             recent = recent[recent.object_id.isin(children)]
-        recent["warning"] = recent.probability.ge(recent.kind.map(threshold))
+        # Active warnings at each moment under the 24-hour rule, as in the dispatcher queue.
+        recent["warning"] = [
+            self.warning_at(r.object_id, r.kind, threshold[r.kind], r.as_of) is not None
+            for r in recent.itertuples()
+        ]
         trend = (
             recent.pivot_table(index="as_of", columns="kind", values="warning", aggfunc="sum", fill_value=0)
             .reset_index()
@@ -555,6 +612,20 @@ class AnalyticsService:
             }
             for kind, m in self.report["models"].items()
         }
+        # Released kinds report the held-out June under the 24-hour rule instead.
+        for kind, meta in self.rule.items():
+            june = meta["test"]
+            p, r = june["precision"], june["recall"]
+            quality[kind] = {
+                "precision": p,
+                "recall": r,
+                "f1": 2 * p * r / (p + r) if p + r else 0.0,
+                "baseline_f1": None,
+                "eligible_episodes": None,
+                "alerts_per_day": june["alerts_per_day"],
+                "recall_unit": "incident_days",
+                "enabled": threshold[kind] <= 1,
+            }
         return clean(
             {
                 "as_of": t,

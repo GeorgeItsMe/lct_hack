@@ -39,7 +39,7 @@ from moscollector.database import (
 from moscollector.domain import ACTIONS, KIND_LABELS, REASONS, RISK_LEVELS, WORK_ACTIONS, risk_level
 from moscollector.paths import ARTIFACTS, ROOT, RUNTIME
 from moscollector.roles import DENIED, ROLES, allowed, permissions_for
-from moscollector.service import AnalyticsService, prediction_id
+from moscollector.service import AnalyticsService
 from moscollector.workorders import utc_iso
 
 DEMO_MODE = os.getenv("CONTOUR_DEMO", "true").lower() == "true"
@@ -310,8 +310,9 @@ def overview(as_of: str | None = None, user=Depends(require("forecasts.view"))):
     with SessionFactory() as db:
         decisions = db.scalars(select(Decision)).all()
         orders = latest_orders(db)
-        by_id = {
-            d.prediction_id: {
+
+        def payload(d):
+            return {
                 "action": d.action,
                 "reason": d.reason,
                 "comment": d.comment,
@@ -319,10 +320,20 @@ def overview(as_of: str | None = None, user=Depends(require("forecasts.view"))):
                 "work_status": orders[d.id].status if d.id in orders else None,
                 "work_outcome": orders[d.id].outcome if d.id in orders else None,
             }
+
+        by_id = {d.prediction_id: payload(d) for d in decisions}
+        # A stream warning lives 24 hours across snapshots: its decision follows the warning.
+        by_warning = {
+            (d.object_id, d.kind, d.forecast_at): payload(d)
             for d in decisions
+            if d.prediction_id.startswith("batch:")
         }
         for row in result["forecasts"] + (result["stream"] or {}).get("forecasts", []):
-            row["decision"] = by_id.get(row["id"])
+            row["decision"] = by_id.get(row["id"]) or (
+                by_warning.get((row["object_id"], row["kind"], row["warning_issued_at"]))
+                if row.get("source") == "stream" and row.get("warning_issued_at")
+                else None
+            )
     return result
 
 
@@ -352,8 +363,9 @@ def stream_snapshot():
     for r in result["forecasts"]:
         level = risk_level(r["probability"], r["threshold"])
         if not r["above_threshold"] and level in ("high", "critical"):
-            level = "watch"  # the count-based warning policy did not confirm this one
+            level = "watch"  # the warning rule did not issue a warning for this one
         parent = service.object_map.get(r["object_id"], {}).get("parent_id")
+        issued = r.get("warning_issued_at")
         rows.append(
             {
                 "id": f"batch:{job['id']}:{r['object_id']}:{r['kind']}",
@@ -367,9 +379,10 @@ def stream_snapshot():
                 "risk": level,
                 "risk_label": RISK_LEVELS[level],
                 "above_threshold": r["above_threshold"],
+                "warning_issued_at": issued,
                 "as_of": result["as_of"],
                 "horizon_hours": 24,
-                "valid_until": (moment + pd.Timedelta(hours=24)).isoformat(),
+                "valid_until": (pd.Timestamp(issued or moment) + pd.Timedelta(hours=24)).isoformat(),
                 "recommendation": r["recommendation"],
                 "model_version": result.get("model_version", "legacy"),
                 "split": "stream",
@@ -477,19 +490,37 @@ def decide(body: DecisionInput, user=Depends(require("decisions.write"))):
         state = imports().get(body.batch_id)
         if state["status"] != "complete":
             raise HTTPException(422, "Расчёт ещё не завершён")
-        if body.as_of != state["as_of"] or not any(
-            r["object_id"] == body.object_id and r["kind"] == body.kind for r in state["result"]["forecasts"]
-        ):
+        match = next(
+            (
+                r
+                for r in state["result"]["forecasts"]
+                if r["object_id"] == body.object_id and r["kind"] == body.kind
+            ),
+            None,
+        )
+        if body.as_of != state["as_of"] or match is None:
             raise HTTPException(422, "Прогноз не соответствует снимку пакета")
         import pandas as pd
 
-        t = pd.Timestamp(state["as_of"])
+        # A decision on an active warning belongs to the warning, i.e. to its issue time.
+        t = pd.Timestamp(match.get("warning_issued_at") or state["as_of"])
         expected = f"batch:{body.batch_id}:{body.object_id}:{body.kind}"
     else:
-        t = service.resolve_time(body.as_of)
-        expected = prediction_id(body.object_id, body.kind, t)
-        if not any(r["id"] == expected for r in service.forecast_rows(t)):
+        import pandas as pd
+
+        moment = service.resolve_time(body.as_of)
+        row = next(
+            (
+                r
+                for r in service.forecast_rows(moment, thresholds())
+                if r["object_id"] == body.object_id and r["kind"] == body.kind
+            ),
+            None,
+        )
+        if row is None:
             raise HTTPException(404, "Прогноз не найден")
+        expected = row["id"]
+        t = pd.Timestamp(row["warning_issued_at"]) if row["warning_issued_at"] else moment
     if expected != body.prediction_id:
         raise HTTPException(422, "Идентификатор прогноза не соответствует данным")
     with SessionFactory() as db:
@@ -589,7 +620,9 @@ def settings(user=Depends(require("forecasts.view"))):
         "thresholds": analytics().thresholds(thresholds()),
         "defaults": analytics().thresholds(),
         "horizon_hours": 24,
+        # One warning per object and kind per 24 hours, in the archive queue and the stream.
         "cooldown_hours": 24,
+        "model_version": analytics().rule_version,
         "mode": "historical_replay",
     }
 

@@ -1156,7 +1156,7 @@ function MetricsTable({
   const rows: [string, (m: typeof current) => string][] = [
     ["Порог", (m) => (m.threshold > 1 ? "выкл." : pct(m.threshold))],
     ["Precision (доля верных)", (m) => pct(m.precision)],
-    ["Recall (найдено эпизодов)", (m) => pct(m.recall)],
+    ["Recall (неспокойные сутки)", (m) => pct(m.recall)],
     ["Предупреждений за период", (m) => num(m.alerts)],
     ["Из них верных", (m) => num(m.true_alerts)],
     ["Ложных", (m) => num(m.false_alerts)],
@@ -1620,7 +1620,10 @@ export function SummaryPage({
           <div className="panel-heading">
             <div>
               <h2>Качество прогноза</h2>
-              <span>Отложенный тест, июнь 2026</span>
+              <span>
+                Отложенный тест, июнь 2026 · не больше одного предупреждения на
+                объект и тип в сутки
+              </span>
             </div>
           </div>
           <div className="table-scroll">
@@ -1631,7 +1634,7 @@ export function SummaryPage({
                   <th>Precision</th>
                   <th>Recall</th>
                   <th>F1</th>
-                  <th>F1 базы</th>
+                  <th>В сутки</th>
                 </tr>
               </thead>
               <tbody>
@@ -1645,7 +1648,11 @@ export function SummaryPage({
                           <td>{pct(q.precision)}</td>
                           <td>{pct(q.recall)}</td>
                           <td>{q.f1.toFixed(3).replace(".", ",")}</td>
-                          <td>{q.baseline_f1.toFixed(3).replace(".", ",")}</td>
+                          <td>
+                            {q.alerts_per_day != null
+                              ? q.alerts_per_day.toFixed(1).replace(".", ",")
+                              : "—"}
+                          </td>
                         </>
                       ) : (
                         <td colSpan={4}>Предупреждения выключены</td>

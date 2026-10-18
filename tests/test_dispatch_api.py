@@ -20,9 +20,12 @@ def client(tmp_path, monkeypatch):
     identifier = prediction_id(1, "fault", t)
     mock = SimpleNamespace(
         resolve_time=lambda _: t,
-        forecast_rows=lambda _: [{"id": identifier}],
+        forecast_rows=lambda *_: [
+            {"id": identifier, "object_id": 1, "kind": "fault", "warning_issued_at": None}
+        ],
         object_map={1: {"object_name": "Объект Альфа"}},
         thresholds=lambda overrides=None: {"fault": 0.2, **(overrides or {})},
+        rule_version="legacy",
     )
     monkeypatch.setattr(api, "analytics", lambda: mock)
     with TestClient(api.app) as c:

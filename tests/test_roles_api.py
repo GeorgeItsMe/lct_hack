@@ -44,9 +44,12 @@ def client(tmp_path, monkeypatch):
 
     mock = SimpleNamespace(
         resolve_time=lambda *_: T,
-        forecast_rows=lambda *_: [{"id": identifier}],
+        forecast_rows=lambda *_: [
+            {"id": identifier, "object_id": 1, "kind": "fault", "warning_issued_at": None}
+        ],
         object_map={1: {"object_name": "Объект Альфа"}},
         thresholds=lambda overrides=None: {"fault": 0.2, "fire": 0.3, **(overrides or {})},
+        rule_version="legacy",
         detail=detail,
         retrospective=lambda obj, kind, as_of: {"occurred": True},
         channel_states=lambda _: pd.DataFrame({"object_id": [1], "current_fault": [False]}),
@@ -346,3 +349,55 @@ def test_analyst_upload_reaches_the_dispatcher_queue(monkeypatch):
     snapshot = api.stream_snapshot()
     assert snapshot["job_id"] == upload and snapshot["label"] == "Загрузка аналитика"
     assert snapshot["forecasts"][0]["id"] == f"batch:{upload}:1:fault"
+
+
+def test_stream_decision_follows_its_warning_into_the_next_snapshot(client, monkeypatch):
+    """24-hour rule: a decided stream warning does not come back with every new snapshot."""
+    from moscollector import api
+
+    c, _, _ = client
+    first, second = "e" * 32, "f" * 32
+    issued = "2026-06-15T12:00:00"
+
+    def snapshot(as_of):
+        row = {
+            "object_id": 1,
+            "object_name": "Объект Альфа",
+            "kind": "fire",
+            "kind_label": "Пожарный сигнал",
+            "probability": 0.6,
+            "threshold": 0.3,
+            "above_threshold": True,
+            "warning_active": True,
+            "warning_issued_at": issued,
+            "recommendation": "Проверить датчики",
+        }
+        return {"status": "complete", "as_of": as_of, "result": {"as_of": as_of, "forecasts": [row]}}
+
+    states = {first: snapshot("2026-06-15T12:00:00"), second: snapshot("2026-06-15T13:00:00")}
+    current = {"job": first}
+    manager = SimpleNamespace(
+        list=lambda mode=None: [{"id": current["job"], "status": "complete", "mode": "accumulated_stream"}],
+        get=lambda job: states[job],
+    )
+    monkeypatch.setattr(api, "imports", lambda: manager)
+    monkeypatch.setattr(api, "SERVERLESS_MODE", False)
+    service = api.analytics()
+    monkeypatch.setattr(service, "overview", lambda *_: {"forecasts": []}, raising=False)
+    login(c, "dispatcher")
+    body = {
+        "prediction_id": f"batch:{first}:1:fire",
+        "object_id": 1,
+        "kind": "fire",
+        "as_of": "2026-06-15T12:00:00",
+        "action": "monitor",
+        "reason": "planned_work",
+        "comment": "Огневые работы по наряду",
+        "batch_id": first,
+    }
+    assert c.post("/api/decisions", json=body).status_code == 200
+    current["job"] = second
+    row = c.get("/api/overview").json()["stream"]["forecasts"][0]
+    assert row["id"] == f"batch:{second}:1:fire"
+    assert row["valid_until"] == "2026-06-16T12:00:00"
+    assert row["decision"] and row["decision"]["action"] == "monitor"

@@ -1,7 +1,7 @@
 {
   "scope": "vercel_archive_demo_runtime",
   "raw_event_begin": "2026-04-30T00:00:00",
-  "active_model": "op-7f225ca12c58",
+  "active_model": "op-a6602be5fe94",
   "rows": {
     "events_2026": 10787350,
     "features": 112944,
@@ -9,7 +9,7 @@
     "predictions": 451776
   },
   "files": {
-    "artifacts/active_model.json": "7e1eb5a27e5fb3031b23cd7b20c50ce46f82e216bfaa0eabf78a593776b7044d",
+    "artifacts/active_model.json": "6f962e14e26a648d4b6967a24c01ba050da63eb0f5f5fcfce9e6e6bc7e8c539a",
     "artifacts/audit-2019.json": "b0c3ed87beb79c8830df3a7c11dce339878930c70af7a1d4f5cc7019a4198be0",
     "artifacts/audit-2020.json": "f58a8dc8898943972778016371d27204ae16407f53b438fd94588998e12e86e4",
     "artifacts/audit-2021.json": "6cb1db4892f5b9aa13d0df2cf4a8d1d38920695def4485f979d32c2a91895c9b",
@@ -57,6 +57,13 @@
     "artifacts/operational/op-7f225ca12c58/access_count.cbm": "7b5d0dff18e9ccad564c518379534058ebb239959e627111f35e159f13600c4d",
     "artifacts/operational/op-7f225ca12c58/fire_count.cbm": "157410184a72de4d92d264850b42b6a9466e3258d81cf754fb0abfd902138423",
     "artifacts/operational/op-7f225ca12c58/fire_policy.parquet": "24cf81ab8f56baa2721b70997ea3680946fd8e0bfce69db16aa274372aa84f53",
-    "artifacts/operational/op-7f225ca12c58/manifest.json": "3631682fe651ce765e0c7c3fc58ca3352034d9ae04654c334d23c86f15feeed0"
+    "artifacts/operational/op-7f225ca12c58/manifest.json": "3631682fe651ce765e0c7c3fc58ca3352034d9ae04654c334d23c86f15feeed0",
+    "artifacts/operational/op-a6602be5fe94/access.cbm": "b02f4c75825b4d599d8f3175e073d9e44158371be970022f18be939f99910a61",
+    "artifacts/operational/op-a6602be5fe94/access_policy.parquet": "26275889cedbeb87be4b21dcbd8d354aefea4eafb0c327be7e66554da4fc9f83",
+    "artifacts/operational/op-a6602be5fe94/fault.cbm": "0051ac7f1d9f3d527f891588c59edfed3d7a7b59f4352f689bfa8ad1c8255a18",
+    "artifacts/operational/op-a6602be5fe94/fault_policy.parquet": "4ab2e887ce9d95a1ef0920d2eb0cd3bd89fd2f5f794ef630b6261279a3cca452",
+    "artifacts/operational/op-a6602be5fe94/fire.cbm": "aec79348c2be7499208b24b1e44f665263c05ee25a8d739062381da7a2570144",
+    "artifacts/operational/op-a6602be5fe94/fire_policy.parquet": "bbd6010c331876f846614b0cd8e2a6af0bb772e5157ce8fb4a330a4e4d27949e",
+    "artifacts/operational/op-a6602be5fe94/manifest.json": "a7e25191533ce4e5597b9295314cdfd9a9f74c9f8b7d285da2f9fbd7f2704724"
   }
 }

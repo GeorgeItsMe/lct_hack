@@ -19,8 +19,8 @@ def _pct(value):
     return "—" if value is None else f"{value * 100:.1f}%".replace(".", ",")
 
 
-def _num(value):
-    return f"{value:.3f}".replace(".", ",")
+def _num(value, digits=3):
+    return "—" if value is None else f"{value:.{digits}f}".replace(".", ",")
 
 
 def _moment(value: str):
@@ -154,15 +154,21 @@ def to_xlsx(report: dict) -> bytes:
     )
     sheet(
         "Качество модели",
-        ["Тип риска", "Precision", "Recall", "F1", "F1 базы", "Эпизодов в тесте", "Предупреждения"],
+        [
+            "Тип риска",
+            "Precision",
+            "Recall (неспокойные сутки)",
+            "F1",
+            "Предупреждений в сутки",
+            "Предупреждения",
+        ],
         [
             [
                 KIND_LABELS[k],
                 round(q["precision"], 3),
                 round(q["recall"], 3),
                 round(q["f1"], 3),
-                round(q["baseline_f1"], 3),
-                q["eligible_episodes"],
+                round(q["alerts_per_day"], 1) if q.get("alerts_per_day") is not None else None,
                 "включены" if q["enabled"] else "отключены",
             ]
             for k, q in report["quality"].items()
@@ -270,9 +276,15 @@ def to_pdf(report: dict) -> bytes:
     )
     heading("Качество модели на отложенном тесте (июнь 2026)")
     table(
-        ["Тип", "Precision", "Recall", "F1", "F1 базы"],
+        ["Тип", "Precision", "Recall", "F1", "В сутки"],
         [
-            [KIND_LABELS[k], _pct(q["precision"]), _pct(q["recall"]), _num(q["f1"]), _num(q["baseline_f1"])]
+            [
+                KIND_LABELS[k],
+                _pct(q["precision"]),
+                _pct(q["recall"]),
+                _num(q["f1"]),
+                _num(q.get("alerts_per_day"), 1),
+            ]
             if q["enabled"]
             else [KIND_LABELS[k], "предупреждения отключены", "—", "—", "—"]
             for k, q in report["quality"].items()
@@ -284,7 +296,9 @@ def to_pdf(report: dict) -> bytes:
     pdf.multi_cell(
         0,
         4,
-        "Метрики событийные: одно предупреждение сопоставляется с одним эпизодом журнала датчиков. "
-        "Реальные инциденты в данных не размечены; прогноз относится к зарегистрированным эпизодам.",
+        "Не больше одного предупреждения на объект и тип в сутки. Предупреждение верно, если в следующие "
+        "24 часа начался эпизод журнала; полнота — доля неспокойных суток (эпизоды объекта в пределах суток), "
+        "о которых предупредили заранее. Реальные инциденты в данных не размечены; прогноз относится "
+        "к зарегистрированным эпизодам.",
     )
     return bytes(pdf.output())

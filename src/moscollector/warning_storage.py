@@ -1,6 +1,7 @@
 """Transactional in-app warning decisions for accumulated stream snapshots."""
 
 import json
+import math
 
 import pandas as pd
 from sqlalchemy import select
@@ -9,6 +10,44 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 
 from moscollector.database import WarningBatch, WarningLock, WarningPolicyState
 from moscollector.warning_policy import HOUR_NS, PendingWarningState
+
+
+def daily_decision(db, row, key, at, forecast, policy, stale, hourly):
+    """24-hour rule: warn when the probability reaches the threshold at an hourly check and
+    no warning was issued for this object and kind in the previous 24 hours."""
+    if not math.isfinite(forecast["probability"]) or not math.isfinite(forecast["threshold"]):
+        raise ValueError("Non-finite warning input")
+    state = json.loads(row.state_json) if row else {}
+    last = int(state["last_issued"]) if state.get("last_issued") is not None else None
+    now = at.value
+    window = policy["cooldown_hours"] * HOUR_NS
+    issued = False
+    if not stale and hourly:
+        issued = forecast["probability"] >= forecast["threshold"] and (last is None or now - last >= window)
+        if issued:
+            last = now
+        encoded = json.dumps({"last_issued": str(last) if last is not None else None, "last_as_of": str(now)})
+        if row:
+            row.state_json = encoded
+        else:
+            db.add(WarningPolicyState(key=key, state_json=encoded))
+    active = last is not None and 0 <= now - last < window
+    return {
+        "object_id": int(forecast["object_id"]),
+        "kind": forecast["kind"],
+        "notification_due": bool(issued),
+        "notification_status": "older_or_same_snapshot"
+        if stale
+        else "between_hourly_checks"
+        if not hourly
+        else "issued"
+        if issued
+        else "active_warning"
+        if active
+        else "below_threshold",
+        "warning_active": bool(active),
+        "warning_issued_at": pd.Timestamp(last).isoformat() if active else None,
+    }
 
 
 def decide_stream_warnings(factory, job_id, as_of, model_version, forecasts, episodes, policies):
@@ -35,10 +74,13 @@ def decide_stream_warnings(factory, job_id, as_of, model_version, forecasts, epi
             if kind not in policies:
                 continue
             policy = policies[kind]
-            if policy["type"] != "pending_count":
-                raise ValueError("Unsupported operational warning policy")
             key = f"{obj}:{kind}"
             row = db.get(WarningPolicyState, key)
+            if policy["type"] == "daily":
+                decisions.append(daily_decision(db, row, key, at, forecast, policy, stale, hourly))
+                continue
+            if policy["type"] != "pending_count":
+                raise ValueError("Unsupported operational warning policy")
             state = (
                 PendingWarningState.from_dict(json.loads(row.state_json)) if row else PendingWarningState()
             )
