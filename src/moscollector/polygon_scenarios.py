@@ -43,7 +43,7 @@ def real_events(processed: Path, catalog: Catalog, cache: Path) -> pd.DataFrame:
         con = duckdb.connect()
         frame = con.execute(
             "SELECT event_id, channel_id, ts, value, numeric_value, alarm FROM read_parquet(?) "
-            "WHERE list_contains(?, channel_id)",
+            "WHERE list_contains(?, channel_id) ORDER BY channel_id, ts, event_id",
             [str(processed / "events-2026.parquet"), [int(c) for c in channels.channel_id]],
         ).df()
         con.close()
@@ -58,7 +58,7 @@ def real_gas_hourly(processed: Path, catalog: Catalog, cache: Path) -> pd.DataFr
             "SELECT channel_id, date_trunc('hour', ts) AS hour, "
             "max(CASE WHEN numeric_value BETWEEN 0 AND 100 THEN numeric_value END) AS gas, "
             "bool_or(value = 'Обнаружен газ' AND alarm) AS gas_alarm "
-            "FROM read_parquet(?) WHERE list_contains(?, channel_id) GROUP BY 1, 2",
+            "FROM read_parquet(?) WHERE list_contains(?, channel_id) GROUP BY 1, 2 ORDER BY 1, 2",
             [
                 str(processed / "events-2026.parquet"),
                 [int(c) for c in catalog.channels.loc[catalog.channels.group.eq("gas"), "channel_id"]],

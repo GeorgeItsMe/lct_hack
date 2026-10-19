@@ -92,7 +92,7 @@ class Catalog:
         channels = pd.read_parquet(processed / "channels.parquet")
         con = duckdb.connect()
         active = con.execute(
-            "SELECT channel_id, count(*) AS n FROM read_parquet(?) GROUP BY 1",
+            "SELECT channel_id, count(*) AS n FROM read_parquet(?) GROUP BY 1 ORDER BY 1",
             [str(processed / "events-2026.parquet")],
         ).df()
         con.close()
@@ -405,7 +405,9 @@ def inject_fires(w, catalog, hot_works, temps, rng, rates):
 def equipment_history(processed, channels):
     con = duckdb.connect()
     frame = con.execute(
-        "SELECT channel_id, ts, value, alarm FROM read_parquet(?) WHERE list_contains(?, channel_id) ORDER BY channel_id, ts",
+        # event_id breaks ties of one channel within a second, so every run reads the same order.
+        "SELECT channel_id, ts, value, alarm FROM read_parquet(?) WHERE list_contains(?, channel_id) "
+        "ORDER BY channel_id, ts, event_id",
         [str(processed / "events-2026.parquet"), [int(c) for c in channels]],
     ).df()
     con.close()
@@ -568,17 +570,32 @@ def inject_cascades(w, catalog, rng, rates):
             )
 
 
+def episodes_source(processed=PROCESSED):
+    """Episode file the worlds are built from: the hourly 2026 build when present."""
+    full = processed / "episodes-all-2026.parquet"
+    return full if full.exists() else processed / "episodes.parquet"
+
+
+def input_files(processed=PROCESSED):
+    """Every prepared file a polygon run reads, for the report's reproducibility record."""
+    return {
+        "channels": processed / "channels.parquet",
+        "objects": processed / "objects.parquet",
+        "events_2026": processed / "events-2026.parquet",
+        "episodes": episodes_source(processed),
+    }
+
+
 def generate(seed, processed=PROCESSED, catalog=None, rates=None):
     rates = {**RATES, **(rates or {})}
     rng = np.random.default_rng(seed)
     catalog = catalog or Catalog(processed)
-    full = processed / "episodes-all-2026.parquet"
-    episodes = pd.read_parquet(full if full.exists() else processed / "episodes.parquet")
+    episodes = pd.read_parquet(episodes_source(processed))
     permits, hot_works = build_permits(episodes, catalog, rng, rates)
     con = duckdb.connect()
     temps = con.execute(
         "SELECT channel_id, ts, numeric_value FROM read_parquet(?) WHERE list_contains(?, channel_id) "
-        "AND numeric_value IS NOT NULL ORDER BY ts",
+        "AND numeric_value IS NOT NULL ORDER BY ts, channel_id, event_id",
         [
             str(processed / "events-2026.parquet"),
             [int(c) for c in catalog.channels.loc[catalog.channels.group.eq("temp"), "channel_id"]],
@@ -586,7 +603,7 @@ def generate(seed, processed=PROCESSED, catalog=None, rates=None):
     ).df()
     gases = con.execute(
         "SELECT channel_id, median(numeric_value) AS base FROM read_parquet(?) WHERE list_contains(?, channel_id) "
-        "AND numeric_value BETWEEN 0 AND 0.5 GROUP BY 1",
+        "AND numeric_value BETWEEN 0 AND 0.5 GROUP BY 1 ORDER BY 1",
         [
             str(processed / "events-2026.parquet"),
             [int(c) for c in catalog.channels.loc[catalog.channels.group.eq("gas"), "channel_id"]],

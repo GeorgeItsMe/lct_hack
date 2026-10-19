@@ -14,8 +14,12 @@ world 101 and that world's registries, truth and injected records into
 """
 
 import argparse
+import hashlib
 import json
+import platform
+import sys
 import time
+from importlib.metadata import version
 
 import numpy as np
 import pandas as pd
@@ -24,7 +28,7 @@ from moscollector import daily_rule
 from moscollector import polygon_scenarios as ps
 from moscollector import polygon_units as pu
 from moscollector.paths import BUNDLE, PROCESSED, ROOT
-from moscollector.polygon import HARD_RATES, RATES, Catalog, generate
+from moscollector.polygon import HARD_RATES, RATES, Catalog, generate, input_files
 
 TRAIN_WORLDS = range(1, 9)
 TEST_WORLDS = range(101, 111)
@@ -652,6 +656,24 @@ def build_feed(inputs, truth, catalog):
     return sorted(feed.rows, key=lambda r: r["time"])
 
 
+def provenance():
+    """Library versions and input hashes: two runs with equal records must give equal reports."""
+    digest = {}
+    for name, path in input_files().items():
+        h = hashlib.sha256()
+        with path.open("rb") as stream:
+            for block in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+                h.update(block)
+        digest[name] = {"file": path.name, "sha256": h.hexdigest()}
+    packages = ("numpy", "pandas", "pyarrow", "duckdb", "catboost")
+    return {
+        "python": sys.version.split()[0],
+        "platform": f"{platform.system()} {platform.machine()}",
+        "packages": {p: version(p) for p in packages},
+        "inputs": digest,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reuse", action="store_true", help="reuse collected units from data/polygon")
@@ -673,6 +695,7 @@ def main():
         "rates": RATES,
         "hard_rates": HARD_RATES,
     }
+    report["provenance"] = provenance()
     feed = build_feed(inputs, base["truth"], ctx.catalog)
     text = json.dumps(report, ensure_ascii=False, indent=2, default=float)
     REPORT.write_text(text, encoding="utf-8", newline="\n")

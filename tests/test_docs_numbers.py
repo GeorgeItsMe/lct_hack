@@ -106,3 +106,36 @@ def test_shift_averages_in_the_talk():
         f"ложных; заранее пойманы {half_up(average['caught'])} из {half_up(average['incident_days'])}"
     )
     assert text in DOCS["docs/PRESENTATION_CONTENT.md"]
+
+
+def test_polygon_figures_in_the_talk():
+    s = POLYGON["scenarios"]
+    fire, fan = s["fire_forecast"], s["fan_forecast"]
+    talk = DOCS["docs/PRESENTATION_CONTENT.md"]
+    assert (
+        f"{fire['caught_incident_days']} из {fire['incident_days']} заранее за {round(fire['median_lead_hours'])} ч"
+        in talk
+    )
+    assert (
+        f"{fan['caught_incident_days']} из {fan['incident_days']} за {round(fan['median_lead_hours'])} ч"
+        in talk
+    )
+    false_per_failure = f"около {round((fan['alerts'] - fan['true_alerts']) / fan['true_alerts'])} ложных"
+    assert false_per_failure in talk and false_per_failure in DOCS["docs/POLYGON.md"]
+
+
+def test_card_confidence_line_in_the_talk():
+    from moscollector import service as service_module
+
+    bundle = ROOT / "vercel_runtime"
+    patch = pytest.MonkeyPatch()
+    patch.setattr(service_module, "ARTIFACTS", bundle / "artifacts")
+    patch.setattr(service_module, "PROCESSED", bundle / "data" / "processed")
+    try:
+        service = service_module.AnalyticsService()
+        threshold = service.thresholds()["access"]
+        line = service.confidence("access", threshold, threshold)
+    finally:
+        patch.undo()
+    expected = f"подтвердились в {line['level_confirmed']} случаях из {line['level_warnings']}"
+    assert expected in DOCS["docs/PRESENTATION_CONTENT.md"]
