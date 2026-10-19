@@ -39,7 +39,7 @@ def test_incident_day_counts_a_burst_of_episodes_once():
     assert result["median_lead_hours"] == pytest.approx(4.0)
 
 
-def test_warning_after_the_first_episode_does_not_catch_that_day():
+def test_warning_inside_a_running_incident_day_forecasts_nothing_new():
     times = hours("2026-06-01", 48)
     probability = [0.9 if t == times[15] else 0.1 for t in times]
     frame = pd.DataFrame({"object_id": 1, "as_of": times, "probability": probability})
@@ -47,8 +47,24 @@ def test_warning_after_the_first_episode_does_not_catch_that_day():
         {"object_id": 1, "start_ts": pd.to_datetime(["2026-06-01 14:00", "2026-06-01 18:00"])}
     )
     result = daily_rule.metrics(frame, episodes, 0.5)
-    # The warning is correct (an episode follows within 24 h) but came after the day began.
-    assert result["precision"] == 1.0 and result["recall"] == 0.0
+    # Issued at 15:00 inside the day that began at 14:00: the 18:00 episode belongs to the
+    # same incident day, so precision and recall share one unit and both are zero.
+    assert result["precision"] == 0.0 and result["recall"] == 0.0
+    assert result["precision_any_episode"] == 1.0 and result["alerts_in_running_incident"] == 1
+
+
+def test_warning_inside_a_running_day_is_correct_when_the_next_day_starts_in_time():
+    times = hours("2026-06-01", 72)
+    probability = [0.9 if t == times[15] else 0.1 for t in times]
+    frame = pd.DataFrame({"object_id": 1, "as_of": times, "probability": probability})
+    episodes = pd.DataFrame(
+        {"object_id": 1, "start_ts": pd.to_datetime(["2026-06-01 14:00", "2026-06-02 14:30"])}
+    )
+    result = daily_rule.metrics(frame, episodes, 0.5)
+    # The second episode is 24.5 h after the first, so it starts a new incident day 23.5 h after
+    # the 15:00 warning: that day is caught and the warning is correct.
+    assert result["incident_days"] == 2 and result["caught_incident_days"] == 1
+    assert result["precision"] == 1.0 and result["median_lead_hours"] == 23.5
 
 
 def test_selection_prefers_recall_among_thresholds_with_precision_07():

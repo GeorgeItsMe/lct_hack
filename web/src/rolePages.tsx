@@ -1156,7 +1156,7 @@ function MetricsTable({
 }) {
   const rows: [string, (m: typeof current) => string][] = [
     ["Порог", (m) => (m.threshold > 1 ? "выкл." : pct(m.threshold))],
-    ["Precision (доля верных)", (m) => pct(m.precision)],
+    ["Precision (неспокойные сутки)", (m) => pct(m.precision)],
     ["Recall (неспокойные сутки)", (m) => pct(m.recall)],
     ["Предупреждений за период", (m) => num(m.alerts)],
     ["Из них верных", (m) => num(m.true_alerts)],

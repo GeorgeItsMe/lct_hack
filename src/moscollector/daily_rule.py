@@ -7,9 +7,12 @@ monitoring stream, threshold selection and every reported metric use this one ru
 
 Metrics count incident days: episodes of one object and kind that start within 24 hours of
 the first one form one case. A case is caught when a warning was issued at most 24 hours
-before its first episode. A warning is correct when any episode starts within 24 hours after
-it; with the 24-hour pause this equals one-to-one matching. Strict recall over single
-episodes is reported next to it for comparison.
+before its first episode. Precision uses the same unit: a warning is correct when an incident
+day starts within 24 hours after it. A warning issued while an incident day is already running
+is correct only if the next one starts within its 24 hours; further episodes of the running day
+do not make it correct, since they forecast nothing new. With the 24-hour pause each warning
+matches at most one incident day. The older episode-level precision (any episode within 24
+hours) and strict one-to-one recall over single episodes are reported next to it.
 
 Kept free of scikit-learn so the serving image can evaluate a proposed threshold.
 """
@@ -44,6 +47,14 @@ def issue_times(times_ns: np.ndarray, above: np.ndarray, cooldown_hours: int = C
         issued.append(candidates[i])
         i = int(np.searchsorted(candidates, candidates[i] + step, side="left"))
     return np.array(issued, dtype=np.int64)
+
+
+def _followed(points: np.ndarray, issued: np.ndarray) -> np.ndarray:
+    """Whether a sorted point lies within 24 hours at or after each warning."""
+    if not len(points) or not len(issued):
+        return np.zeros(len(issued), dtype=bool)
+    k = np.searchsorted(points, issued)
+    return (k < len(points)) & (points[np.minimum(k, len(points) - 1)] - issued < HORIZON_HOURS * HOUR_NS)
 
 
 def schedule(predictions: pd.DataFrame, threshold: float) -> dict[int, np.ndarray]:
@@ -85,30 +96,31 @@ class Evaluator:
     def warnings(self, threshold: float) -> pd.DataFrame:
         """Every warning at this threshold: probability when issued and whether it came true."""
         rows = []
-        for times, probability, ev, _ in self.groups:
+        for times, probability, _, starts in self.groups:
             issued = issue_times(times, probability >= threshold)
             at = np.searchsorted(times, issued)
-            k = np.searchsorted(ev, issued)
-            hit = (
-                (k < len(ev)) & (ev[np.minimum(k, max(len(ev) - 1, 0))] - issued < HORIZON_HOURS * HOUR_NS)
-                if len(ev)
-                else np.zeros(len(issued), dtype=bool)
-            )
-            rows.append(pd.DataFrame({"probability": probability[at], "hit": hit}))
+            rows.append(pd.DataFrame({"probability": probability[at], "hit": _followed(starts, issued)}))
         return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=["probability", "hit"])
 
     def evaluate(self, threshold: float) -> dict:
-        alerts = correct = strict = caught = 0
+        alerts = correct = any_episode = running = strict = caught = 0
         leads = []
         for times, probability, ev, starts in self.groups:
             issued = issue_times(times, probability >= threshold)
             alerts += len(issued)
+            hit = _followed(starts, issued)
+            correct += int(hit.sum())
+            any_episode += int(_followed(ev, issued).sum())
+            if len(starts) and len(issued):
+                k = np.searchsorted(starts, issued)
+                leads.extend(((starts[k[hit]] - issued[hit]) / HOUR_NS).tolist())
+                j = np.searchsorted(starts, issued, side="left") - 1
+                running += int(
+                    ((j >= 0) & (issued - starts[np.maximum(j, 0)] < HORIZON_HOURS * HOUR_NS)).sum()
+                )
             pointer = 0
             for t in issued:
                 k = int(np.searchsorted(ev, t))
-                if k < len(ev) and ev[k] - t < HORIZON_HOURS * HOUR_NS:
-                    correct += 1
-                    leads.append((ev[k] - t) / HOUR_NS)
                 pointer = max(pointer, k)
                 if pointer < len(ev) and ev[pointer] - t < HORIZON_HOURS * HOUR_NS:
                     strict += 1
@@ -126,6 +138,8 @@ class Evaluator:
             "recall": recall,
             "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0.0,
             "recall_strict": strict / self.events if self.events else 0.0,
+            "precision_any_episode": any_episode / alerts if alerts else 0.0,
+            "alerts_in_running_incident": running,
             "alerts": alerts,
             "true_alerts": correct,
             "false_alerts": alerts - correct,
@@ -138,6 +152,7 @@ class Evaluator:
             "median_lead_hours": float(np.median(leads)) if leads else None,
             "cooldown_hours": COOLDOWN_HOURS,
             "recall_unit": "incident_days",
+            "precision_unit": "incident_days",
         }
 
 

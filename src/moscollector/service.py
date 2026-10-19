@@ -86,6 +86,21 @@ class AnalyticsService:
                     scores = ARTIFACTS / "operational" / self.rule_version / f"{kind}_policy.parquet"
                     if scores.exists():
                         self.rule_scores[kind] = pd.read_parquet(scores)
+        # A kind released with a model other than its archive classifier is re-scored with
+        # that model over the archive too, so the queue, the card and new data agree.
+        self.rescored = set()
+        if self.rule:
+            bundle = load_bundle(self.rule_version)
+            for kind, meta in self.rule.items():
+                if meta.get("source_model", f"models/{kind}.cbm") == f"models/{kind}.cbm":
+                    continue
+                rows = self.predictions.kind.eq(kind)
+                frame = self.predictions.loc[rows, ["object_id", "as_of"]].merge(
+                    self.features, on=["object_id", "as_of"], how="left", validate="one_to_one"
+                )
+                self.predictions.loc[rows, "probability"] = bundle[kind].probability(frame)
+                self.predictions.loc[rows, "threshold"] = meta["threshold"]
+                self.rescored.add(kind)
         self._schedules = {}
         self._confidence = {}
         self.report = json.loads((ARTIFACTS / "evaluation_report.json").read_text(encoding="utf-8"))
@@ -357,8 +372,9 @@ class AnalyticsService:
         if row is None:
             raise KeyError("Прогноз не найден")
         features = self.features[self.features.object_id.eq(obj) & self.features.as_of.eq(t)]
-        contributions = self.explain_features(features, kind)
-        meta = self.meta[kind]
+        version = self.rule_version if kind in self.rescored else "legacy"
+        contributions = self.explain_features(features, kind, version)
+        meta = self.rule[kind] if kind in self.rescored else self.meta[kind]
         past = self.predictions[
             self.predictions.object_id.eq(obj)
             & self.predictions.kind.eq(kind)

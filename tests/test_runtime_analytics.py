@@ -128,3 +128,20 @@ def test_dispatcher_load_shows_the_24_hour_rule_effect(service):
     rows = {r["kind"]: r for r in load["rows"]}
     assert not rows["fault"]["changed"] and rows["fault"]["before_per_day"] == rows["fault"]["after_per_day"]
     assert rows["access"]["after_per_day"] < rows["access"]["before_per_day"]
+
+
+def test_kind_released_with_another_model_is_rescored_over_the_archive(service):
+    """Queue, card and new data use the released model, not the archive classifier."""
+    from moscollector.model_registry import load_bundle
+
+    rescored = {k for k, m in service.rule.items() if m["source_model"] != f"models/{k}.cbm"}
+    assert service.rescored == rescored
+    for kind in rescored:
+        head = load_bundle(service.rule_version)[kind]
+        t = service.resolve_time()
+        rows = service.predictions[service.predictions.kind.eq(kind) & service.predictions.as_of.eq(t)]
+        frame = rows[["object_id", "as_of"]].merge(service.features, on=["object_id", "as_of"])
+        assert len(rows) and rows.probability.to_numpy() == pytest.approx(head.probability(frame))
+        assert (rows.threshold == service.rule[kind]["threshold"]).all()
+        card = service.detail(3215, kind)
+        assert {c["feature"] for c in card["explanation"]} <= set(head.meta["features"])
