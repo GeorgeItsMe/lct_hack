@@ -52,20 +52,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-03T03:00:00",
-  "object_id": 5963,
-  "object_name": "объект Гамма ДУ",
-  "scenario": "pump_failure",
-  "scenario_label": "Отказ насоса",
-  "truth": "В следующие сутки ничего не произошло",
-  "system": "Предупреждение об отказе насоса",
-  "outcome": "ложное предупреждение",
-  "lead_hours": null,
-  "incident_id": null,
-  "kind": "false"
- },
- {
-  "time": "2026-06-03T05:00:00",
+  "time": "2026-06-03T07:00:00",
   "object_id": 4610,
   "object_name": "ДУ объект Дельта",
   "scenario": "pump_failure",
@@ -143,7 +130,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-04T03:00:00",
+  "time": "2026-06-03T19:00:00",
   "object_id": 5963,
   "object_name": "объект Гамма ДУ",
   "scenario": "pump_failure",
@@ -156,7 +143,7 @@
   "kind": "false"
  },
  {
-  "time": "2026-06-04T05:00:00",
+  "time": "2026-06-04T09:00:00",
   "object_id": 4610,
   "object_name": "ДУ объект Дельта",
   "scenario": "pump_failure",
@@ -195,7 +182,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-05T05:00:00",
+  "time": "2026-06-05T09:00:00",
   "object_id": 4610,
   "object_name": "ДУ объект Дельта",
   "scenario": "pump_failure",
@@ -221,7 +208,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-06T05:00:00",
+  "time": "2026-06-06T09:00:00",
   "object_id": 4610,
   "object_name": "ДУ объект Дельта",
   "scenario": "pump_failure",
@@ -240,24 +227,11 @@
   "scenario": "pump_failure",
   "scenario_label": "Отказ насоса",
   "truth": "Отказ насоса АНС1 Н1 ПК476 после износа",
-  "system": "Предупреждение об отказе насоса за 15,0 ч",
+  "system": "Предупреждение об отказе насоса за 11,0 ч",
   "outcome": "поймано",
-  "lead_hours": 15.0,
+  "lead_hours": 11.0,
   "incident_id": "INC-00158",
   "kind": "incident"
- },
- {
-  "time": "2026-06-08T05:00:00",
-  "object_id": 4610,
-  "object_name": "ДУ объект Дельта",
-  "scenario": "pump_failure",
-  "scenario_label": "Отказ насоса",
-  "truth": "В следующие сутки ничего не произошло",
-  "system": "Предупреждение об отказе насоса",
-  "outcome": "ложное предупреждение",
-  "lead_hours": null,
-  "incident_id": null,
-  "kind": "false"
  },
  {
   "time": "2026-06-08T08:00:00",
@@ -267,6 +241,19 @@
   "scenario_label": "Возгорание",
   "truth": "В следующие сутки ничего не произошло",
   "system": "Предупреждение о риске пожара",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
+ },
+ {
+  "time": "2026-06-08T09:00:00",
+  "object_id": 4610,
+  "object_name": "ДУ объект Дельта",
+  "scenario": "pump_failure",
+  "scenario_label": "Отказ насоса",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе насоса",
   "outcome": "ложное предупреждение",
   "lead_hours": null,
   "incident_id": null,
@@ -292,20 +279,33 @@
   "scenario": "real_fire",
   "scenario_label": "Возгорание",
   "truth": "Возгорание: во время огневых работ, нагрев виден",
-  "system": "Предупреждение о риске пожара за 1,2 ч; тревога не поднята",
+  "system": "Предупреждение о риске пожара за 0,2 ч; тревога не поднята",
   "outcome": "поймано",
-  "lead_hours": 1.2,
+  "lead_hours": 0.2,
   "incident_id": "INC-00151",
   "kind": "incident"
  },
  {
-  "time": "2026-06-09T14:00:00",
+  "time": "2026-06-09T23:00:00",
   "object_id": 5963,
   "object_name": "объект Гамма ДУ",
   "scenario": "pump_failure",
   "scenario_label": "Отказ насоса",
   "truth": "В следующие сутки ничего не произошло",
   "system": "Предупреждение об отказе насоса",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
+ },
+ {
+  "time": "2026-06-10T01:00:00",
+  "object_id": 5963,
+  "object_name": "объект Гамма ДУ",
+  "scenario": "fan_failure",
+  "scenario_label": "Отказ вентилятора",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе вентилятора",
   "outcome": "ложное предупреждение",
   "lead_hours": null,
   "incident_id": null,
@@ -461,9 +461,9 @@
   "scenario": "fan_failure",
   "scenario_label": "Отказ вентилятора",
   "truth": "Отказ вентилятора В6 ПК93 после износа",
-  "system": "Предупреждение об отказе вентилятора за 3,0 ч",
+  "system": "Предупреждение об отказе вентилятора за 2,0 ч",
   "outcome": "поймано",
-  "lead_hours": 3.0,
+  "lead_hours": 2.0,
   "incident_id": "INC-00179",
   "kind": "incident"
  },
@@ -507,7 +507,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-12T09:00:00",
+  "time": "2026-06-12T08:00:00",
   "object_id": 5961,
   "object_name": "объект Гамма ОС",
   "scenario": "real_fire",
@@ -650,19 +650,6 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-16T10:00:00",
-  "object_id": 5657,
-  "object_name": "объект Каппа ДУ",
-  "scenario": "fan_failure",
-  "scenario_label": "Отказ вентилятора",
-  "truth": "В следующие сутки ничего не произошло",
-  "system": "Предупреждение об отказе вентилятора",
-  "outcome": "ложное предупреждение",
-  "lead_hours": null,
-  "incident_id": null,
-  "kind": "false"
- },
- {
   "time": "2026-06-16T10:40:06.308012579",
   "object_id": 5339,
   "object_name": "объект Пси",
@@ -702,9 +689,22 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-17T08:00:00",
+  "time": "2026-06-17T01:00:00",
   "object_id": 5963,
   "object_name": "объект Гамма ДУ",
+  "scenario": "fan_failure",
+  "scenario_label": "Отказ вентилятора",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе вентилятора",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
+ },
+ {
+  "time": "2026-06-17T09:00:00",
+  "object_id": 5657,
+  "object_name": "объект Каппа ДУ",
   "scenario": "fan_failure",
   "scenario_label": "Отказ вентилятора",
   "truth": "В следующие сутки ничего не произошло",
@@ -739,6 +739,19 @@
   "lead_hours": null,
   "incident_id": "INC-00132",
   "kind": "incident"
+ },
+ {
+  "time": "2026-06-19T01:00:00",
+  "object_id": 5657,
+  "object_name": "объект Каппа ДУ",
+  "scenario": "fan_failure",
+  "scenario_label": "Отказ вентилятора",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе вентилятора",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
  },
  {
   "time": "2026-06-19T04:45:00",
@@ -793,7 +806,33 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-22T01:00:00",
+  "time": "2026-06-21T08:00:00",
+  "object_id": 5963,
+  "object_name": "объект Гамма ДУ",
+  "scenario": "fan_failure",
+  "scenario_label": "Отказ вентилятора",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе вентилятора",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
+ },
+ {
+  "time": "2026-06-22T08:00:00",
+  "object_id": 5963,
+  "object_name": "объект Гамма ДУ",
+  "scenario": "fan_failure",
+  "scenario_label": "Отказ вентилятора",
+  "truth": "В следующие сутки ничего не произошло",
+  "system": "Предупреждение об отказе вентилятора",
+  "outcome": "ложное предупреждение",
+  "lead_hours": null,
+  "incident_id": null,
+  "kind": "false"
+ },
+ {
+  "time": "2026-06-22T08:00:00",
   "object_id": 5963,
   "object_name": "объект Гамма ДУ",
   "scenario": "fan_failure",
@@ -988,7 +1027,7 @@
   "kind": "incident"
  },
  {
-  "time": "2026-06-29T11:00:00",
+  "time": "2026-06-30T08:00:00",
   "object_id": 5332,
   "object_name": "объект Кси ПК0-ПК202",
   "scenario": "real_fire",

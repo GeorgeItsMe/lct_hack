@@ -1,7 +1,7 @@
 {
   "scenarios": {
     "fire_triage": {
-      "threshold": 0.879452958097055,
+      "threshold": 0.822220126999396,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.95,
@@ -12,26 +12,26 @@
       "incidents": 17,
       "caught": 13,
       "recall": 0.7647058823529411,
-      "escalated": 15,
-      "false_escalations": 0,
-      "precision": 1.0,
+      "escalated": 19,
+      "false_escalations": 1,
+      "precision": 0.9473684210526315,
       "alarms_per_day": 20.033333333333335,
-      "escalated_per_day": 0.05,
-      "false_per_day": 0.0,
+      "escalated_per_day": 0.06333333333333334,
+      "false_per_day": 0.0033333333333333335,
       "importance": {
-        "groups_7d": 24.107530759155324,
-        "first_seconds": 16.358727469261186,
-        "still_active": 11.062298591542858,
-        "channels_10m": 8.66056102587259,
-        "hour": 7.803964418789313,
-        "permit": 6.45346503442323
+        "groups_7d": 24.839130110691773,
+        "first_seconds": 16.064825146846765,
+        "still_active": 11.706484746349826,
+        "channels_10m": 7.69185347814359,
+        "hour": 7.231927032846277,
+        "permit": 6.814799691504181
       },
       "hot_work_alarms_per_day": 1.4066666666666667,
-      "hot_work_escalated": 0,
+      "hot_work_escalated": 1,
       "hot_work_with_permit": 1.0
     },
     "access_triage": {
-      "threshold": 0.17203811900273405,
+      "threshold": 0.1720381190027343,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.7580645161290323,
@@ -49,102 +49,102 @@
       "escalated_per_day": 0.29333333333333333,
       "false_per_day": 0.10333333333333333,
       "importance": {
-        "permit": 30.116834320500246,
+        "permit": 30.116834320500264,
         "channels_5m": 17.35158968016845,
-        "activity_1h": 15.766945943942101,
-        "groups_7d": 9.496668416048195,
+        "activity_1h": 15.766945943942096,
+        "groups_7d": 9.496668416048188,
         "off_hours_groups_24h": 8.47121850293563,
-        "guard_armed": 7.84522492889237
+        "guard_armed": 7.845224928892369
       },
       "permitted_per_day": 40.21333333333333,
       "no_permit_per_day": 4.763333333333334
     },
     "fire_forecast": {
-      "threshold": 0.05996537376315693,
-      "precision": 0.2,
+      "threshold": 0.10125908867946236,
+      "precision": 0.21052631578947367,
       "recall": 0.47058823529411764,
-      "alerts": 40,
+      "alerts": 38,
       "true_alerts": 8,
       "incident_days": 17,
       "caught_incident_days": 8,
-      "median_lead_hours": 4.061166869646667,
-      "alerts_per_day": 0.13333333333333333,
-      "false_alerts_per_day": 0.10666666666666667,
+      "median_lead_hours": 2.637638888888889,
+      "alerts_per_day": 0.12666666666666668,
+      "false_alerts_per_day": 0.1,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.05747126436781609,
+        "precision": 0.052083333333333336,
         "recall": 0.29411764705882354,
-        "alerts": 87
+        "alerts": 96
       },
       "importance": {
-        "temp_max": 31.271578575318724,
-        "rise24": 18.57776199750421,
-        "rise12": 11.04799039909774,
-        "rise3": 10.720400913931384,
-        "smoke_24h": 6.797996904595128,
-        "rise6": 6.705922904556759
+        "temp_max": 35.52173859220645,
+        "rise24": 17.87271150523801,
+        "rise3": 9.892806755914227,
+        "rise12": 9.59848799037209,
+        "rise6": 6.495660987174829,
+        "smoke_24h": 6.351587910072221
       },
       "with_visible_heating": {
         "incident_days": 9,
         "caught_incident_days": 8,
         "recall": 0.8888888888888888,
-        "median_lead_hours": 4.061166869646667
+        "median_lead_hours": 2.637638888888889
       }
     },
     "pump_forecast": {
-      "threshold": 0.05513699132753026,
-      "precision": 0.2345679012345679,
+      "threshold": 0.061477021053774956,
+      "precision": 0.24358974358974358,
       "recall": 1.0,
-      "alerts": 81,
+      "alerts": 78,
       "true_alerts": 19,
       "incident_days": 19,
       "caught_incident_days": 19,
-      "median_lead_hours": 11.774722222222222,
-      "alerts_per_day": 0.27,
-      "false_alerts_per_day": 0.20666666666666667,
+      "median_lead_hours": 11.929444444444444,
+      "alerts_per_day": 0.26,
+      "false_alerts_per_day": 0.19666666666666666,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.2857142857142857,
+        "precision": 0.2641509433962264,
         "recall": 1.0,
-        "alerts": 49
+        "alerts": 53
       },
       "importance": {
-        "run_ratio": 33.72123878226195,
-        "run_24h": 11.326130573478537,
-        "on_ratio": 8.880015762922495,
-        "age_years": 7.64766747459633,
-        "on_24h": 7.579793671335432,
-        "faults_24h": 5.741929786380266
+        "run_ratio": 32.45770687185629,
+        "on_ratio": 11.054122952478698,
+        "age_years": 9.808948274324027,
+        "run_24h": 9.71437615238065,
+        "on_24h": 7.098495409660841,
+        "faults_24h": 5.486679750036721
       }
     },
     "fan_forecast": {
-      "threshold": 0.4683870980780796,
-      "precision": 0.04700854700854701,
+      "threshold": 0.3697951501644468,
+      "precision": 0.03536977491961415,
       "recall": 0.8461538461538461,
-      "alerts": 234,
+      "alerts": 311,
       "true_alerts": 11,
       "incident_days": 13,
       "caught_incident_days": 11,
-      "median_lead_hours": 9.339444444444444,
-      "alerts_per_day": 0.78,
-      "false_alerts_per_day": 0.7433333333333333,
+      "median_lead_hours": 11.626944444444444,
+      "alerts_per_day": 1.0366666666666666,
+      "false_alerts_per_day": 1.0,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.08461538461538462,
-        "recall": 0.7333333333333333,
-        "alerts": 130
+        "precision": 0.06666666666666667,
+        "recall": 0.6666666666666666,
+        "alerts": 150
       },
       "importance": {
-        "run_24h": 31.65649787179383,
-        "run_ratio": 27.382189499125648,
-        "age_years": 10.706835324227045,
-        "days_since_service": 9.218271251592348,
-        "on_72h": 5.459460775957443,
-        "short_share_change": 3.829332439562873
+        "run_24h": 28.493361764207194,
+        "run_ratio": 16.137044472719925,
+        "on_24h": 12.866072924811334,
+        "age_years": 12.460342973654749,
+        "days_since_service": 11.05516805013016,
+        "on_72h": 5.331586390223883
       }
     },
     "gas_forecast": {
-      "threshold": 0.9456836495796493,
+      "threshold": 0.9541864243055208,
       "precision": 0.7692307692307693,
       "recall": 0.12195121951219512,
       "alerts": 13,
@@ -156,23 +156,23 @@
       "false_alerts_per_day": 0.01,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
-        "precision": 0.75,
+        "precision": 0.8571428571428571,
         "recall": 0.11009174311926606,
-        "alerts": 16
+        "alerts": 14
       },
       "importance": {
-        "gas_rise24": 22.892693653546985,
-        "gas_now": 22.828110609759523,
-        "gas_3h": 16.456745948114516,
-        "gas_rise6": 13.712189667579324,
-        "fan_faults_24h": 13.400601781541145,
-        "fans_failed": 8.895594782591873
+        "gas_now": 25.74108596084121,
+        "gas_rise24": 20.915822002315917,
+        "gas_3h": 16.883748630143543,
+        "gas_rise6": 14.590725829800387,
+        "fan_faults_24h": 12.715955819749905,
+        "fans_failed": 7.499264575292929
       },
       "fan_caused": {
         "incident_days": 12,
         "caught_incident_days": 10,
         "recall": 0.8333333333333334,
-        "median_lead_hours": 5.092715121968611
+        "median_lead_hours": 5.3612556356890275
       }
     },
     "cascades": {
@@ -184,7 +184,7 @@
   },
   "hard": {
     "fire_triage": {
-      "threshold": 0.879452958097055,
+      "threshold": 0.822220126999396,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.95,
@@ -195,26 +195,26 @@
       "incidents": 21,
       "caught": 20,
       "recall": 0.9523809523809523,
-      "escalated": 29,
+      "escalated": 33,
       "false_escalations": 0,
       "precision": 1.0,
       "alarms_per_day": 20.153333333333332,
-      "escalated_per_day": 0.09666666666666666,
+      "escalated_per_day": 0.11,
       "false_per_day": 0.0,
       "importance": {
-        "groups_7d": 24.107530759155324,
-        "first_seconds": 16.358727469261186,
-        "still_active": 11.062298591542858,
-        "channels_10m": 8.66056102587259,
-        "hour": 7.803964418789313,
-        "permit": 6.45346503442323
+        "groups_7d": 24.839130110691773,
+        "first_seconds": 16.064825146846765,
+        "still_active": 11.706484746349826,
+        "channels_10m": 7.69185347814359,
+        "hour": 7.231927032846277,
+        "permit": 6.814799691504181
       },
       "hot_work_alarms_per_day": 1.4166666666666667,
       "hot_work_escalated": 0,
       "hot_work_with_permit": 0.6564705882352941
     },
     "access_triage": {
-      "threshold": 0.17203811900273405,
+      "threshold": 0.1720381190027343,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.7580645161290323,
@@ -232,18 +232,18 @@
       "escalated_per_day": 0.35333333333333333,
       "false_per_day": 0.18,
       "importance": {
-        "permit": 30.116834320500246,
+        "permit": 30.116834320500264,
         "channels_5m": 17.35158968016845,
-        "activity_1h": 15.766945943942101,
-        "groups_7d": 9.496668416048195,
+        "activity_1h": 15.766945943942096,
+        "groups_7d": 9.496668416048188,
         "off_hours_groups_24h": 8.47121850293563,
-        "guard_armed": 7.84522492889237
+        "guard_armed": 7.845224928892369
       },
       "permitted_per_day": 34.986666666666665,
       "no_permit_per_day": 9.926666666666666
     },
     "fire_forecast": {
-      "threshold": 0.05996537376315693,
+      "threshold": 0.10125908867946236,
       "precision": 0.29545454545454547,
       "recall": 0.6190476190476191,
       "alerts": 44,
@@ -255,17 +255,17 @@
       "false_alerts_per_day": 0.10333333333333333,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.05747126436781609,
+        "precision": 0.052083333333333336,
         "recall": 0.29411764705882354,
-        "alerts": 87
+        "alerts": 96
       },
       "importance": {
-        "temp_max": 31.271578575318724,
-        "rise24": 18.57776199750421,
-        "rise12": 11.04799039909774,
-        "rise3": 10.720400913931384,
-        "smoke_24h": 6.797996904595128,
-        "rise6": 6.705922904556759
+        "temp_max": 35.52173859220645,
+        "rise24": 17.87271150523801,
+        "rise3": 9.892806755914227,
+        "rise12": 9.59848799037209,
+        "rise6": 6.495660987174829,
+        "smoke_24h": 6.351587910072221
       },
       "with_visible_heating": {
         "incident_days": 15,
@@ -275,59 +275,59 @@
       }
     },
     "pump_forecast": {
-      "threshold": 0.05513699132753026,
-      "precision": 0.2727272727272727,
-      "recall": 1.0,
+      "threshold": 0.061477021053774956,
+      "precision": 0.25757575757575757,
+      "recall": 0.9444444444444444,
       "alerts": 66,
-      "true_alerts": 18,
+      "true_alerts": 17,
       "incident_days": 18,
-      "caught_incident_days": 18,
-      "median_lead_hours": 9.249027777777778,
+      "caught_incident_days": 17,
+      "median_lead_hours": 10.706388888888888,
       "alerts_per_day": 0.22,
-      "false_alerts_per_day": 0.16,
+      "false_alerts_per_day": 0.16333333333333333,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.2857142857142857,
+        "precision": 0.2641509433962264,
         "recall": 1.0,
-        "alerts": 49
+        "alerts": 53
       },
       "importance": {
-        "run_ratio": 33.72123878226195,
-        "run_24h": 11.326130573478537,
-        "on_ratio": 8.880015762922495,
-        "age_years": 7.64766747459633,
-        "on_24h": 7.579793671335432,
-        "faults_24h": 5.741929786380266
+        "run_ratio": 32.45770687185629,
+        "on_ratio": 11.054122952478698,
+        "age_years": 9.808948274324027,
+        "run_24h": 9.71437615238065,
+        "on_24h": 7.098495409660841,
+        "faults_24h": 5.486679750036721
       }
     },
     "fan_forecast": {
-      "threshold": 0.4683870980780796,
-      "precision": 0.08133971291866028,
+      "threshold": 0.3697951501644468,
+      "precision": 0.059233449477351915,
       "recall": 1.0,
-      "alerts": 209,
+      "alerts": 287,
       "true_alerts": 17,
       "incident_days": 17,
       "caught_incident_days": 17,
-      "median_lead_hours": 9.219166666666666,
-      "alerts_per_day": 0.6966666666666667,
-      "false_alerts_per_day": 0.64,
+      "median_lead_hours": 10.951666666666666,
+      "alerts_per_day": 0.9566666666666667,
+      "false_alerts_per_day": 0.9,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.08461538461538462,
-        "recall": 0.7333333333333333,
-        "alerts": 130
+        "precision": 0.06666666666666667,
+        "recall": 0.6666666666666666,
+        "alerts": 150
       },
       "importance": {
-        "run_24h": 31.65649787179383,
-        "run_ratio": 27.382189499125648,
-        "age_years": 10.706835324227045,
-        "days_since_service": 9.218271251592348,
-        "on_72h": 5.459460775957443,
-        "short_share_change": 3.829332439562873
+        "run_24h": 28.493361764207194,
+        "run_ratio": 16.137044472719925,
+        "on_24h": 12.866072924811334,
+        "age_years": 12.460342973654749,
+        "days_since_service": 11.05516805013016,
+        "on_72h": 5.331586390223883
       }
     },
     "gas_forecast": {
-      "threshold": 0.9456836495796493,
+      "threshold": 0.9541864243055208,
       "precision": 1.0,
       "recall": 0.1839080459770115,
       "alerts": 16,
@@ -339,23 +339,23 @@
       "false_alerts_per_day": 0.0,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
-        "precision": 0.75,
+        "precision": 0.8571428571428571,
         "recall": 0.11009174311926606,
-        "alerts": 16
+        "alerts": 14
       },
       "importance": {
-        "gas_rise24": 22.892693653546985,
-        "gas_now": 22.828110609759523,
-        "gas_3h": 16.456745948114516,
-        "gas_rise6": 13.712189667579324,
-        "fan_faults_24h": 13.400601781541145,
-        "fans_failed": 8.895594782591873
+        "gas_now": 25.74108596084121,
+        "gas_rise24": 20.915822002315917,
+        "gas_3h": 16.883748630143543,
+        "gas_rise6": 14.590725829800387,
+        "fan_faults_24h": 12.715955819749905,
+        "fans_failed": 7.499264575292929
       },
       "fan_caused": {
         "incident_days": 17,
         "caught_incident_days": 16,
         "recall": 0.9411764705882353,
-        "median_lead_hours": 5.709414474644722
+        "median_lead_hours": 5.8887363699581945
       }
     },
     "cascades": {
@@ -368,9 +368,9 @@
   "effect": {
     "fire": {
       "alarms_per_day": 20.033333333333335,
-      "raised_per_day": 0.05,
-      "hot_work_per_day": 1.4066666666666667,
-      "low_priority_per_day": 18.576666666666668
+      "raised_per_day": 0.06333333333333334,
+      "hot_work_per_day": 1.4033333333333333,
+      "low_priority_per_day": 18.566666666666666
     },
     "access": {
       "alarms_per_day": 45.306666666666665,
@@ -379,9 +379,9 @@
       "calls_per_day": 4.763333333333334
     },
     "forecasts_per_day": {
-      "fire_forecast": 0.13333333333333333,
-      "pump_forecast": 0.27,
-      "fan_forecast": 0.78,
+      "fire_forecast": 0.12666666666666668,
+      "pump_forecast": 0.26,
+      "fan_forecast": 1.0366666666666666,
       "gas_forecast": 0.043333333333333335
     }
   },
