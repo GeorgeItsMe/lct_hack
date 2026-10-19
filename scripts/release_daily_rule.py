@@ -4,8 +4,9 @@ The frozen archive classifiers already predict "an episode starts on this object
 24 hours". Under the 24-hour rule (one warning per object and kind per day) they are scored
 at the service cadence of one hour:
 
-1. for every kind two candidates are scored on 15-31 May: the archive classifier and the
-   count head of the submitted bundle ``op-7f225ca12c58``. Each gets its threshold by the
+1. for every kind the candidates are scored on 15-31 May: the archive classifier, the count
+   head of the submitted bundle ``op-7f225ca12c58`` and blends of their calibrated
+   probabilities with a 0.25/0.5/0.75 share of the count head. Each gets its threshold by the
    same rule (the highest incident-day recall with precision >= 0.7, otherwise the best F1,
    ``daily_rule.select_threshold``), and the candidate that reaches 0.7 with the higher
    recall wins, otherwise the one with the higher F1;
@@ -42,6 +43,7 @@ from moscollector.research import mask
 
 KINDS = ("fault", "fire", "access")
 COUNT_SOURCE = "op-7f225ca12c58"  # the submitted bundle with the count heads
+BLEND_WEIGHTS = (0.25, 0.5, 0.75)  # share of the count head in a probability blend
 POLICY = (pd.Timestamp("2026-05-15"), pd.Timestamp("2026-06-01"))
 TEST = (pd.Timestamp("2026-06-01"), pd.Timestamp("2026-07-01"))
 HOURLY = PROCESSED / "features-hourly-2026.parquet"
@@ -123,8 +125,9 @@ def main():
                     m.predict(model_input(frame, src["features"]), prediction_type="RawFormulaVal"),
                     src["calibration"],
                 ),
-                "file": ARTIFACTS / "models" / f"{kind}.cbm",
-                "member": f"{kind}.cbm",
+                "members": [
+                    {"path": ARTIFACTS / "models" / f"{kind}.cbm", "file": f"{kind}.cbm", "weight": 1.0}
+                ],
                 "source_model": f"models/{kind}.cbm",
             }
         }
@@ -136,10 +139,35 @@ def main():
                 "features": head.meta["features"],
                 "calibration": head.meta["calibration"],
                 "score": head.probability,
-                "file": count_folder / member,
-                "member": member,
+                "members": [{"path": count_folder / member, "file": member, "weight": 1.0}],
                 "source_model": f"operational/{COUNT_SOURCE}/{member}",
             }
+            archive, count = candidates["archive_classifier"], candidates["count_head"]
+            for w in BLEND_WEIGHTS:
+                candidates[f"blend_count_{w:.2f}"] = {
+                    "variant": "probability_blend",
+                    "features": archive["features"]
+                    + [f for f in count["features"] if f not in archive["features"]],
+                    "calibration": {"status": "blend_of_calibrated_members"},
+                    "score": lambda frame, w=w, a=archive["score"], c=count["score"]: (
+                        w * c(frame) + (1 - w) * a(frame)
+                    ),
+                    "members": [
+                        {
+                            **archive["members"][0],
+                            "weight": 1 - w,
+                            "features": archive["features"],
+                            "calibration": archive["calibration"],
+                        },
+                        {
+                            **count["members"][0],
+                            "weight": w,
+                            "features": count["features"],
+                            "calibration": count["calibration"],
+                        },
+                    ],
+                    "source_model": f"blend: {1 - w:.2f} {archive['source_model']} + {w:.2f} {count['source_model']}",
+                }
         eps = episodes[episodes.kind.eq(kind)]
         selection = hourly[mask(hourly, *POLICY)].reset_index(drop=True)
         test = hourly[mask(hourly, *TEST)].reset_index(drop=True)
@@ -181,7 +209,13 @@ def main():
             "test": {k: june[k] for k in SUMMARY},
             "periods": {"selection": list(map(str, POLICY)), "test": list(map(str, TEST))},
             "source_model": candidate["source_model"],
-            "members": [{"file": candidate["member"], "weight": 1.0, "sha256": sha256(candidate["file"])}],
+            "members": [
+                {
+                    **{k: v for k, v in m.items() if k != "path"},
+                    "sha256": sha256(m["path"]),
+                }
+                for m in candidate["members"]
+            ],
         }
         staged[kind] = (candidate, selected)
         print(
@@ -195,7 +229,8 @@ def main():
     folder = ARTIFACTS / "operational" / version
     folder.mkdir(parents=True, exist_ok=True)
     for kind, (candidate, pred) in staged.items():
-        shutil.copy2(candidate["file"], folder / candidate["member"])
+        for member in candidate["members"]:
+            shutil.copy2(member["path"], folder / member["file"])
         # The analyst's threshold preview replays exactly these selection-period scores.
         pred.to_parquet(folder / f"{kind}_policy.parquet", index=False)
     write_json(folder / "manifest.json", manifest)

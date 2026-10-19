@@ -42,34 +42,61 @@ def load_bundle(version):
                 raise ValueError("Model weights integrity check failed")
             model = CatBoostClassifier()
             model.load_model(str(file))
-            if model.feature_names_ != meta["features"]:
+            # A probability blend keeps each member's own features and calibration.
+            features = member.get("features", meta["features"])
+            if model.feature_names_ != features:
                 raise ValueError("Model feature schema mismatch")
-            members.append((float(member["weight"]), model))
-        if not members or any(w <= 0 for w, _ in members) or not np.isclose(sum(w for w, _ in members), 1):
+            members.append((float(member["weight"]), model, features, member.get("calibration")))
+        weights = [m[0] for m in members]
+        if not members or any(w <= 0 for w in weights) or not np.isclose(sum(weights), 1):
             raise ValueError("Invalid ensemble weights")
+        if meta.get("variant") == "probability_blend" and any(m[3] is None for m in members):
+            raise ValueError("A probability blend needs a calibration per member")
         heads[kind] = OperationalHead(meta, members)
     return heads
 
 
 class OperationalHead:
+    """A released head: weighted raw scores with one calibration, or, for a probability
+    blend, a weighted mean of members' own calibrated probabilities."""
+
     def __init__(self, meta, members):
         self.meta, self.members = meta, members
+        self.blend = meta.get("variant") == "probability_blend"
+
+    def _raw(self, frame):
+        x = model_input(frame, self.meta["features"])
+        return sum(w * m.predict(x, prediction_type="RawFormulaVal") for w, m, _, _ in self.members)
 
     def probability(self, frame):
-        x = model_input(frame, self.meta["features"])
-        raw = sum(w * m.predict(x, prediction_type="RawFormulaVal") for w, m in self.members)
-        return calibrated(raw, self.meta["calibration"])
+        if self.blend:
+            return sum(
+                w * calibrated(m.predict(model_input(frame, f), prediction_type="RawFormulaVal"), c)
+                for w, m, f, c in self.members
+            )
+        return calibrated(self._raw(frame), self.meta["calibration"])
 
     def shap(self, frame):
-        x = Pool(model_input(frame, self.meta["features"]), cat_features=CATEGORICAL)
-        return sum(w * m.get_feature_importance(x, type="ShapValues") for w, m in self.members)
+        """Contributions over ``meta["features"]`` plus the bias column; a blend weights each
+        member's contributions by its share and its calibration slope (calibrated log-odds)."""
+        if not self.blend:
+            x = Pool(model_input(frame, self.meta["features"]), cat_features=CATEGORICAL)
+            return sum(w * m.get_feature_importance(x, type="ShapValues") for w, m, _, _ in self.members)
+        names = self.meta["features"]
+        total = np.zeros((len(frame), len(names) + 1))
+        for w, m, f, c in self.members:
+            w = w * c.get("slope", 1.0)
+            values = m.get_feature_importance(
+                Pool(model_input(frame, f), cat_features=CATEGORICAL), type="ShapValues"
+            )
+            total[:, [names.index(n) for n in f]] += w * values[:, :-1]
+            total[:, -1] += w * values[:, -1]
+        return total
 
     def expected_count(self, frame):
-        if "rate_scale" not in self.meta:
+        if "rate_scale" not in self.meta or self.blend:
             return None
-        x = model_input(frame, self.meta["features"])
-        raw = sum(w * m.predict(x, prediction_type="RawFormulaVal") for w, m in self.members)
-        return np.exp(np.clip(raw, -20, 20)) * self.meta["rate_scale"]
+        return np.exp(np.clip(self._raw(frame), -20, 20)) * self.meta["rate_scale"]
 
 
 def activate(version):

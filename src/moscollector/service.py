@@ -372,7 +372,8 @@ class AnalyticsService:
                     "feature": name,
                     "label": feature_label(name),
                     "value": clean(value),
-                    "contribution": float(contribution * meta["calibration"]["slope"]),
+                    # A probability blend already scales by each member's calibration.
+                    "contribution": float(contribution * meta["calibration"].get("slope", 1.0)),
                 }
             )
         contributions.sort(key=lambda v: abs(v["contribution"]), reverse=True)

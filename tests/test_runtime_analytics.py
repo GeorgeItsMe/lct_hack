@@ -176,3 +176,20 @@ def test_shift_never_counts_outcomes_after_the_moment(service):
     later = service.shift(t + pd.Timedelta(days=2), None)
     assert later["average"]["shifts"] == shift["average"]["shifts"] == 60
     assert service.shift(t)["current"] == shift["current"]
+
+
+def test_probability_blend_is_the_weighted_mean_of_calibrated_members(service):
+    from moscollector.inference import calibrated, model_input
+    from moscollector.model_registry import load_bundle
+
+    for kind, head in load_bundle(service.rule_version).items():
+        if not head.blend:
+            continue
+        rows = service.features[service.features.as_of.eq(service.resolve_time())].head(20)
+        expected = sum(
+            w * calibrated(m.predict(model_input(rows, f), prediction_type="RawFormulaVal"), c)
+            for w, m, f, c in head.members
+        )
+        assert head.probability(rows) == pytest.approx(expected)
+        assert sum(w for w, *_ in head.members) == pytest.approx(1)
+        assert head.shap(rows.head(1)).shape == (1, len(head.meta["features"]) + 1)
