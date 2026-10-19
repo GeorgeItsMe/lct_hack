@@ -182,7 +182,7 @@ def test_probability_blend_is_the_weighted_mean_of_calibrated_members(service):
     from moscollector.inference import calibrated, model_input
     from moscollector.model_registry import load_bundle
 
-    for kind, head in load_bundle(service.rule_version).items():
+    for head in load_bundle(service.rule_version).values():
         if not head.blend:
             continue
         rows = service.features[service.features.as_of.eq(service.resolve_time())].head(20)
