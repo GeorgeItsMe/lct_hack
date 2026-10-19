@@ -145,3 +145,34 @@ def test_kind_released_with_another_model_is_rescored_over_the_archive(service):
         assert (rows.threshold == service.rule[kind]["threshold"]).all()
         card = service.detail(3215, kind)
         assert {c["feature"] for c in card["explanation"]} <= set(head.meta["features"])
+
+
+def test_real_archive_reports_registries_as_not_provided(service):
+    detail = service.detail(3215, "access")
+    statuses = {s["id"]: s["status"] for s in detail["verification"]["external_sources"]}
+    assert set(statuses.values()) == {"not_provided"}
+
+
+def test_units_report_the_last_journal_state_of_pumps_and_fans(service):
+    units = service.units()
+    assert units["pumps"] == 180 and units["fans"] == 354
+    assert sum(units["states"].values()) == units["pumps"] + units["fans"]
+    for obj in units["objects"]:
+        assert sum(obj["states"].values()) == obj["pumps"] + obj["fans"]
+        assert len(obj["problems"]) == min(8, obj["states"]["problem"])
+
+
+def test_shift_never_counts_outcomes_after_the_moment(service):
+    t = pd.Timestamp("2026-06-15T12:00:00")
+    shift = service.shift(t)
+    current, resolved = shift["current"]["totals"], shift["resolved"]["totals"]
+    assert current["warnings"] == current["correct"] + current["false"] + current["pending"]
+    # Results come from a shift that ended a day before the current one began.
+    assert pd.Timestamp(shift["resolved"]["begin"]) + pd.Timedelta(hours=36) == pd.Timestamp(
+        shift["current"]["begin"]
+    )
+    assert resolved["pending"] == 0 and resolved["caught"] <= resolved["incident_days"]
+    # The same shift seen later can only resolve pending warnings, not change counted ones.
+    later = service.shift(t + pd.Timedelta(days=2), None)
+    assert later["average"]["shifts"] == shift["average"]["shifts"] == 60
+    assert service.shift(t)["current"] == shift["current"]

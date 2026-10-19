@@ -41,6 +41,7 @@ import {
 } from "./components";
 import { DecisionsPage, EvaluationPage, QualityPage } from "./pages";
 import { PolygonPage } from "./PolygonPage";
+import { PolygonQueuePanel } from "./businessPanels";
 import {
   AuditPage,
   EquipmentPage,
@@ -933,6 +934,7 @@ export default function App() {
                       )}
                     </section>
                   </div>
+                  <PolygonQueuePanel asOf={asOf} />
                 </div>
               )}
               {page === "map" && overview && topology && (

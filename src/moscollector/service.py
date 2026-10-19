@@ -46,6 +46,19 @@ def clean(value):
 
 
 LEVEL_ORDER = ["low", "watch", "high", "critical"]
+UNIT_TYPES = ("Состояние насоса", "Состояние вентилятора")
+UNIT_STATE = {
+    "Включен": "running",
+    "Работают все насосы в АНС": "running",
+    "Выключен": "stopped",
+    "Норма": "normal",
+    "Неисправен": "problem",
+    "Обесточен": "problem",
+    "Затоплен": "problem",
+    "Отключено устройство": "problem",
+    "Неопределен": "unknown",
+}
+UNIT_STATE_ORDER = ["running", "stopped", "normal", "problem", "unknown", "silent"]
 
 
 def prediction_id(obj, kind, as_of):
@@ -445,10 +458,11 @@ class AnalyticsService:
             ][:6],
             "fault_channels": len(faults),
             "related_forecasts": related,
+            # The customer did not hand over these registries; the polygon shows how they are used.
             "external_sources": [
-                {"id": "cameras", "label": "Видеонаблюдение", "status": "not_connected"},
-                {"id": "planned_works", "label": "Реестр плановых работ", "status": "not_connected"},
-                {"id": "access_permits", "label": "Допуски в коллектор", "status": "not_connected"},
+                {"id": "cameras", "label": "Видеонаблюдение", "status": "not_provided"},
+                {"id": "planned_works", "label": "Наряды и огневые работы", "status": "not_provided"},
+                {"id": "access_permits", "label": "Допуски в коллектор", "status": "not_provided"},
             ],
             "window_hours": 24,
         }
@@ -619,6 +633,160 @@ class AnalyticsService:
             }
         )
 
+    def units(self, as_of=None, parent=None):
+        """Pumps and fans from the journal: last state within a week and messages in a day."""
+        t = self.resolve_time(as_of)
+        channels = self.channels[self.channels.sensor_type.isin(UNIT_TYPES)]
+        if parent is not None:
+            children = set(self.objects[self.objects.parent_id.eq(parent)].object_id)
+            channels = channels[channels.object_id.isin(children)]
+        con = duckdb.connect()
+        try:
+            con.read_parquet(str(PROCESSED / "events-2026.parquet")).create_view("e")
+            con.register("u", channels[["channel_id"]])
+            states = con.execute(
+                """SELECT e.channel_id, arg_max(e.value, e.ts) AS value, max(e.ts) AS ts,
+                          count(*) FILTER (WHERE e.ts > ?) AS messages_24h
+                   FROM e JOIN u USING (channel_id) WHERE e.ts <= ? AND e.ts > ? GROUP BY 1""",
+                [
+                    (t - pd.Timedelta(hours=24)).to_pydatetime(),
+                    t.to_pydatetime(),
+                    (t - pd.Timedelta(days=7)).to_pydatetime(),
+                ],
+            ).df()
+        finally:
+            con.close()
+        merged = channels.merge(states, on="channel_id", how="left")
+        merged["state"] = [
+            UNIT_STATE.get(v, "unknown") if isinstance(v, str) else "silent" for v in merged.value
+        ]
+        names = self.objects.set_index("object_id").object_name
+        objects = []
+        for obj, part in merged.groupby("object_id"):
+            counts = part.state.value_counts().to_dict()
+            problems = part[part.state.eq("problem")].sort_values("ts", ascending=False)
+            objects.append(
+                {
+                    "object_id": int(obj),
+                    "object_name": names.get(obj, str(obj)),
+                    "pumps": int(part.sensor_type.eq("Состояние насоса").sum()),
+                    "fans": int(part.sensor_type.eq("Состояние вентилятора").sum()),
+                    "states": {k: int(counts.get(k, 0)) for k in UNIT_STATE_ORDER},
+                    "problems": [
+                        {
+                            "channel_id": int(r.channel_id),
+                            "unit": "Насос" if r.sensor_type == "Состояние насоса" else "Вентилятор",
+                            "sensor_name": r.sensor_name,
+                            "value": r.value,
+                            "ts": pd.Timestamp(r.ts).isoformat(),
+                        }
+                        for r in problems.head(8).itertuples()
+                    ],
+                }
+            )
+        objects.sort(key=lambda o: (-o["states"]["problem"], o["object_name"]))
+        totals = merged.state.value_counts().to_dict()
+        return {
+            "as_of": t.isoformat(),
+            "pumps": int(merged.sensor_type.eq("Состояние насоса").sum()),
+            "fans": int(merged.sensor_type.eq("Состояние вентилятора").sum()),
+            "states": {k: int(totals.get(k, 0)) for k in UNIT_STATE_ORDER},
+            "objects": objects,
+            "note": "Последнее состояние агрегата по журналу СМВУ за неделю до момента прогноза. "
+            "Паспорта и ресурс агрегатов заказчик не передал; прогноз отказа по износу проверен на полигоне.",
+        }
+
+    def _incident_starts(self, kind):
+        """First episodes of incident days per object (episodes within 24 h of the first are one case)."""
+        key = ("starts", kind)
+        if key not in self._schedules:
+            starts = {}
+            for obj, part in self.episodes[self.episodes.kind.eq(kind)].groupby("object_id"):
+                times, first = [], None
+                for value in np.sort(part.start_ts.to_numpy(dtype="datetime64[ns]").astype(np.int64)):
+                    if first is None or value - first >= daily_rule.HORIZON_HOURS * daily_rule.HOUR_NS:
+                        first = value
+                        times.append(value)
+                starts[int(obj)] = np.array(times, dtype=np.int64)
+            self._schedules[key] = starts
+        return self._schedules[key]
+
+    def _shift_counts(self, begin, end, thresholds, objects, now):
+        """Warnings issued in [begin, end) with the outcome known at ``now``, and incident days
+        started in it. A warning is correct once an incident day starts within its 24 hours,
+        false once 24 hours passed without one, and pending before that."""
+        day = daily_rule.HORIZON_HOURS * daily_rule.HOUR_NS
+        b, e, now = pd.Timestamp(begin).value, pd.Timestamp(end).value, pd.Timestamp(now).value
+        by_kind = {}
+        for kind, threshold in thresholds.items():
+            if kind not in self.rule or threshold > 1:
+                continue
+            schedule = self.warning_schedule(kind, threshold)
+            starts = self._incident_starts(kind)
+            row = {"warnings": 0, "correct": 0, "false": 0, "pending": 0, "incident_days": 0, "caught": 0}
+            for obj in objects:
+                issued = schedule.get(obj, np.array([], dtype=np.int64))
+                own = starts.get(obj, np.array([], dtype=np.int64))
+                for w in issued[(issued >= b) & (issued < e)]:
+                    row["warnings"] += 1
+                    k = np.searchsorted(own, w)
+                    if k < len(own) and own[k] - w < day and own[k] < now:
+                        row["correct"] += 1
+                    elif w + day > now:
+                        row["pending"] += 1
+                    else:
+                        row["false"] += 1
+                for s0 in own[(own >= b) & (own < min(e, now))]:
+                    row["incident_days"] += 1
+                    j = np.searchsorted(issued, s0, side="right") - 1
+                    row["caught"] += int(j >= 0 and s0 - issued[j] < day)
+            by_kind[kind] = row
+        totals = {k: sum(r[k] for r in by_kind.values()) for k in next(iter(by_kind.values()), {})}
+        return {"by_kind": by_kind, "totals": totals}
+
+    def shift(self, as_of=None, overrides=None, parent=None):
+        """Dispatcher shift results for the unit head (12-hour shifts from 08:00 and 20:00).
+
+        The current shift shows the warnings issued so far. Outcomes are known only 24 hours
+        after a warning, so results come from the last shift that ended a day before.
+        """
+        t = self.resolve_time(as_of)
+        start_hour = 8 if 8 <= t.hour < 20 else 20
+        begin = t.normalize() + pd.Timedelta(hours=start_hour)
+        if t.hour < 8:
+            begin -= pd.Timedelta(days=1)
+        length = pd.Timedelta(hours=12)
+        objects = sorted(int(o) for o in self.predictions.object_id.unique())
+        if parent is not None:
+            children = set(self.objects[self.objects.parent_id.eq(parent)].object_id)
+            objects = [o for o in objects if o in children]
+        thresholds = self.thresholds(overrides)
+        resolved = begin - 3 * length  # ends a day before the current shift begins
+        window = 60
+        average = self._shift_counts(resolved - window * length, resolved, thresholds, objects, t)
+        label = lambda b: f"{b:%d.%m} {b:%H:%M}–{b + length:%H:%M}"  # noqa: E731
+        return {
+            "current": {
+                "label": label(begin),
+                "begin": begin.isoformat(),
+                **self._shift_counts(begin, t, thresholds, objects, t),
+            },
+            "resolved": {
+                "label": label(resolved),
+                "begin": resolved.isoformat(),
+                **self._shift_counts(resolved, resolved + length, thresholds, objects, t),
+            },
+            "average": {
+                "shifts": window,
+                "per_shift": {k: v / window for k, v in average["totals"].items()},
+                "by_kind": {
+                    kind: {k: v / window for k, v in row.items()} for kind, row in average["by_kind"].items()
+                },
+            },
+            "rule": "Предупреждение верно, если в следующие 24 часа начались новые неспокойные сутки; "
+            "неспокойные сутки пойманы заранее, если предупреждение выдано не раньше чем за 24 часа до их начала.",
+        }
+
     def summary(self, as_of=None, overrides=None, parent=None):
         """Unit head overview: risk by operational node and type, warning dynamics, seasonality."""
         t = self.resolve_time(as_of)
@@ -725,6 +893,7 @@ class AnalyticsService:
                 "seasonality": seasonality,
                 "quality": quality,
                 "load": self.dispatcher_load(),
+                "shift": self.shift(t, overrides, parent),
             }
         )
 

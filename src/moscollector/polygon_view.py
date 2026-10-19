@@ -107,3 +107,171 @@ def journal_day(day: str) -> str:
     injected = injected[injected.ts.ge(start) & injected.ts.lt(end)]
     events = pd.concat([real, injected[real.columns]], ignore_index=True).sort_values(["ts", "event_id"])
     return as_journal(events).to_csv(index=False)
+
+
+# --- Registries of the demo world: dispatcher queue labels and the card's situation check ---
+
+ACCESS_SCENARIOS = {"intrusion", "intrusion_probe"}
+FIRE_SCENARIOS = {"real_fire", "hot_work_smoke"}
+HOUR = pd.Timedelta(hours=1)
+
+
+@lru_cache(maxsize=1)
+def _registry(name: str) -> pd.DataFrame:
+    frame = pd.read_csv(folder() / name)
+    for column in ("start", "end", "installed", "last_maintenance"):
+        if column in frame:
+            frame[column] = pd.to_datetime(frame[column])
+    return frame
+
+
+def permits() -> pd.DataFrame:
+    return _registry("permits.csv")
+
+
+def _moment(value) -> pd.Timestamp:
+    moment = pd.Timestamp(value)
+    if moment.tzinfo is not None:
+        moment = moment.tz_convert("Europe/Moscow").tz_localize(None)
+    return moment
+
+
+def _permit(row) -> dict:
+    return {
+        "permit_id": row.permit_id,
+        "work_type": row.work_type,
+        "start": row.start.isoformat(),
+        "end": row.end.isoformat(),
+        "brigade": row.brigade,
+    }
+
+
+def active_permits(object_id: int, at) -> pd.DataFrame:
+    at = _moment(at)
+    p = permits()
+    return p[p.object_id.eq(int(object_id)) & p.start.le(at) & p.end.ge(at)].sort_values("start")
+
+
+def tags(object_id: int, at, scenario: str) -> list[dict]:
+    """Registry labels of one alarm or warning, as the dispatcher sees them in the queue."""
+    active = active_permits(object_id, at)
+    hot = active[active.work_type.eq("Огневые работы")]
+    result = []
+    if len(hot):
+        result.append({"kind": "hot_work", "label": f"Огневые работы по наряду {hot.permit_id.iloc[0]}"})
+    other = active[~active.work_type.eq("Огневые работы")]
+    if len(other):
+        row = other.iloc[0]
+        result.append(
+            {"kind": "permit", "label": f"Работа по наряду {row.permit_id} · {row.work_type.lower()}"}
+        )
+    if scenario in ACCESS_SCENARIOS and active.empty:
+        result.append({"kind": "no_permit", "label": "Доступ без наряда"})
+    if scenario in FIRE_SCENARIOS and hot.empty:
+        result.append({"kind": "no_hot_work", "label": "Огневых работ по наряду нет"})
+    return result
+
+
+def queue(as_of, hours: int = 24) -> dict:
+    """Feed rows of the demo world within ``hours`` before ``as_of``, with registry labels."""
+    end = _moment(as_of)
+    begin = end - pd.Timedelta(hours=hours)
+    rows = []
+    for row in feed():
+        at = pd.Timestamp(row["time"])
+        if begin < at <= end:
+            rows.append({**row, "tags": tags(row["object_id"], at, row["scenario"])})
+    rows.sort(key=lambda r: r["time"], reverse=True)
+    design = report()["design"]
+    return {
+        "world": design["feed_world"],
+        "period": design["test"],
+        "begin": begin.isoformat(),
+        "end": end.isoformat(),
+        "rows": rows,
+        "feed_total": len(feed()),
+        "note": "Полигон: реальный журнал плюс инциденты с известной правдой и синтетические реестры. "
+        "Это проверка отработки сценариев, а не реальные инциденты.",
+    }
+
+
+def situation(object_id: int, at) -> dict:
+    """Situation check from the demo world's registries around one moment on one object."""
+    at = _moment(at)
+    obj = int(object_id)
+    p = permits()
+    near = p[p.object_id.eq(obj) & p.end.ge(at - 12 * HOUR) & p.start.le(at + 12 * HOUR)].sort_values("start")
+    repairs = _registry("repairs.csv")
+    repairs = repairs[
+        repairs.object_id.eq(obj) & repairs.end.ge(at - 48 * HOUR) & repairs.start.le(at + 48 * HOUR)
+    ]
+    units = _registry("passports.csv")
+    units = units[units.object_id.eq(obj)]
+    return {
+        "world": report()["design"]["feed_world"],
+        "at": at.isoformat(),
+        "permits": [{**_permit(r), "active": bool(r.start <= at <= r.end)} for r in near.itertuples()],
+        "hot_works": [_permit(r) for r in near[near.work_type.eq("Огневые работы")].itertuples()],
+        "repairs": [
+            {
+                "incident_id": r.incident_id,
+                "work": r.work,
+                "start": r.start.isoformat(),
+                "end": r.end.isoformat(),
+            }
+            for r in repairs.itertuples()
+        ],
+        "units": {
+            "pumps": int(units.group.eq("pump").sum()),
+            "fans": int(units.group.eq("fan").sum()),
+        },
+        "tags": tags(obj, at, ""),
+    }
+
+
+def units(as_of) -> dict:
+    """Pumps and fans of the demo world: passports and the June failure forecasts."""
+    at = _moment(as_of)
+    passports = _registry("passports.csv")
+    # The polygon warns per unit; the feed has no unit name, so one row per object and moment.
+    warnings, seen = [], {}
+    for r in feed():
+        if r["scenario"] not in ("pump_failure", "fan_failure"):
+            continue
+        key = (r["time"], r["object_id"], r["scenario"], r["outcome"])
+        if key in seen:
+            seen[key]["count"] += 1
+            continue
+        seen[key] = {**r, "count": 1}
+        warnings.append(seen[key])
+    rows = []
+    for w in warnings:
+        issued = pd.Timestamp(w["time"])
+        unit = passports[passports.object_id.eq(int(w["object_id"]))]
+        unit = unit[unit.group.eq("pump" if w["scenario"] == "pump_failure" else "fan")]
+        oldest = unit.sort_values("installed").head(1)
+        rows.append(
+            {
+                "time": w["time"],
+                "object_id": w["object_id"],
+                "object_name": w["object_name"],
+                "unit": "Насос" if w["scenario"] == "pump_failure" else "Вентилятор",
+                "units_on_object": len(unit),
+                "units_warned": w["count"],
+                "oldest_installed": oldest.installed.iloc[0].date().isoformat() if len(oldest) else None,
+                "last_maintenance": unit.last_maintenance.max().date().isoformat() if len(unit) else None,
+                "outcome": w["outcome"],
+                "truth": w["truth"],
+                "lead_hours": w["lead_hours"],
+                "active": bool(issued <= at < issued + 24 * HOUR),
+            }
+        )
+    rows.sort(key=lambda r: r["time"], reverse=True)
+    return {
+        "world": report()["design"]["feed_world"],
+        "period": report()["design"]["test"],
+        "pumps": int(passports.group.eq("pump").sum()),
+        "fans": int(passports.group.eq("fan").sum()),
+        "warnings": rows,
+        "active": sum(r["active"] for r in rows),
+    }

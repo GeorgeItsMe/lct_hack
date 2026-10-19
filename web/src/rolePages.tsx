@@ -38,6 +38,7 @@ import {
   WorkBadge,
 } from "./components";
 import { can } from "./roles";
+import { ShiftPanel, UnitsPanel } from "./businessPanels";
 import type {
   AdminUser,
   AuditRow,
@@ -322,6 +323,7 @@ export function EquipmentPage({
           </div>
         )}
       </section>
+      <UnitsPanel asOf={asOf} />
     </div>
   );
 }
@@ -1448,6 +1450,7 @@ export function SummaryPage({
           hint={`Выполнено: ${workload.orders_done}`}
         />
       </div>
+      {data.shift && <ShiftPanel shift={data.shift} />}
       {data.load && <LoadPanel load={data.load} />}
       {exportable && (
         <section className="panel report-panel">

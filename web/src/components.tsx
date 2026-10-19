@@ -873,9 +873,11 @@ export function ForecastDrawer({
                           <li key={s.id}>
                             <span>{s.label}</span>
                             <b>
-                              {s.status === "not_connected"
-                                ? "не подключено"
-                                : s.status}
+                              {s.status === "not_provided"
+                                ? "реестр не передан"
+                                : s.status === "not_connected"
+                                  ? "не подключено"
+                                  : s.status}
                             </b>
                           </li>
                         ))}

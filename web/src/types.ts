@@ -567,6 +567,7 @@ export type Proposal = {
 export type Summary = {
   as_of: string;
   load?: DispatcherLoad | null;
+  shift?: Shift;
   totals: {
     forecasts: number;
     warnings: number;
@@ -636,4 +637,106 @@ export type AuditRow = {
   action: string;
   detail: Record<string, unknown> | unknown[];
   created_at: string;
+};
+
+export type PolygonTag = {
+  kind: "hot_work" | "permit" | "no_permit" | "no_hot_work";
+  label: string;
+};
+export type PolygonQueueRow = PolygonFeedRow & { tags: PolygonTag[] };
+export type PolygonQueue = {
+  world: number;
+  period: string[];
+  begin: string;
+  end: string;
+  rows: PolygonQueueRow[];
+  feed_total: number;
+  note: string;
+};
+export type PolygonPermit = {
+  permit_id: string;
+  work_type: string;
+  start: string;
+  end: string;
+  brigade: string;
+  active?: boolean;
+};
+export type PolygonSituation = {
+  world: number;
+  at: string;
+  permits: PolygonPermit[];
+  hot_works: PolygonPermit[];
+  repairs: { incident_id: string; work: string; start: string; end: string }[];
+  units: { pumps: number; fans: number };
+  tags: PolygonTag[];
+};
+export type UnitState =
+  "running" | "stopped" | "normal" | "problem" | "unknown" | "silent";
+export type Units = {
+  real: {
+    as_of: string;
+    pumps: number;
+    fans: number;
+    states: Record<UnitState, number>;
+    objects: {
+      object_id: number;
+      object_name: string;
+      pumps: number;
+      fans: number;
+      states: Record<UnitState, number>;
+      problems: {
+        channel_id: number;
+        unit: string;
+        sensor_name: string;
+        value: string;
+        ts: string;
+      }[];
+    }[];
+    note: string;
+  };
+  polygon: null | {
+    world: number;
+    period: string[];
+    pumps: number;
+    fans: number;
+    active: number;
+    warnings: {
+      time: string;
+      object_id: number;
+      object_name: string;
+      unit: string;
+      units_on_object: number;
+      units_warned: number;
+      oldest_installed: string | null;
+      last_maintenance: string | null;
+      outcome: string;
+      truth: string;
+      lead_hours: number | null;
+      active: boolean;
+    }[];
+  };
+};
+export type ShiftCounts = {
+  warnings: number;
+  correct: number;
+  false: number;
+  pending: number;
+  incident_days: number;
+  caught: number;
+};
+export type ShiftWindow = {
+  label: string;
+  begin: string;
+  by_kind: Record<string, ShiftCounts>;
+  totals: ShiftCounts;
+};
+export type Shift = {
+  current: ShiftWindow;
+  resolved: ShiftWindow;
+  average: {
+    shifts: number;
+    per_shift: ShiftCounts;
+    by_kind: Record<string, ShiftCounts>;
+  };
+  rule: string;
 };

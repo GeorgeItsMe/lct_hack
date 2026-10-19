@@ -1037,3 +1037,45 @@ tr.inactive td {
   background: #fff;
   font: inherit;
 }
+
+/* Registry labels of the polygon world: permits, hot works, access without a permit. */
+.registry-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.registry-tag {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid #171717;
+  border-radius: 5px;
+  color: #171717;
+  font-size: 11px;
+  font-weight: 520;
+  white-space: nowrap;
+}
+.registry-tag.hot_work,
+.registry-tag.permit {
+  border-style: dashed;
+}
+.registry-tag.no_permit {
+  background: #171717;
+  color: #fff;
+}
+.polygon-queue td small {
+  display: block;
+}
+tr.clickable {
+  cursor: pointer;
+}
+tr.sub-row td {
+  padding-left: 28px;
+  font-size: 12px;
+}
+.dashboard-content > .polygon-panel {
+  grid-column: 1 / -1;
+}
+.table-scroll.capped {
+  max-height: 520px;
+  overflow: auto;
+}

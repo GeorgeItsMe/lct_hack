@@ -458,6 +458,38 @@ def evaluation_matches(
     return json.loads((ARTIFACTS / "predictions" / f"test-matches-{kind}.json").read_text(encoding="utf-8"))
 
 
+@app.get("/api/equipment/units")
+def equipment_units(as_of: str | None = None, user=Depends(require("equipment.view"))):
+    """Pumps and fans: last state from the journal and, for the demo world, failure forecasts."""
+    from moscollector import polygon_view
+
+    result = {"real": analytics().units(as_of, scope_parent(user)), "polygon": None}
+    if polygon_view.available():
+        result["polygon"] = polygon_view.units(result["real"]["as_of"])
+    return result
+
+
+@app.get("/api/polygon/queue")
+def polygon_queue(as_of: str | None = None, hours: int = 24, user=Depends(require("forecasts.view"))):
+    """Alarms and warnings of the demo world with registry labels, for the dispatcher queue."""
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены")
+    moment = as_of or analytics().resolve_time().isoformat()
+    return polygon_view.queue(moment, max(1, min(hours, 24 * 31)))
+
+
+@app.get("/api/polygon/situation")
+def polygon_situation(object_id: int, at: str, user=Depends(require("forecasts.view"))):
+    """Situation check of one alarm in the demo world from its registries."""
+    from moscollector import polygon_view
+
+    if not polygon_view.available():
+        raise HTTPException(404, "Результаты полигона не подготовлены")
+    return polygon_view.situation(object_id, at)
+
+
 @app.get("/api/polygon")
 def polygon(user=Depends(require("summary.view"))):
     """Polygon results: recognition of incidents with known truth, effect, robustness."""
