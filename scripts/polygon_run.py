@@ -21,6 +21,7 @@ import sys
 import time
 from importlib.metadata import version
 
+import duckdb
 import numpy as np
 import pandas as pd
 
@@ -428,11 +429,11 @@ def evaluate(base, hard):
 def export_world(world):
     """Registries, truth and injected records of the demo world, for the service and download."""
     OUT.mkdir(parents=True, exist_ok=True)
-    world.permits.to_csv(OUT / "permits.csv", index=False, encoding="utf-8")
-    world.passports.to_csv(OUT / "passports.csv", index=False, encoding="utf-8")
-    world.repairs.to_csv(OUT / "repairs.csv", index=False, encoding="utf-8")
+    world.permits.to_csv(OUT / "permits.csv", index=False, encoding="utf-8", lineterminator="\n")
+    world.passports.to_csv(OUT / "passports.csv", index=False, encoding="utf-8", lineterminator="\n")
+    world.repairs.to_csv(OUT / "repairs.csv", index=False, encoding="utf-8", lineterminator="\n")
     truth = world.truth.assign(channel_ids=world.truth.channel_ids.map(lambda c: " ".join(map(str, c))))
-    truth.to_csv(OUT / "truth.csv", index=False, encoding="utf-8")
+    truth.to_csv(OUT / "truth.csv", index=False, encoding="utf-8", lineterminator="\n")
     world.events.to_parquet(OUT / "injected.parquet", index=False)
     world.suppressed.to_parquet(OUT / "suppressed.parquet", index=False)
 
@@ -656,6 +657,21 @@ def build_feed(inputs, truth, catalog):
     return sorted(feed.rows, key=lambda r: r["time"])
 
 
+def content_fingerprint(path):
+    """Row count and an order-free hash of every row: equal for equal records, whoever wrote the file.
+
+    File bytes differ between two preparations of the same journal (writer, row groups);
+    the fingerprint does not.
+    """
+    con = duckdb.connect()
+    columns = [r[0] for r in con.execute("DESCRIBE SELECT * FROM read_parquet(?)", [str(path)]).fetchall()]
+    rows, digest = con.execute(
+        f"SELECT count(*), sum(hash({', '.join(columns)})::HUGEINT) FROM read_parquet(?)", [str(path)]
+    ).fetchone()
+    con.close()
+    return {"rows": int(rows), "content_hash": str(digest)}
+
+
 def provenance():
     """Library versions and input hashes: two runs with equal records must give equal reports."""
     digest = {}
@@ -664,7 +680,7 @@ def provenance():
         with path.open("rb") as stream:
             for block in iter(lambda: stream.read(8 * 1024 * 1024), b""):
                 h.update(block)
-        digest[name] = {"file": path.name, "sha256": h.hexdigest()}
+        digest[name] = {"file": path.name, "sha256": h.hexdigest(), **content_fingerprint(path)}
     packages = ("numpy", "pandas", "pyarrow", "duckdb", "catboost")
     return {
         "python": sys.version.split()[0],

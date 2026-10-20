@@ -43,7 +43,9 @@ def access_triage_units(data):
     alarms = alarm_groups(alarms)
     quiet = door_motion[~door_motion.alarm]
     quiet_by_object = {k: stamps(g) for k, g in quiet.groupby("object_id")}
-    guard = e[e.group.eq("guard") & e.value.isin(["На охране", "Снято с охраны"])].sort_values("ts")
+    guard = e[e.group.eq("guard") & e.value.isin(["На охране", "Снято с охраны"])].sort_values(
+        ["ts", "event_id"]
+    )
     guard_by_object = {
         k: (g.ts.to_numpy(dtype="datetime64[ns]").astype(np.int64), g.value.eq("На охране").to_numpy())
         for k, g in guard.groupby("object_id")
@@ -136,7 +138,7 @@ def equipment_units(data, begin, end, units=None):
     )
     frames = []
     for channel, part in e[e.channel_id.isin(units)].groupby("channel_id"):
-        part = part.sort_values("ts")
+        part = part.sort_values(["ts", "event_id"])
         t = part.ts.to_numpy(dtype="datetime64[ns]").astype(np.int64)
         slot = (t - h0) // daily_rule.HOUR_NS
         ok = (slot >= 0) & (slot < n)
@@ -212,7 +214,7 @@ def gas_units(data, begin, end):
         gas.groupby(["object_id", "hour"]).agg(gas=("gas", "max"), alarm=("gas_alarm", "max")).reset_index()
     )
     hours = pd.date_range(begin - pd.Timedelta(days=2), end - HOUR, freq="h")
-    fans = data.events[data.events.group.eq("fan")].sort_values("ts")
+    fans = data.events[data.events.group.eq("fan")].sort_values(["ts", "event_id"])
     frames, alarms = [], []
     for obj, part in hourly.groupby("object_id"):
         s = part.set_index("hour").reindex(hours)
@@ -257,7 +259,7 @@ def gas_units(data, begin, end):
 def cascades(data, channels=5, window=10 * MIN):
     """Five or more channels of one object entering a fault state within 10 minutes."""
     faults = data.events[data.events.alarm & data.events.value.isin(FAULT_STATES)].sort_values(
-        ["object_id", "ts"]
+        ["object_id", "ts", "event_id"]
     )
     found = []
     span = np.timedelta64(int(window.total_seconds()), "s")

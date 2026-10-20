@@ -114,12 +114,17 @@ class Catalog:
 
 
 def nearest(frame, pk, rng, k=1):
-    """k channels closest by picket to pk (random order when pickets are unknown)."""
+    """k channels closest by picket to pk (random order when pickets are unknown).
+
+    Several channels often share a picket. Ties are broken by channel id with a stable
+    sort, so the choice does not depend on the sorting algorithm of the processor.
+    """
     if frame.empty:
         return frame
     if pk is None or np.isnan(pk) or frame.pk.isna().all():
         return frame.sample(min(k, len(frame)), random_state=int(rng.integers(1 << 31)))
-    order = (frame.pk - pk).abs().fillna(1e9).sort_values().index
+    distance = (frame.pk - pk).abs().fillna(1e9)
+    order = frame.assign(_distance=distance).sort_values(["_distance", "channel_id"], kind="stable").index
     return frame.loc[order[:k]]
 
 
@@ -178,7 +183,7 @@ def build_permits(episodes, catalog, rng, rates):
 
     Returns the registry and every hot work, including hot works done without a permit.
     """
-    access = episodes[episodes.kind.eq("access")].sort_values(["object_id", "start_ts"])
+    access = episodes[episodes.kind.eq("access")].sort_values(["object_id", "start_ts", "episode_id"])
     rows = []
     for obj, part in access.groupby("object_id"):
         visit_start = visit_end = None
@@ -209,7 +214,8 @@ def build_permits(episodes, catalog, rng, rates):
     ].index
     count = min(len(eligible), planned(rates["hot_works_per_week"]))
     permits.loc[rng.choice(eligible, count, replace=False), "work_type"] = "Огневые работы"
-    permits = permits.sort_values("start").reset_index(drop=True)
+    # Permit numbers follow this order: equal start times are ordered by object.
+    permits = permits.sort_values(["start", "object_id", "end"], kind="stable").reset_index(drop=True)
     permits["permit_id"] = [f"НД-{i + 1:05d}" for i in range(len(permits))]
     permits["brigade"] = [f"Бригада {int(b)}" for b in rng.integers(1, 13, len(permits))]
     permits = permits[["permit_id", "object_id", "start", "end", "work_type", "brigade"]]

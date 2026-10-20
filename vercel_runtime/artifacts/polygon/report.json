@@ -1,7 +1,7 @@
 {
   "scenarios": {
     "fire_triage": {
-      "threshold": 0.822220126999396,
+      "threshold": 0.9007133582176882,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.95,
@@ -12,26 +12,26 @@
       "incidents": 17,
       "caught": 13,
       "recall": 0.7647058823529411,
-      "escalated": 19,
-      "false_escalations": 1,
-      "precision": 0.9473684210526315,
+      "escalated": 16,
+      "false_escalations": 0,
+      "precision": 1.0,
       "alarms_per_day": 20.033333333333335,
-      "escalated_per_day": 0.06333333333333334,
-      "false_per_day": 0.0033333333333333335,
+      "escalated_per_day": 0.05333333333333334,
+      "false_per_day": 0.0,
       "importance": {
-        "groups_7d": 24.839130110691773,
-        "first_seconds": 16.064825146846765,
-        "still_active": 11.706484746349826,
-        "channels_10m": 7.69185347814359,
-        "hour": 7.231927032846277,
-        "permit": 6.814799691504181
+        "groups_7d": 22.560899815372984,
+        "first_seconds": 16.55470179201989,
+        "still_active": 11.221538050515294,
+        "channels_10m": 9.523658446522996,
+        "hour": 8.897279972245382,
+        "permit": 6.219492221679616
       },
       "hot_work_alarms_per_day": 1.4066666666666667,
-      "hot_work_escalated": 1,
+      "hot_work_escalated": 0,
       "hot_work_with_permit": 1.0
     },
     "access_triage": {
-      "threshold": 0.1720381190027343,
+      "threshold": 0.17203811900273405,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.7580645161290323,
@@ -49,130 +49,130 @@
       "escalated_per_day": 0.29333333333333333,
       "false_per_day": 0.10333333333333333,
       "importance": {
-        "permit": 30.116834320500264,
+        "permit": 30.116834320500246,
         "channels_5m": 17.35158968016845,
-        "activity_1h": 15.766945943942096,
-        "groups_7d": 9.496668416048188,
+        "activity_1h": 15.766945943942101,
+        "groups_7d": 9.496668416048195,
         "off_hours_groups_24h": 8.47121850293563,
-        "guard_armed": 7.845224928892369
+        "guard_armed": 7.84522492889237
       },
       "permitted_per_day": 40.21333333333333,
       "no_permit_per_day": 4.763333333333334
     },
     "fire_forecast": {
-      "threshold": 0.10125908867946236,
-      "precision": 0.21052631578947367,
+      "threshold": 0.09217718545580061,
+      "precision": 0.20512820512820512,
       "recall": 0.47058823529411764,
-      "alerts": 38,
+      "alerts": 39,
       "true_alerts": 8,
       "incident_days": 17,
       "caught_incident_days": 8,
-      "median_lead_hours": 2.637638888888889,
-      "alerts_per_day": 0.12666666666666668,
-      "false_alerts_per_day": 0.1,
+      "median_lead_hours": 2.348322973748611,
+      "alerts_per_day": 0.13,
+      "false_alerts_per_day": 0.10333333333333333,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.052083333333333336,
+        "precision": 0.056818181818181816,
         "recall": 0.29411764705882354,
-        "alerts": 96
+        "alerts": 88
       },
       "importance": {
-        "temp_max": 35.52173859220645,
-        "rise24": 17.87271150523801,
-        "rise3": 9.892806755914227,
-        "rise12": 9.59848799037209,
-        "rise6": 6.495660987174829,
-        "smoke_24h": 6.351587910072221
+        "temp_max": 32.50263655829193,
+        "rise24": 17.165358867680535,
+        "rise3": 11.326694112325475,
+        "rise12": 10.380840218656173,
+        "smoke_24h": 7.204760711121086,
+        "rise6": 6.953677868183805
       },
       "with_visible_heating": {
         "incident_days": 9,
         "caught_incident_days": 8,
         "recall": 0.8888888888888888,
-        "median_lead_hours": 2.637638888888889
+        "median_lead_hours": 2.348322973748611
       }
     },
     "pump_forecast": {
-      "threshold": 0.5656195682150219,
-      "precision": 0.5384615384615384,
-      "recall": 0.7368421052631579,
-      "alerts": 26,
-      "true_alerts": 14,
+      "threshold": 0.05300408298818547,
+      "precision": 0.25675675675675674,
+      "recall": 1.0,
+      "alerts": 74,
+      "true_alerts": 19,
       "incident_days": 19,
-      "caught_incident_days": 14,
-      "median_lead_hours": 11.403055555555556,
-      "alerts_per_day": 0.08666666666666667,
-      "false_alerts_per_day": 0.04,
+      "caught_incident_days": 19,
+      "median_lead_hours": 15.006666666666666,
+      "alerts_per_day": 0.24666666666666667,
+      "false_alerts_per_day": 0.18333333333333332,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.5454545454545454,
-        "recall": 0.42857142857142855,
-        "alerts": 11
+        "precision": 0.2978723404255319,
+        "recall": 1.0,
+        "alerts": 47
       },
       "importance": {
-        "run_ratio": 35.05388737203356,
-        "on_ratio": 11.722347094833156,
-        "run_24h": 11.373287155578279,
-        "on_24h": 7.316787850140061,
-        "age_years": 5.656659743182436,
-        "faults_24h": 5.249442528127936
+        "run_ratio": 35.50365333988165,
+        "run_24h": 10.34715959799256,
+        "on_ratio": 10.076925490933439,
+        "age_years": 7.842220816150526,
+        "on_24h": 7.113939134522148,
+        "faults_24h": 4.846080692284221
       }
     },
     "fan_forecast": {
-      "threshold": 0.4326959559562517,
-      "precision": 0.029498525073746312,
-      "recall": 0.7692307692307693,
-      "alerts": 339,
-      "true_alerts": 10,
+      "threshold": 0.4918444044650661,
+      "precision": 0.04417670682730924,
+      "recall": 0.8461538461538461,
+      "alerts": 249,
+      "true_alerts": 11,
       "incident_days": 13,
-      "caught_incident_days": 10,
-      "median_lead_hours": 11.595972222222223,
-      "alerts_per_day": 1.13,
-      "false_alerts_per_day": 1.0966666666666667,
+      "caught_incident_days": 11,
+      "median_lead_hours": 11.626944444444444,
+      "alerts_per_day": 0.83,
+      "false_alerts_per_day": 0.7933333333333333,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.06976744186046512,
-        "recall": 0.6,
-        "alerts": 129
+        "precision": 0.05952380952380952,
+        "recall": 0.6666666666666666,
+        "alerts": 168
       },
       "importance": {
-        "run_24h": 34.77609117373917,
-        "run_ratio": 14.366415647288152,
-        "on_24h": 12.980393021520376,
-        "days_since_service": 11.68494373687656,
-        "age_years": 8.87202852853888,
-        "on_72h": 6.0803027916761385
+        "run_24h": 37.49875913755936,
+        "run_ratio": 9.865637490434604,
+        "age_years": 9.68341061250813,
+        "on_24h": 8.675623486841996,
+        "on_ratio": 8.182182768237645,
+        "days_since_service": 7.569543451166109
       }
     },
     "gas_forecast": {
-      "threshold": 0.9541864243055208,
+      "threshold": 0.9729801261237725,
       "precision": 0.7692307692307693,
       "recall": 0.12195121951219512,
       "alerts": 13,
       "true_alerts": 10,
       "incident_days": 82,
       "caught_incident_days": 10,
-      "median_lead_hours": 4.5,
+      "median_lead_hours": 5.5,
       "alerts_per_day": 0.043333333333333335,
       "false_alerts_per_day": 0.01,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
-        "precision": 0.8571428571428571,
-        "recall": 0.11009174311926606,
-        "alerts": 14
+        "precision": 0.8461538461538461,
+        "recall": 0.10091743119266056,
+        "alerts": 13
       },
       "importance": {
-        "gas_now": 25.74108596084121,
-        "gas_rise24": 20.915822002315917,
-        "gas_3h": 16.883748630143543,
-        "gas_rise6": 14.590725829800387,
-        "fan_faults_24h": 12.715955819749905,
-        "fans_failed": 7.499264575292929
+        "gas_rise24": 29.93384801478305,
+        "gas_now": 24.20971642365759,
+        "gas_3h": 20.54428842779392,
+        "gas_rise6": 10.615370388134465,
+        "fan_faults_24h": 10.296562966803277,
+        "fans_failed": 2.3891628446699613
       },
       "fan_caused": {
         "incident_days": 12,
         "caught_incident_days": 10,
         "recall": 0.8333333333333334,
-        "median_lead_hours": 5.3612556356890275
+        "median_lead_hours": 5.977182020416528
       }
     },
     "cascades": {
@@ -184,7 +184,7 @@
   },
   "hard": {
     "fire_triage": {
-      "threshold": 0.822220126999396,
+      "threshold": 0.9007133582176882,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.95,
@@ -195,26 +195,26 @@
       "incidents": 21,
       "caught": 20,
       "recall": 0.9523809523809523,
-      "escalated": 33,
+      "escalated": 30,
       "false_escalations": 0,
       "precision": 1.0,
       "alarms_per_day": 20.153333333333332,
-      "escalated_per_day": 0.11,
+      "escalated_per_day": 0.1,
       "false_per_day": 0.0,
       "importance": {
-        "groups_7d": 24.839130110691773,
-        "first_seconds": 16.064825146846765,
-        "still_active": 11.706484746349826,
-        "channels_10m": 7.69185347814359,
-        "hour": 7.231927032846277,
-        "permit": 6.814799691504181
+        "groups_7d": 22.560899815372984,
+        "first_seconds": 16.55470179201989,
+        "still_active": 11.221538050515294,
+        "channels_10m": 9.523658446522996,
+        "hour": 8.897279972245382,
+        "permit": 6.219492221679616
       },
       "hot_work_alarms_per_day": 1.4166666666666667,
       "hot_work_escalated": 0,
       "hot_work_with_permit": 0.6564705882352941
     },
     "access_triage": {
-      "threshold": 0.1720381190027343,
+      "threshold": 0.17203811900273405,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
         "precision": 0.7580645161290323,
@@ -232,18 +232,18 @@
       "escalated_per_day": 0.35333333333333333,
       "false_per_day": 0.18,
       "importance": {
-        "permit": 30.116834320500264,
+        "permit": 30.116834320500246,
         "channels_5m": 17.35158968016845,
-        "activity_1h": 15.766945943942096,
-        "groups_7d": 9.496668416048188,
+        "activity_1h": 15.766945943942101,
+        "groups_7d": 9.496668416048195,
         "off_hours_groups_24h": 8.47121850293563,
-        "guard_armed": 7.845224928892369
+        "guard_armed": 7.84522492889237
       },
       "permitted_per_day": 34.986666666666665,
       "no_permit_per_day": 9.926666666666666
     },
     "fire_forecast": {
-      "threshold": 0.10125908867946236,
+      "threshold": 0.09217718545580061,
       "precision": 0.29545454545454547,
       "recall": 0.6190476190476191,
       "alerts": 44,
@@ -255,17 +255,17 @@
       "false_alerts_per_day": 0.10333333333333333,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.052083333333333336,
+        "precision": 0.056818181818181816,
         "recall": 0.29411764705882354,
-        "alerts": 96
+        "alerts": 88
       },
       "importance": {
-        "temp_max": 35.52173859220645,
-        "rise24": 17.87271150523801,
-        "rise3": 9.892806755914227,
-        "rise12": 9.59848799037209,
-        "rise6": 6.495660987174829,
-        "smoke_24h": 6.351587910072221
+        "temp_max": 32.50263655829193,
+        "rise24": 17.165358867680535,
+        "rise3": 11.326694112325475,
+        "rise12": 10.380840218656173,
+        "smoke_24h": 7.204760711121086,
+        "rise6": 6.953677868183805
       },
       "with_visible_heating": {
         "incident_days": 15,
@@ -275,87 +275,87 @@
       }
     },
     "pump_forecast": {
-      "threshold": 0.5656195682150219,
-      "precision": 0.5384615384615384,
-      "recall": 0.3888888888888889,
-      "alerts": 13,
-      "true_alerts": 7,
+      "threshold": 0.05300408298818547,
+      "precision": 0.27692307692307694,
+      "recall": 1.0,
+      "alerts": 65,
+      "true_alerts": 18,
       "incident_days": 18,
-      "caught_incident_days": 7,
-      "median_lead_hours": 11.385833333333334,
-      "alerts_per_day": 0.043333333333333335,
-      "false_alerts_per_day": 0.02,
+      "caught_incident_days": 18,
+      "median_lead_hours": 9.965416666666666,
+      "alerts_per_day": 0.21666666666666667,
+      "false_alerts_per_day": 0.15666666666666668,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.5454545454545454,
-        "recall": 0.42857142857142855,
-        "alerts": 11
+        "precision": 0.2978723404255319,
+        "recall": 1.0,
+        "alerts": 47
       },
       "importance": {
-        "run_ratio": 35.05388737203356,
-        "on_ratio": 11.722347094833156,
-        "run_24h": 11.373287155578279,
-        "on_24h": 7.316787850140061,
-        "age_years": 5.656659743182436,
-        "faults_24h": 5.249442528127936
+        "run_ratio": 35.50365333988165,
+        "run_24h": 10.34715959799256,
+        "on_ratio": 10.076925490933439,
+        "age_years": 7.842220816150526,
+        "on_24h": 7.113939134522148,
+        "faults_24h": 4.846080692284221
       }
     },
     "fan_forecast": {
-      "threshold": 0.4326959559562517,
-      "precision": 0.04953560371517028,
+      "threshold": 0.4918444044650661,
+      "precision": 0.07174887892376682,
       "recall": 0.9411764705882353,
-      "alerts": 323,
+      "alerts": 223,
       "true_alerts": 16,
       "incident_days": 17,
       "caught_incident_days": 16,
-      "median_lead_hours": 9.830972222222222,
-      "alerts_per_day": 1.0766666666666667,
-      "false_alerts_per_day": 1.0233333333333334,
+      "median_lead_hours": 10.901388888888889,
+      "alerts_per_day": 0.7433333333333333,
+      "false_alerts_per_day": 0.69,
       "selection": {
         "rule": "best_f1_precision_0.7_unreachable",
-        "precision": 0.06976744186046512,
-        "recall": 0.6,
-        "alerts": 129
+        "precision": 0.05952380952380952,
+        "recall": 0.6666666666666666,
+        "alerts": 168
       },
       "importance": {
-        "run_24h": 34.77609117373917,
-        "run_ratio": 14.366415647288152,
-        "on_24h": 12.980393021520376,
-        "days_since_service": 11.68494373687656,
-        "age_years": 8.87202852853888,
-        "on_72h": 6.0803027916761385
+        "run_24h": 37.49875913755936,
+        "run_ratio": 9.865637490434604,
+        "age_years": 9.68341061250813,
+        "on_24h": 8.675623486841996,
+        "on_ratio": 8.182182768237645,
+        "days_since_service": 7.569543451166109
       }
     },
     "gas_forecast": {
-      "threshold": 0.9541864243055208,
+      "threshold": 0.9729801261237725,
       "precision": 1.0,
-      "recall": 0.1839080459770115,
-      "alerts": 16,
-      "true_alerts": 16,
+      "recall": 0.1724137931034483,
+      "alerts": 15,
+      "true_alerts": 15,
       "incident_days": 87,
-      "caught_incident_days": 16,
-      "median_lead_hours": 5.0,
-      "alerts_per_day": 0.05333333333333334,
+      "caught_incident_days": 15,
+      "median_lead_hours": 6.0,
+      "alerts_per_day": 0.05,
       "false_alerts_per_day": 0.0,
       "selection": {
         "rule": "max_recall_at_precision_0.7",
-        "precision": 0.8571428571428571,
-        "recall": 0.11009174311926606,
-        "alerts": 14
+        "precision": 0.8461538461538461,
+        "recall": 0.10091743119266056,
+        "alerts": 13
       },
       "importance": {
-        "gas_now": 25.74108596084121,
-        "gas_rise24": 20.915822002315917,
-        "gas_3h": 16.883748630143543,
-        "gas_rise6": 14.590725829800387,
-        "fan_faults_24h": 12.715955819749905,
-        "fans_failed": 7.499264575292929
+        "gas_rise24": 29.93384801478305,
+        "gas_now": 24.20971642365759,
+        "gas_3h": 20.54428842779392,
+        "gas_rise6": 10.615370388134465,
+        "fan_faults_24h": 10.296562966803277,
+        "fans_failed": 2.3891628446699613
       },
       "fan_caused": {
         "incident_days": 17,
-        "caught_incident_days": 16,
-        "recall": 0.9411764705882353,
-        "median_lead_hours": 5.8887363699581945
+        "caught_incident_days": 15,
+        "recall": 0.8823529411764706,
+        "median_lead_hours": 6.104738565087778
       }
     },
     "cascades": {
@@ -368,9 +368,9 @@
   "effect": {
     "fire": {
       "alarms_per_day": 20.033333333333335,
-      "raised_per_day": 0.06333333333333334,
-      "hot_work_per_day": 1.4033333333333333,
-      "low_priority_per_day": 18.566666666666666
+      "raised_per_day": 0.05333333333333334,
+      "hot_work_per_day": 1.4066666666666667,
+      "low_priority_per_day": 18.573333333333334
     },
     "access": {
       "alarms_per_day": 45.306666666666665,
@@ -379,9 +379,9 @@
       "calls_per_day": 4.763333333333334
     },
     "forecasts_per_day": {
-      "fire_forecast": 0.12666666666666668,
-      "pump_forecast": 0.08666666666666667,
-      "fan_forecast": 1.13,
+      "fire_forecast": 0.13,
+      "pump_forecast": 0.24666666666666667,
+      "fan_forecast": 0.83,
       "gas_forecast": 0.043333333333333335
     }
   },
@@ -458,8 +458,8 @@
     }
   },
   "provenance": {
-    "python": "3.12.14",
-    "platform": "Darwin arm64",
+    "python": "3.12.10",
+    "platform": "Windows AMD64",
     "packages": {
       "numpy": "2.5.3",
       "pandas": "2.3.3",
@@ -470,19 +470,27 @@
     "inputs": {
       "channels": {
         "file": "channels.parquet",
-        "sha256": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2"
+        "sha256": "011f3ff1834034597d9075cba485505d60e24d5e54efd5020340057e6c86d4f2",
+        "rows": 11485,
+        "content_hash": "104929803994684929639812"
       },
       "objects": {
         "file": "objects.parquet",
-        "sha256": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce"
+        "sha256": "27c3d7650ba373f101c24adc720735733896c653ae6acd039dbc206c246173ce",
+        "rows": 95,
+        "content_hash": "944658163000838819670"
       },
       "events_2026": {
         "file": "events-2026.parquet",
-        "sha256": "55bbb2eb32b7d064a8b3fd1c07096490c99d5a0654fe32ff8a473f61e08aee7d"
+        "sha256": "1d318aa92d9d4e87866f4cca658729ba685a6ced5f4394bde42463c7a165bde0",
+        "rows": 30695389,
+        "content_hash": "283058967514461580379368304"
       },
       "episodes": {
         "file": "episodes-all-2026.parquet",
-        "sha256": "53887ce3305fa24020789984f0266e80c0f51f9c78f62f49994035d73c8dda0a"
+        "sha256": "53887ce3305fa24020789984f0266e80c0f51f9c78f62f49994035d73c8dda0a",
+        "rows": 10226,
+        "content_hash": "93805694413861611876361"
       }
     }
   }

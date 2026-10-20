@@ -149,7 +149,9 @@ def _permit(row) -> dict:
 def active_permits(object_id: int, at) -> pd.DataFrame:
     at = _moment(at)
     p = permits()
-    return p[p.object_id.eq(int(object_id)) & p.start.le(at) & p.end.ge(at)].sort_values("start")
+    return p[p.object_id.eq(int(object_id)) & p.start.le(at) & p.end.ge(at)].sort_values(
+        ["start", "permit_id"], kind="stable"
+    )
 
 
 def tags(object_id: int, at, scenario: str) -> list[dict]:
@@ -200,7 +202,9 @@ def situation(object_id: int, at) -> dict:
     at = _moment(at)
     obj = int(object_id)
     p = permits()
-    near = p[p.object_id.eq(obj) & p.end.ge(at - 12 * HOUR) & p.start.le(at + 12 * HOUR)].sort_values("start")
+    near = p[p.object_id.eq(obj) & p.end.ge(at - 12 * HOUR) & p.start.le(at + 12 * HOUR)].sort_values(
+        ["start", "permit_id"], kind="stable"
+    )
     repairs = _registry("repairs.csv")
     repairs = repairs[
         repairs.object_id.eq(obj) & repairs.end.ge(at - 48 * HOUR) & repairs.start.le(at + 48 * HOUR)
@@ -249,7 +253,7 @@ def units(as_of) -> dict:
         issued = pd.Timestamp(w["time"])
         unit = passports[passports.object_id.eq(int(w["object_id"]))]
         unit = unit[unit.group.eq("pump" if w["scenario"] == "pump_failure" else "fan")]
-        oldest = unit.sort_values("installed").head(1)
+        oldest = unit.sort_values(["installed", "channel_id"], kind="stable").head(1)
         rows.append(
             {
                 "time": w["time"],

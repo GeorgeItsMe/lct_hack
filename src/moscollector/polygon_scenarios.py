@@ -124,7 +124,7 @@ class WorldData:
             idx = np.where(objects == obj)[0]
             if not len(idx):
                 continue
-            p = p.sort_values("start")
+            p = p.sort_values(["start", "end"], kind="stable")
             starts = p.start.to_numpy(dtype="datetime64[ns]").astype(np.int64) - m
             ends = np.maximum.accumulate(p.end.to_numpy(dtype="datetime64[ns]").astype(np.int64) + m)
             j = np.searchsorted(starts, t[idx], side="right") - 1
@@ -148,7 +148,7 @@ def series(frame):
 
 def alarm_groups(alarms, window=10 * MIN):
     """Alarm records of one object within ``window`` of the first form one group."""
-    alarms = alarms.sort_values(["object_id", "ts"])
+    alarms = alarms.sort_values(["object_id", "ts", "event_id"])
     group_id = np.empty(len(alarms), dtype=np.int64)
     start, last_object, gid = None, None, -1
     for i, (obj, ts) in enumerate(zip(alarms.object_id.to_numpy(), alarms.ts.to_numpy(), strict=True)):

@@ -98,3 +98,16 @@ def test_polygon_results_and_dataset_are_served(monkeypatch):
     assert set(own.event_id) <= set(journal["ид_события"])
     with pytest.raises(ValueError, match="июня"):
         polygon_view.journal_day("2026-03-01")
+
+
+def test_nearest_channels_do_not_depend_on_row_order():
+    """Several sensors share a picket; the pick must not depend on how rows or ties were ordered."""
+    import numpy as np
+
+    frame = pd.DataFrame({"channel_id": [30, 10, 20, 40, 50], "pk": [5.0, 5.0, 7.0, 5.0, 9.0]})
+    picks = set()
+    for seed in range(20):
+        shuffled = frame.sample(frac=1, random_state=seed)
+        chosen = polygon.nearest(shuffled, 5.0, np.random.default_rng(0), k=3)
+        picks.add(tuple(chosen.channel_id))
+    assert picks == {(10, 30, 40)}
