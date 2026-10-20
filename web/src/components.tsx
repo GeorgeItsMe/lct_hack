@@ -95,9 +95,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
       </svg>
       {!compact && (
         <div>
-          <strong>
-            контур<span className="brand-edition">/ 01</span>
-          </strong>
+          <strong>контур</strong>
           <small>МОСКОЛЛЕКТОР</small>
         </div>
       )}
@@ -204,7 +202,7 @@ export function ForecastTable({
         <thead>
           <tr>
             <th>Объект / тип риска</th>
-            <th>Вероятность · 24 ч</th>
+            <th>Вероятность на 24 ч</th>
             {!compact && <th className="recommendation-head">Рекомендация</th>}
             <th>Статус</th>
             <th />
@@ -619,8 +617,8 @@ export function ForecastDrawer({
         <header className="drawer-header">
           <span className="eyebrow">
             {forecast.batch_id
-              ? `ПОТОК СМВУ · ${forecast.batch_id.slice(0, 8).toUpperCase()}`
-              : `ПРОГНОЗ ${forecast.id.slice(3, 11)}`}
+              ? `Поток СМВУ, пакет ${forecast.batch_id.slice(0, 8)}`
+              : `Прогноз ${forecast.id.slice(3, 11)}`}
           </span>
           <button
             className="icon-button"
@@ -924,7 +922,7 @@ export function ForecastDrawer({
                       </button>
                       {retrospective && (
                         <div className="retrospective-result">
-                          <span className="eyebrow">ФАКТ ПО ЖУРНАЛУ</span>
+                          <span className="eyebrow">Факт по журналу</span>
                           <strong>
                             {retrospective.occurred
                               ? "Зарегистрирован эпизод"
@@ -978,7 +976,7 @@ export function ForecastDrawer({
                   {canDecide && <h3>Зафиксировать решение</h3>}
                   {forecast.decision && (
                     <div className="current-decision">
-                      <span className="eyebrow">ТЕКУЩЕЕ РЕШЕНИЕ</span>
+                      <span className="eyebrow">Текущее решение</span>
                       <strong>
                         {options?.actions[forecast.decision.action] ||
                           forecast.decision.action}

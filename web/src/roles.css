@@ -392,7 +392,7 @@ td > .risk-badge {
   margin-top: 0;
 }
 .order-number {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 12px;
   color: #525252;
 }
@@ -861,6 +861,9 @@ tr.inactive td {
   margin-left: 22px;
   margin-right: 22px;
 }
+.panel > .chart-box {
+  width: auto; /* 100% plus the side margins ran past the panel edge */
+}
 .panel > .bar-list,
 .panel > .role-matrix,
 .panel > .decision-form,
@@ -912,13 +915,12 @@ tr.inactive td {
 
 .source-chip {
   display: inline-block;
-  margin-top: 4px;
-  padding: 1px 7px;
-  border: 1px solid #171717;
-  border-radius: 5px;
-  color: #171717;
+  margin-top: 5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #f2f2f2;
+  color: #525252;
   font-size: 11px;
-  font-weight: 520;
   white-space: nowrap;
 }
 
@@ -1047,16 +1049,12 @@ tr.inactive td {
 .registry-tag {
   display: inline-block;
   padding: 1px 7px;
-  border: 1px solid #171717;
-  border-radius: 5px;
-  color: #171717;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  color: #262626;
   font-size: 11px;
-  font-weight: 520;
+  font-weight: 500;
   white-space: nowrap;
-}
-.registry-tag.hot_work,
-.registry-tag.permit {
-  border-style: dashed;
 }
 .registry-tag.no_permit {
   background: #171717;
@@ -1078,4 +1076,23 @@ tr.sub-row td {
 .table-scroll.capped {
   max-height: 520px;
   overflow: auto;
+}
+
+.table-more {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  border-top: 1px solid var(--line);
+}
+.table-more span {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.panel > .four-column {
+  margin: 18px 22px;
+}
+.panel > .table-scroll + .section-label {
+  margin: 26px 22px 0;
 }

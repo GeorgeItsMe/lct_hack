@@ -12,6 +12,11 @@
   --paper: #fff;
   --sidebar: #fff;
   font-feature-settings: "ss01", "cv11";
+  --sans:
+    "Golos Text Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --mono:
+    "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
   -webkit-font-smoothing: antialiased;
 }
 ::selection {
@@ -91,15 +96,6 @@ textarea:hover {
   font-size: 9px;
   margin-top: 5px;
 }
-.brand .brand-edition {
-  color: #a3a3a3;
-  font:
-    10px ui-monospace,
-    monospace;
-  vertical-align: middle;
-  margin-left: 9px;
-  letter-spacing: 0;
-}
 .workspace-search {
   display: flex;
   align-items: center;
@@ -120,9 +116,7 @@ textarea:hover {
 }
 kbd {
   margin-left: auto;
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--mono);
   border: 1px solid #e5e5e5;
   border-bottom-width: 2px;
   border-radius: 4px;
@@ -187,9 +181,8 @@ kbd {
 .sidebar nav > button b {
   background: #ededed;
   color: #525252;
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--sans);
+  font-variant-numeric: tabular-nums;
   padding: 3px 5px;
 }
 .sidebar nav > button.active b {
@@ -214,6 +207,9 @@ kbd {
   color: #737373;
   font-size: 10px;
   line-height: 1.5;
+}
+.model-status small + small {
+  margin-top: 2px;
 }
 .sidebar-credit {
   color: #737373;
@@ -309,11 +305,8 @@ kbd {
 }
 .eyebrow {
   color: #737373;
-  font:
-    10px ui-monospace,
-    SFMono-Regular,
-    monospace;
-  letter-spacing: 1.2px;
+  font: 500 12px var(--sans);
+  letter-spacing: 0;
   margin-bottom: 13px;
 }
 .page-heading p {
@@ -419,9 +412,8 @@ kbd {
   background: #171717;
 }
 .replay-date {
-  font:
-    11px ui-monospace,
-    monospace;
+  font: 11px var(--sans);
+  font-variant-numeric: tabular-nums;
   color: #404040;
 }
 .horizon-chip {
@@ -429,9 +421,8 @@ kbd {
   background: #f5f5f5;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--sans);
+  font-variant-numeric: tabular-nums;
 }
 .dashboard-content {
   display: grid;
@@ -596,9 +587,8 @@ kbd {
   background: #f5f5f5;
   border: 1px solid #e5e5e5;
   border-radius: 5px;
-  font:
-    11px ui-monospace,
-    monospace;
+  font: 11px var(--sans);
+  font-variant-numeric: tabular-nums;
   padding: 2px 6px;
   margin-left: 5px;
 }
@@ -667,10 +657,8 @@ td {
 }
 .probability strong,
 .probability.high strong {
-  font:
-    13px ui-monospace,
-    SFMono-Regular,
-    monospace;
+  font: 600 13px var(--sans);
+  font-variant-numeric: tabular-nums;
   color: #171717;
 }
 .probability-track {
@@ -755,9 +743,8 @@ td {
 .scenario-list b.has-risk {
   color: #171717;
   background: #fff;
-  font:
-    18px ui-monospace,
-    monospace;
+  font: 18px var(--sans);
+  font-variant-numeric: tabular-nums;
 }
 .focus-note {
   background: #fafafa;
@@ -1045,24 +1032,23 @@ td {
 .login-story h1 {
   color: #fff;
 }
-.login-story .brand small,
-.login-story .brand .brand-edition {
+.login-story .brand small {
   color: #a3a3a3;
 }
 .login-story h1 {
-  font-size: clamp(46px, 5vw, 74px);
+  font-size: clamp(40px, 4.1vw, 60px);
   font-weight: 500;
-  line-height: 1.04;
-  letter-spacing: -0.065em;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
 }
 .login-story p {
   font-size: 14px;
   color: #a3a3a3;
-  max-width: 420px;
+  max-width: 350px;
 }
 .login-story .eyebrow {
   color: #a3a3a3;
-  font-size: 10px;
+  font-size: 14px;
 }
 .login-story footer,
 .login-story footer span {
@@ -1092,9 +1078,8 @@ td {
 }
 .label-with-dot {
   color: #525252;
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--sans);
+  font-variant-numeric: tabular-nums;
 }
 .demo-login-label {
   color: #525252;
@@ -1502,9 +1487,6 @@ td {
   top: 0;
   z-index: 20;
 }
-.brand .brand-edition {
-  color: #737373;
-}
 .risk-summary {
   color: #fff;
   background: #171717;
@@ -1701,5 +1683,11 @@ td {
   .import-jobs > button {
     flex-wrap: wrap;
     gap: 8px 16px;
+  }
+}
+/* Narrow desktops: the decorative arches would run under the headline. */
+@media (max-width: 1320px) and (min-width: 1001px) {
+  .login-lines {
+    display: none;
   }
 }

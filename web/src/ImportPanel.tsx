@@ -219,7 +219,7 @@ export function ImportPanel({ user }: { user: User }) {
         <div>
           <h2>Импорт исторических данных</h2>
           <span>
-            CSV, XLSX, JSON, XML или ZIP · до{" "}
+            CSV, XLSX, JSON, XML или ZIP, до{" "}
             {Math.floor(
               (integration?.max_import_bytes ?? 300 * 1024 * 1024) /
                 1024 /
@@ -267,7 +267,7 @@ export function ImportPanel({ user }: { user: User }) {
               </strong>
             </div>
             <div>
-              <span>Последний момент · МСК</span>
+              <span>Последний момент, МСК</span>
               <strong>
                 {stream.as_of
                   ? date(stream.as_of, true)
@@ -337,7 +337,7 @@ export function ImportPanel({ user }: { user: User }) {
               </span>
             </label>
             <label>
-              Момент прогноза · МСК
+              Момент прогноза, МСК
               <input
                 type="datetime-local"
                 value={asOf}
@@ -557,7 +557,7 @@ export function ImportPanel({ user }: { user: User }) {
                       <tr>
                         <th>Объект</th>
                         <th>Тип</th>
-                        <th>Вероятность · 24 ч</th>
+                        <th>Вероятность на 24 ч</th>
                         <th>От порога</th>
                         <th>Рекомендация</th>
                         <th>Проверка</th>
@@ -684,7 +684,7 @@ function BatchDecision({
       <h3>
         {detail.object_name} · {detail.kind_label} · {pct(detail.probability)}
       </h3>
-      <p>Прогноз на {date(detail.as_of, true)} · горизонт 24 часа</p>
+      <p>Прогноз на {date(detail.as_of, true)}, горизонт 24 часа</p>
       <div className="table-scroll">
         <table>
           <thead>
@@ -728,7 +728,7 @@ function BatchDecision({
           <table>
             <thead>
               <tr>
-                <th>Время · МСК</th>
+                <th>Время, МСК</th>
                 <th>Канал</th>
                 <th>Значение</th>
               </tr>

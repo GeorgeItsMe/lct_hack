@@ -109,8 +109,8 @@ export function EvaluationPage() {
                 <thead>
                   <tr>
                     <th>Период</th>
-                    <th>Precision</th>
-                    <th>Recall</th>
+                    <th>Точность</th>
+                    <th>Полнота</th>
                     <th>F1</th>
                     <th>Эпизодов</th>
                   </tr>
@@ -513,12 +513,12 @@ export function QualityPage() {
     <div className="page-stack">
       <div className="data-hero">
         <div>
-          <span className="eyebrow">ПОЛНЫЙ ИСХОДНЫЙ МАССИВ</span>
+          <span className="eyebrow">Полный исходный массив</span>
           <h2>
             {num(data.total_rows)}
             <small>записей</small>
           </h2>
-          <p>8 годовых журналов · 2019–2026 · исходные значения сохранены</p>
+          <p>8 годовых журналов за 2019–2026, исходные значения сохранены</p>
         </div>
         <Database size={58} strokeWidth={1} />
       </div>

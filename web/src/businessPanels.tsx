@@ -63,9 +63,9 @@ export function PolygonQueuePanel({ asOf }: { asOf: string }) {
     <section className="panel polygon-panel">
       <div className="panel-heading">
         <div>
-          <h2>Полигон · мир {data?.world ?? "…"}</h2>
+          <h2>Полигон, мир {data?.world ?? "…"}</h2>
           <span>
-            Тревоги и предупреждения с известной правдой и реестрами нарядов.
+            Тревоги и прогнозы, для которых известно, что было на самом деле.
             {data && ` ${data.note}`}
           </span>
         </div>
@@ -156,7 +156,7 @@ function PolygonCard({
         aria-labelledby="polygon-title"
       >
         <header className="drawer-header">
-          <span className="eyebrow">ПОЛИГОН · МИР {data?.world ?? ""}</span>
+          <span className="eyebrow">Полигон, мир {data?.world ?? ""}</span>
           <button
             className="icon-button"
             onClick={onClose}
@@ -244,8 +244,8 @@ function PolygonCard({
             .
           </p>
           <p className="micro-note">
-            Реестры и инциденты полигона синтетические; реальный журнал остаётся
-            фоном. Это проверка отработки сценариев, а не реальная авария.
+            Реестры и инциденты полигона синтетические, фоном служит реальный
+            журнал СМВУ.
           </p>
         </div>
       </aside>
@@ -364,7 +364,7 @@ export function UnitsPanel({ asOf }: { asOf: string }) {
       {polygon && (
         <>
           <div className="section-label">
-            <h3>Прогноз отказа по износу · полигон, мир {polygon.world}</h3>
+            <h3>Прогноз отказа по износу на полигоне, мир {polygon.world}</h3>
             <FlaskConical size={15} />
           </div>
           <p className="micro-note">

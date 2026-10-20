@@ -31,6 +31,7 @@ export async function api<T>(
 export const pct = (n: number, digits = 1) =>
   new Intl.NumberFormat("ru-RU", {
     style: "percent",
+    minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   }).format(n);
 export const num = (n: number) => new Intl.NumberFormat("ru-RU").format(n);

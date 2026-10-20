@@ -222,7 +222,7 @@ export function EquipmentPage({
                     <div>
                       <strong>{o.object_name}</strong>
                       <small>
-                        Отказ: {pct(o.probability)} · порог{" "}
+                        Отказ {pct(o.probability)} при пороге{" "}
                         {pct(Math.min(o.threshold, 1))}
                       </small>
                     </div>
@@ -826,8 +826,8 @@ function LabelCard({ row, onSaved }: { row: LabelRow; onSaved: () => void }) {
             {row.suggested_label === null
               ? "—"
               : row.suggested_label
-                ? "1 · событие"
-                : "0 · нет события"}
+                ? "Событие (1)"
+                : "Нет события (0)"}
             <small>{row.label_basis}</small>
           </dd>
         </div>
@@ -847,8 +847,8 @@ function LabelCard({ row, onSaved }: { row: LabelRow; onSaved: () => void }) {
           value={label}
           onChange={(e) => setLabel(Number(e.target.value) as 0 | 1)}
         >
-          <option value={1}>1 · событие</option>
-          <option value={0}>0 · нет события</option>
+          <option value={1}>Событие (1)</option>
+          <option value={0}>Нет события (0)</option>
         </select>
         <input
           placeholder="Комментарий (обязателен при исключении)"
@@ -1037,7 +1037,7 @@ export function ThresholdsPage({
           <small>
             Действует{" "}
             {current !== undefined && current > 1 ? "выкл." : pct(current || 0)}
-            {" · "}по умолчанию{" "}
+            {", "}по умолчанию{" "}
             {settings.data.defaults[kind] > 1
               ? "выкл."
               : pct(settings.data.defaults[kind])}
@@ -1158,8 +1158,8 @@ function MetricsTable({
 }) {
   const rows: [string, (m: typeof current) => string][] = [
     ["Порог", (m) => (m.threshold > 1 ? "выкл." : pct(m.threshold))],
-    ["Precision (неспокойные сутки)", (m) => pct(m.precision)],
-    ["Recall (неспокойные сутки)", (m) => pct(m.recall)],
+    ["Точность (неспокойные сутки)", (m) => pct(m.precision)],
+    ["Полнота (неспокойные сутки)", (m) => pct(m.recall)],
     ["Предупреждений за период", (m) => num(m.alerts)],
     ["Из них верных", (m) => num(m.true_alerts)],
     ["Ложных", (m) => num(m.false_alerts)],
@@ -1205,7 +1205,7 @@ function PreviewBlock({ preview }: { preview: ThresholdPreview }) {
         <p className="micro-note">{preview.period_label}</p>
       </div>
       <div>
-        <h3>Precision и Recall в зависимости от порога</h3>
+        <h3>Точность и полнота в зависимости от порога</h3>
         <div className="chart-box">
           <ResponsiveContainer width="100%" height={230}>
             <LineChart
@@ -1243,17 +1243,17 @@ function PreviewBlock({ preview }: { preview: ThresholdPreview }) {
                 strokeDasharray="2 3"
               />
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="precision"
-                name="Precision"
+                name="Точность"
                 stroke={KIND_COLORS.fault}
                 strokeWidth={2}
                 dot={{ r: 3 }}
               />
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="recall"
-                name="Recall"
+                name="Полнота"
                 stroke={KIND_COLORS.fire}
                 strokeWidth={2}
                 dot={{ r: 3 }}
@@ -1337,7 +1337,7 @@ function LoadPanel({ load }: { load: DispatcherLoad }) {
         <div>
           <h2>Нагрузка на диспетчера</h2>
           <span>
-            Не больше одного предупреждения на объект и тип в сутки ·{" "}
+            Не больше одного предупреждения на объект и тип в сутки.{" "}
             {load.period}: {perDay(load.before_per_day)} →{" "}
             {perDay(load.after_per_day)} в сутки
           </span>
@@ -1351,8 +1351,8 @@ function LoadPanel({ load }: { load: DispatcherLoad }) {
               <th>Было в сутки</th>
               <th>Стало в сутки</th>
               <th>Из них ложных</th>
-              <th>Precision</th>
-              <th>Recall (неспокойные сутки)</th>
+              <th>Точность</th>
+              <th>Полнота (неспокойные сутки)</th>
               <th>Заранее, медиана</th>
             </tr>
           </thead>
@@ -1553,8 +1553,10 @@ export function SummaryPage({
               <CartesianGrid vertical={false} stroke="#ebebeb" />
               <XAxis
                 dataKey="as_of"
+                ticks={data.trend
+                  .map((r) => r.as_of)
+                  .filter((t) => t.slice(11, 13) === "00")}
                 tickFormatter={(v) => date(String(v))}
-                minTickGap={40}
                 tick={{ fontSize: 11 }}
               />
               <YAxis allowDecimals={false} width={32} tick={{ fontSize: 11 }} />
@@ -1663,7 +1665,7 @@ export function SummaryPage({
                 {years.map((y, i) => (
                   <Line
                     key={y}
-                    type="monotone"
+                    type="linear"
                     dataKey={String(y)}
                     name={String(y)}
                     stroke={yearColors[i % yearColors.length]}
@@ -1681,7 +1683,7 @@ export function SummaryPage({
             <div>
               <h2>Качество прогноза</h2>
               <span>
-                Отложенный тест, июнь 2026 · не больше одного предупреждения на
+                Отложенный тест, июнь 2026; не больше одного предупреждения на
                 объект и тип в сутки
               </span>
             </div>
@@ -1691,8 +1693,8 @@ export function SummaryPage({
               <thead>
                 <tr>
                   <th>Тип</th>
-                  <th>Precision</th>
-                  <th>Recall</th>
+                  <th>Точность</th>
+                  <th>Полнота</th>
                   <th>F1</th>
                   <th>В сутки</th>
                 </tr>
@@ -2148,7 +2150,7 @@ export function ParametersPage() {
           </div>
           {KINDS.map((k) => (
             <div key={k}>
-              <dt>Порог · {kindNames[k]}</dt>
+              <dt>Порог: {kindNames[k].toLowerCase()}</dt>
               <dd>
                 {settings.data!.thresholds[k] > 1
                   ? "выключен"
@@ -2158,7 +2160,7 @@ export function ParametersPage() {
           ))}
           <div>
             <dt>Часовой пояс источника</dt>
-            <dd>МСК · UTC+3</dd>
+            <dd>МСК (UTC+3)</dd>
           </div>
           <div>
             <dt>Команды оборудованию</dt>

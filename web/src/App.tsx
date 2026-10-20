@@ -65,6 +65,8 @@ import {
 } from "./roles";
 import type { Forecast, Kind, Overview, Page, Topology, User } from "./types";
 
+const JOURNAL_PAGE = 50; // journal rows shown at once
+
 function Login({ onLogin }: { onLogin: (user: User) => void }) {
   const [username, setUsername] = useState("dispatcher"),
     [password, setPassword] = useState("contour-demo");
@@ -109,14 +111,15 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
       <div className="login-story">
         <Brand />
         <div>
-          <span className="eyebrow">ИНЖЕНЕРНАЯ ИНФРАСТРУКТУРА МОСКВЫ</span>
+          <span className="eyebrow">Инженерные коллекторы Москвы</span>
           <h1>
-            Знать о риске.
+            Прогноз инцидентов
             <br />
-            Успеть проверить.
+            на 24 часа
           </h1>
           <p>
-            Прогноз отказов и инцидентов в инженерных коллекторах на 24 часа.
+            Отказы оборудования, пожарные и охранные сигналы по каждому объекту
+            по журналу СМВУ.
           </p>
           <div className="login-lines" aria-hidden="true">
             <i />
@@ -128,15 +131,11 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
           </div>
         </div>
         <footer>
-          Предиктивная аналитика <span>01 / МОСКОЛЛЕКТОР</span>
+          Демонстрационный стенд <span>Журнал СМВУ 2019–2026</span>
         </footer>
       </div>
       <div className="login-panel">
         <div className="login-form">
-          <span className="label-with-dot">
-            <i className="dot green" />
-            КОНТУР · РАБОЧЕЕ МЕСТО
-          </span>
           <h2>Вход в систему</h2>
           <p>{demo ? "Выберите роль" : "Корпоративная учётная запись"}</p>
           {error && <ErrorNotice message={error} />}
@@ -211,7 +210,8 @@ export default function App() {
   const [source, setSource] = useState<"all" | "archive" | "stream">("all");
   const [kind, setKind] = useState<Kind | "all">("all"),
     [query, setQuery] = useState(""),
-    [onlyWarnings, setOnlyWarnings] = useState(false);
+    [onlyWarnings, setOnlyWarnings] = useState(false),
+    [shown, setShown] = useState(JOURNAL_PAGE);
   const [selected, setSelected] = useState<Forecast | null>(null),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(false);
@@ -459,6 +459,11 @@ export default function App() {
     [allForecasts, source, kind, query, onlyWarnings],
   );
   const warnings = allForecasts.filter((f) => f.above_threshold && !f.decision);
+  // A new filter or moment starts the journal from its first page.
+  useEffect(
+    () => setShown(JOURNAL_PAGE),
+    [source, kind, query, onlyWarnings, asOf],
+  );
   const jump = (i: number) => {
     const n = Math.max(0, Math.min(times.length - 1, i));
     setTimeIndex(n);
@@ -497,7 +502,6 @@ export default function App() {
     );
   const title = TITLES[page];
   const sections = NAVIGATION[user.role];
-  const navIndex = pages.indexOf(page);
   const replay = REPLAY_PAGES.includes(page);
   const bellTarget: Page = can(user, "notifications.all")
     ? "journal"
@@ -525,7 +529,7 @@ export default function App() {
             <strong>{user.role_label}</strong>
             <small>
               {user.scope === "district"
-                ? "Весь район · инженерные коллекторы"
+                ? "Весь район, инженерные коллекторы"
                 : `Зона: ${user.scope}`}
             </small>
           </div>
@@ -564,9 +568,9 @@ export default function App() {
             <small>
               {overview
                 ? `Версия ${overview.model_version}`
-                : "Загрузка артефактов"}{" "}
-              · горизонт 24 ч
+                : "Загрузка артефактов"}
             </small>
+            <small>Горизонт прогноза 24 часа</small>
           </div>
           {pages.includes("evaluation") && (
             <button
@@ -661,10 +665,6 @@ export default function App() {
           )}
           <div className="page-heading">
             <div>
-              <span className="eyebrow">
-                {String(navIndex + 1 || 1).padStart(2, "0")} /{" "}
-                {user.role_label.toUpperCase()}
-              </span>
               <h1>{title[0]}</h1>
               <p>{title[1]}</p>
             </div>
@@ -790,13 +790,13 @@ export default function App() {
                         <small> объектов</small>
                       </strong>
                       <p>
-                        {num(queueStats.warnings)} предупреждений на 24 часа ·
+                        {num(queueStats.warnings)} предупреждений на 24 часа,
                         критических {queueStats.critical}
                       </p>
                     </div>
                     <div className="metric-card">
                       <div className="metric-top">
-                        <span>Изменений за сутки</span>
+                        <span>Записей журнала за сутки</span>
                         <Activity size={17} />
                       </div>
                       <strong>{num(overview.stats.events_24h)}</strong>
@@ -1005,7 +1005,24 @@ export default function App() {
                       {filtered.length} прогнозов
                     </span>
                   </div>
-                  <ForecastTable forecasts={filtered} onSelect={setSelected} />
+                  <ForecastTable
+                    forecasts={filtered.slice(0, shown)}
+                    onSelect={setSelected}
+                  />
+                  {filtered.length > shown && (
+                    <div className="table-more">
+                      <button
+                        className="secondary-button"
+                        onClick={() => setShown((n) => n + JOURNAL_PAGE)}
+                      >
+                        Показать ещё{" "}
+                        {Math.min(JOURNAL_PAGE, filtered.length - shown)}
+                      </button>
+                      <span>
+                        {num(shown)} из {num(filtered.length)}
+                      </span>
+                    </div>
+                  )}
                 </section>
               )}
               {page === "decisions" && (
