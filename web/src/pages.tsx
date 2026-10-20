@@ -32,7 +32,14 @@ import {
   Loading,
   WorkBadge,
 } from "./components";
-import type { DecisionRow, Evaluation, Forecast, Kind, Quality } from "./types";
+import type {
+  DailyRuleMatch,
+  DecisionRow,
+  Evaluation,
+  Forecast,
+  Kind,
+  Quality,
+} from "./types";
 
 function useResource<T>(path: string, refresh = 0) {
   const [data, setData] = useState<T | null>(null),
@@ -49,21 +56,33 @@ function useResource<T>(path: string, refresh = 0) {
   return { data, error };
 }
 
+const MODEL_NAMES: Record<string, string> = {
+  archive_classifier: "Классификатор «эпизод за 24 часа»",
+  count_head: "Модель числа эпизодов",
+};
+const modelName = (name: string) => {
+  const blend = /^blend_count_(\d\.\d+)$/.exec(name);
+  if (!blend) return MODEL_NAMES[name] || name;
+  const w = Number(blend[1]);
+  return `Смесь: ${num(w)} числа эпизодов + ${num(1 - w)} классификатора`;
+};
+const SELECTION_RULES: Record<string, string> = {
+  "max_recall_at_precision_0.7": "наибольшая полнота при точности не ниже 0,7",
+  "best_f1_precision_0.7_unreachable":
+    "точность 0,7 недостижима, выбран лучший F1",
+};
+const selectionRule = (rule: string) => SELECTION_RULES[rule] || rule;
+const MATCHES_PAGE = 40;
+
 export function EvaluationPage() {
   const { data, error } = useResource<Evaluation>("/evaluation"),
-    [kind, setKind] = useState<Kind>("fault");
-  const [matches, setMatches] = useState<
-    {
-      object_id: number;
-      as_of: string;
-      probability: number;
-      hit: boolean;
-      episode_id: string | null;
-      lead_hours: number | null;
-    }[]
-  >([]);
+    [kind, setKind] = useState<Kind>("fault"),
+    [shown, setShown] = useState(MATCHES_PAGE),
+    [diagnostics, setDiagnostics] = useState(false);
+  const [matches, setMatches] = useState<DailyRuleMatch[]>([]);
   useEffect(() => {
-    api<typeof matches>(`/evaluation/matches/${kind}`)
+    setShown(MATCHES_PAGE);
+    api<DailyRuleMatch[]>(`/evaluation/matches/${kind}`)
       .then(setMatches)
       .catch(() => setMatches([]));
   }, [kind]);
@@ -72,6 +91,8 @@ export function EvaluationPage() {
   const m = data.models[kind],
     metric = m.test.alerts,
     base = m.test.baseline_alerts;
+  const rule = data.daily_rule?.kinds[kind],
+    june = rule?.june;
   const sensitivity = data.uncertainty?.models[kind]?.by_parent;
   const rangeText = (range: { low: number | null; high: number | null }) =>
     range.low === null || range.high === null
@@ -86,6 +107,7 @@ export function EvaluationPage() {
     { name: "Полнота эпизодов", model: metric.recall, baseline: base.recall },
     { name: "F1", model: metric.f1, baseline: base.f1 },
   ];
+  const oneDecimal = (v: number) => num(Math.round(v * 10) / 10);
   return (
     <div className="page-stack">
       <div className="kind-tabs">
@@ -100,310 +122,187 @@ export function EvaluationPage() {
           </button>
         ))}
       </div>
-      {data.operational_quality?.kind === kind && (
-        <section className="panel research-panel">
-          <div className="research-body">
-            <h3>Модель охранных эпизодов на прошлых периодах</h3>
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Период</th>
-                    <th>Точность</th>
-                    <th>Полнота</th>
-                    <th>F1</th>
-                    <th>Эпизодов</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.operational_quality.rows.map((row) => (
-                    <tr key={row.period}>
-                      <td>{row.period}</td>
-                      <td>{pct(row.precision)}</td>
-                      <td>{pct(row.recall)}</td>
-                      <td>{num(Number(row.f1.toFixed(3)))}</td>
-                      <td>{num(row.eligible_episodes)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p>
-              {data.operational_quality.target_summary ||
-                "Цель 75% / 50% выполнена суммарно на исходных периодах."}{" "}
-              {data.operational_quality.below_target}.
-            </p>
-          </div>
-        </section>
-      )}
-      {data.research?.models[kind] && (
-        <details className="panel research-panel">
-          <summary>
-            Сравнение вариантов модели <span>3 временных периода</span>
-          </summary>
-          <div className="research-body">
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Период</th>
-                    <th>Исходный подход</th>
-                    <th>Контекст узла</th>
-                    <th>Простые деревья</th>
-                    <th>Ансамбль 50/50</th>
-                    <th>Эпизодов</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.research.models[kind]!.rows.map((row) => (
-                    <tr key={row.period}>
-                      <td>{row.period}</td>
-                      <td>{row.reference.toFixed(3)}</td>
-                      <td>
-                        {row.context === null ? "—" : row.context.toFixed(3)}
-                      </td>
-                      <td>{row.regularized.toFixed(3)}</td>
-                      <td>{row.blend.toFixed(3)}</td>
-                      <td>{num(row.eligible_episodes)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p>
-              {data.research.models[kind]!.selected === "reference"
-                ? "Новые варианты не прошли условия улучшения."
-                : data.research.deployed_changed
-                  ? "Новый вариант используется в расчётах по новым данным."
-                  : "Кандидат прошёл сравнение на прошлых периодах."}
-            </p>
-            {data.research.models[kind]!.uncertainty && (
-              <p>
-                Приближённый 95% диапазон разницы F1 по эксплуатационным узлам:{" "}
-                {rangeText(
-                  data.research.models[kind]!.uncertainty!.by_parent
-                    .percentile_95.f1_difference,
-                )}
-                .
-              </p>
-            )}
-          </div>
-        </details>
-      )}
-      {m.threshold > 1 && (
+      {!rule || !june ? (
         <div className="evidence-note">
           <CircleAlert size={20} />
           <div>
             <strong>Автоматические предупреждения отключены</strong>
-            <p>Недостаточно событий для выбора порога.</p>
+            <p>
+              Недостаточно событий для выбора порога, поэтому для этого типа нет
+              предупреждений и метрик отложенного теста.
+            </p>
           </div>
         </div>
-      )}
-      <div className="metrics-grid evaluation-metrics">
-        <div className="metric-card">
-          <div className="metric-top">
-            <span>Точность предупреждений</span>
-            <CheckCircle2 size={17} />
-          </div>
-          <strong>{pct(metric.precision)}</strong>
-          <p>
-            {metric.true_alerts} подтверждений из {metric.alerts} предупреждений
-          </p>
-        </div>
-        <div className="metric-card">
-          <div className="metric-top">
-            <span>Полнота эпизодов</span>
-            <Filter size={17} />
-          </div>
-          <strong>{pct(metric.recall)}</strong>
-          <p>
-            {metric.true_alerts} из {metric.eligible_episodes} доступных
-            эпизодов
-          </p>
-        </div>
-        <div className="metric-card">
-          <div className="metric-top">
-            <span>Медианное упреждение</span>
-            <Clock3 size={17} />
-          </div>
-          <strong>
-            {metric.median_lead_hours === null
-              ? "—"
-              : num(Math.round(metric.median_lead_hours * 10) / 10)}
-            <small> ч</small>
-          </strong>
-          <p>До начала сопоставленного эпизода</p>
-        </div>
-        <div className="metric-card">
-          <div className="metric-top">
-            <span>Ложных на объект в сутки</span>
-            <CircleAlert size={17} />
-          </div>
-          <strong>
-            {num(Math.round(metric.false_alerts_per_object_day * 1000) / 1000)}
-          </strong>
-          <p>{metric.false_alerts} ложных предупреждений на тесте</p>
-        </div>
-      </div>
-      {sensitivity && (
-        <section className="panel">
-          <div className="panel-heading">
-            <div>
-              <h2>Насколько устойчив результат</h2>
-              <span>
-                Приближённые 95% диапазоны при повторной выборке целых
-                эксплуатационных узлов
-              </span>
-            </div>
-          </div>
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>F1 модели</th>
-                  <th>F1 базового прогноза</th>
-                  <th>Разница F1: модель − база</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{rangeText(sensitivity.percentile_95.f1)}</td>
-                  <td>{rangeText(sensitivity.percentile_95.baseline_f1)}</td>
-                  <td>{rangeText(sensitivity.percentile_95.f1_difference)}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="evidence-note">
-            <CircleAlert size={20} />
-            <div>
-              <strong>
-                {(sensitivity.percentile_95.f1_difference.low ?? 0) <= 0
-                  ? "Устойчивое превосходство над базой пока не подтверждено"
-                  : "Прирост сохраняется в этой проверке устойчивости"}
-              </strong>
+      ) : (
+        <>
+          <div className="metrics-grid evaluation-metrics">
+            <div className="metric-card">
+              <div className="metric-top">
+                <span>Точность</span>
+                <CheckCircle2 size={17} />
+              </div>
+              <strong>{pct(june.precision)}</strong>
               <p>
-                {num(sensitivity.replicates)} повторных выборок,{" "}
-                {sensitivity.clusters} узлов. Верно предсказанные эпизоды
-                приходятся на {sensitivity.clusters_with_true_alerts} из них.
-                Истории внутри узла сохраняются вместе. Общие сбои между узлами,
-                сезонность и качество на новом месяце эта проверка не оценивает.
+                {june.true_alerts} верных из {june.alerts} предупреждений
+              </p>
+            </div>
+            <div className="metric-card">
+              <div className="metric-top">
+                <span>Полнота</span>
+                <Filter size={17} />
+              </div>
+              <strong>{pct(june.recall)}</strong>
+              <p>
+                {june.caught_incident_days} из {june.incident_days} неспокойных
+                суток пойманы заранее
+              </p>
+            </div>
+            <div className="metric-card">
+              <div className="metric-top">
+                <span>Медианное упреждение</span>
+                <Clock3 size={17} />
+              </div>
+              <strong>
+                {june.median_lead_hours === null
+                  ? "—"
+                  : oneDecimal(june.median_lead_hours)}
+                <small> ч</small>
+              </strong>
+              <p>До начала неспокойных суток</p>
+            </div>
+            <div className="metric-card">
+              <div className="metric-top">
+                <span>Предупреждений в сутки</span>
+                <CircleAlert size={17} />
+              </div>
+              <strong>{oneDecimal(june.alerts_per_day)}</strong>
+              <p>
+                На весь парк, из них ложных{" "}
+                {oneDecimal(june.false_alerts_per_day)}
               </p>
             </div>
           </div>
-        </section>
+          <p className="evaluation-rule">
+            Июнь 2026, расчёт каждый час, не больше одного предупреждения на
+            объект и тип в сутки. Модель: {modelName(rule.model).toLowerCase()},
+            порог {pct(rule.threshold)}. Полнота по отдельным эпизодам, один к
+            одному: {pct(june.recall_strict)}.
+          </p>
+          <section className="panel">
+            <div className="panel-heading">
+              <div>
+                <h2>Выбор модели и порога на 15–31 мая</h2>
+                <span>
+                  Правило: {selectionRule(rule.selection_rule)}. Июнь открыт
+                  один раз, для выбранного варианта.
+                </span>
+              </div>
+            </div>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Вариант</th>
+                    <th>Порог</th>
+                    <th>Точность</th>
+                    <th>Полнота</th>
+                    <th>F1</th>
+                    <th>Предупреждений</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(rule.selection_candidates).map(
+                    ([name, c]) => (
+                      <tr
+                        key={name}
+                        className={name === rule.model ? "chosen-row" : ""}
+                      >
+                        <td>
+                          {modelName(name)}
+                          {name === rule.model && (
+                            <span className="status reviewed">выбран</span>
+                          )}
+                        </td>
+                        <td>{pct(c.threshold)}</td>
+                        <td>{pct(c.precision)}</td>
+                        <td>{pct(c.recall)}</td>
+                        <td>{c.f1.toFixed(3).replace(".", ",")}</td>
+                        <td>{num(c.alerts)}</td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </>
       )}
-      <div className="two-column">
-        <section className="panel">
-          <div className="panel-heading">
-            <div>
-              <h2>Сравнение с базовым прогнозом</h2>
-              <span>База — частота эпизодов объекта на обучении</span>
-            </div>
+      <section className="panel">
+        <div className="panel-heading">
+          <div>
+            <h2>Предупреждение и факт</h2>
+            <span>
+              Июнь 2026: каждое предупреждение и то, что записано в журнале за
+              следующие 24 часа
+            </span>
           </div>
-          <div className="large-chart">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={comparison} barGap={7}>
-                <CartesianGrid vertical={false} stroke="#ebebeb" />
-                <XAxis
-                  dataKey="name"
-                  tick={{ fontSize: 10 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tickFormatter={(v) => pct(v, 0)}
-                  domain={[0, 1]}
-                  tick={{ fontSize: 11 }}
-                  width={40}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip formatter={(v) => pct(Number(v))} />
-                <Legend
-                  iconType="circle"
-                  iconSize={7}
-                  wrapperStyle={{ fontSize: 12, paddingTop: 18 }}
-                />
-                <Bar
-                  dataKey="model"
-                  name="Модель"
-                  fill="#171717"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={42}
-                />
-                <Bar
-                  dataKey="baseline"
-                  name="Базовый прогноз"
-                  fill="#8a8a8a"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={42}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+          <span className="count-badge">{matches.length}</span>
+        </div>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Момент прогноза</th>
+                <th>Объект</th>
+                <th>Вероятность</th>
+                <th>Итог</th>
+                <th>Упреждение</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matches.slice(0, shown).map((r) => (
+                <tr key={`${r.object_id}-${r.as_of}`}>
+                  <td>{date(r.as_of, true)}</td>
+                  <td>#{r.object_id}</td>
+                  <td>{pct(r.probability)}</td>
+                  <td>
+                    <span
+                      className={`status ${r.hit ? "reviewed" : "attention"}`}
+                    >
+                      {r.hit
+                        ? "Начались неспокойные сутки"
+                        : "Ложное предупреждение"}
+                    </span>
+                  </td>
+                  <td>
+                    {r.lead_hours === null
+                      ? "—"
+                      : `${oneDecimal(r.lead_hours)} ч`}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {!matches.length && (
+            <Empty title="Предупреждений на тесте нет">
+              Для этого типа автоматические предупреждения отключены.
+            </Empty>
+          )}
+        </div>
+        {matches.length > shown && (
+          <div className="table-more">
+            <button
+              className="secondary-button"
+              onClick={() => setShown(matches.length)}
+            >
+              Показать все {num(matches.length)}
+            </button>
+            <span>
+              {num(shown)} из {num(matches.length)}
+            </span>
           </div>
-        </section>
-        <section className="panel">
-          <div className="panel-heading">
-            <div>
-              <h2>Насколько точны вероятности</h2>
-              <span>Частота события в группах прогнозов</span>
-            </div>
-          </div>
-          <div className="large-chart">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={m.test.rows.calibration_curve.map((r) => ({
-                  ...r,
-                  ideal: r.predicted,
-                }))}
-              >
-                <CartesianGrid stroke="#ebebeb" vertical={false} />
-                <XAxis
-                  dataKey="predicted"
-                  type="number"
-                  domain={[0, 1]}
-                  tickFormatter={(v) => pct(v, 0)}
-                  tick={{ fontSize: 11 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  domain={[0, 1]}
-                  tickFormatter={(v) => pct(v, 0)}
-                  tick={{ fontSize: 11 }}
-                  width={40}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  formatter={(v) => pct(Number(v))}
-                  labelFormatter={(v) => `Прогноз ${pct(Number(v))}`}
-                />
-                <Legend
-                  iconType="circle"
-                  iconSize={7}
-                  wrapperStyle={{ fontSize: 12, paddingTop: 18 }}
-                />
-                <Line
-                  dataKey="observed"
-                  name="Наблюдаемая частота"
-                  stroke="#171717"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                />
-                <Line
-                  dataKey="ideal"
-                  name="Идеальная калибровка"
-                  stroke="#737373"
-                  strokeDasharray="5 4"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-      </div>
+        )}
+      </section>
       <section className="panel">
         <div className="panel-heading">
           <div>
@@ -417,7 +316,7 @@ export function EvaluationPage() {
             ["train", "Обучение", "до марта 2026"],
             ["validation", "Ранняя остановка обучения", "март — апрель"],
             ["calibration", "Калибровка", "1–15 мая"],
-            ["policy", "Выбор модели и порога", "16–31 мая"],
+            ["policy", "Выбор модели и порога", "15–31 мая"],
             ["test", "Отложенный тест", "июнь 2026"],
           ].map(([key, title, period], i) => (
             <div key={key} className={key === "test" ? "test" : ""}>
@@ -433,12 +332,12 @@ export function EvaluationPage() {
             <strong>{num(m.training_rows)}</strong>
           </div>
           <div>
-            <span>Прогнозных окон в тесте</span>
-            <strong>{num(m.test.rows.rows)}</strong>
+            <span>Расчёт на тесте</span>
+            <strong>каждый час</strong>
           </div>
           <div>
-            <span>PR-AUC на тестовых окнах</span>
-            <strong>{num(Math.round(m.test.rows.pr_auc * 1000) / 1000)}</strong>
+            <span>Предупреждений в июне</span>
+            <strong>{june ? num(june.alerts) : "—"}</strong>
           </div>
           <div>
             <span>Разрыв между выборками</span>
@@ -446,61 +345,205 @@ export function EvaluationPage() {
           </div>
         </div>
         <div className="panel-footnote">
-          Событийные метрики по эпизодам журнала датчиков.
+          Точность и полнота считаются в одной единице, неспокойных сутках:
+          эпизоды объекта и типа в пределах 24 часов от первого составляют один
+          случай. Предупреждение верно, если в следующие 24 часа начались новые
+          неспокойные сутки.
         </div>
       </section>
-      <section className="panel">
-        <div className="panel-heading">
-          <div>
-            <h2>Предупреждение и факт</h2>
-            <span>
-              Первые 40 предупреждений отложенного теста, по объектам и времени
-            </span>
-          </div>
-          <span className="count-badge">{matches.length}</span>
-        </div>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Момент прогноза</th>
-                <th>Объект</th>
-                <th>Вероятность</th>
-                <th>Результат</th>
-                <th>Упреждение</th>
-              </tr>
-            </thead>
-            <tbody>
-              {matches.slice(0, 40).map((r, i) => (
-                <tr key={i}>
-                  <td>{date(r.as_of, true)}</td>
-                  <td>#{r.object_id}</td>
-                  <td>{pct(r.probability)}</td>
-                  <td>
-                    <span
-                      className={`status ${r.hit ? "reviewed" : "attention"}`}
+      <details
+        className="panel research-panel"
+        onToggle={(e) => setDiagnostics(e.currentTarget.open)}
+      >
+        <summary>
+          Диагностика исходного классификатора{" "}
+          <span>окна каждые 3 часа, без правила 24 часов</span>
+        </summary>
+        {diagnostics && (
+          <div className="research-body">
+            <p>
+              Здесь проверяется сам классификатор «эпизод за 24 часа» на
+              отложенном июне: насколько точны его вероятности и чем он лучше
+              частоты эпизодов объекта. Предупреждения сопоставлены с отдельными
+              эпизодами, поэтому числа не совпадают с метриками правила 24 часов
+              выше.
+              {rule && rule.model !== "archive_classifier"
+                ? " Для этого типа в работе другая модель, она указана выше."
+                : ""}
+            </p>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Точность</th>
+                    <th>Полнота эпизодов</th>
+                    <th>F1</th>
+                    <th>PR-AUC на окнах</th>
+                    <th>Окон в тесте</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{pct(metric.precision)}</td>
+                    <td>{pct(metric.recall)}</td>
+                    <td>{metric.f1.toFixed(3).replace(".", ",")}</td>
+                    <td>{m.test.rows.pr_auc.toFixed(3).replace(".", ",")}</td>
+                    <td>{num(m.test.rows.rows)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            {sensitivity && (
+              <p>
+                Устойчивость: 95% диапазон разницы F1 «модель − база» при
+                повторной выборке целых узлов{" "}
+                {rangeText(sensitivity.percentile_95.f1_difference)} (
+                {num(sensitivity.replicates)} выборок, {sensitivity.clusters}{" "}
+                узлов).{" "}
+                {(sensitivity.percentile_95.f1_difference.low ?? 0) <= 0
+                  ? "Устойчивое превосходство над базой пока не подтверждено."
+                  : "Прирост сохраняется в этой проверке."}
+              </p>
+            )}
+            <div className="two-column">
+              <div>
+                <h3>Сравнение с базовым прогнозом</h3>
+                <div className="large-chart">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={comparison} barGap={7}>
+                      <CartesianGrid vertical={false} stroke="#ebebeb" />
+                      <XAxis
+                        dataKey="name"
+                        tick={{ fontSize: 10 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tickFormatter={(v) => pct(v, 0)}
+                        domain={[0, 1]}
+                        tick={{ fontSize: 11 }}
+                        width={40}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip formatter={(v) => pct(Number(v))} />
+                      <Legend
+                        iconType="circle"
+                        iconSize={7}
+                        wrapperStyle={{ fontSize: 12, paddingTop: 18 }}
+                      />
+                      <Bar
+                        dataKey="model"
+                        name="Классификатор"
+                        fill="#171717"
+                        radius={[4, 4, 0, 0]}
+                        maxBarSize={42}
+                      />
+                      <Bar
+                        dataKey="baseline"
+                        name="Частота эпизодов объекта"
+                        fill="#8a8a8a"
+                        radius={[4, 4, 0, 0]}
+                        maxBarSize={42}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+              <div>
+                <h3>Насколько точны вероятности</h3>
+                <div className="large-chart">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={m.test.rows.calibration_curve.map((r) => ({
+                        ...r,
+                        ideal: r.predicted,
+                      }))}
                     >
-                      {r.hit
-                        ? "Эпизод зарегистрирован"
-                        : "Нет сопоставленного эпизода"}
-                    </span>
-                  </td>
-                  <td>
-                    {r.lead_hours === null
-                      ? "—"
-                      : `${num(Math.round(r.lead_hours * 10) / 10)} ч`}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {!matches.length && (
-            <Empty title="Предупреждения на тесте не сформированы">
-              Смотрите статус политики и доступность событий для этого сценария.
-            </Empty>
-          )}
-        </div>
-      </section>
+                      <CartesianGrid stroke="#ebebeb" vertical={false} />
+                      <XAxis
+                        dataKey="predicted"
+                        type="number"
+                        domain={[0, 1]}
+                        tickFormatter={(v) => pct(v, 0)}
+                        tick={{ fontSize: 11 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        domain={[0, 1]}
+                        tickFormatter={(v) => pct(v, 0)}
+                        tick={{ fontSize: 11 }}
+                        width={40}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip
+                        formatter={(v) => pct(Number(v))}
+                        labelFormatter={(v) => `Прогноз ${pct(Number(v))}`}
+                      />
+                      <Legend
+                        iconType="circle"
+                        iconSize={7}
+                        wrapperStyle={{ fontSize: 12, paddingTop: 18 }}
+                      />
+                      <Line
+                        dataKey="observed"
+                        name="Наблюдаемая частота"
+                        stroke="#171717"
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                      />
+                      <Line
+                        dataKey="ideal"
+                        name="Идеальная калибровка"
+                        stroke="#737373"
+                        strokeDasharray="5 4"
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+            {data.research?.models[kind] && (
+              <>
+                <h3>Варианты классификатора на трёх прошлых периодах, F1</h3>
+                <div className="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Период</th>
+                        <th>Исходный подход</th>
+                        <th>Контекст узла</th>
+                        <th>Простые деревья</th>
+                        <th>Ансамбль 50/50</th>
+                        <th>Эпизодов</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.research.models[kind]!.rows.map((row) => (
+                        <tr key={row.period}>
+                          <td>{row.period}</td>
+                          <td>{row.reference.toFixed(3)}</td>
+                          <td>
+                            {row.context === null
+                              ? "—"
+                              : row.context.toFixed(3)}
+                          </td>
+                          <td>{row.regularized.toFixed(3)}</td>
+                          <td>{row.blend.toFixed(3)}</td>
+                          <td>{num(row.eligible_episodes)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </details>
     </div>
   );
 }

@@ -66,6 +66,7 @@
     "artifacts/operational/op-a6602be5fe94/fire_policy.parquet": "bbd6010c331876f846614b0cd8e2a6af0bb772e5157ce8fb4a330a4e4d27949e",
     "artifacts/operational/op-a6602be5fe94/manifest.json": "a7e25191533ce4e5597b9295314cdfd9a9f74c9f8b7d285da2f9fbd7f2704724",
     "artifacts/daily_rule_evaluation.json": "fe1497ccf5c8d8a848fbb69720903b61cdb2d511b31ba89bdfdb165c081635b1",
+    "artifacts/daily_rule_matches.json": "cd1480f1a9b78ef4784c6c73ddb22a748d1c67d8ac297175e197b60ade613ad1",
     "artifacts/polygon/feed.json": "6e96d5f80f062fc32a7e71ec199e1e8285f02cf16d70d90dce22ed329a2ec03f",
     "artifacts/polygon/injected.parquet": "b5e1626c8e982ec447803acaad4335d5d961b267c96ae5edcb02226a84b0823c",
     "artifacts/polygon/passports.csv": "8568bf37fec9af9b4e469451709c686d1df8ec5bbb97dac8f2573c87e4bfa0f2",

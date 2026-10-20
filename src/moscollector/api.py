@@ -441,13 +441,13 @@ def evaluation(user=Depends(require("model.view"))):
     service = analytics()
     research_path = ARTIFACTS / "research_report.json"
     research = json.loads(research_path.read_text(encoding="utf-8")) if research_path.exists() else None
-    quality_path = ARTIFACTS / "operational_quality.json"
-    quality = json.loads(quality_path.read_text(encoding="utf-8")) if quality_path.exists() else None
+    rule_path = ARTIFACTS / "daily_rule_evaluation.json"
+    rule = json.loads(rule_path.read_text(encoding="utf-8")) if rule_path.exists() else None
     return {
         **service.report,
         "uncertainty": getattr(service, "uncertainty", None),
         "research": research,
-        "operational_quality": quality,
+        "daily_rule": rule,
     }
 
 
@@ -455,6 +455,12 @@ def evaluation(user=Depends(require("model.view"))):
 def evaluation_matches(
     kind: Literal["fault", "fire", "flood", "access"], user=Depends(require("model.view"))
 ):
+    """June warnings of the released 24-hour rule against the journal; a kind without
+    automatic warnings has none."""
+    path = ARTIFACTS / "daily_rule_matches.json"
+    if path.exists():
+        kinds = json.loads(path.read_text(encoding="utf-8"))["kinds"]
+        return kinds[kind]["rows"] if kind in kinds else []
     return json.loads((ARTIFACTS / "predictions" / f"test-matches-{kind}.json").read_text(encoding="utf-8"))
 
 

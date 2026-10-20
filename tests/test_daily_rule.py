@@ -37,6 +37,11 @@ def test_incident_day_counts_a_burst_of_episodes_once():
     # One-to-one: one warning can match only one of the four episodes.
     assert result["recall_strict"] == pytest.approx(0.25)
     assert result["median_lead_hours"] == pytest.approx(4.0)
+    # The per-warning table tells the same story: one warning, 4 hours before the day began.
+    rows = daily_rule.Evaluator(frame, episodes).warnings(0.5)
+    assert rows.to_dict("records") == [
+        {"object_id": 1, "as_of": times[10], "probability": 0.9, "hit": True, "lead_hours": 4.0}
+    ]
 
 
 def test_warning_inside_a_running_incident_day_forecasts_nothing_new():
@@ -120,3 +125,24 @@ def test_stream_rejects_non_finite_probability_without_partial_state(tmp_path):
         stream_call(factory, "bad", "2026-06-15T12:00:00", float("nan"))
     assert stream_call(factory, "good", "2026-06-15T12:00:00", 0.9)["notification_due"]
     engine.dispose()
+
+
+def test_published_june_table_matches_the_release_report():
+    """The analyst's "warning and fact" table is the released rule on June, warning by warning."""
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    report = json.loads((root / "artifacts" / "daily_rule_evaluation.json").read_text(encoding="utf-8"))
+    for folder in (root / "artifacts", root / "vercel_runtime" / "artifacts"):
+        table = json.loads((folder / "daily_rule_matches.json").read_text(encoding="utf-8"))
+        assert table["version"] == report["version"]
+        assert set(table["kinds"]) == set(report["kinds"])
+        for kind, item in table["kinds"].items():
+            june = report["kinds"][kind]["june"]
+            rows = item["rows"]
+            assert len(rows) == june["alerts"]
+            assert sum(r["hit"] for r in rows) == june["true_alerts"]
+            leads = sorted(r["lead_hours"] for r in rows if r["hit"])
+            assert all(r["lead_hours"] is None for r in rows if not r["hit"])
+            assert pd.Series(leads).median() == pytest.approx(june["median_lead_hours"], abs=0.01)

@@ -77,6 +77,7 @@ class Evaluator:
         by_object = {int(k): np.sort(_ns(g.start_ts)) for k, g in episodes.groupby("object_id")}
         empty = np.array([], dtype=np.int64)
         self.groups = []
+        self.objects = []
         self.events = self.cases = 0
         for obj, part in predictions.groupby("object_id", sort=False):
             part = part.sort_values("as_of")
@@ -89,18 +90,36 @@ class Evaluator:
                 if not starts or e - starts[-1] >= HORIZON_HOURS * HOUR_NS:
                     starts.append(e)
             self.groups.append((times, part.probability.to_numpy(), ev, np.array(starts, dtype=np.int64)))
+            self.objects.append(int(obj))
             self.events += len(ev)
             self.cases += len(starts)
         self.days = max(1, pd.to_datetime(predictions.as_of).dt.normalize().nunique())
 
     def warnings(self, threshold: float) -> pd.DataFrame:
-        """Every warning at this threshold: probability when issued and whether it came true."""
+        """Every warning at this threshold: object, time, probability when issued, whether an
+        incident day started within its 24 hours and how long before that start it came."""
         rows = []
-        for times, probability, _, starts in self.groups:
+        for obj, (times, probability, _, starts) in zip(self.objects, self.groups, strict=True):
             issued = issue_times(times, probability >= threshold)
             at = np.searchsorted(times, issued)
-            rows.append(pd.DataFrame({"probability": probability[at], "hit": _followed(starts, issued)}))
-        return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=["probability", "hit"])
+            hit = _followed(starts, issued)
+            lead = np.full(len(issued), np.nan)
+            if len(starts) and hit.any():
+                k = np.searchsorted(starts, issued[hit])
+                lead[hit] = (starts[k] - issued[hit]) / HOUR_NS
+            rows.append(
+                pd.DataFrame(
+                    {
+                        "object_id": obj,
+                        "as_of": pd.to_datetime(issued),
+                        "probability": probability[at],
+                        "hit": hit,
+                        "lead_hours": lead,
+                    }
+                )
+            )
+        columns = ["object_id", "as_of", "probability", "hit", "lead_hours"]
+        return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=columns)
 
     def evaluate(self, threshold: float) -> dict:
         alerts = correct = any_episode = running = strict = caught = 0

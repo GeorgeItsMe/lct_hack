@@ -103,6 +103,8 @@ def build(target: Path = DEFAULT_TARGET):
     required_json = {
         "active_model.json",
         "catalog_audit.json",
+        "daily_rule_evaluation.json",
+        "daily_rule_matches.json",
         "evaluation_report.json",
         "feature_audit.json",
         "operational_quality.json",

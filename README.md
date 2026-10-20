@@ -131,7 +131,7 @@ CONTOUR_PORT=8001 docker compose up --build -d
 
 - `src/moscollector/prepare.py`, `features.py` — нормализация архива, эпизоды, причинные признаки.
 - `train.py`, `count_release.py`, `alert_policy.py` — CatBoost, калибровка, пороги, выпуск модели.
-- `daily_rule.py` — правило «одно предупреждение на объект и тип в сутки» и метрики по неспокойным суткам; `scripts/release_daily_rule.py` — выбор порогов и выпуск пакета.
+- `daily_rule.py` — правило «одно предупреждение на объект и тип в сутки» и метрики по неспокойным суткам; `scripts/release_daily_rule.py` — выбор порогов и выпуск пакета; `scripts/publish_daily_matches.py` — каждое предупреждение июня с итогом по журналу для страницы «Проверка модели».
 - `api.py`, `service.py`, `roles.py` — FastAPI, роли и права, аудит.
 - `importing.py`, `batch.py`, `streaming.py` — импорт, отдельный процесс расчёта, приём потока.
 - `workorders.py`, `reports.py` — заявки (эмуляция внешней системы), отчёты PDF/XLSX.

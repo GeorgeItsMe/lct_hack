@@ -324,21 +324,46 @@ export type RowMetrics = {
   brier: number;
   calibration_curve: { predicted: number; observed: number; count: number }[];
 };
+/* The 24-hour rule on one period: precision and recall in incident days. */
+export type DailyRuleMetrics = {
+  threshold: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  recall_strict: number;
+  alerts: number;
+  true_alerts: number;
+  false_alerts: number;
+  incident_days: number;
+  caught_incident_days: number;
+  alerts_per_day: number;
+  false_alerts_per_day: number;
+  median_lead_hours: number | null;
+};
+export type DailyRuleMatch = {
+  object_id: number;
+  as_of: string;
+  probability: number;
+  hit: boolean;
+  lead_hours: number | null;
+};
 export type Evaluation = {
-  operational_quality?: {
-    model_version: string;
-    kind: Kind;
-    target_summary?: string;
-    below_target?: string;
-    additional_periods?: boolean;
-    rows: {
-      period: string;
-      precision: number;
-      recall: number;
-      f1: number;
-      eligible_episodes: number;
-    }[];
-    f1_gain_interval: { low: number; high: number };
+  daily_rule?: {
+    version: string;
+    selection_period: string[];
+    test_period: string[];
+    kinds: Partial<
+      Record<
+        Kind,
+        {
+          model: string;
+          threshold: number;
+          selection_rule: string;
+          selection_candidates: Record<string, DailyRuleMetrics>;
+          june: DailyRuleMetrics;
+        }
+      >
+    >;
   } | null;
   research?: {
     deployed_changed: boolean;

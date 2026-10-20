@@ -1096,3 +1096,19 @@ tr.sub-row td {
 .panel > .table-scroll + .section-label {
   margin: 26px 22px 0;
 }
+.evaluation-rule {
+  margin: -6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.chosen-row td {
+  font-weight: 550;
+}
+.chosen-row .status {
+  margin-left: 8px;
+}
+.research-body h3 {
+  margin: 18px 0 8px;
+  font-size: 13px;
+}

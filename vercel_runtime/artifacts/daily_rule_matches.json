@@ -1,0 +1,1932 @@
+{
+  "version": "op-ead0f8f0b079",
+  "rule": "one warning per object and kind per 24 hours, checked every hour",
+  "test_period": [
+    "2026-06-01 00:00:00",
+    "2026-07-01 00:00:00"
+  ],
+  "kinds": {
+    "fault": {
+      "model": "archive_classifier",
+      "threshold": 0.154747574026211,
+      "rows": [
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.4132,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.3392,
+          "hit": true,
+          "lead_hours": 7.29
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.5556,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.5613,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.6585,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-11T13:00:00",
+          "probability": 0.2997,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5003,
+          "as_of": "2026-06-12T15:00:00",
+          "probability": 0.1549,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-13T13:00:00",
+          "probability": 0.1663,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5657,
+          "as_of": "2026-06-13T21:00:00",
+          "probability": 0.207,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-16T02:00:00",
+          "probability": 0.1917,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-17T02:00:00",
+          "probability": 0.1835,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-18T02:00:00",
+          "probability": 0.3391,
+          "hit": true,
+          "lead_hours": 1.78
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-19T02:00:00",
+          "probability": 0.4309,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-22T09:00:00",
+          "probability": 0.26,
+          "hit": true,
+          "lead_hours": 0.36
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-23T09:00:00",
+          "probability": 0.3628,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-24T14:00:00",
+          "probability": 0.1969,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-25T13:00:00",
+          "probability": 0.214,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-27T00:00:00",
+          "probability": 0.3659,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-28T00:00:00",
+          "probability": 0.827,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-29T10:00:00",
+          "probability": 0.3458,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-29T12:00:00",
+          "probability": 0.5881,
+          "hit": true,
+          "lead_hours": 0.14
+        }
+      ]
+    },
+    "fire": {
+      "model": "archive_classifier",
+      "threshold": 0.2689254425944955,
+      "rows": [
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.6134,
+          "hit": true,
+          "lead_hours": 16.07
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.3599,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.4697,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.3167,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.3026,
+          "hit": true,
+          "lead_hours": 14.99
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.4533,
+          "hit": true,
+          "lead_hours": 22.0
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.3774,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.6367,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-10T01:00:00",
+          "probability": 0.6151,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-10T09:00:00",
+          "probability": 0.3203,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5123,
+          "as_of": "2026-06-10T15:00:00",
+          "probability": 0.3843,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-10T17:00:00",
+          "probability": 0.6645,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.8118,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.3361,
+          "hit": true,
+          "lead_hours": 15.07
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.6006,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-11T09:00:00",
+          "probability": 0.2873,
+          "hit": true,
+          "lead_hours": 6.74
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-11T17:00:00",
+          "probability": 0.521,
+          "hit": true,
+          "lead_hours": 18.4
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.5448,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.3538,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.389,
+          "hit": true,
+          "lead_hours": 21.81
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-12T09:00:00",
+          "probability": 0.3013,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-12T17:00:00",
+          "probability": 0.3384,
+          "hit": true,
+          "lead_hours": 18.73
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-13T00:00:00",
+          "probability": 0.3077,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-13T00:00:00",
+          "probability": 0.5356,
+          "hit": true,
+          "lead_hours": 7.75
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-13T00:00:00",
+          "probability": 0.6515,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-13T09:00:00",
+          "probability": 0.2787,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-13T12:00:00",
+          "probability": 0.5012,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-13T17:00:00",
+          "probability": 0.8225,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-14T00:00:00",
+          "probability": 0.3048,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-14T00:00:00",
+          "probability": 0.5132,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-14T09:00:00",
+          "probability": 0.2726,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-14T17:00:00",
+          "probability": 0.3752,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-15T00:00:00",
+          "probability": 0.308,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-15T09:00:00",
+          "probability": 0.3637,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-15T15:00:00",
+          "probability": 0.7477,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-15T17:00:00",
+          "probability": 0.6778,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-16T00:00:00",
+          "probability": 0.2813,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-16T15:00:00",
+          "probability": 0.744,
+          "hit": true,
+          "lead_hours": 16.72
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-17T00:00:00",
+          "probability": 0.2986,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-17T03:00:00",
+          "probability": 0.692,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-17T15:00:00",
+          "probability": 0.847,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-18T00:00:00",
+          "probability": 0.278,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-18T03:00:00",
+          "probability": 0.27,
+          "hit": true,
+          "lead_hours": 6.89
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-18T15:00:00",
+          "probability": 0.6057,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-19T03:00:00",
+          "probability": 0.6205,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-19T12:00:00",
+          "probability": 0.2742,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-19T15:00:00",
+          "probability": 0.3571,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-20T02:00:00",
+          "probability": 0.5631,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-20T12:00:00",
+          "probability": 0.3025,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-20T15:00:00",
+          "probability": 0.6473,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-20T17:00:00",
+          "probability": 0.4389,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-20T21:00:00",
+          "probability": 0.745,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5567,
+          "as_of": "2026-06-20T21:00:00",
+          "probability": 0.5332,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-21T12:00:00",
+          "probability": 0.2996,
+          "hit": true,
+          "lead_hours": 19.95
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-21T12:00:00",
+          "probability": 0.8944,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-21T15:00:00",
+          "probability": 0.2959,
+          "hit": true,
+          "lead_hours": 21.25
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-21T21:00:00",
+          "probability": 0.301,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4574,
+          "as_of": "2026-06-22T10:00:00",
+          "probability": 0.3343,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-22T12:00:00",
+          "probability": 0.6445,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-22T12:00:00",
+          "probability": 0.4045,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-22T15:00:00",
+          "probability": 0.3805,
+          "hit": true,
+          "lead_hours": 21.96
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-22T21:00:00",
+          "probability": 0.3144,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-23T12:00:00",
+          "probability": 0.5346,
+          "hit": true,
+          "lead_hours": 0.56
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-23T12:00:00",
+          "probability": 0.3515,
+          "hit": true,
+          "lead_hours": 4.6
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-23T15:00:00",
+          "probability": 0.7247,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-23T21:00:00",
+          "probability": 0.3429,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-24T10:00:00",
+          "probability": 0.616,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-24T12:00:00",
+          "probability": 0.6355,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-24T12:00:00",
+          "probability": 0.5076,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-24T15:00:00",
+          "probability": 0.6257,
+          "hit": true,
+          "lead_hours": 8.19
+        },
+        {
+          "object_id": 4370,
+          "as_of": "2026-06-24T21:00:00",
+          "probability": 0.3401,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-24T21:00:00",
+          "probability": 0.2813,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-25T12:00:00",
+          "probability": 0.5672,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5537,
+          "as_of": "2026-06-25T14:00:00",
+          "probability": 0.506,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-25T15:00:00",
+          "probability": 0.3679,
+          "hit": true,
+          "lead_hours": 17.41
+        },
+        {
+          "object_id": 5123,
+          "as_of": "2026-06-26T12:00:00",
+          "probability": 0.2734,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5124,
+          "as_of": "2026-06-26T12:00:00",
+          "probability": 0.2874,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-26T15:00:00",
+          "probability": 0.3213,
+          "hit": true,
+          "lead_hours": 19.45
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-27T15:00:00",
+          "probability": 0.3903,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-28T03:00:00",
+          "probability": 0.595,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-28T15:00:00",
+          "probability": 0.421,
+          "hit": true,
+          "lead_hours": 18.7
+        },
+        {
+          "object_id": 5677,
+          "as_of": "2026-06-29T03:00:00",
+          "probability": 0.5011,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5962,
+          "as_of": "2026-06-29T08:00:00",
+          "probability": 0.3331,
+          "hit": true,
+          "lead_hours": 3.46
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-29T10:00:00",
+          "probability": 0.8907,
+          "hit": true,
+          "lead_hours": 23.63
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-29T15:00:00",
+          "probability": 0.7705,
+          "hit": false,
+          "lead_hours": null
+        }
+      ]
+    },
+    "access": {
+      "model": "blend_count_0.75",
+      "threshold": 0.5750235226336063,
+      "rows": [
+        {
+          "object_id": 28,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.6292,
+          "hit": true,
+          "lead_hours": 9.16
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.7835,
+          "hit": true,
+          "lead_hours": 1.75
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.8068,
+          "hit": true,
+          "lead_hours": 8.67
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.7058,
+          "hit": true,
+          "lead_hours": 9.6
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.7569,
+          "hit": true,
+          "lead_hours": 8.76
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.6368,
+          "hit": true,
+          "lead_hours": 11.38
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.6232,
+          "hit": true,
+          "lead_hours": 10.77
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-09T00:00:00",
+          "probability": 0.6079,
+          "hit": true,
+          "lead_hours": 9.16
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-09T10:00:00",
+          "probability": 0.5992,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-09T11:00:00",
+          "probability": 0.6275,
+          "hit": true,
+          "lead_hours": 23.35
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.6505,
+          "hit": true,
+          "lead_hours": 17.03
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.7174,
+          "hit": true,
+          "lead_hours": 10.74
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.8025,
+          "hit": true,
+          "lead_hours": 8.94
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.7944,
+          "hit": true,
+          "lead_hours": 9.95
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.7266,
+          "hit": true,
+          "lead_hours": 8.85
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.6508,
+          "hit": true,
+          "lead_hours": 11.58
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-10T00:00:00",
+          "probability": 0.604,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-10T10:00:00",
+          "probability": 0.6033,
+          "hit": true,
+          "lead_hours": 0.7
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-10T10:00:00",
+          "probability": 0.6163,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-10T11:00:00",
+          "probability": 0.6262,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-10T11:00:00",
+          "probability": 0.7393,
+          "hit": true,
+          "lead_hours": 23.86
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.7448,
+          "hit": true,
+          "lead_hours": 10.79
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.7926,
+          "hit": true,
+          "lead_hours": 9.53
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.6889,
+          "hit": true,
+          "lead_hours": 12.05
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.7341,
+          "hit": true,
+          "lead_hours": 9.03
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-11T00:00:00",
+          "probability": 0.7052,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-11T10:00:00",
+          "probability": 0.6153,
+          "hit": true,
+          "lead_hours": 0.85
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-11T11:00:00",
+          "probability": 0.7446,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-11T13:00:00",
+          "probability": 0.5938,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-11T17:00:00",
+          "probability": 0.6118,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-11T18:00:00",
+          "probability": 0.6528,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.7982,
+          "hit": true,
+          "lead_hours": 21.68
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.7648,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.5923,
+          "hit": true,
+          "lead_hours": 23.41
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-12T00:00:00",
+          "probability": 0.6989,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-12T17:00:00",
+          "probability": 0.5895,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-13T02:00:00",
+          "probability": 0.61,
+          "hit": true,
+          "lead_hours": 23.2
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-13T06:00:00",
+          "probability": 0.7186,
+          "hit": true,
+          "lead_hours": 17.99
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-14T02:00:00",
+          "probability": 0.6424,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-14T10:00:00",
+          "probability": 0.6326,
+          "hit": true,
+          "lead_hours": 23.24
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-14T11:00:00",
+          "probability": 0.6649,
+          "hit": true,
+          "lead_hours": 22.99
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-14T11:00:00",
+          "probability": 0.6969,
+          "hit": true,
+          "lead_hours": 22.96
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-14T12:00:00",
+          "probability": 0.6734,
+          "hit": true,
+          "lead_hours": 23.64
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-14T14:00:00",
+          "probability": 0.595,
+          "hit": true,
+          "lead_hours": 19.06
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-14T14:00:00",
+          "probability": 0.6162,
+          "hit": true,
+          "lead_hours": 20.32
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-15T02:00:00",
+          "probability": 0.72,
+          "hit": true,
+          "lead_hours": 7.99
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-15T08:00:00",
+          "probability": 0.5876,
+          "hit": true,
+          "lead_hours": 4.04
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-15T10:00:00",
+          "probability": 0.8205,
+          "hit": true,
+          "lead_hours": 23.77
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-15T10:00:00",
+          "probability": 0.5955,
+          "hit": true,
+          "lead_hours": 0.14
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-15T11:00:00",
+          "probability": 0.7625,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-15T11:00:00",
+          "probability": 0.6476,
+          "hit": true,
+          "lead_hours": 23.15
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-15T12:00:00",
+          "probability": 0.6864,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-15T12:00:00",
+          "probability": 0.6728,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-15T13:00:00",
+          "probability": 0.6229,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-15T14:00:00",
+          "probability": 0.7077,
+          "hit": true,
+          "lead_hours": 19.25
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-15T14:00:00",
+          "probability": 0.647,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-15T14:00:00",
+          "probability": 0.6259,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4370,
+          "as_of": "2026-06-15T21:00:00",
+          "probability": 0.5931,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-16T02:00:00",
+          "probability": 0.7082,
+          "hit": true,
+          "lead_hours": 15.95
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-16T08:00:00",
+          "probability": 0.6439,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-16T10:00:00",
+          "probability": 0.8435,
+          "hit": true,
+          "lead_hours": 23.91
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-16T10:00:00",
+          "probability": 0.7309,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-16T11:00:00",
+          "probability": 0.7255,
+          "hit": true,
+          "lead_hours": 0.18
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-16T11:00:00",
+          "probability": 0.6228,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-16T11:00:00",
+          "probability": 0.7583,
+          "hit": true,
+          "lead_hours": 23.24
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-16T12:00:00",
+          "probability": 0.6469,
+          "hit": true,
+          "lead_hours": 6.93
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-16T13:00:00",
+          "probability": 0.6831,
+          "hit": true,
+          "lead_hours": 20.81
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-16T14:00:00",
+          "probability": 0.695,
+          "hit": true,
+          "lead_hours": 19.31
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-17T02:00:00",
+          "probability": 0.679,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-17T04:00:00",
+          "probability": 0.6645,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-17T08:00:00",
+          "probability": 0.5801,
+          "hit": true,
+          "lead_hours": 3.18
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-17T09:00:00",
+          "probability": 0.6043,
+          "hit": true,
+          "lead_hours": 1.12
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-17T10:00:00",
+          "probability": 0.8532,
+          "hit": true,
+          "lead_hours": 23.93
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-17T10:00:00",
+          "probability": 0.5952,
+          "hit": true,
+          "lead_hours": 2.88
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-17T11:00:00",
+          "probability": 0.6562,
+          "hit": true,
+          "lead_hours": 0.6
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-17T11:00:00",
+          "probability": 0.7323,
+          "hit": true,
+          "lead_hours": 23.97
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-17T12:00:00",
+          "probability": 0.7319,
+          "hit": true,
+          "lead_hours": 8.1
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-17T14:00:00",
+          "probability": 0.711,
+          "hit": true,
+          "lead_hours": 20.22
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-18T02:00:00",
+          "probability": 0.7281,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-18T08:00:00",
+          "probability": 0.5931,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-18T09:00:00",
+          "probability": 0.5963,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-18T10:00:00",
+          "probability": 0.8464,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-18T10:00:00",
+          "probability": 0.6617,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-18T11:00:00",
+          "probability": 0.7005,
+          "hit": true,
+          "lead_hours": 22.42
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-18T11:00:00",
+          "probability": 0.6117,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-18T12:00:00",
+          "probability": 0.7294,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-18T14:00:00",
+          "probability": 0.793,
+          "hit": true,
+          "lead_hours": 20.42
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-19T10:00:00",
+          "probability": 0.6867,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-19T10:00:00",
+          "probability": 0.8428,
+          "hit": true,
+          "lead_hours": 5.89
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-19T11:00:00",
+          "probability": 0.6213,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-19T14:00:00",
+          "probability": 0.7244,
+          "hit": true,
+          "lead_hours": 20.62
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-20T10:00:00",
+          "probability": 0.7325,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-20T14:00:00",
+          "probability": 0.6836,
+          "hit": true,
+          "lead_hours": 22.59
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-21T11:00:00",
+          "probability": 0.6092,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-21T11:00:00",
+          "probability": 0.5984,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-21T11:00:00",
+          "probability": 0.6922,
+          "hit": true,
+          "lead_hours": 22.29
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-21T11:00:00",
+          "probability": 0.6061,
+          "hit": true,
+          "lead_hours": 22.64
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-21T13:00:00",
+          "probability": 0.651,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-21T14:00:00",
+          "probability": 0.7875,
+          "hit": true,
+          "lead_hours": 22.81
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-21T14:00:00",
+          "probability": 0.6967,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-21T17:00:00",
+          "probability": 0.5775,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-21T21:00:00",
+          "probability": 0.622,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-22T08:00:00",
+          "probability": 0.5789,
+          "hit": true,
+          "lead_hours": 13.3
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-22T11:00:00",
+          "probability": 0.6395,
+          "hit": true,
+          "lead_hours": 23.0
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-22T11:00:00",
+          "probability": 0.5952,
+          "hit": true,
+          "lead_hours": 0.95
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-22T11:00:00",
+          "probability": 0.8153,
+          "hit": true,
+          "lead_hours": 22.31
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-22T11:00:00",
+          "probability": 0.7258,
+          "hit": true,
+          "lead_hours": 22.73
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-22T12:00:00",
+          "probability": 0.5895,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-22T13:00:00",
+          "probability": 0.5771,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-22T14:00:00",
+          "probability": 0.8366,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-22T14:00:00",
+          "probability": 0.6616,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-22T18:00:00",
+          "probability": 0.5808,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-23T10:00:00",
+          "probability": 0.6469,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.7362,
+          "hit": true,
+          "lead_hours": 23.24
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.7695,
+          "hit": true,
+          "lead_hours": 1.35
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.8266,
+          "hit": true,
+          "lead_hours": 23.11
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.7391,
+          "hit": true,
+          "lead_hours": 23.38
+        },
+        {
+          "object_id": 3905,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.5921,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5339,
+          "as_of": "2026-06-23T11:00:00",
+          "probability": 0.5774,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-23T12:00:00",
+          "probability": 0.6052,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-23T14:00:00",
+          "probability": 0.7585,
+          "hit": true,
+          "lead_hours": 0.08
+        },
+        {
+          "object_id": 5961,
+          "as_of": "2026-06-23T18:00:00",
+          "probability": 0.5949,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-24T10:00:00",
+          "probability": 0.5785,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.6689,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.7961,
+          "hit": true,
+          "lead_hours": 2.01
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.8396,
+          "hit": true,
+          "lead_hours": 23.34
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.805,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.6577,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-24T11:00:00",
+          "probability": 0.5793,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-24T12:00:00",
+          "probability": 0.6024,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-24T14:00:00",
+          "probability": 0.7751,
+          "hit": true,
+          "lead_hours": 0.66
+        },
+        {
+          "object_id": 3905,
+          "as_of": "2026-06-24T18:00:00",
+          "probability": 0.6716,
+          "hit": true,
+          "lead_hours": 20.31
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.753,
+          "hit": true,
+          "lead_hours": 2.34
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.8258,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.7385,
+          "hit": true,
+          "lead_hours": 0.23
+        },
+        {
+          "object_id": 4370,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.5774,
+          "hit": true,
+          "lead_hours": 23.63
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.5948,
+          "hit": true,
+          "lead_hours": 23.89
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-25T11:00:00",
+          "probability": 0.6579,
+          "hit": true,
+          "lead_hours": 0.36
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-25T14:00:00",
+          "probability": 0.7264,
+          "hit": true,
+          "lead_hours": 2.84
+        },
+        {
+          "object_id": 3905,
+          "as_of": "2026-06-25T19:00:00",
+          "probability": 0.584,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-26T10:00:00",
+          "probability": 0.5751,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-26T11:00:00",
+          "probability": 0.6928,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-26T11:00:00",
+          "probability": 0.7556,
+          "hit": true,
+          "lead_hours": 0.07
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-26T11:00:00",
+          "probability": 0.6247,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-26T13:00:00",
+          "probability": 0.5812,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-26T14:00:00",
+          "probability": 0.59,
+          "hit": true,
+          "lead_hours": 19.29
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-27T11:00:00",
+          "probability": 0.683,
+          "hit": true,
+          "lead_hours": 1.46
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-27T16:00:00",
+          "probability": 0.6793,
+          "hit": true,
+          "lead_hours": 18.33
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-28T11:00:00",
+          "probability": 0.5819,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-28T11:00:00",
+          "probability": 0.6657,
+          "hit": true,
+          "lead_hours": 22.01
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-28T11:00:00",
+          "probability": 0.6196,
+          "hit": true,
+          "lead_hours": 22.82
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-28T11:00:00",
+          "probability": 0.5939,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-28T13:00:00",
+          "probability": 0.6145,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-28T14:00:00",
+          "probability": 0.6086,
+          "hit": true,
+          "lead_hours": 19.76
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-28T16:00:00",
+          "probability": 0.7289,
+          "hit": true,
+          "lead_hours": 18.42
+        },
+        {
+          "object_id": 5113,
+          "as_of": "2026-06-29T08:00:00",
+          "probability": 0.596,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 5580,
+          "as_of": "2026-06-29T09:00:00",
+          "probability": 0.5779,
+          "hit": true,
+          "lead_hours": 7.24
+        },
+        {
+          "object_id": 5332,
+          "as_of": "2026-06-29T10:00:00",
+          "probability": 0.6475,
+          "hit": true,
+          "lead_hours": 23.79
+        },
+        {
+          "object_id": 42,
+          "as_of": "2026-06-29T11:00:00",
+          "probability": 0.6681,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 3215,
+          "as_of": "2026-06-29T11:00:00",
+          "probability": 0.8083,
+          "hit": true,
+          "lead_hours": 22.43
+        },
+        {
+          "object_id": 3356,
+          "as_of": "2026-06-29T11:00:00",
+          "probability": 0.7786,
+          "hit": true,
+          "lead_hours": 22.84
+        },
+        {
+          "object_id": 4648,
+          "as_of": "2026-06-29T11:00:00",
+          "probability": 0.6522,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 28,
+          "as_of": "2026-06-29T13:00:00",
+          "probability": 0.5947,
+          "hit": true,
+          "lead_hours": 21.0
+        },
+        {
+          "object_id": 5343,
+          "as_of": "2026-06-29T14:00:00",
+          "probability": 0.6595,
+          "hit": true,
+          "lead_hours": 19.8
+        },
+        {
+          "object_id": 5676,
+          "as_of": "2026-06-29T14:00:00",
+          "probability": 0.5764,
+          "hit": false,
+          "lead_hours": null
+        },
+        {
+          "object_id": 4391,
+          "as_of": "2026-06-29T16:00:00",
+          "probability": 0.8044,
+          "hit": true,
+          "lead_hours": 20.05
+        }
+      ]
+    }
+  }
+}
